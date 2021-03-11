@@ -77,13 +77,13 @@ commands:
       - run:
           name: Build lambda
           command: |
-            cd ./LBH_search_api/
+            cd ./SearchApi/
             chmod +x ./build.sh
             ./build.sh
       - run:
           name: Deploy lambda
           command: |
-            cd ./LBH_search_api/
+            cd ./SearchApi/
             sls deploy --stage <<parameters.stage>> --conceal
 
 jobs:
@@ -104,10 +104,10 @@ jobs:
       - setup_remote_docker
       - run:
           name: build
-          command: docker-compose build base-api-test
+          command: docker-compose build search-api-test
       - run:
           name: Run tests
-          command: docker-compose run base-api-test
+          command: docker-compose run search-api-test
   assume-role-development:
     executor: docker-python
     steps:
