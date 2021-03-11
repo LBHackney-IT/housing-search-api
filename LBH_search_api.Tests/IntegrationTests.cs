@@ -1,11 +1,11 @@
 using System.Net.Http;
-using LBH_search_api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
 using NUnit.Framework;
+using SearchApi.V1.Infrastructure;
 
-namespace LBH_search_api.Tests
+namespace SearchApi.Tests
 {
     public class IntegrationTests<TStartup> where TStartup : class
     {

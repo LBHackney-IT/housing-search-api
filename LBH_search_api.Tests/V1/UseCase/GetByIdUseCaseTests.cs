@@ -1,9 +1,9 @@
-using LBH_search_api.V1.Gateways;
-using LBH_search_api.V1.UseCase;
 using Moq;
 using NUnit.Framework;
+using SearchApi.V1.Gateways;
+using SearchApi.V1.UseCase;
 
-namespace LBH_search_api.Tests.V1.UseCase
+namespace SearchApi.Tests.V1.UseCase
 {
     public class GetByIdUseCaseTests
     {

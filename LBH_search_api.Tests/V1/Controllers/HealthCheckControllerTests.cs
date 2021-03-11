@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using LBH_search_api.V1.Controllers;
-using LBH_search_api.V1.UseCase;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
+using SearchApi.V1.Controllers;
+using SearchApi.V1.UseCase;
 
-namespace LBH_search_api.Tests.V1.Controllers
+namespace SearchApi.Tests.V1.Controllers
 {
 
     [TestFixture]

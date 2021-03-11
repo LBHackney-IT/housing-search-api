@@ -1,9 +1,9 @@
-using LBH_search_api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using NUnit.Framework;
+using SearchApi.V1.Infrastructure;
 
-namespace LBH_search_api.Tests
+namespace SearchApi.Tests
 {
     [TestFixture]
     public class DatabaseTests

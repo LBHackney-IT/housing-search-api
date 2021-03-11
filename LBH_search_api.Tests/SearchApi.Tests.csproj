@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LBH_search_api\LBH_search_api.csproj" />
+    <ProjectReference Include="..\LBH_search_api\SearchApi.csproj" />
   </ItemGroup>
 
 </Project>

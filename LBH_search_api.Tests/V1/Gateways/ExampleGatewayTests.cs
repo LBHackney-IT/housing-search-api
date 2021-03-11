@@ -1,11 +1,11 @@
 using AutoFixture;
-using LBH_search_api.Tests.V1.Helper;
-using LBH_search_api.V1.Domain;
-using LBH_search_api.V1.Gateways;
 using FluentAssertions;
 using NUnit.Framework;
+using SearchApi.Tests.V1.Helper;
+using SearchApi.V1.Domain;
+using SearchApi.V1.Gateways;
 
-namespace LBH_search_api.Tests.V1.Gateways
+namespace SearchApi.Tests.V1.Gateways
 {
     //TODO: Rename Tests to match gateway name
     //For instruction on how to run tests please see the wiki: https://github.com/LBHackney-IT/lbh-base-api/wiki/Running-the-test-suite.

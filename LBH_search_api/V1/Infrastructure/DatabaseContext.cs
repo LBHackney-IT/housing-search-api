@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace LBH_search_api.V1.Infrastructure
+namespace SearchApi.V1.Infrastructure
 {
 
     public class DatabaseContext : DbContext

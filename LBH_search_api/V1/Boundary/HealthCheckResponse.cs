@@ -1,4 +1,4 @@
-namespace LBH_search_api.V1.Boundary
+namespace SearchApi.V1.Boundary
 {
     public class HealthCheckResponse
     {

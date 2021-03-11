@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using LBH_search_api.V1.Domain;
-using LBH_search_api.V1.Factories;
-using LBH_search_api.V1.Infrastructure;
+using SearchApi.V1.Factories;
+using SearchApi.V1.Domain;
+using SearchApi.V1.Infrastructure;
 
-namespace LBH_search_api.V1.Gateways
+namespace SearchApi.V1.Gateways
 {
     //TODO: Rename to match the data source that is being accessed in the gateway eg. MosaicGateway
     public class ExampleGateway : IExampleGateway

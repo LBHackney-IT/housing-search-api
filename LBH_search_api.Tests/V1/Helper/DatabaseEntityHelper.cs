@@ -1,8 +1,8 @@
 using AutoFixture;
-using LBH_search_api.V1.Domain;
-using LBH_search_api.V1.Infrastructure;
+using SearchApi.V1.Domain;
+using SearchApi.V1.Infrastructure;
 
-namespace LBH_search_api.Tests.V1.Helper
+namespace SearchApi.Tests.V1.Helper
 {
     public static class DatabaseEntityHelper
     {

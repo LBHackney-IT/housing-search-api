@@ -1,15 +1,15 @@
 using System.Linq;
 using AutoFixture;
-using LBH_search_api.V1.Boundary.Response;
-using LBH_search_api.V1.Domain;
-using LBH_search_api.V1.Factories;
-using LBH_search_api.V1.Gateways;
-using LBH_search_api.V1.UseCase;
+using SearchApi.V1.Factories;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using SearchApi.V1.Boundary.Response;
+using SearchApi.V1.Domain;
+using SearchApi.V1.Gateways;
+using SearchApi.V1.UseCase;
 
-namespace LBH_search_api.Tests.V1.UseCase
+namespace SearchApi.Tests.V1.UseCase
 {
     public class GetAllUseCaseTests
     {

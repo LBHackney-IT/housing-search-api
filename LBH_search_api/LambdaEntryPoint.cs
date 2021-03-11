@@ -1,7 +1,7 @@
 using Amazon.Lambda.AspNetCoreServer;
 using Microsoft.AspNetCore.Hosting;
 
-namespace LBH_search_api
+namespace SearchApi
 {
     public class LambdaEntryPoint : APIGatewayProxyFunction
     {

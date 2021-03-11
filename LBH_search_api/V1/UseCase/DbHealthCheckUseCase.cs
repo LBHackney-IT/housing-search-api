@@ -1,7 +1,7 @@
-using LBH_search_api.V1.Boundary;
 using Microsoft.Extensions.HealthChecks;
+using SearchApi.V1.Boundary;
 
-namespace LBH_search_api.V1.UseCase
+namespace SearchApi.V1.UseCase
 {
     public class DbHealthCheckUseCase
     {

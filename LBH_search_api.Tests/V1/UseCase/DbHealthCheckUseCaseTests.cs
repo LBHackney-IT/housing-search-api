@@ -1,12 +1,12 @@
 using System.Threading;
-using LBH_search_api.V1.UseCase;
 using Bogus;
 using FluentAssertions;
 using Microsoft.Extensions.HealthChecks;
 using Moq;
 using NUnit.Framework;
+using SearchApi.V1.UseCase;
 
-namespace LBH_search_api.Tests.V1.UseCase
+namespace SearchApi.Tests.V1.UseCase
 {
     [TestFixture]
     public class DbHealthCheckUseCaseTests

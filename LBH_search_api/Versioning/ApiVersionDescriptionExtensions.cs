@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
-namespace LBH_search_api.Versioning
+namespace SearchApi.Versioning
 {
     public static class ApiVersionDescriptionExtensions
     {

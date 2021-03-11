@@ -1,13 +1,13 @@
 using System.Data.Common;
-using LBH_search_api;
-using LBH_search_api.V1.Infrastructure;
+using SearchApi;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SearchApi.V1.Infrastructure;
 
-namespace LBH_search_api.Tests
+namespace SearchApi.Tests
 {
     public class MockWebApplicationFactory<TStartup>
         : WebApplicationFactory<TStartup> where TStartup : class

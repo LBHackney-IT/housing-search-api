@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace LBH_search_api
+namespace SearchApi
 {
     public static class Program
     {

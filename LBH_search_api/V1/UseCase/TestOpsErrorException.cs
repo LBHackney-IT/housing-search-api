@@ -1,6 +1,6 @@
 using System;
 
-namespace LBH_search_api.V1.UseCase
+namespace SearchApi.V1.UseCase
 {
     public class TestOpsErrorException : Exception
     {

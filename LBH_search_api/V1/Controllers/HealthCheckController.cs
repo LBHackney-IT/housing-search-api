@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using LBH_search_api.V1.UseCase;
 using Microsoft.AspNetCore.Mvc;
+using SearchApi.V1.UseCase;
 
-namespace LBH_search_api.V1.Controllers
+namespace SearchApi.V1.Controllers
 {
     [Route("api/v1/healthcheck")]
     [ApiController]

@@ -1,9 +1,9 @@
 using System.Linq;
-using LBH_search_api.Tests.V1.Helper;
-using LBH_search_api.V1.Infrastructure;
+using SearchApi.V1.Infrastructure;
 using NUnit.Framework;
+using SearchApi.Tests.V1.Helper;
 
-namespace LBH_search_api.Tests.V1.Infrastructure
+namespace SearchApi.Tests.V1.Infrastructure
 {
     [TestFixture]
     public class DatabaseContextTest : DatabaseTests

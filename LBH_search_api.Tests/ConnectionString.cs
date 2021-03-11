@@ -1,6 +1,6 @@
 using System;
 
-namespace LBH_search_api.Tests
+namespace SearchApi.Tests
 {
     public static class ConnectionString
     {

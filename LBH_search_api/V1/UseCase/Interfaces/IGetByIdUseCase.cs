@@ -1,6 +1,6 @@
-using LBH_search_api.V1.Boundary.Response;
+using SearchApi.V1.Boundary.Response;
 
-namespace LBH_search_api.V1.UseCase.Interfaces
+namespace SearchApi.V1.UseCase.Interfaces
 {
     public interface IGetByIdUseCase
     {

@@ -1,7 +1,7 @@
-using LBH_search_api.V1.Domain;
-using LBH_search_api.V1.Infrastructure;
+using SearchApi.V1.Domain;
+using SearchApi.V1.Infrastructure;
 
-namespace LBH_search_api.V1.Factories
+namespace SearchApi.V1.Factories
 {
     public static class EntityFactory
     {

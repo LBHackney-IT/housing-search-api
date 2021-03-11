@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using LBH_search_api.V1.Boundary.Response;
-using LBH_search_api.V1.Domain;
+using SearchApi.V1.Boundary.Response;
+using SearchApi.V1.Domain;
 
-namespace LBH_search_api.V1.Factories
+namespace SearchApi.V1.Factories
 {
     public static class ResponseFactory
     {

@@ -1,8 +1,8 @@
-using LBH_search_api.V1.UseCase;
 using FluentAssertions;
 using NUnit.Framework;
+using SearchApi.V1.UseCase;
 
-namespace LBH_search_api.Tests.V1.UseCase
+namespace SearchApi.Tests.V1.UseCase
 {
     [TestFixture]
     public class ThrowOpsErrorUsecaseTests

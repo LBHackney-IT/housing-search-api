@@ -1,9 +1,9 @@
-using LBH_search_api.V1.Boundary.Response;
-using LBH_search_api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SearchApi.V1.Boundary.Response;
+using SearchApi.V1.UseCase.Interfaces;
 
-namespace LBH_search_api.V1.Controllers
+namespace SearchApi.V1.Controllers
 {
     [ApiController]
     //TODO: Rename to match the APIs endpoint
@@ -11,11 +11,11 @@ namespace LBH_search_api.V1.Controllers
     [Produces("application/json")]
     [ApiVersion("1.0")]
     //TODO: rename class to match the API name
-    public class LBH_search_apiController : BaseController
+    public class SearchApiController : BaseController
     {
         private readonly IGetAllUseCase _getAllUseCase;
         private readonly IGetByIdUseCase _getByIdUseCase;
-        public LBH_search_apiController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase)
+        public SearchApiController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase)
         {
             _getAllUseCase = getAllUseCase;
             _getByIdUseCase = getByIdUseCase;

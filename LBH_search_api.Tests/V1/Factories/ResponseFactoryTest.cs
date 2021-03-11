@@ -1,8 +1,8 @@
-using LBH_search_api.V1.Domain;
-using LBH_search_api.V1.Factories;
+using SearchApi.V1.Factories;
 using NUnit.Framework;
+using SearchApi.V1.Domain;
 
-namespace LBH_search_api.Tests.V1.Factories
+namespace SearchApi.Tests.V1.Factories
 {
     public class ResponseFactoryTest
     {

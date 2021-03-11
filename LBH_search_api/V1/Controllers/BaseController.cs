@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace LBH_search_api.V1.Controllers
+namespace SearchApi.V1.Controllers
 {
     public class BaseController : Controller
     {

@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LBH_search_api.V1.Infrastructure
+namespace SearchApi.V1.Infrastructure
 {
     //TODO: rename table and add needed fields relating to the table columns.
     // There's an example of this in the wiki https://github.com/LBHackney-IT/lbh-base-api/wiki/DatabaseContext

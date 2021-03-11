@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using LBH_search_api.V1.Gateways;
-using LBH_search_api.V1.Infrastructure;
-using LBH_search_api.V1.UseCase;
-using LBH_search_api.V1.UseCase.Interfaces;
-using LBH_search_api.Versioning;
+using SearchApi.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +14,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using SearchApi.V1.Gateways;
+using SearchApi.V1.Infrastructure;
+using SearchApi.V1.UseCase;
+using SearchApi.V1.UseCase.Interfaces;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace LBH_search_api
+namespace SearchApi
 {
     public class Startup
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using LBH_search_api.V1.Domain;
+using SearchApi.V1.Domain;
 
-namespace LBH_search_api.V1.Gateways
+namespace SearchApi.V1.Gateways
 {
     public interface IExampleGateway
     {

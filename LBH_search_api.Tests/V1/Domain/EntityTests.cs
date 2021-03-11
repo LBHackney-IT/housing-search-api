@@ -1,9 +1,9 @@
 using System;
-using LBH_search_api.V1.Domain;
 using FluentAssertions;
 using NUnit.Framework;
+using SearchApi.V1.Domain;
 
-namespace LBH_search_api.Tests.V1.Domain
+namespace SearchApi.Tests.V1.Domain
 {
     [TestFixture]
     public class EntityTests
