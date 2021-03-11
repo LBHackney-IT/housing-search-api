@@ -4,7 +4,7 @@ setup:
 
 .PHONY: build
 build:
-	docker-compose build s-api
+	docker-compose build search-api
 
 .PHONY: serve
 serve:
