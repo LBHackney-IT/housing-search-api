@@ -1,4 +1,4 @@
-service: your-api-name
+service: search-api
 provider:
   name: aws
   runtime: dotnetcore3.1
@@ -16,12 +16,12 @@ provider:
 
 package:
 # TODO: Rename zipfile in build.sh and build.cmd to match this
-  artifact: ./bin/release/netcoreapp3.1/your-api-name.zip
+  artifact: ./bin/release/netcoreapp3.1/search-api.zip
 
 functions:
-  LBH_search_api:
+  SearchApi:
     name: ${self:service}-${self:provider.stage}
-    handler: LBH_search_api::LBH_search_api.LambdaEntryPoint::FunctionHandlerAsync
+    handler: SearchApi::SearchApi.LambdaEntryPoint::FunctionHandlerAsync
     role: lambdaExecutionRole
     environment:
 # TODO: Create ssm variables for this API's postgres mirror then rename search-api below to match api name
