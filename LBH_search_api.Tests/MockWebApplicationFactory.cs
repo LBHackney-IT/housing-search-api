@@ -1,5 +1,4 @@
 using System.Data.Common;
-using SearchApi;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;

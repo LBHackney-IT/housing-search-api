@@ -1,11 +1,11 @@
 using System.Linq;
-using SearchApi.V1.Infrastructure;
 using NUnit.Framework;
 using SearchApi.Tests.V1.Helper;
 
 namespace SearchApi.Tests.V1.Infrastructure
 {
     [TestFixture]
+    [Ignore("Deciding on what DB to use")]
     public class DatabaseContextTest : DatabaseTests
     {
         [Test]
