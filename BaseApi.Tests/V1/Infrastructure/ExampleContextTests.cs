@@ -5,6 +5,7 @@ using NUnit.Framework;
 namespace BaseApi.Tests.V1.Infrastructure
 {
     [TestFixture]
+    [Ignore("Not needed until we decide on DB")]
     public class DatabaseContextTest : DatabaseTests
     {
         [Test]

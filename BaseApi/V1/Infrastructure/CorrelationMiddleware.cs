@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
 namespace BaseApi.V1.Infrastructure
@@ -24,6 +25,15 @@ namespace BaseApi.V1.Infrastructure
 
             if(_next != null)
                 await _next(context).ConfigureAwait(false);
+        }
+    }
+
+    public static class CorrelationMiddlewareExtensions
+    {
+        public static IApplicationBuilder UseCorrelation(
+            this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<CorrelationMiddleware>();
         }
     }
 }
