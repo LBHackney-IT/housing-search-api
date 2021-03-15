@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using BaseApi.V1.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using SearchApi.V1.Infrastructure;
 
 namespace SearchApi.V1.Controllers
 {

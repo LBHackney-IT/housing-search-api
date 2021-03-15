@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using BaseApi.V1.Infrastructure;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using NUnit.Framework;
+using SearchApi.V1.Infrastructure;
 
-namespace BaseApi.Tests.V1.Infrastructure
+namespace SearchApi.Tests.V1.Infrastructure
 {
     [TestFixture]
     public class CorrelationMiddlewareTest

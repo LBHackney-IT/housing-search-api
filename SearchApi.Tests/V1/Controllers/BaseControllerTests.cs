@@ -1,14 +1,14 @@
 using System.Collections.Generic;
-using BaseApi.V1.Controllers;
-using BaseApi.V1.Infrastructure;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Routing;
 using NUnit.Framework;
+using SearchApi.V1.Controllers;
+using SearchApi.V1.Infrastructure;
 
-namespace BaseApi.Tests.V1.Controllers
+namespace SearchApi.Tests.V1.Controllers
 {
     [TestFixture]
     public class BaseControllerTests

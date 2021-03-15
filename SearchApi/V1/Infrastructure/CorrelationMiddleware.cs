@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace BaseApi.V1.Infrastructure
+namespace SearchApi.V1.Infrastructure
 {
     public class CorrelationMiddleware
     {
