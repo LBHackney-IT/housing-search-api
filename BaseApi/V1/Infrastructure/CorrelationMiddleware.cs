@@ -8,7 +8,6 @@ namespace BaseApi.V1.Infrastructure
     public class CorrelationMiddleware
     {
         private readonly RequestDelegate _next;
-        private string _correlationid = "x-correlationId";
 
         public CorrelationMiddleware(RequestDelegate next)
         {
@@ -17,9 +16,9 @@ namespace BaseApi.V1.Infrastructure
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (context.Request.Headers[_correlationid].Count == 0)
+            if (context.Request.Headers[Constants.CorrelationId].Count == 0)
             {
-                context.Request.Headers[_correlationid] = Guid.NewGuid().ToString();
+                context.Request.Headers[Constants.CorrelationId] = Guid.NewGuid().ToString();
             }
 
             if (_next != null)

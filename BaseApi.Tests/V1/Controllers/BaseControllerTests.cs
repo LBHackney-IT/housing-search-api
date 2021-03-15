@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using BaseApi.V1.Controllers;
+using BaseApi.V1.Infrastructure;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,6 @@ namespace BaseApi.Tests.V1.Controllers
         private BaseController _sut;
         private ControllerContext _controllerContext;
         private HttpContext _stubHttpContext;
-        private string _correlationid = "x-correlationId";
 
         [SetUp]
         public void Init()
@@ -40,7 +40,7 @@ namespace BaseApi.Tests.V1.Controllers
         public void GetCorrelationShouldReturnCorrelationIdWhenExists()
         {
             // Arrange
-            _stubHttpContext.Request.Headers.Add(_correlationid, "123");
+            _stubHttpContext.Request.Headers.Add(Constants.CorrelationId, "123");
 
             // Act
             var result = _sut.GetCorrelationId();

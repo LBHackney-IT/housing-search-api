@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using BaseApi.V1.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -7,8 +8,6 @@ namespace BaseApi.V1.Controllers
 {
     public class BaseController : Controller
     {
-        private string _correlationid = "x-correlationId";
-
         public BaseController()
         {
             ConfigureJsonSerializer();
@@ -16,10 +15,10 @@ namespace BaseApi.V1.Controllers
 
         public string GetCorrelationId()
         {
-            if (HttpContext.Request.Headers[_correlationid].Count == 0)
+            if (HttpContext.Request.Headers[Constants.CorrelationId].Count == 0)
                 throw new KeyNotFoundException("Request is missing a correlationId");
 
-            return HttpContext.Request.Headers[_correlationid];
+            return HttpContext.Request.Headers[Constants.CorrelationId];
         }
 
         public static void ConfigureJsonSerializer()

@@ -9,7 +9,6 @@ namespace BaseApi.Tests.V1.Infrastructure
     [TestFixture]
     public class CorrelationMiddlewareTest
     {
-        private string _correlationid = "x-correlationId";
         private CorrelationMiddleware _sut;
 
         [SetUp]
@@ -25,13 +24,13 @@ namespace BaseApi.Tests.V1.Infrastructure
             var httpContext = new DefaultHttpContext();
             var headerValue = "123";
 
-            httpContext.HttpContext.Request.Headers.Add(_correlationid, headerValue);
+            httpContext.HttpContext.Request.Headers.Add(Constants.CorrelationId, headerValue);
 
             // Act
             await _sut.InvokeAsync(httpContext).ConfigureAwait(false);
 
             // Assert
-            httpContext.HttpContext.Request.Headers[_correlationid].Should().BeEquivalentTo(headerValue);
+            httpContext.HttpContext.Request.Headers[Constants.CorrelationId].Should().BeEquivalentTo(headerValue);
         }
 
         [Test]
@@ -40,12 +39,11 @@ namespace BaseApi.Tests.V1.Infrastructure
             // Arrange
             var httpContext = new DefaultHttpContext();
 
-
             // Act
             await _sut.InvokeAsync(httpContext).ConfigureAwait(false);
 
             // Assert
-            httpContext.HttpContext.Request.Headers[_correlationid].Should().HaveCountGreaterThan(0);
+            httpContext.HttpContext.Request.Headers[Constants.CorrelationId].Should().HaveCountGreaterThan(0);
         }
     }
 }
