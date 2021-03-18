@@ -29,7 +29,7 @@ data "aws_iam_role" "ecs_task_execution_role" {
 
 terraform {
   backend "s3" {
-    bucket  = "terraform-state-production-apis"
+    bucket  = "services/search-api/state"
     encrypt = true
     region  = "eu-west-2"
     key     = services/YOUR API NAME/state #e.g. "services/transactions-api/state"
