@@ -29,7 +29,7 @@ data "aws_iam_role" "ecs_task_execution_role" {
 
 terraform {
   backend "s3" {
-    bucket  = "terraform-state-development-apis"
+    bucket  = "terraform-state-housing-development"
     encrypt = true
     region  = "eu-west-2"
     key     = "services/search-api/state"
