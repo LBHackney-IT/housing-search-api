@@ -57,9 +57,9 @@ module "elasticsearch_db_production" {
   vpc_id           = data.aws_vpc.production_vpc.id
   environment_name = "production"
   port             = 443
-  domain_name      = "addresses-api-es"
+  domain_name      = "search-api-es"
   subnet_ids       = [tolist(data.aws_subnet_ids.production.ids)[0]]
-  project_name     = "addresses-api"
+  project_name     = "search-api"
   es_version       = "7.8"
   encrypt_at_rest  = "false"
   instance_type    = "t3.small.elasticsearch"
@@ -70,8 +70,8 @@ module "elasticsearch_db_production" {
   account_id       = data.aws_caller_identity.current.account_id
 }
 
-data "aws_ssm_parameter" "addresses_elasticsearch_domain" {
-  name = "/addresses-api/production/elasticsearch-domain"
+data "aws_ssm_parameter" "search_elasticsearch_domain" {
+  name = "/search-api/production/elasticsearch-domain"
 }
 
 module "production" {
