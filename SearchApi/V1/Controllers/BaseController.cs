@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using SearchApi.V1.Infrastructure;
 
 namespace SearchApi.V1.Controllers
 {
@@ -9,6 +11,14 @@ namespace SearchApi.V1.Controllers
         public BaseController()
         {
             ConfigureJsonSerializer();
+        }
+
+        public string GetCorrelationId()
+        {
+            if (HttpContext.Request.Headers[Constants.CorrelationId].Count == 0)
+                throw new KeyNotFoundException("Request is missing a correlationId");
+
+            return HttpContext.Request.Headers[Constants.CorrelationId];
         }
 
         public static void ConfigureJsonSerializer()

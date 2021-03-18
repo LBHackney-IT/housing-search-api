@@ -10,7 +10,7 @@ namespace SearchApi.Tests.V1.Gateways
     //TODO: Rename Tests to match gateway name
     //For instruction on how to run tests please see the wiki: https://github.com/LBHackney-IT/lbh-base-api/wiki/Running-the-test-suite.
     [TestFixture]
-    [Ignore("Deciding on what DB to use")]
+    [Ignore("Not needed until we decide on DB")]
     public class ExampleGatewayTests : DatabaseTests
     {
         private readonly Fixture _fixture = new Fixture();

@@ -5,7 +5,7 @@ using SearchApi.Tests.V1.Helper;
 namespace SearchApi.Tests.V1.Infrastructure
 {
     [TestFixture]
-    [Ignore("Deciding on what DB to use")]
+    [Ignore("Not needed until we decide on DB")]
     public class DatabaseContextTest : DatabaseTests
     {
         [Test]
