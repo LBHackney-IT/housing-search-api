@@ -29,34 +29,47 @@ data "aws_iam_role" "ecs_task_execution_role" {
 
 terraform {
   backend "s3" {
-    bucket  = "terraform-state-staging-apis"
+    bucket  = "terraform-state-housing-staging"
     encrypt = true
     region  = "eu-west-2"
-    key     = services/YOUR API NAME/state #e.g. "services/transactions-api/state"
+    key     = "services/search-api/state"
   }
 }
 
-module "development" {
-  # Delete as appropriate:
-  source                      = "github.com/LBHackney-IT/aws-hackney-components-per-service-terraform.git//modules/environment/backend/fargate"
-  # source = "github.com/LBHackney-IT/aws-hackney-components-per-service-terraform.git//modules/environment/backend/ec2"
-  cluster_name                = "staging-apis"
-  ecr_name                    = ecr repository name # Replace with your repository name - pattern: "hackney/YOUR APP NAME"
-  environment_name            = "staging"
-  application_name            = local.application_name 
-  security_group_name         = back end security group name # Replace with your security group name, WITHOUT SPECIFYING environment. Usually the SG has the name of your API
-  vpc_name                    = "vpc-staging-apis"
-  host_port                   = port # Replace with the port to use for your api / app
-  port                        = port # Replace with the port to use for your api / app
-  desired_number_of_ec2_nodes = number of nodes # Variable will only be used if EC2 is required. Do not remove it. 
-  lb_prefix                   = "nlb-staging-apis"
-  ecs_execution_role          = data.aws_iam_role.ecs_task_execution_role.arn
-  lb_iam_role_arn             = data.aws_iam_role.ec2_container_service_role.arn
-  task_definition_environment_variables = {
-    ASPNETCORE_ENVIRONMENT = "staging"
+/*    ELASTICSEARCH SETUP    */
+
+data "aws_vpc" "staging_vpc" {
+  tags = {
+    Name = "vpc-housing-staging"
   }
-  task_definition_environment_variable_count = number # This number needs to reflect the number of environment variables provided
-  cost_code = your project's cost code
-  task_definition_secrets      = {}
-  task_definition_secret_count = number # This number needs to reflect the number of environment variables provided
+}
+
+data "aws_subnet_ids" "staging" {
+  vpc_id = data.aws_vpc.staging_vpc.id
+  filter {
+    name   = "tag:Type"
+    values = ["private"]
+  }
+}
+
+module "elasticsearch_db_staging" {
+  source           = "github.com/LBHackney-IT/aws-hackney-common-terraform.git//modules/database/elasticsearch"
+  vpc_id           = data.aws_vpc.staging_vpc.id
+  environment_name = "staging"
+  port             = 443
+  domain_name      = "search-api-es"
+  subnet_ids       = [tolist(data.aws_subnet_ids.staging.ids)[0]]
+  project_name     = "search-api"
+  es_version       = "7.8"
+  encrypt_at_rest  = "false"
+  instance_type    = "t3.small.elasticsearch"
+  instance_count   = "1"
+  ebs_enabled      = "true"
+  ebs_volume_size  = "10"
+  region           = data.aws_region.current.name
+  account_id       = data.aws_caller_identity.current.account_id
+}
+
+data "aws_ssm_parameter" "search_elasticsearch_domain" {
+  name = "/search-api/staging/elasticsearch-domain"
 }
