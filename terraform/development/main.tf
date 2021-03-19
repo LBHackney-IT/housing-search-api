@@ -50,7 +50,3 @@ module "elasticsearch_db_development" {
   region           = data.aws_region.current.name
   account_id       = data.aws_caller_identity.current.account_id
 }
-
-data "aws_ssm_parameter" "search_elasticsearch_domain" {
-  name = "/search-api/development/elasticsearch-domain"
-}
