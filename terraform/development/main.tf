@@ -13,7 +13,7 @@ terraform {
     bucket  = "terraform-state-housing-development"
     encrypt = true
     region  = "eu-west-2"
-    key     = "services/search-api/state"
+    key     = "services/housing-search-api/state"
   }
 }
 
@@ -38,9 +38,9 @@ module "elasticsearch_db_development" {
   vpc_id           = data.aws_vpc.development_vpc.id
   environment_name = "development"
   port             = 443
-  domain_name      = "search-api-es"
+  domain_name      = "housing-search-api-es"
   subnet_ids       = [tolist(data.aws_subnet_ids.development.ids)[0]]
-  project_name     = "search-api"
+  project_name     = "housing-search-api"
   es_version       = "7.8"
   encrypt_at_rest  = "false"
   instance_type    = "t3.small.elasticsearch"
