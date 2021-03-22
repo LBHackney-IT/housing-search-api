@@ -27,4 +27,8 @@
     <ProjectReference Include="..\SearchApi\SearchApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="V1\UseCase\Interfaces\" />
+  </ItemGroup>
+
 </Project>
