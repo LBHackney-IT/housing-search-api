@@ -35,7 +35,7 @@ namespace SearchApi.Tests
             DeleteAddressesIndex(client);
 
             //TODO: Index?
-            await CreateIndex("hackney_addresses", client).ConfigureAwait(true); 
+            await CreateIndex("hackney_addresses", client).ConfigureAwait(true);
         }
         public static ElasticClient SetupElasticsearchConnection()
         {

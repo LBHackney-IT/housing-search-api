@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using SearchApi.V1.Domain;
 
 namespace SearchApi.Tests.V1.UseCase

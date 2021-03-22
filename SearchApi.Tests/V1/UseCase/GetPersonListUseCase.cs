@@ -26,7 +26,7 @@ namespace SearchApi.Tests.V1.UseCase
         }
     }
 
-    
+
 
     public interface IGetPersonListRequestValidator
     {
