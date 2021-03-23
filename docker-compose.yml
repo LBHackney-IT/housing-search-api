@@ -1,10 +1,10 @@
 version: "3.2"
 
 services:
-  search-api:
-    image: search-api
+  housing-search-api:
+    image: housing-search-api
     build:
-      context: SearchApi/
+      context: HousingSearchApi/
       dockerfile: ./Dockerfile
     ports:
       - 3000:3000
@@ -19,11 +19,11 @@ services:
     volumes:
       - ./database:/docker-entrypoint-initdb.d
 
-  search-api-test:
-    image: search-api-test
+  housing-search-api-test:
+    image: housing-search-api-test
     build:
       context: .
-      dockerfile: SearchApi.Tests/Dockerfile
+      dockerfile: HousingSearchApi.Tests/Dockerfile
     environment:
       - DB_HOST=test-database
       - DB_PORT=5432
