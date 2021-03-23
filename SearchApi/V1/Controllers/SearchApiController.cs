@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SearchApi.V1.Boundary.Response;
+using SearchApi.V1.Boundary.Responses;
 using SearchApi.V1.UseCase.Interfaces;
 
 namespace SearchApi.V1.Controllers

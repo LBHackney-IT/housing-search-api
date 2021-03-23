@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="V1\Boundary\Requests\" />
+    <Folder Include="V1\Boundary\Responses\" />
     <Folder Include="V1\UseCase\Interfaces\" />
   </ItemGroup>
 

@@ -4,7 +4,7 @@ using SearchApi.V1.Factories;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SearchApi.V1.Boundary.Response;
+using SearchApi.V1.Boundary.Responses;
 using SearchApi.V1.Domain;
 using SearchApi.V1.Gateways;
 using SearchApi.V1.UseCase;

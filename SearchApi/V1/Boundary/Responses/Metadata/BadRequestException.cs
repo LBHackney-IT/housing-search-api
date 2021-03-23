@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using FluentValidation.Results;
 
-namespace SearchApi.Tests.V1.Boundary.Responses.Metadata
+namespace SearchApi.V1.Boundary.Responses.Metadata
 {
     public class BadRequestException : Exception
     {

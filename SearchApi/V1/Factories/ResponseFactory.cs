@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using SearchApi.V1.Boundary.Response;
+using SearchApi.V1.Boundary.Responses;
 using SearchApi.V1.Domain;
 
 namespace SearchApi.V1.Factories

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SearchApi.V1.Boundary.Response
+namespace SearchApi.V1.Boundary.Responses
 {
     //TODO: Rename to represent to object you will be returning eg. ResidentInformationList
     public class ResponseObjectList

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SearchApi.V1.Domain
@@ -10,13 +11,8 @@ namespace SearchApi.V1.Domain
 
     public class GetPersonListRequest
     {
-        [FromQuery(Name = "postcode")]
-        public string PostCode { get; set; }
-
-        [FromQuery(Name = "llpg-ref")]
-        public string LLPGReference { get; set; }
-
-        [FromQuery(Name = "prop-ref")]
-        public string PropertyReference { get; set; }
+        [FromQuery(Name = "searchText")]
+        [Required]
+        public string SearchText { get; set; }
     }
 }

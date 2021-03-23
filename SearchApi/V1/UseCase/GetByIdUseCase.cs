@@ -1,5 +1,5 @@
+using SearchApi.V1.Boundary.Responses;
 using SearchApi.V1.Factories;
-using SearchApi.V1.Boundary.Response;
 using SearchApi.V1.Gateways;
 using SearchApi.V1.UseCase.Interfaces;
 
