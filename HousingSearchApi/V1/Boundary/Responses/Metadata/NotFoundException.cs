@@ -1,5 +1,4 @@
 using System;
-using FluentValidation.Results;
 
 namespace HousingSearchApi.V1.Boundary.Responses.Metadata
 {

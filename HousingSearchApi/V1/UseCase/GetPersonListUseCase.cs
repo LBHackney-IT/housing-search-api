@@ -30,7 +30,7 @@ namespace HousingSearchApi.V1.UseCase
         ValidationResult Validate(GetPersonListRequest getPersonListRequest);
     }
 
-    public class IGetPersonListRequestValidatorImpl : IGetPersonListRequestValidator
+    public class GetPersonListRequestValidator : IGetPersonListRequestValidator
     {
         public ValidationResult Validate(GetPersonListRequest getPersonListRequest)
         {

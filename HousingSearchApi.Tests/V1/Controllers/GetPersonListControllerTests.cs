@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using FluentAssertions;
-using FluentValidation.Results;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using HousingSearchApi.V1.Controllers;
 using HousingSearchApi.V1.Domain;

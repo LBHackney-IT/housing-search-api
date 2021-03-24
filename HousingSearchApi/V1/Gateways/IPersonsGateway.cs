@@ -6,4 +6,12 @@ namespace HousingSearchApi.V1.Gateways
     {
         GetPersonListResponse GetListOfPersons(GetPersonListRequest getPersonListRequest);
     }
+
+    public class PersonsGateway : IPersonsGateway
+    {
+        public GetPersonListResponse GetListOfPersons(GetPersonListRequest getPersonListRequest)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }

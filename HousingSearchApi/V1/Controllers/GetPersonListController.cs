@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HousingSearchApi.V1.Boundary.Responses;
