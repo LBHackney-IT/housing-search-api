@@ -108,8 +108,7 @@ namespace HousingSearchApi
             ConfigureDbContext(services);
             RegisterGateways(services);
             RegisterUseCases(services);
-
-            services.AddScoped<IGetPersonListRequestValidator, GetPersonListRequestValidator>();
+            RegisterValidators(services);
         }
 
         private static void ConfigureDbContext(IServiceCollection services)
@@ -131,6 +130,10 @@ namespace HousingSearchApi
             services.AddScoped<IGetAllUseCase, GetAllUseCase>();
             services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
+        }
+        private static void RegisterValidators(IServiceCollection services)
+        {
+            services.AddScoped<IGetPersonListRequestValidator, GetPersonListRequestValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
