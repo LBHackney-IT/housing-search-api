@@ -49,9 +49,9 @@ namespace HousingSearchApi.V1.Controllers
                 var response = await _getPersonListUseCase.ExecuteAsync(request);
                 return new OkObjectResult(new APIResponse<GetPersonListResponse>(response));
             }
-            catch (BadRequestException e)
+            catch (NotFoundException e)
             {
-                return new BadRequestObjectResult(new ErrorResponse(e.ValidationResponse));
+                return new NotFoundObjectResult(e.Message);
             }
         }
     }
