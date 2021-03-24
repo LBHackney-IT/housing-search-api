@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace SearchApi.V1.Domain
+namespace HousingSearchApi.V1.Domain
 {
     public class Tenure
     {

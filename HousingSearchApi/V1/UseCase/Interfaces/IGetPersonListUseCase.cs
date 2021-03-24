@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using SearchApi.V1.Domain;
+using HousingSearchApi.V1.Domain;
 
-namespace SearchApi.V1.UseCase.Interfaces
+namespace HousingSearchApi.V1.UseCase.Interfaces
 {
     public interface IGetPersonListUseCase
     {

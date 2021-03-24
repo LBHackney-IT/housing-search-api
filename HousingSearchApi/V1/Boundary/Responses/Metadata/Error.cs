@@ -1,6 +1,6 @@
 using FluentValidation.Results;
 
-namespace SearchApi.V1.Boundary.Responses.Metadata
+namespace HousingSearchApi.V1.Boundary.Responses.Metadata
 {
     public class Error
     {

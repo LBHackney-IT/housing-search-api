@@ -1,7 +1,7 @@
 using System.Net;
 using Newtonsoft.Json;
 
-namespace SearchApi.V1.Boundary.Responses.Metadata
+namespace HousingSearchApi.V1.Boundary.Responses.Metadata
 {
     /// <summary>
     /// API Response wrapper for all API responses

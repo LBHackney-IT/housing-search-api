@@ -2,11 +2,11 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
+using HousingSearchApi.V1.Infrastructure;
 using Nest;
 using NUnit.Framework;
-using SearchApi.V1.Infrastructure;
 
-namespace SearchApi.Tests
+namespace HousingSearchApi.Tests
 {
     [TestFixture]
     public class ElasticsearchTests

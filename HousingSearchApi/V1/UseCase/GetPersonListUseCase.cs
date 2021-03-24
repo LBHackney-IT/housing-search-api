@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using FluentValidation.Results;
-using SearchApi.V1.Domain;
-using SearchApi.V1.UseCase.Interfaces;
+using HousingSearchApi.V1.Domain;
+using HousingSearchApi.V1.UseCase.Interfaces;
 
-namespace SearchApi.V1.UseCase
+namespace HousingSearchApi.V1.UseCase
 {
     public class GetPersonListUseCase : IGetPersonListUseCase
     {

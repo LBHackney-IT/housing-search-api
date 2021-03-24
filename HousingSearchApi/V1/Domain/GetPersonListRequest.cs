@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SearchApi.V1.Domain
+namespace HousingSearchApi.V1.Domain
 {
     public class GetPersonListResponse
     {

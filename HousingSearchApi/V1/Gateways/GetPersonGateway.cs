@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HousingSearchApi.V1.Domain;
 using Nest;
-using SearchApi.V1.Domain;
 
-namespace SearchApi.V1.Gateways
+namespace HousingSearchApi.V1.Gateways
 {
     public class GetPersonGateway : IGetPersonGateway
     {

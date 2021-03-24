@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
+using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using Newtonsoft.Json;
-using SearchApi.V1.Boundary.Responses.Metadata;
 
-namespace SearchApi.V1.Boundary.Responses
+namespace HousingSearchApi.V1.Boundary.Responses
 {
     //TODO: Rename to represent to object you will be returning eg. ResidentInformation, HouseholdDetails e.t.c
     public class ResponseObject

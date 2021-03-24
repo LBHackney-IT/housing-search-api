@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using HousingSearchApi.V1.Boundary.Responses.Metadata;
+using HousingSearchApi.V1.Domain;
+using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using SearchApi.V1.Boundary.Responses;
-using SearchApi.V1.Boundary.Responses.Metadata;
-using SearchApi.V1.Domain;
-using SearchApi.V1.UseCase.Interfaces;
 
-namespace SearchApi.V1.Controllers
+namespace HousingSearchApi.V1.Controllers
 {
     [ApiVersion("2")]
     [Produces("application/json")]

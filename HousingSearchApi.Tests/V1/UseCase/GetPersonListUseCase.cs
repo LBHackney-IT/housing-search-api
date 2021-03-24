@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation.Results;
-using SearchApi.V1.Domain;
-using SearchApi.V1.Gateways;
-using IPersonsGateway = SearchApi.V1.UseCase.IPersonsGateway;
+using HousingSearchApi.V1.Domain;
+using IPersonsGateway = HousingSearchApi.V1.UseCase.IPersonsGateway;
 
-namespace SearchApi.Tests.V1.UseCase
+namespace HousingSearchApi.Tests.V1.UseCase
 {
     public class GetPersonListUseCase : IGetPersonListUseCase
     {
