@@ -32,4 +32,12 @@ namespace SearchApi.V1.UseCase
     {
         ValidationResult Validate(GetPersonListRequest getPersonListRequest);
     }
+
+    public class IGetPersonListRequestValidatorImpl : IGetPersonListRequestValidator
+    {
+        public ValidationResult Validate(GetPersonListRequest getPersonListRequest)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

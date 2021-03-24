@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Elasticsearch.Net;
 using Nest;
 using NUnit.Framework;
+using SearchApi.V1.Infrastructure;
 
 namespace SearchApi.Tests
 {
@@ -35,16 +36,14 @@ namespace SearchApi.Tests
             DeleteAddressesIndex(client);
 
             //TODO: Index?
-            await CreateIndex("hackney_addresses", client).ConfigureAwait(true);
+            await CreateIndex(Constants.ESIndex, client).ConfigureAwait(true);
         }
         public static ElasticClient SetupElasticsearchConnection()
         {
             var esDomainUri = Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL")
                               ?? "http://localhost:9202";
             using var pool = new SingleNodeConnectionPool(new Uri(esDomainUri));
-#pragma warning disable CA2000 // Dispose objects before losing scope
             using var settings = new ConnectionSettings(pool).PrettyJson()
-#pragma warning restore CA2000 // Dispose objects before losing scope
                 .DisableDirectStreaming()
                 .SniffOnStartup(false)
                 .ThrowExceptions();
@@ -63,14 +62,9 @@ namespace SearchApi.Tests
 
         public static void DeleteAddressesIndex(ElasticClient client)
         {
-            if (client.Indices.Exists("hackney_addresses").Exists)
+            if (client.Indices.Exists(Constants.ESIndex).Exists)
             {
-                client.Indices.Delete("hackney_addresses");
-            }
-
-            if (client.Indices.Exists("national_addresses").Exists)
-            {
-                client.Indices.Delete("national_addresses");
+                client.Indices.Delete(Constants.ESIndex);
             }
         }
     }

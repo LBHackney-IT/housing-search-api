@@ -26,25 +26,6 @@ namespace SearchApi.V1.Controllers
         [HttpGet, MapToApiVersion("1")]
         public async Task<IActionResult> GetPersonList([FromQuery] GetPersonListRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = new List<Error>();
-                foreach (var (key, value) in ModelState)
-                {
-                    var err = new Error();
-                    foreach (var error in value.Errors)
-                    {
-                        err.FieldName = key;
-                        err.Message = error.ErrorMessage;
-                        errors.Add(err);
-                    }
-                }
-
-                return new BadRequestObjectResult(new ErrorResponse(400, errors));
-            }
-            var rRequest = request;
-
-            await Task.FromResult(0).ConfigureAwait(false);
             throw new NotImplementedException();
         }
     }
