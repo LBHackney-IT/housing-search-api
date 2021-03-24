@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using FluentValidation.Results;
 using HousingSearchApi.V1.Domain;
+using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.UseCase.Interfaces;
 
 namespace HousingSearchApi.V1.UseCase
@@ -23,10 +24,6 @@ namespace HousingSearchApi.V1.UseCase
         }
     }
 
-    public interface IPersonsGateway
-    {
-        GetPersonListResponse GetListOfPersons(GetPersonListRequest getPersonListRequest);
-    }
 
     public interface IGetPersonListRequestValidator
     {

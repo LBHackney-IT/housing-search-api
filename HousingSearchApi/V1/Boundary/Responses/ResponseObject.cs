@@ -19,23 +19,22 @@ namespace HousingSearchApi.V1.Boundary.Responses
         [JsonProperty("statusCode")]
         public int StatusCode { get; set; }
 
-        [JsonProperty("errors")]
-        public IEnumerable<Error> Errors { get; set; }
+        [JsonProperty("error")]
+        public APIError Error { get; set; }
 
         public ErrorResponse() { }
 
         public ErrorResponse(ValidationResult validationResult)
         {
             var errors = validationResult.Errors
-                .Select(validationResultError => new Error(validationResultError)).ToList();
-            Errors = errors;
-            StatusCode = 400;
+                .Select(validationResultError => new ValidationError(validationResultError)).ToList();
+
+            Error = new APIError { IsValid = validationResult.IsValid, ValidationErrors = errors };
         }
 
-        public ErrorResponse(int statusCode, IEnumerable<Error> errors)
+        public ErrorResponse(IList<ValidationError> validationResult)
         {
-            Errors = errors;
-            StatusCode = statusCode;
+            Error = new APIError { IsValid = !validationResult.Any(), ValidationErrors = validationResult };
         }
     }
 }
