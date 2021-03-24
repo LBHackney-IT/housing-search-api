@@ -36,7 +36,7 @@ namespace SearchApi.Tests
             DeleteAddressesIndex(client);
 
             //TODO: Index?
-            await CreateIndex(Constants.ESIndex, client).ConfigureAwait(true);
+            await CreateIndex(Constants.EsIndex, client).ConfigureAwait(true);
         }
         public static ElasticClient SetupElasticsearchConnection()
         {
@@ -62,9 +62,9 @@ namespace SearchApi.Tests
 
         public static void DeleteAddressesIndex(ElasticClient client)
         {
-            if (client.Indices.Exists(Constants.ESIndex).Exists)
+            if (client.Indices.Exists(Constants.EsIndex).Exists)
             {
-                client.Indices.Delete(Constants.ESIndex);
+                client.Indices.Delete(Constants.EsIndex);
             }
         }
     }

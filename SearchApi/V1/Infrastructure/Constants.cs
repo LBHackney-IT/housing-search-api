@@ -5,6 +5,6 @@ namespace SearchApi.V1.Infrastructure
         public const string CorrelationId = "x-correlation-id";
 
         // Elastic Search
-        public const string ESIndex = "hackney_persons";
+        public const string EsIndex = "hackney_persons";
     }
 }
