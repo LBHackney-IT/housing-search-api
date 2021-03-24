@@ -4,19 +4,19 @@ setup:
 
 .PHONY: build
 build:
-	docker-compose build search-api
+	docker-compose build housing-search-api
 
 .PHONY: serve
 serve:
-	docker-compose build search-api && docker-compose up search-api
+	docker-compose build housing-search-api && docker-compose up housing-search-api
 
 .PHONY: shell
 shell:
-	docker-compose run search-api bash
+	docker-compose run housing-search-api bash
 
 .PHONY: test
 test:
-	docker-compose up test-database & docker-compose build search-api-test && docker-compose up search-api-test
+	docker-compose up test-database & docker-compose build housing-search-api-test && docker-compose up housing-search-api-test
 
 .PHONY: lint
 lint:
