@@ -122,7 +122,7 @@ namespace HousingSearchApi
         private static void RegisterGateways(IServiceCollection services)
         {
             services.AddScoped<IExampleGateway, ExampleGateway>();
-            services.AddScoped<IPersonsGateway, PersonsGateway>();
+            services.AddScoped<ISearchPersonsGateway, SearchPersonsGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)

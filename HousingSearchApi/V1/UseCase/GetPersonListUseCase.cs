@@ -9,12 +9,12 @@ namespace HousingSearchApi.V1.UseCase
 {
     public class GetPersonListUseCase : IGetPersonListUseCase
     {
-        private readonly IPersonsGateway _personsGateway;
+        private readonly ISearchPersonsGateway _searchPersonsGateway;
         private readonly IGetPersonListRequestValidator _validator;
 
-        public GetPersonListUseCase(IPersonsGateway personsGateway, IGetPersonListRequestValidator validator)
+        public GetPersonListUseCase(ISearchPersonsGateway searchPersonsGateway, IGetPersonListRequestValidator validator)
         {
-            _personsGateway = personsGateway;
+            _searchPersonsGateway = searchPersonsGateway;
             _validator = validator;
         }
 

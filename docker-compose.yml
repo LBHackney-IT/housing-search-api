@@ -7,37 +7,44 @@ services:
       context: HousingSearchApi/
       dockerfile: ./Dockerfile
     ports:
-      - 3000:3000
-    environment:
-      - CONNECTION_STRING=Host=dev-database;Port=5432;Database=testdb;Username=postgres;Password=mypassword
-    links:
-      - dev-database
-  dev-database:
-    env_file:
-      - database.env
-    image: postgres:12
-    volumes:
-      - ./database:/docker-entrypoint-initdb.d
-
+      - 3000:3000        
   housing-search-api-test:
     image: housing-search-api-test
     build:
       context: .
-      dockerfile: HousingSearchApi.Tests/Dockerfile
-    environment:
-      - DB_HOST=test-database
-      - DB_PORT=5432
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=mypassword
-      - DB_DATABASE=testdb
-    links:
-      - test-database
-  test-database:
-    image: test-database
+      dockerfile: HousingSearchApi.Tests/Dockerfile          
+  test-elasticsearch:
+    image: test-elasticsearch
+    container_name: test-elasticsearch
     build:
       context: .
-      dockerfile: database/Dockerfile
+      dockerfile: data/elasticsearch/Dockerfile
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
-      - 5432:5432
-    env_file:
-      - database.env
+      - 9200:9200
+    volumes:
+      - esdata-test:/usr/share/elasticsearch/data
+    networks:
+      elastic:
+        aliases:
+          - test-elasticsearch
+          - elastic
+          - elasticsearch
+  kibana:
+        image: docker.elastic.co/kibana/kibana:7.9.3
+        ports:
+            - "5601:5601"
+        networks:
+            - elastic
+        depends_on:
+            - test-elasticsearch
+volumes:
+    esdata-test:
+        driver: local
+networks:
+  elastic:
+    driver: bridge
