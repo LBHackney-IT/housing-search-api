@@ -29,35 +29,60 @@ namespace HousingSearchApi.V1.Gateways
                 .Query(q => BaseQuery(request, q))
                 .TrackTotalHits());
 
-            throw new NotImplementedException();
+            return new GetPersonListResponse();
         }
 
         private QueryContainer BaseQuery(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
-            return SearchPostcodes(request, q)
-                   && SearchBuildingNumbers(request, q)
-                   && SearchAddressStatuses(request, q)
-                   && SearchUsageCodes(request, q);
+            return SearchFirstNames(request, q)
+                   || SearchLastNames(request, q)
+                   || SearchMiddleNames(request, q)
+                   || SearchDateOfBirth(request, q);
         }
 
-        private QueryContainer SearchPostcodes(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
+        private QueryContainer SearchFirstNames(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
+            var searchText = request.SearchText?.Replace(" ", "").ToLower();
+
+            var searchFirstNames = q.Wildcard(m =>
+                m.Field(f => f.FirstName).Value($"*{searchText}*"));
+
+            return searchFirstNames;
         }
 
-        private QueryContainer SearchBuildingNumbers(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
+        private QueryContainer SearchLastNames(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
+            var searchText = request.SearchText?.Replace(" ", "").ToLower();
+
+            var searchLastNames = q.Wildcard(m =>
+                m.Field(f => f.Surname).Value($"*{searchText}*"));
+
+            return searchLastNames;
         }
 
-        private QueryContainer SearchAddressStatuses(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
+        private QueryContainer SearchMiddleNames(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
+            var searchText = request.SearchText?.Replace(" ", "").ToLower();
+
+            var searchMiddleNames = q.Wildcard(m =>
+                m.Field(f => f.MiddleName).Value($"*{searchText}*"));
+
+            return searchMiddleNames
+;
         }
 
-        private QueryContainer SearchUsageCodes(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
+        private QueryContainer SearchDateOfBirth(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
+            var searchText = request.SearchText?.Replace(" ", "").ToLower();
+
+            var searchDoB = q.Wildcard(m =>
+                m.Field(f => f.DateOfBirth).Value($"*{searchText}*"));
+
+            return searchDoB;
         }
     }
 }

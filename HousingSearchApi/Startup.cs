@@ -18,6 +18,7 @@ using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.UseCase;
 using HousingSearchApi.V1.UseCase.Interfaces;
+using Nest;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace HousingSearchApi
@@ -134,6 +135,7 @@ namespace HousingSearchApi
         private static void RegisterValidators(IServiceCollection services)
         {
             services.AddScoped<IGetPersonListRequestValidator, GetPersonListRequestValidator>();
+            services.AddScoped<IElasticClient, ElasticClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -18,9 +18,12 @@ namespace HousingSearchApi.V1.UseCase
             _validator = validator;
         }
 
-        public Task<GetPersonListResponse> ExecuteAsync(GetPersonListRequest getPersonListRequest)
+        public async Task<GetPersonListResponse> ExecuteAsync(GetPersonListRequest getPersonListRequest)
         {
-            throw new NotImplementedException();
+            return await _searchPersonsGateway.GetListOfPersons(new GetPersonListRequest
+            {
+                SearchText = "a"
+            });
         }
     }
 
