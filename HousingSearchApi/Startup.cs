@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Elasticsearch.Net;
 using HousingSearchApi.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -135,7 +136,16 @@ namespace HousingSearchApi
         private static void RegisterValidators(IServiceCollection services)
         {
             services.AddScoped<IGetPersonListRequestValidator, GetPersonListRequestValidator>();
-            services.AddScoped<IElasticClient, ElasticClient>();
+            services.AddScoped<ISearchPersonESHelper, SearchPersonESHelper>();
+            services.AddScoped<IElasticClient>(x =>
+            {
+                var uri = new Uri("http://localhost:9200");
+                var connectionSettings = new ConnectionSettings(new SingleNodeConnectionPool(uri, null))
+                    .EnableDebugMode();
+                var ec = new ElasticClient(connectionSettings);
+
+                return ec;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

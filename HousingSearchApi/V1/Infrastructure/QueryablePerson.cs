@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Nest;
 
 namespace HousingSearchApi.V1.Infrastructure
@@ -13,6 +12,12 @@ namespace HousingSearchApi.V1.Infrastructure
 
         [Text(Name = "surname")]
         public string Surname { get; set; }
+
+        [Text(Name = "preferredFirstName")]
+        public string PreferredFirstName { get; set; }
+
+        [Text(Name = "preferredSurname")]
+        public string PreferredSurname { get; set; }
 
         [Text(Name = "dateOfBirth")]
         public string DateOfBirth { get; set; }
