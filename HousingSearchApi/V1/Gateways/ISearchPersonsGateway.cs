@@ -24,7 +24,7 @@ namespace HousingSearchApi.V1.Gateways
             var personListResponse = new GetPersonListResponse();
 
             personListResponse.Persons.AddRange(searchResponse.Documents.Select(x =>
-            
+
                 new Person
                 {
                     Firstname = x.FirstName,

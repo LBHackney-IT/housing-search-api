@@ -4,7 +4,7 @@ namespace HousingSearchApi.V1.Infrastructure
 {
     public class QueryablePerson
     {
-        [Text(Name="_id")]
+        [Text(Name = "_id")]
         public string Id
         { get; set; }
 
