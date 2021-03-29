@@ -111,6 +111,7 @@ namespace HousingSearchApi
             RegisterGateways(services);
             RegisterUseCases(services);
             RegisterValidators(services);
+            ConfigureElasticsearch(services);
         }
 
         private static void ConfigureDbContext(IServiceCollection services)
@@ -137,15 +138,18 @@ namespace HousingSearchApi
         {
             services.AddScoped<IGetPersonListRequestValidator, GetPersonListRequestValidator>();
             services.AddScoped<ISearchPersonESHelper, SearchPersonESHelper>();
-            services.AddScoped<IElasticClient>(x =>
-            {
-                var uri = new Uri("http://localhost:9200");
-                var connectionSettings = new ConnectionSettings(new SingleNodeConnectionPool(uri, null))
-                    .EnableDebugMode();
-                var ec = new ElasticClient(connectionSettings);
+        }
 
-                return ec;
-            });
+        private static void ConfigureElasticsearch(IServiceCollection services)
+        {
+            var url = Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL") ?? "http://localhost:9200";
+            var pool = new SingleNodeConnectionPool(new Uri(url));
+            var connectionSettings =
+                new ConnectionSettings(pool)
+                    .PrettyJson().ThrowExceptions().DisableDirectStreaming();
+            var esClient = new ElasticClient(connectionSettings);
+
+            services.AddSingleton<IElasticClient>(esClient);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

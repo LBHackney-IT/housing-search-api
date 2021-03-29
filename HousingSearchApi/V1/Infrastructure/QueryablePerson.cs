@@ -4,6 +4,10 @@ namespace HousingSearchApi.V1.Infrastructure
 {
     public class QueryablePerson
     {
+        [Text(Name="_id")]
+        public string Id
+        { get; set; }
+
         [Text(Name = "firstname")]
         public string FirstName { get; set; }
 
@@ -13,7 +17,7 @@ namespace HousingSearchApi.V1.Infrastructure
         [Text(Name = "surname")]
         public string Surname { get; set; }
 
-        [Text(Name = "preferredFirstName")]
+        [Text(Name = "preferredFirstname")]
         public string PreferredFirstName { get; set; }
 
         [Text(Name = "preferredSurname")]

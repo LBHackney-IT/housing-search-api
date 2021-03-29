@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using HousingSearchApi.V1.Domain;
 
@@ -19,10 +20,23 @@ namespace HousingSearchApi.V1.Gateways
 
         public async Task<GetPersonListResponse> GetListOfPersons(GetPersonListRequest request)
         {
-
             var searchResponse = await _esHelper.Search(request);
+            var personListResponse = new GetPersonListResponse();
 
-            return new GetPersonListResponse();
+            personListResponse.Persons.AddRange(searchResponse.Documents.Select(x =>
+            
+                new Person
+                {
+                    Firstname = x.FirstName,
+                    Surname = x.Surname,
+                    PreferredFirstname = x.PreferredFirstName,
+                    PreferredSurname = x.PreferredSurname,
+                    DateOfBirth = x.DateOfBirth,
+                    Id = x.Id,
+                }
+            ));
+
+            return personListResponse;
         }
     }
 }

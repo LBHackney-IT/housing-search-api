@@ -20,10 +20,7 @@ namespace HousingSearchApi.V1.UseCase
 
         public async Task<GetPersonListResponse> ExecuteAsync(GetPersonListRequest getPersonListRequest)
         {
-            return await _searchPersonsGateway.GetListOfPersons(new GetPersonListRequest
-            {
-                SearchText = "a"
-            });
+            return await _searchPersonsGateway.GetListOfPersons(getPersonListRequest);
         }
     }
 
