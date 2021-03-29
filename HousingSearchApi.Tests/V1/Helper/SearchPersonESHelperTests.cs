@@ -39,6 +39,6 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             // then
             response.DebugInformation.IndexOf(correctQuery).Should().BeGreaterOrEqualTo(0);
-        }//
+        }
     }
 }
