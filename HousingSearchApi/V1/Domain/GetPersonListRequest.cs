@@ -17,7 +17,7 @@ namespace HousingSearchApi.V1.Domain
     public class GetPersonListRequest
     {
         [FromQuery(Name = "searchText")]
-        [Required]
+        [MinLength(2)]
         public string SearchText { get; set; }
     }
 }

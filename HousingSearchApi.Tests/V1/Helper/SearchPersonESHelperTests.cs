@@ -31,7 +31,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             // correctQuery is the query NEST generates behind the scenes to, in turn, send to the ES server.
             // In our case, it wildcards the 6 fields by which we are searching.
             var correctQuery =
-                "{\"should\":[{\"wildcard\":{\"firstname\":{\"value\":\"*{0}*\"}}},{\"wildcard\":{\"surname\":{\"value\":\"*{0}*\"}}},{\"wildcard\":{\"middleName\":{\"value\":\"*{0}*\"}}},{\"wildcard\":{\"dateOfBirth\":{\"value\":\"*{0}*\"}}},{\"wildcard\":{\"preferredSurname\":{\"value\":\"*{0}*\"}}},{\"wildcard\":{\"preferredFirstName\":{\"value\":\"*{0}*\"}}}]}";
+                "{\"should\":[{\"wildcard\":{\"firstname\":{\"value\":\"*{0}*\"}}},{\"wildcard\":{\"surname\":{\"value\":\"*{0}*\"}}},{\"wildcard\":{\"middleName\":{\"value\":\"*{0}*\"}}},{\"wildcard\":{\"dateOfBirth\":{\"value\":\"*{0}*\"}}},{\"wildcard\":{\"preferredSurname\":{\"value\":\"*{0}*\"}}},{\"wildcard\":{\"preferredFirstname\":{\"value\":\"*{0}*\"}}}]}";
             correctQuery = correctQuery.Replace("{0}", searchText);
 
             // when

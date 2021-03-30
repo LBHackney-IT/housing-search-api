@@ -29,18 +29,17 @@ namespace HousingSearchApi.V1.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = new List<ValidationError>();
-                foreach (var (key, value) in ModelState)
-                {
-                    var err = new ValidationError();
-                    foreach (var error in value.Errors)
-                    {
-                        err.FieldName = key;
-                        err.Message = error.ErrorMessage;
-                        errors.Add(err);
-                    }
-                }
 
-                return new BadRequestObjectResult(new ErrorResponse(errors));
+                var err = new ValidationError();
+
+                err.FieldName = "Insufficient characters";
+                err.Message = "Search inputs must be a minimum of 2 characters and cannot include invalid.";
+                errors.Add(err);
+
+                return new BadRequestObjectResult(new ErrorResponse(errors)
+                {
+                    StatusCode = 500
+                });
             }
 
             try

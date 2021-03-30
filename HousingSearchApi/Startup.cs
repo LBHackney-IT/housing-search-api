@@ -110,7 +110,6 @@ namespace HousingSearchApi
             ConfigureDbContext(services);
             RegisterGateways(services);
             RegisterUseCases(services);
-            RegisterValidators(services);
             ConfigureElasticsearch(services);
         }
 
@@ -133,10 +132,6 @@ namespace HousingSearchApi
             services.AddScoped<IGetAllUseCase, GetAllUseCase>();
             services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
-        }
-        private static void RegisterValidators(IServiceCollection services)
-        {
-            services.AddScoped<IGetPersonListRequestValidator, GetPersonListRequestValidator>();
             services.AddScoped<ISearchPersonESHelper, SearchPersonESHelper>();
         }
 
