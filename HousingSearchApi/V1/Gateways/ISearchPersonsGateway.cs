@@ -27,9 +27,9 @@ namespace HousingSearchApi.V1.Gateways
 
                 new Person
                 {
-                    Firstname = x.FirstName,
+                    Firstname = x.Firstname,
                     Surname = x.Surname,
-                    PreferredFirstname = x.PreferredFirstName,
+                    PreferredFirstname = x.PreferredFirstname,
                     PreferredSurname = x.PreferredSurname,
                     DateOfBirth = x.DateOfBirth,
                     Id = x.Id,
