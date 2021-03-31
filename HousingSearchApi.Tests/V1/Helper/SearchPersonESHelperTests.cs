@@ -26,7 +26,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         // firstname, lastname, middlename,prefferedfirstname, preferredsurname, dateofbirth
         public async Task WhenCallingESHelperShouldGenerateTheRightQuery()
         {
-            // given
+            // arrange
             var searchText = "abc";
             // correctQuery is the query NEST generates behind the scenes to, in turn, send to the ES server.
             // In our case, it wildcards the 6 fields by which we are searching.
@@ -34,10 +34,10 @@ namespace HousingSearchApi.Tests.V1.Helper
                 "{\"should\":[{\"wildcard\":{\"firstname\":{\"value\":\"*{0}*\"}}},{\"wildcard\":{\"surname\":{\"value\":\"*{0}*\"}}}]}";
             correctQuery = correctQuery.Replace("{0}", searchText);
 
-            // when
+            // act
             var response = await _classUnderTest.Search(new GetPersonListRequest { SearchText = searchText });
 
-            // then
+            // assert
             response.DebugInformation.IndexOf(correctQuery).Should().BeGreaterOrEqualTo(0);
         }
     }

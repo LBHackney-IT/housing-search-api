@@ -28,10 +28,10 @@ namespace HousingSearchApi.Tests
         [Test]
         public async Task WhenRequestDoesNotContainSearchStringShouldReturnBadRequestResult()
         {
-            // given + when
+            // arrange + act
             var response = await Client.GetAsync("api/v1/search/persons");
 
-            // then
+            // assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
     }
