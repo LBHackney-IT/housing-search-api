@@ -17,7 +17,7 @@ namespace HousingSearchApi.Tests
             _factory = new MockWebApplicationFactory<TStartup>();
             Client = _factory.CreateClient();
         }
-
+        
         [TearDown]
         public void BaseTearDown()
         {

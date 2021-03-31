@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Elasticsearch.Net;
 using HousingSearchApi.Versioning;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +30,8 @@ namespace HousingSearchApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            AWSSDKHandler.RegisterXRayForAllServices();
         }
 
         public IConfiguration Configuration { get; }
@@ -150,6 +153,8 @@ namespace HousingSearchApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseXRay("housing-search-api");
+
             app.UseCorrelation();
 
             if (env.IsDevelopment())
