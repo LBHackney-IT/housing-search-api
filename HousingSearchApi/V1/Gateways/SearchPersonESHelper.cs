@@ -34,10 +34,7 @@ namespace HousingSearchApi.V1.Gateways
         private QueryContainer BaseQuery(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
             return SearchFirstNames(request, q)
-                   || SearchLastNames(request, q)
-                   || SearchMiddleNames(request, q)
-                   || SearchPreferredSurnames(request, q)
-                   || SearchPreferredFirstnames(request, q);
+                   || SearchLastNames(request, q);
         }
 
         private QueryContainer SearchPreferredFirstnames(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
