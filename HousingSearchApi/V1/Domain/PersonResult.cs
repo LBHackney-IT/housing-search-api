@@ -49,41 +49,49 @@ namespace HousingSearchApi.V1.Domain
                 PlaceOfBirth = person.PlaceOfBirth,
                 DateOfBirth = person.DateOfBirth,
                 Gender = person.Gender,
-                Identification = Create(person.Identification).ToList(),
+                Identification = Create(person.Identification),
                 PersonTypes = person.PersonTypes,
                 IsPersonCautionaryAlert = person.IsPersonCautionaryAlert,
                 IsTenureCautionaryAlert = person.IsTenureCautionaryAlert,
-                Tenures = Create(person.Tenures).ToList()
+                Tenures = Create(person.Tenures)
             };
         }
 
-        private static IEnumerable<Identification> Create(List<Infrastructure.Identification> identifications)
+        private static List<Identification> Create(List<Infrastructure.Identification> identifications)
         {
+            var identList = new List<Identification>();
+
             foreach (Infrastructure.Identification identification in identifications)
             {
-                yield return new Identification
+                identList.Add( new Identification
                 {
                     IdentificationType = identification.IdentificationType,
                     LinkToDocument = identification.LinkToDocument,
                     OriginalDocumentSeen = identification.OriginalDocumentSeen,
                     Value = identification.Value
-                };
+                });
             }
+
+            return identList;
         }
 
-        private static IEnumerable<Tenures> Create(List<Infrastructure.Tenures> tenures)
+        private static List<Tenures> Create(List<Infrastructure.Tenures> tenures)
         {
+            var tenureList = new List<Tenures>();
+
             foreach (Infrastructure.Tenures tenure in tenures)
             {
-                yield return new Tenures
+                tenureList.Add(new Tenures
                 {
                     AssetFullAddress = tenure.AssetFullAddress,
                     EndDate = tenure.EndDate,
                     Id = tenure.Id,
                     StartDate = tenure.StartDate,
                     Type = tenure.Type
-                };
+                });
             }
+
+            return tenureList;
         }
 
         public string Id { get; set; }
@@ -119,6 +127,5 @@ namespace HousingSearchApi.V1.Domain
         public bool IsTenureCautionaryAlert { get; set; }
 
         public List<Tenures> Tenures { get; set; }
-
     }
 }
