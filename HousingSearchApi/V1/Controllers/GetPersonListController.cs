@@ -52,7 +52,7 @@ namespace HousingSearchApi.V1.Controllers
             catch (Exception e)
             {
                 AWSXRayRecorder.Instance.AddException(e);
-                return new NotFoundObjectResult(e.Message);
+                return new OkObjectResult(e.Message);
             }
         }
     }
