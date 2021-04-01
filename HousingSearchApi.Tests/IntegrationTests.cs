@@ -1,44 +1,21 @@
+using System.Net;
 using System.Net.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Npgsql;
+using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
-using HousingSearchApi.V1.Infrastructure;
 
 namespace HousingSearchApi.Tests
 {
     public class IntegrationTests<TStartup> where TStartup : class
     {
         protected HttpClient Client { get; private set; }
-        protected DatabaseContext DatabaseContext { get; private set; }
-
         private MockWebApplicationFactory<TStartup> _factory;
-        private NpgsqlConnection _connection;
-        private IDbContextTransaction _transaction;
-        private DbContextOptionsBuilder _builder;
-
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
-        {
-            _connection = new NpgsqlConnection(ConnectionString.TestDatabase());
-            _connection.Open();
-            var npgsqlCommand = _connection.CreateCommand();
-            npgsqlCommand.CommandText = "SET deadlock_timeout TO 30";
-            npgsqlCommand.ExecuteNonQuery();
-
-            _builder = new DbContextOptionsBuilder();
-            _builder.UseNpgsql(_connection);
-
-        }
 
         [SetUp]
         public void BaseSetup()
         {
-            _factory = new MockWebApplicationFactory<TStartup>(_connection);
+            _factory = new MockWebApplicationFactory<TStartup>();
             Client = _factory.CreateClient();
-            DatabaseContext = new DatabaseContext(_builder.Options);
-            DatabaseContext.Database.EnsureCreated();
-            _transaction = DatabaseContext.Database.BeginTransaction();
         }
 
         [TearDown]
@@ -46,8 +23,16 @@ namespace HousingSearchApi.Tests
         {
             Client.Dispose();
             _factory.Dispose();
-            _transaction.Rollback();
-            _transaction.Dispose();
+        }
+
+        [Test]
+        public async Task WhenRequestDoesNotContainSearchStringShouldReturnBadRequestResult()
+        {
+            // arrange + act
+            var response = await Client.GetAsync("api/v1/search/persons");
+
+            // assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
     }
 }

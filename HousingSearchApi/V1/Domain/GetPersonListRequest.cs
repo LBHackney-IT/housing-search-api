@@ -7,12 +7,18 @@ namespace HousingSearchApi.V1.Domain
     public class GetPersonListResponse
     {
         public List<Person> Persons { get; set; }
+
+        public GetPersonListResponse()
+        {
+            Persons = new List<Person>();
+        }
     }
 
     public class GetPersonListRequest
     {
         [FromQuery(Name = "searchText")]
         [Required]
+        [MinLength(2)]
         public string SearchText { get; set; }
     }
 }

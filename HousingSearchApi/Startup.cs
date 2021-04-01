@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Amazon.XRay.Recorder.Handlers.AwsSdk;
+using Elasticsearch.Net;
 using HousingSearchApi.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,6 +20,7 @@ using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.UseCase;
 using HousingSearchApi.V1.UseCase.Interfaces;
+using Nest;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace HousingSearchApi
@@ -27,6 +30,8 @@ namespace HousingSearchApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            AWSSDKHandler.RegisterXRayForAllServices();
         }
 
         public IConfiguration Configuration { get; }
@@ -108,6 +113,7 @@ namespace HousingSearchApi
             ConfigureDbContext(services);
             RegisterGateways(services);
             RegisterUseCases(services);
+            ConfigureElasticsearch(services);
         }
 
         private static void ConfigureDbContext(IServiceCollection services)
@@ -121,17 +127,34 @@ namespace HousingSearchApi
         private static void RegisterGateways(IServiceCollection services)
         {
             services.AddScoped<IExampleGateway, ExampleGateway>();
+            services.AddScoped<ISearchPersonsGateway, SearchPersonsGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
         {
             services.AddScoped<IGetAllUseCase, GetAllUseCase>();
             services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
+            services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
+            services.AddScoped<ISearchPersonESHelper, SearchPersonESHelper>();
+        }
+
+        private static void ConfigureElasticsearch(IServiceCollection services)
+        {
+            var url = Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL") ?? "http://localhost:9200";
+            var pool = new SingleNodeConnectionPool(new Uri(url));
+            var connectionSettings =
+                new ConnectionSettings(pool)
+                    .PrettyJson().ThrowExceptions().DisableDirectStreaming();
+            var esClient = new ElasticClient(connectionSettings);
+
+            services.AddSingleton<IElasticClient>(esClient);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseXRay("housing-search-api");
+
             app.UseCorrelation();
 
             if (env.IsDevelopment())

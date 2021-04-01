@@ -2,6 +2,10 @@ service: housing-search-api
 provider:
   name: aws
   runtime: dotnetcore3.1
+  memorySize: 2048
+  tracing:
+    lambda: true
+    apiGateway: true
   vpc: ${self:custom.vpc.${opt:stage}}
   stage: ${opt:stage}
   region: eu-west-2
@@ -24,7 +28,7 @@ functions:
     role: lambdaExecutionRole
     environment:
 # TODO: Create ssm variables for this API's postgres mirror then rename housing-search-api below to match api name
-      # CONNECTION_STRING: Host=${ssm:/housing-search-api/${self:provider.stage}/postgres-hostname};Port=${ssm:/housing-search-api/${self:provider.stage}/postgres-port};Database=housing-search-api-mirror;Username=${ssm:/housing-search-api/${self:provider.stage}/postgres-username};Password=${ssm:/housing-search-api/${self:provider.stage}/postgres-password}
+      ELASTICSEARCH_DOMAIN_URL: ${ssm:/housing-search-api/${self:provider.stage}/elasticsearch-domain}
     events:
       - http:
           path: /{proxy+}
@@ -47,6 +51,7 @@ resources:
               Action: sts:AssumeRole
         ManagedPolicyArns:
           - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+          - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
         Policies:
           - PolicyName: manageLogs
             PolicyDocument:
