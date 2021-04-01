@@ -63,7 +63,7 @@ namespace HousingSearchApi.V1.Domain
 
             foreach (Infrastructure.Identification identification in identifications)
             {
-                identList.Add( new Identification
+                identList.Add(new Identification
                 {
                     IdentificationType = identification.IdentificationType,
                     LinkToDocument = identification.LinkToDocument,
