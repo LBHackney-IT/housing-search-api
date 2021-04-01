@@ -49,11 +49,11 @@ namespace HousingSearchApi.V1.Domain
                 PlaceOfBirth = person.PlaceOfBirth,
                 DateOfBirth = person.DateOfBirth,
                 Gender = person.Gender,
-                Identification = Create(person.Identification),
+                Identification = Create(person.Identification ?? new List<Infrastructure.Identification>()),
                 PersonTypes = person.PersonTypes,
                 IsPersonCautionaryAlert = person.IsPersonCautionaryAlert,
                 IsTenureCautionaryAlert = person.IsTenureCautionaryAlert,
-                Tenures = Create(person.Tenures)
+                Tenures = Create(person.Tenures ?? new List<Infrastructure.Tenures>())
             };
         }
 
