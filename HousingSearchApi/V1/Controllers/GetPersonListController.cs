@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Amazon.Lambda.Core;
 using Amazon.XRay.Recorder.Core;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
@@ -51,7 +52,7 @@ namespace HousingSearchApi.V1.Controllers
             }
             catch (Exception e)
             {
-                AWSXRayRecorder.Instance.AddException(e);
+                LambdaLogger.Log(e.Message + e.StackTrace);
                 return new OkObjectResult(e.Message);
             }
         }
