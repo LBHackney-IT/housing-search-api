@@ -50,7 +50,7 @@ namespace HousingSearchApi.V1.Controllers
             }
             catch (Exception e)
             {
-                return new BadRequestObjectResult(e.Message);
+                return new NotFoundObjectResult(e.Message);
             }
         }
     }
