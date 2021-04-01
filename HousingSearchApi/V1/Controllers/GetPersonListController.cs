@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HousingSearchApi.V1.Boundary.Responses;
@@ -47,9 +48,9 @@ namespace HousingSearchApi.V1.Controllers
                 var response = await _getPersonListUseCase.ExecuteAsync(request);
                 return new OkObjectResult(new APIResponse<GetPersonListResponse>(response));
             }
-            catch (NotFoundException e)
+            catch (Exception e)
             {
-                return new NotFoundObjectResult(e.Message);
+                return new BadRequestObjectResult(e.Message);
             }
         }
     }
