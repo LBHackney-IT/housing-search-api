@@ -1,28 +1,124 @@
+using System.Collections.Generic;
+using System.Linq;
+using HousingSearchApi.V1.Infrastructure;
+using Nest;
 using Newtonsoft.Json;
 
 namespace HousingSearchApi.V1.Domain
 {
-    public class Person
+    public class Identification
     {
-        [JsonProperty("id")]
+        public string IdentificationType { get; set; }
+
+        public string Value { get; set; }
+
+        public bool OriginalDocumentSeen { get; set; }
+
+        public string LinkToDocument { get; set; }
+
+    }
+
+    public class Tenures
+    {
         public string Id { get; set; }
 
-        [JsonProperty("firstname")]
+        public string Type { get; set; }
+
+        public string StartDate { get; set; }
+
+        public string EndDate { get; set; }
+
+        public string AssetFullAddress { get; set; }
+
+    }
+    public class Person
+    {
+        public static Person Create(QueryablePerson person)
+        {
+            return new Person
+            {
+                Id = person.Id,
+                Title = person.Title,
+                Firstname = person.Firstname,
+                MiddleName = person.MiddleName,
+                Surname = person.Surname,
+                PreferredFirstname = person.PreferredFirstname,
+                PreferredSurname = person.PreferredSurname,
+                Ethinicity = person.Ethinicity,
+                Nationality = person.Nationality,
+                PlaceOfBirth = person.PlaceOfBirth,
+                DateOfBirth = person.DateOfBirth,
+                Gender = person.Gender,
+                Identification = Create(person.Identification).ToList(),
+                PersonTypes = person.PersonTypes,
+                IsPersonCautionaryAlert = person.IsPersonCautionaryAlert,
+                IsTenureCautionaryAlert = person.IsTenureCautionaryAlert,
+                Tenures = Create(person.Tenures).ToList()
+            };
+        }
+
+        private static IEnumerable<Identification> Create(List<Infrastructure.Identification> identifications)
+        {
+            foreach (Infrastructure.Identification identification in identifications)
+            {
+                yield return new Identification
+                {
+                    IdentificationType = identification.IdentificationType,
+                    LinkToDocument = identification.LinkToDocument,
+                    OriginalDocumentSeen = identification.OriginalDocumentSeen,
+                    Value = identification.Value
+                };
+            }
+        }
+
+        private static IEnumerable<Tenures> Create(List<Infrastructure.Tenures> tenures)
+        {
+            foreach (Infrastructure.Tenures tenure in tenures)
+            {
+                yield return new Tenures
+                {
+                    AssetFullAddress = tenure.AssetFullAddress,
+                    EndDate = tenure.EndDate,
+                    Id = tenure.Id,
+                    StartDate = tenure.StartDate,
+                    Type = tenure.Type
+                };
+            }
+        }
+
+        public string Id { get; set; }
+
+        public string Title { get; set; }
+
         public string Firstname { get; set; }
 
-        [JsonProperty("middleName")]
         public string MiddleName { get; set; }
 
-        [JsonProperty("surname")]
         public string Surname { get; set; }
 
-        [JsonProperty("preferredFirstname")]
         public string PreferredFirstname { get; set; }
 
-        [JsonProperty("preferredSurname")]
         public string PreferredSurname { get; set; }
 
-        [JsonProperty("dateOfBirth")]
+        public string Ethinicity { get; set; }
+
+        public string Nationality { get; set; }
+
+        public string PlaceOfBirth { get; set; }
+
         public string DateOfBirth { get; set; }
+
+        public string Gender { get; set; }
+
+        public List<Identification> Identification { get; set; }
+
+        public List<string> PersonTypes { get; set; }
+
+        public bool IsPersonCautionaryAlert { get; set; }
+
+        public bool IsTenureCautionaryAlert { get; set; }
+
+        public List<Tenures> Tenures { get; set; }
+
     }
 }

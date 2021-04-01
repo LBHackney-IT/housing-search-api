@@ -21,6 +21,7 @@ using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.UseCase;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Nest;
+using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace HousingSearchApi
@@ -44,6 +45,13 @@ namespace HousingSearchApi
         {
             services
                 .AddMvc()
+                .AddNewtonsoftJson(x =>
+                {
+                    x.SerializerSettings.ContractResolver = new DefaultContractResolver
+                    {
+                        NamingStrategy = new CamelCaseNamingStrategy()
+                    };
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddApiVersioning(o =>
             {

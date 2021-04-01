@@ -23,17 +23,8 @@ namespace HousingSearchApi.V1.Gateways
             var searchResponse = await _esHelper.Search(request);
             var personListResponse = new GetPersonListResponse();
 
-            personListResponse.Persons.AddRange(searchResponse.Documents.Select(x =>
-
-                new Person
-                {
-                    Firstname = x.Firstname,
-                    Surname = x.Surname,
-                    PreferredFirstname = x.PreferredFirstname,
-                    PreferredSurname = x.PreferredSurname,
-                    DateOfBirth = x.DateOfBirth,
-                    Id = x.Id,
-                }
+            personListResponse.Persons.AddRange(searchResponse.Documents.Select(queryablePerson =>
+                Person.Create(queryablePerson)
             ));
 
             return personListResponse;
