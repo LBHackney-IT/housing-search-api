@@ -22,10 +22,16 @@ namespace HousingSearchApi.V1.Gateways
         {
             try
             {
-                LambdaLogger.Log(Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL"));
-                return await _esClient.SearchAsync<QueryablePerson>(x => x.Index(_indices)
+                LambdaLogger.Log("ES Search begins " + Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL"));
+
+                var result = await _esClient.SearchAsync<QueryablePerson>(x => x.Index(_indices)
                     .Query(q => BaseQuery(request, q))
                     .TrackTotalHits());
+
+                LambdaLogger.Log("ES Search ended");
+                LambdaLogger.Log(result.DebugInformation);
+
+                return result;
             }
             catch (Exception e)
             {
