@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Amazon.Lambda.Core;
 using HousingSearchApi.V1.Domain;
 using HousingSearchApi.V1.Infrastructure;
 using Nest;
@@ -21,12 +22,14 @@ namespace HousingSearchApi.V1.Gateways
         {
             try
             {
+                LambdaLogger.Log(Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL"));
                 return await _esClient.SearchAsync<QueryablePerson>(x => x.Index(_indices)
                     .Query(q => BaseQuery(request, q))
                     .TrackTotalHits());
             }
             catch (Exception e)
             {
+                LambdaLogger.Log(e.Message);
                 throw e;
             }
         }
