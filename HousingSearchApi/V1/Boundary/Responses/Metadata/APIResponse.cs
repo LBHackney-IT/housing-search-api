@@ -13,18 +13,15 @@ namespace HousingSearchApi.V1.Boundary.Responses.Metadata
     /// <typeparam name="T"></typeparam>
     public class APIResponse<T> where T : class
     {
-        [JsonProperty("data")]
-        public T Data { get; set; }
+        public T Results { get; set; }
 
-        [JsonProperty("statusCode")]
-        public int StatusCode { get; set; }
+        public int Total { get; set; }
 
         public APIResponse() { }
 
         public APIResponse(T result)
         {
-            StatusCode = (int) HttpStatusCode.OK;
-            Data = result;
+            Results = result;
         }
     }
 }

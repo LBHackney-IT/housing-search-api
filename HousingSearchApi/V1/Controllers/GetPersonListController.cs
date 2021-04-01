@@ -47,8 +47,11 @@ namespace HousingSearchApi.V1.Controllers
 
             try
             {
-                var response = await _getPersonListUseCase.ExecuteAsync(request);
-                return new OkObjectResult(new APIResponse<GetPersonListResponse>(response));
+                var personsSearchResult = await _getPersonListUseCase.ExecuteAsync(request);
+                var apiResponse = new APIResponse<GetPersonListResponse>(personsSearchResult);
+                apiResponse.Total = personsSearchResult.Persons?.Count ?? 0;
+
+                return new OkObjectResult(apiResponse);
             }
             catch (Exception e)
             {
