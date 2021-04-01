@@ -16,7 +16,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         private Mock<IGetPersonListUseCase> _mockGetPersonListUseCase;
         private GetPersonListController _classUnderTest;
 
-        
+
         public GetPersonListControllerTests()
         {
             _mockGetPersonListUseCase = new Mock<IGetPersonListUseCase>();
@@ -36,7 +36,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
             _mockGetPersonListUseCase.Verify(x => x.ExecuteAsync(request), Times.Once);
         }
 
-        [Fact(Skip="Until I figure out why this thing is breaking")]
+        [Fact(Skip = "Until I figure out why this thing is breaking")]
         public async Task GetPersonListShouldReturnNotFoundObjectResultIfNotFound()
         {
             // given
