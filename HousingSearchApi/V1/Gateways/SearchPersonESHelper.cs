@@ -11,11 +11,13 @@ namespace HousingSearchApi.V1.Gateways
     public class SearchPersonESHelper : ISearchPersonESHelper
     {
         private IElasticClient _esClient;
+        private readonly ISearchPersonsQueryContainerOrchestrator _containerOrchestrator;
         private Indices.ManyIndices _indices;
 
-        public SearchPersonESHelper(IElasticClient esClient)
+        public SearchPersonESHelper(IElasticClient esClient, ISearchPersonsQueryContainerOrchestrator containerOrchestrator)
         {
             _esClient = esClient;
+            _containerOrchestrator = containerOrchestrator;
             _indices = Indices.Index(new List<IndexName> { "persons" });
         }
         public async Task<ISearchResponse<QueryablePerson>> Search(GetPersonListRequest request)
@@ -29,7 +31,6 @@ namespace HousingSearchApi.V1.Gateways
                     .TrackTotalHits());
 
                 LambdaLogger.Log("ES Search ended");
-                LambdaLogger.Log(result.DebugInformation);
 
                 return result;
             }
@@ -42,82 +43,7 @@ namespace HousingSearchApi.V1.Gateways
 
         private QueryContainer BaseQuery(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
-            return SearchFirstNames(request, q)
-                   || SearchLastNames(request, q);
-        }
-
-        private QueryContainer SearchPreferredFirstnames(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
-        {
-            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
-            var searchText = request.SearchText?.Replace(" ", "").ToLower();
-
-            var searchPreferredFirstnames
-                = q.Wildcard(m =>
-                    m.Field(f => f.PreferredFirstname).Value($"*{searchText}*"));
-
-            return searchPreferredFirstnames;
-        }
-
-        private QueryContainer SearchPreferredSurnames(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
-        {
-            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
-            var searchText = request.SearchText?.Replace(" ", "").ToLower();
-
-            var searchPreferredSurnames
-                = q.Wildcard(m =>
-                    m.Field(f => f.PreferredSurname).Value($"*{searchText}*"));
-
-            return searchPreferredSurnames
-                ;
-        }
-
-        private QueryContainer SearchFirstNames(GetPersonListRequest request,
-            QueryContainerDescriptor<QueryablePerson> q)
-        {
-            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
-            var searchText = request.SearchText?.Replace(" ", "").ToLower();
-
-            var searchFirstNames = q.Wildcard(m =>
-                m.Field(f => f.Firstname).Value($"*{searchText}*"));
-
-            return searchFirstNames;
-        }
-
-        private QueryContainer SearchLastNames(GetPersonListRequest request,
-            QueryContainerDescriptor<QueryablePerson> q)
-        {
-            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
-            var searchText = request.SearchText?.Replace(" ", "").ToLower();
-
-            var searchLastNames = q.Wildcard(m =>
-                m.Field(f => f.Surname).Value($"*{searchText}*"));
-
-            return searchLastNames;
-        }
-
-        private QueryContainer SearchMiddleNames(GetPersonListRequest request,
-            QueryContainerDescriptor<QueryablePerson> q)
-        {
-            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
-            var searchText = request.SearchText?.Replace(" ", "").ToLower();
-
-            var searchMiddleNames = q.Wildcard(m =>
-                m.Field(f => f.MiddleName).Value($"*{searchText}*"));
-
-            return searchMiddleNames
-                ;
-        }
-
-        private QueryContainer SearchDateOfBirth(GetPersonListRequest request,
-            QueryContainerDescriptor<QueryablePerson> q)
-        {
-            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
-            var searchText = request.SearchText?.Replace(" ", "").ToLower();
-
-            var searchDoB = q.Wildcard(m =>
-                m.Field(f => f.DateOfBirth).Value($"*{searchText}*"));
-
-            return searchDoB;
+            return _containerOrchestrator.Create(request, q);
         }
     }
 }

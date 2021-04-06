@@ -36,12 +36,11 @@ namespace HousingSearchApi.V1.Controllers
                 var err = new ValidationError();
 
                 err.FieldName = "Insufficient characters";
-            https://eu-west-2.console.aws.amazon.com/lambda/home?region=eu-west-2#       err.Message = "Search inputs must be a minimum of 2 characters and cannot include invalid.";
                 errors.Add(err);
 
                 return new BadRequestObjectResult(new ErrorResponse(errors)
                 {
-                    StatusCode = 500
+                    StatusCode = 400
                 });
             }
 

@@ -18,7 +18,8 @@ namespace HousingSearchApi.Tests.V1.Helper
             _services = new ServiceCollection();
             Startup.ConfigureServices(_services);
 
-            _classUnderTest = new SearchPersonESHelper(_services.BuildServiceProvider().GetService<IElasticClient>());
+            _classUnderTest = new SearchPersonESHelper(_services.BuildServiceProvider().GetService<IElasticClient>(),
+                _services.BuildServiceProvider().GetService<ISearchPersonsQueryContainerOrchestrator>());
         }
 
         [Fact]
