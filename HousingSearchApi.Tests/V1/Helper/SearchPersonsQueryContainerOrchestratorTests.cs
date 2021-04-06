@@ -21,7 +21,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnOrSearchNamesSurnames()
         {
             // Arrange + Act
-            var result = _sut.Create(new GetPersonListRequest {SearchText = "abc"},
+            var result = _sut.Create(new GetPersonListRequest { SearchText = "abc" },
                 new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert
