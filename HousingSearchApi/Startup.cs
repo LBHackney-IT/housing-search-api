@@ -164,6 +164,7 @@ namespace HousingSearchApi
             app.UseXRay("housing-search-api");
 
             app.UseCorrelation();
+            app.UseCORS();
 
             if (env.IsDevelopment())
             {
