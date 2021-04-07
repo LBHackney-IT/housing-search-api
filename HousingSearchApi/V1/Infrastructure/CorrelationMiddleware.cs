@@ -62,7 +62,7 @@ namespace HousingSearchApi.V1.Infrastructure
         {
             return builder.UseMiddleware<CorrelationMiddleware>();
         }
-        
+
         public static IApplicationBuilder UseCORS(
             this IApplicationBuilder builder)
         {
