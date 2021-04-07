@@ -50,3 +50,11 @@ module "elasticsearch_db_development" {
   region           = data.aws_region.current.name
   account_id       = data.aws_caller_identity.current.account_id
 }
+
+ module "cors" {
+  source = "squidfunk/api-gateway-enable-cors/aws"
+  version = "0.3.1"
+
+  api_id          = "y1e46yws9c"
+  api_resource_id = "iw9jsltvlk"
+}
