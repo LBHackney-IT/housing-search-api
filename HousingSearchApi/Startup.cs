@@ -145,6 +145,7 @@ namespace HousingSearchApi
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
             services.AddScoped<ISearchPersonESHelper, SearchPersonESHelper>();
             services.AddScoped<ISearchPersonsQueryContainerOrchestrator, SearchPersonsQueryContainerOrchestrator>();
+            services.AddScoped<IPagingHelper, PagingHelper>();
         }
 
         private static void ConfigureElasticsearch(IServiceCollection services)

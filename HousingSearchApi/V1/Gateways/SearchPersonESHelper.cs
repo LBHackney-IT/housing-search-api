@@ -12,12 +12,15 @@ namespace HousingSearchApi.V1.Gateways
     {
         private IElasticClient _esClient;
         private readonly ISearchPersonsQueryContainerOrchestrator _containerOrchestrator;
+        private readonly IPagingHelper _pagingHelper;
         private Indices.ManyIndices _indices;
 
-        public SearchPersonESHelper(IElasticClient esClient, ISearchPersonsQueryContainerOrchestrator containerOrchestrator)
+        public SearchPersonESHelper(IElasticClient esClient, ISearchPersonsQueryContainerOrchestrator containerOrchestrator,
+            IPagingHelper pagingHelper)
         {
             _esClient = esClient;
             _containerOrchestrator = containerOrchestrator;
+            _pagingHelper = pagingHelper;
             _indices = Indices.Index(new List<IndexName> { "persons" });
         }
         public async Task<ISearchResponse<QueryablePerson>> Search(GetPersonListRequest request)
@@ -26,8 +29,12 @@ namespace HousingSearchApi.V1.Gateways
             {
                 LambdaLogger.Log("ES Search begins " + Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL"));
 
+                var pageOffset = _pagingHelper.GetPageOffset(request.PageSize, request.Page);
+
                 var result = await _esClient.SearchAsync<QueryablePerson>(x => x.Index(_indices)
                     .Query(q => BaseQuery(request, q))
+                    .Size(request.PageSize)
+                    .Skip(pageOffset)
                     .TrackTotalHits());
 
                 LambdaLogger.Log("ES Search ended");

@@ -20,5 +20,11 @@ namespace HousingSearchApi.V1.Domain
         [Required]
         [MinLength(2)]
         public string SearchText { get; set; }
+
+        [FromQuery(Name = "pageSize")]
+        public int PageSize { get; set; }
+
+        [FromQuery(Name = "page")]
+        public int Page { get; set; }
     }
 }
