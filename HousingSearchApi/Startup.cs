@@ -43,6 +43,8 @@ namespace HousingSearchApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             services
                 .AddMvc()
                 .AddNewtonsoftJson(x =>
@@ -163,10 +165,14 @@ namespace HousingSearchApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod());
+
             app.UseXRay("housing-search-api");
 
             app.UseCorrelation();
-            app.UseCORS();
 
             if (env.IsDevelopment())
             {
