@@ -19,7 +19,7 @@ namespace HousingSearchApi.V1.Domain
         public int Page { get; set; }
 
         [FromQuery(Name = "sortBy")]
-        public int SortBy { get; set; }
+        public string SortBy { get; set; }
 
         [FromQuery(Name = "isDesc")]
         public bool IsDesc { get; set; }

@@ -46,44 +46,38 @@ namespace HousingSearchApi.V1.Infrastructure
     {
         public IPersonListSort Create(GetPersonListRequest request)
         {
-            throw new NotImplementedException();
+            switch (request.IsDesc)
+            {
+                case true:
+                    return new LastNameDesc();
+                case false:
+                    return new LastNameAsc();
+            }
         }
     }
 
     public interface IPersonListSort
     {
-        SortDescriptor<QueryablePerson> Get();
+        SortDescriptor<QueryablePerson> Get(SortDescriptor<QueryablePerson> descriptor);
     }
 
-    public class LastNameAtoZ : IPersonListSort
+    public class LastNameAsc : IPersonListSort
     {
-        public SortDescriptor<QueryablePerson> Get()
+        public SortDescriptor<QueryablePerson> Get(SortDescriptor<QueryablePerson> descriptor)
         {
-            throw new NotImplementedException();
+            return descriptor
+                .Ascending(f => f.Surname)
+                .Ascending(f => f.Firstname);
         }
     }
 
-    public class LastNameZtoA : IPersonListSort
+    public class LastNameDesc : IPersonListSort
     {
-        public SortDescriptor<QueryablePerson> Get()
+        public SortDescriptor<QueryablePerson> Get(SortDescriptor<QueryablePerson> descriptor)
         {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class StreetNameAtoZ : IPersonListSort
-    {
-        public SortDescriptor<QueryablePerson> Get()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class StreetNameZtoA : IPersonListSort
-    {
-        public SortDescriptor<QueryablePerson> Get()
-        {
-            throw new NotImplementedException();
+            return descriptor
+                .Descending(f => f.Surname)
+                .Descending(f => f.Firstname);
         }
     }
 }

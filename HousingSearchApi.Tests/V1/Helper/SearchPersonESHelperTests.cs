@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using HousingSearchApi.V1.Domain;
 using HousingSearchApi.V1.Gateways;
+using HousingSearchApi.V1.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
 using Xunit;
@@ -20,7 +21,8 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             _classUnderTest = new SearchPersonESHelper(_services.BuildServiceProvider().GetService<IElasticClient>(),
                 _services.BuildServiceProvider().GetService<ISearchPersonsQueryContainerOrchestrator>(),
-                _services.BuildServiceProvider().GetService<IPagingHelper>());
+                _services.BuildServiceProvider().GetService<IPagingHelper>(),
+                _services.BuildServiceProvider().GetService<IPersonListSortFactory>());
         }
 
         [Fact]

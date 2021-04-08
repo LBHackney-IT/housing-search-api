@@ -13,14 +13,16 @@ namespace HousingSearchApi.V1.Gateways
         private IElasticClient _esClient;
         private readonly ISearchPersonsQueryContainerOrchestrator _containerOrchestrator;
         private readonly IPagingHelper _pagingHelper;
+        private readonly IPersonListSortFactory _iPersonListSortFactory;
         private Indices.ManyIndices _indices;
 
         public SearchPersonESHelper(IElasticClient esClient, ISearchPersonsQueryContainerOrchestrator containerOrchestrator,
-            IPagingHelper pagingHelper)
+            IPagingHelper pagingHelper, IPersonListSortFactory iPersonListSortFactory)
         {
             _esClient = esClient;
             _containerOrchestrator = containerOrchestrator;
             _pagingHelper = pagingHelper;
+            _iPersonListSortFactory = iPersonListSortFactory;
             _indices = Indices.Index(new List<IndexName> { "persons" });
         }
         public async Task<ISearchResponse<QueryablePerson>> Search(GetPersonListRequest request)
@@ -33,6 +35,7 @@ namespace HousingSearchApi.V1.Gateways
 
                 var result = await _esClient.SearchAsync<QueryablePerson>(x => x.Index(_indices)
                     .Query(q => BaseQuery(request, q))
+                    .Sort(_iPersonListSortFactory.Create(request).Get)
                     .Size(request.PageSize)
                     .Skip(pageOffset)
                     .TrackTotalHits());
