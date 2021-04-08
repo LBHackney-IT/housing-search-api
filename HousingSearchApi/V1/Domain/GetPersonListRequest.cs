@@ -12,9 +12,16 @@ namespace HousingSearchApi.V1.Domain
         [MinLength(2)]
         public string SearchText { get; set; }
 
-        [FromQuery(Name = "pageSize")] public int PageSize { get; set; } = DefaultPageSize;
+        [FromQuery(Name = "pageSize")]
+        public int PageSize { get; set; } = DefaultPageSize;
 
         [FromQuery(Name = "page")]
         public int Page { get; set; }
+
+        [FromQuery(Name = "sortBy")]
+        public int SortBy { get; set; }
+
+        [FromQuery(Name = "isDesc")]
+        public bool IsDesc { get; set; }
     }
 }
