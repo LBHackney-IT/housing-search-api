@@ -18,7 +18,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnLastNameAscWhenRequestLastNameAndAsc()
         {
             // Arrange + Act
-            var result = _sut.Create(new GetPersonListRequest {SortBy = "lastname", IsDesc = false});
+            var result = _sut.Create(new GetPersonListRequest { SortBy = "lastname", IsDesc = false });
 
             // Assert
             result.Should().BeOfType(typeof(LastNameAsc));
