@@ -15,6 +15,16 @@ namespace HousingSearchApi.Tests.V1.Helper
         }
 
         [Fact]
+        public void ShouldNotSortAsDefault()
+        {
+            // Arrange + Act
+            var result = _sut.Create(new GetPersonListRequest ());
+
+            // Assert
+            result.Should().BeOfType(typeof(DefaultSort));
+        }
+
+        [Fact]
         public void ShouldReturnLastNameAscWhenRequestLastNameAndAsc()
         {
             // Arrange + Act

@@ -46,6 +46,9 @@ namespace HousingSearchApi.V1.Infrastructure
     {
         public IPersonListSort Create(GetPersonListRequest request)
         {
+            if (string.IsNullOrEmpty(request.SortBy))
+                return new DefaultSort();
+
             switch (request.IsDesc)
             {
                 case true:
@@ -59,6 +62,14 @@ namespace HousingSearchApi.V1.Infrastructure
     public interface IPersonListSort
     {
         SortDescriptor<QueryablePerson> Get(SortDescriptor<QueryablePerson> descriptor);
+    }
+
+    public class DefaultSort : IPersonListSort
+    {
+        public SortDescriptor<QueryablePerson> Get(SortDescriptor<QueryablePerson> descriptor)
+        {
+            return descriptor;
+        }
     }
 
     public class LastNameAsc : IPersonListSort
