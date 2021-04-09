@@ -34,5 +34,15 @@ namespace HousingSearchApi.Tests
             // assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
+
+        [Test]
+        public async Task WhenRequestContainsSearchStringShouldReturn200()
+        {
+            // arrange + act
+            var response = await Client.GetAsync("api/v1/search/persons?searchText=abc");
+
+            // assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
     }
 }

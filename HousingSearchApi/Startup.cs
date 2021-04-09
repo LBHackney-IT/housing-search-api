@@ -20,6 +20,7 @@ using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.UseCase;
 using HousingSearchApi.V1.UseCase.Interfaces;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Nest;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -160,7 +161,7 @@ namespace HousingSearchApi
                     .PrettyJson().ThrowExceptions().DisableDirectStreaming();
             var esClient = new ElasticClient(connectionSettings);
 
-            services.AddSingleton<IElasticClient>(esClient);
+            services.TryAddSingleton<IElasticClient>(esClient);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
