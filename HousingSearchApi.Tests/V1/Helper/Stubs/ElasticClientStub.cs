@@ -732,7 +732,7 @@ namespace HousingSearchApi.Tests.V1.Helper.Stubs
 
         public Task<ISearchResponse<TDocument>> SearchAsync<TInferDocument, TDocument>(Func<SearchDescriptor<TInferDocument>, ISearchRequest> selector = null, CancellationToken ct = new CancellationToken()) where TInferDocument : class where TDocument : class
         {
-            return Task.FromResult((ISearchResponse<TDocument>)new SearchResponse<TDocument>());
+            return Task.FromResult((ISearchResponse<TDocument>) new SearchResponse<TDocument>());
         }
 
         public ISearchResponse<TDocument> Search<TDocument>(Func<SearchDescriptor<TDocument>, ISearchRequest> selector = null) where TDocument : class

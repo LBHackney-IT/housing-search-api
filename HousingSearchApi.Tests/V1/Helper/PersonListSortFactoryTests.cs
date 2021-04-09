@@ -18,7 +18,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldNotSortAsDefault()
         {
             // Arrange + Act
-            var result = _sut.Create(new GetPersonListRequest ());
+            var result = _sut.Create(new GetPersonListRequest());
 
             // Assert
             result.Should().BeOfType(typeof(DefaultSort));
