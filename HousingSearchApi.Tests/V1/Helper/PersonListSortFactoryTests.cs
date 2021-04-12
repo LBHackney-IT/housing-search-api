@@ -1,6 +1,7 @@
 using FluentAssertions;
 using HousingSearchApi.V1.Domain;
 using HousingSearchApi.V1.Infrastructure;
+using HousingSearchApi.V1.Infrastructure.Sorting;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Helper

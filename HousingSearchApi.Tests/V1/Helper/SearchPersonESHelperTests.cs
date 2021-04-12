@@ -3,6 +3,7 @@ using FluentAssertions;
 using HousingSearchApi.V1.Domain;
 using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Infrastructure;
+using HousingSearchApi.V1.Infrastructure.Sorting;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
 using Xunit;
