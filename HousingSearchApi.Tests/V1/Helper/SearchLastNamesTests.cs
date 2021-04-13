@@ -21,7 +21,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             _sut = new SearchSurnames();
         }
 
-        [Fact]
+        [Fact(Skip = "Testing ES integration testing")]
         public async Task Something()
         {
             DockerClient dockerClient = new DockerClientConfiguration()
