@@ -1,4 +1,4 @@
-using HousingSearchApi.V1.Domain;
+using HousingSearchApi.V1.Boundary.Requests;
 
 namespace HousingSearchApi.V1.Infrastructure.Sorting
 {
@@ -12,9 +12,9 @@ namespace HousingSearchApi.V1.Infrastructure.Sorting
             switch (request.IsDesc)
             {
                 case true:
-                    return new LastNameDesc();
+                    return new SurnameDesc();
                 case false:
-                    return new LastNameAsc();
+                    return new SurnameAsc();
             }
         }
     }

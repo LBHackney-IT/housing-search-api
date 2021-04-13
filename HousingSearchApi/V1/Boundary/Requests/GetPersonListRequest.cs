@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HousingSearchApi.V1.Domain
+namespace HousingSearchApi.V1.Boundary.Requests
 {
     public class GetPersonListRequest
     {

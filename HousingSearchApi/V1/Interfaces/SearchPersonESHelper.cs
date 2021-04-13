@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
-using HousingSearchApi.V1.Domain;
+using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.Infrastructure.Sorting;
 using Nest;
 
-namespace HousingSearchApi.V1.Gateways
+namespace HousingSearchApi.V1.Interfaces
 {
     public class SearchPersonESHelper : ISearchPersonESHelper
     {

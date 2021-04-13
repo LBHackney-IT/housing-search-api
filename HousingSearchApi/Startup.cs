@@ -19,6 +19,7 @@ using Microsoft.OpenApi.Models;
 using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.Infrastructure.Sorting;
+using HousingSearchApi.V1.Interfaces;
 using HousingSearchApi.V1.UseCase;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.Extensions.DependencyInjection.Extensions;

@@ -1,8 +1,11 @@
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using Docker.DotNet;
+using Docker.DotNet.Models;
 
 namespace HousingSearchApi.Tests
 {
@@ -10,6 +13,29 @@ namespace HousingSearchApi.Tests
     {
         protected HttpClient Client { get; private set; }
         private MockWebApplicationFactory<TStartup> _factory;
+        private DockerClient _dockerClient;
+
+        [OneTimeSetUp]
+        public async Task OneTimeSetup()
+        {
+            _dockerClient = new DockerClientConfiguration()
+                .CreateClient();
+
+            var parameters = new ContainersListParameters();
+            parameters.All = true;
+
+            ContainerListResponse container = (await _dockerClient.Containers.ListContainersAsync(parameters)).FirstOrDefault(x => x.Names.Contains("test-elasticsearch"));
+            if (container.Status.Contains("stop"))
+            {
+                await _dockerClient.Containers.StartContainerAsync(container.ID, new ContainerStartParameters());
+            }
+        }
+
+        [OneTimeTearDown]
+        public void OneTimeTeardown()
+        {
+
+        }
 
         [SetUp]
         public void BaseSetup()

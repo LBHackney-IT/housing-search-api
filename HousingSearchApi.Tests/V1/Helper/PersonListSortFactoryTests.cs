@@ -1,6 +1,5 @@
 using FluentAssertions;
-using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Infrastructure;
+using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Infrastructure.Sorting;
 using Xunit;
 
@@ -26,23 +25,23 @@ namespace HousingSearchApi.Tests.V1.Helper
         }
 
         [Fact]
-        public void ShouldReturnLastNameAscWhenRequestLastNameAndAsc()
+        public void ShouldReturnSurnameAscWhenRequestSurnameAndAsc()
         {
             // Arrange + Act
-            var result = _sut.Create(new GetPersonListRequest { SortBy = "lastname", IsDesc = false });
+            var result = _sut.Create(new GetPersonListRequest { SortBy = "surname", IsDesc = false });
 
             // Assert
-            result.Should().BeOfType(typeof(LastNameAsc));
+            result.Should().BeOfType(typeof(SurnameAsc));
         }
 
         [Fact]
-        public void ShouldReturnLastNameDescWhenRequestLastNameAndDesc()
+        public void ShouldReturnSurnameDescWhenRequestSurnameAndDesc()
         {
             // Arrange + Act
-            var result = _sut.Create(new GetPersonListRequest { SortBy = "lastname", IsDesc = true });
+            var result = _sut.Create(new GetPersonListRequest { SortBy = "surname", IsDesc = true });
 
             // Assert
-            result.Should().BeOfType(typeof(LastNameDesc));
+            result.Should().BeOfType(typeof(SurnameDesc));
         }
     }
 }
