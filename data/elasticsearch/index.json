@@ -1,215 +1,235 @@
 {
-  "persons" : {
-    "aliases" : { },
-    "mappings" : {
-      "properties" : {
-        "dateOfBirth" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
+   "aliases":{ },
+   "mappings":{
+      "properties":{
+         "dateOfBirth":{
+            "type":"text",
+            "fields":{
+               "keyword":{
+                  "type":"keyword",
+                  "ignore_above":256
+               }
             }
-          }
-        },
-        "ethinicity" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
+         },
+         "ethinicity":{
+            "type":"text",
+            "fields":{
+               "keyword":{
+                  "type":"keyword",
+                  "ignore_above":256
+               }
             }
-          }
-        },
-        "firstname" : {
-          "type" : "keyword"
-        },
-        "gender" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
+         },
+         "firstname":{
+            "type":"keyword",
+            "normalizer":"my_normalizer",
+            "fields":{
+               "keyword":{
+                  "type":"keyword",
+                  "ignore_above":256
+               }
             }
-          }
-        },
-        "id" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
+         },
+         "gender":{
+            "type":"text",
+            "fields":{
+               "keyword":{
+                  "type":"keyword",
+                  "ignore_above":256
+               }
             }
-          }
-        },
-        "identification" : {
-          "properties" : {
-            "identificationType" : {
-              "type" : "text",
-              "fields" : {
-                "keyword" : {
-                  "type" : "keyword",
-                  "ignore_above" : 256
-                }
-              }
-            },
-            "linkToDocument" : {
-              "type" : "text",
-              "fields" : {
-                "keyword" : {
-                  "type" : "keyword",
-                  "ignore_above" : 256
-                }
-              }
-            },
-            "originalDocumentSeen" : {
-              "type" : "boolean"
-            },
-            "value" : {
-              "type" : "text",
-              "fields" : {
-                "keyword" : {
-                  "type" : "keyword",
-                  "ignore_above" : 256
-                }
-              }
+         },
+         "id":{
+            "type":"text",
+            "fields":{
+               "keyword":{
+                  "type":"keyword",
+                  "ignore_above":256
+               }
             }
-          }
-        },
-        "isPersonCautionaryAlert" : {
-          "type" : "boolean"
-        },
-        "isTenureCautionaryAlert" : {
-          "type" : "boolean"
-        },
-        "middlename" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
+         },
+         "identification":{
+            "properties":{
+               "identificationType":{
+                  "type":"text",
+                  "fields":{
+                     "keyword":{
+                        "type":"keyword",
+                        "ignore_above":256
+                     }
+                  }
+               },
+               "linkToDocument":{
+                  "type":"text",
+                  "fields":{
+                     "keyword":{
+                        "type":"keyword",
+                        "ignore_above":256
+                     }
+                  }
+               },
+               "originalDocumentSeen":{
+                  "type":"boolean"
+               },
+               "value":{
+                  "type":"text",
+                  "fields":{
+                     "keyword":{
+                        "type":"keyword",
+                        "ignore_above":256
+                     }
+                  }
+               }
             }
-          }
-        },
-        "nationality" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
+         },
+         "isPersonCautionaryAlert":{
+            "type":"boolean"
+         },
+         "isTenureCautionaryAlert":{
+            "type":"boolean"
+         },
+         "middlename":{
+            "type":"text",
+            "fields":{
+               "keyword":{
+                  "type":"keyword",
+                  "ignore_above":256
+               }
             }
-          }
-        },
-        "personTypes" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
+         },
+         "nationality":{
+            "type":"text",
+            "fields":{
+               "keyword":{
+                  "type":"keyword",
+                  "ignore_above":256
+               }
             }
-          }
-        },
-        "placeOfBirth" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
+         },
+         "personTypes":{
+            "type":"text",
+            "fields":{
+               "keyword":{
+                  "type":"keyword",
+                  "ignore_above":256
+               }
             }
-          }
-        },
-        "preferredFirstname" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
+         },
+         "placeOfBirth":{
+            "type":"text",
+            "fields":{
+               "keyword":{
+                  "type":"keyword",
+                  "ignore_above":256
+               }
             }
-          }
-        },
-        "preferredSurname" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
+         },
+         "preferredFirstname":{
+            "type":"text",
+            "fields":{
+               "keyword":{
+                  "type":"keyword",
+                  "ignore_above":256
+               }
             }
-          }
-        },
-        "surname" : {
-          "type" : "keyword"
-        },
-        "tenures" : {
-          "properties" : {
-            "assetFullAddress" : {
-              "type" : "text",
-              "fields" : {
-                "keyword" : {
-                  "type" : "keyword",
-                  "ignore_above" : 256
-                }
-              }
-            },
-            "endDate" : {
-              "type" : "text",
-              "fields" : {
-                "keyword" : {
-                  "type" : "keyword",
-                  "ignore_above" : 256
-                }
-              }
-            },
-            "id" : {
-              "type" : "text",
-              "fields" : {
-                "keyword" : {
-                  "type" : "keyword",
-                  "ignore_above" : 256
-                }
-              }
-            },
-            "startDate" : {
-              "type" : "text",
-              "fields" : {
-                "keyword" : {
-                  "type" : "keyword",
-                  "ignore_above" : 256
-                }
-              }
-            },
-            "type" : {
-              "type" : "text",
-              "fields" : {
-                "keyword" : {
-                  "type" : "keyword",
-                  "ignore_above" : 256
-                }
-              }
+         },
+         "preferredSurname":{
+            "type":"text",
+            "fields":{
+               "keyword":{
+                  "type":"keyword",
+                  "ignore_above":256
+               }
             }
-          }
-        },
-        "title" : {
-          "type" : "text",
-          "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
+         },
+         "surname":{
+            "type":"keyword",
+            "normalizer":"my_normalizer",
+            "fields":{
+               "keyword":{
+                  "type":"keyword",
+                  "ignore_above":256
+               }
             }
-          }
-        }
+         },
+         "tenures":{
+            "properties":{
+               "assetFullAddress":{
+                  "type":"text",
+                  "fields":{
+                     "keyword":{
+                        "type":"keyword",
+                        "ignore_above":256
+                     }
+                  }
+               },
+               "endDate":{
+                  "type":"text",
+                  "fields":{
+                     "keyword":{
+                        "type":"keyword",
+                        "ignore_above":256
+                     }
+                  }
+               },
+               "id":{
+                  "type":"text",
+                  "fields":{
+                     "keyword":{
+                        "type":"keyword",
+                        "ignore_above":256
+                     }
+                  }
+               },
+               "startDate":{
+                  "type":"text",
+                  "fields":{
+                     "keyword":{
+                        "type":"keyword",
+                        "ignore_above":256
+                     }
+                  }
+               },
+               "type":{
+                  "type":"text",
+                  "fields":{
+                     "keyword":{
+                        "type":"keyword",
+                        "ignore_above":256
+                     }
+                  }
+               }
+            }
+         },
+         "title":{
+            "type":"text",
+            "fields":{
+               "keyword":{
+                  "type":"keyword",
+                  "ignore_above":256
+               }
+            }
+         }
       }
-    },
-    "settings" : {
-      "index" : {
-        "creation_date" : "1618407843914",
-        "number_of_shards" : "1",
-        "number_of_replicas" : "1",
-        "uuid" : "clxbqSFSQcuRv_Mb2mHq3A",
-        "version" : {
-          "created" : "7090399"
-        },
-        "provided_name" : "persons"
+   },
+   "settings":{
+      "analysis":{
+         "normalizer":{
+            "my_normalizer":{
+               "type":"custom",
+               "char_filter":[
+                  
+               ],
+               "filter":[
+                  "lowercase",
+                  "asciifolding"
+               ]
+            }
+         }
+      },
+      "index":{
+         "number_of_shards":"1",
+         "number_of_replicas":"1"
       }
-    }
-  }
+   }
 }
