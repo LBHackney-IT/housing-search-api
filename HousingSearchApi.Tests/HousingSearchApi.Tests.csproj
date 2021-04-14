@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <Folder Include="V1\Boundary\Responses\" />
+    <Folder Include="V1\E2ETests\" />
     <Folder Include="V1\UseCase\Interfaces\" />
   </ItemGroup>
 

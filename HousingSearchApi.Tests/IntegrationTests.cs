@@ -1,35 +1,63 @@
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using NUnit.Framework;
 using Docker.DotNet;
-using Docker.DotNet.Models;
+using HousingSearchApi.Tests.V1.Helper;
+using HousingSearchApi.V1.Boundary.Response;
+using HousingSearchApi.V1.Boundary.Responses.Metadata;
+using Microsoft.Extensions.DependencyInjection;
+using Nest;
+using Newtonsoft.Json;
+using Xunit;
 
 namespace HousingSearchApi.Tests
 {
-    public class IntegrationTests<TStartup> where TStartup : class
+    public class ESFixture : IDisposable
+    {
+        private MockWebApplicationFactory<Startup> _factory;
+
+        public ESFixture()
+        {
+            _factory = new MockWebApplicationFactory<Startup>();
+            var result = TestDataHelper.InsertPersonInEs(_factory.Services.GetService<IElasticClient>());
+            result.Wait();
+        }
+
+        public void Dispose()
+        {
+            _factory.Dispose();
+        }
+    }
+
+    [CollectionDefinition("ES collection")]
+    public class DatabaseCollection : ICollectionFixture<ESFixture>
+    {
+        // This class has no code, and is never created. Its purpose is simply
+        // to be the place to apply [CollectionDefinition] and all the
+        // ICollectionFixture<> interfaces.
+    }
+
+    [Collection("ES collection")]
+    public class IntegrationTests
     {
         protected HttpClient Client { get; private set; }
-        private MockWebApplicationFactory<TStartup> _factory;
+        private MockWebApplicationFactory<Startup> _factory;
         private DockerClient _dockerClient;
-
-        [SetUp]
-        public void BaseSetup()
+        
+        public IntegrationTests()
         {
-            _factory = new MockWebApplicationFactory<TStartup>();
+            // to allow ES to be populated
+            Thread.Sleep(500);
+
+            _factory = new MockWebApplicationFactory<Startup>();
             Client = _factory.CreateClient();
         }
 
-        [TearDown]
-        public void BaseTearDown()
-        {
-            Client.Dispose();
-            _factory.Dispose();
-        }
-
-        [Test]
+        [Fact]
         public async Task WhenRequestDoesNotContainSearchStringShouldReturnBadRequestResult()
         {
             // arrange + act
@@ -39,7 +67,7 @@ namespace HousingSearchApi.Tests
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        [Test]
+        [Fact]
         public async Task WhenRequestContainsSearchStringShouldReturn200()
         {
             // arrange + act
@@ -47,6 +75,55 @@ namespace HousingSearchApi.Tests
 
             // assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task WhenRequestGetsResultMaxPageSizeWouldBeTheOneRequestedInTheQueryString()
+        {
+            // arrange +
+            var pageSize = 5;
+
+            // act
+            var response = await Client.GetAsync($"api/v1/search/persons?searchText={TestDataHelper.Alphabet.Last()}&pageSize={pageSize}");
+
+            // assert
+            var result = JsonConvert.DeserializeObject<APIResponse<GetPersonListResponse>>(response.Content.ReadAsStringAsync().Result);
+            result.Results.Persons.Count.Should().Be(pageSize);
+        }
+
+        [Fact]
+        public async Task WhenRequestContainsSearchStringAndSortingLastNameAscShouldReturn200AndSortAppropriately()
+        {
+            // act
+            var response = await Client.GetAsync($"api/v1/search/persons?searchText={TestDataHelper.Alphabet.Last()}&sortBy=surname&isDesc=false&pageSize=10000");
+
+            // assert
+            var result = JsonConvert.DeserializeObject<APIResponse<GetPersonListResponse>>(response.Content.ReadAsStringAsync().Result);
+            var firstSortedPerson = result.Results.Persons.First();
+
+            for (int i = 1; i < result.Results.Persons.Count; i++)
+            {
+                firstSortedPerson.Surname.ToCharArray().First().Should().BeLessOrEqualTo(result.Results.Persons[i].Surname.ToCharArray().First());
+            }
+        }
+
+        [Fact]
+        public async Task WhenRequestContainsSearchStringAndSortingLastNameDescShouldReturn200AndSortAppropriately()
+        {
+            // arrange
+            Thread.Sleep(1000);
+
+            // act
+            var response = await Client.GetAsync($"api/v1/search/persons?searchText={TestDataHelper.Alphabet.Last()}&sortBy=surname&isDesc=true&pageSize=10000");
+
+            // assert
+            var result = JsonConvert.DeserializeObject<APIResponse<GetPersonListResponse>>(response.Content.ReadAsStringAsync().Result);
+            var firstSortedPerson = result.Results.Persons.First();
+
+            for (int i = 1; i < result.Results.Persons.Count; i++)
+            {
+                firstSortedPerson.Surname.ToCharArray().First().Should().BeGreaterOrEqualTo(result.Results.Persons[i].Surname.ToCharArray().First());
+            }
         }
     }
 }

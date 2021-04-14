@@ -1,7 +1,3 @@
-using System.Linq;
-using System.Threading.Tasks;
-using Docker.DotNet;
-using Docker.DotNet.Models;
 using FluentAssertions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Interfaces;
@@ -21,23 +17,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             _sut = new SearchSurnames();
         }
 
-        [Fact(Skip = "Testing ES integration testing")]
-        public async Task Something()
-        {
-            DockerClient dockerClient = new DockerClientConfiguration()
-                .CreateClient();
-
-            var parameters = new ContainersListParameters();
-            parameters.All = true;
-
-            ContainerListResponse container = (await dockerClient.Containers.ListContainersAsync(parameters)).FirstOrDefault(x => x.Image == "test-elasticsearch");
-            if (container.State != "running")
-            {
-                await dockerClient.Containers.StartContainerAsync(container.ID, new ContainerStartParameters());
-            }
-        }
-
-        [Xunit.Theory]
+        [Theory]
         [InlineData("")]
         [InlineData(null)]
         public void ShouldReturnNullIfRequestSearchTextIsEmpty(string searchText)
