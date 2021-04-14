@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
-using Amazon.XRay.Recorder.Core;
+using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Boundary.Response;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
-using HousingSearchApi.V1.Domain;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

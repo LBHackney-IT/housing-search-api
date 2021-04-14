@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
 using HousingSearchApi.V1.Infrastructure;
-using Nest;
-using Newtonsoft.Json;
 
 namespace HousingSearchApi.V1.Domain
 {

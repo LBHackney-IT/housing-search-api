@@ -1,12 +1,11 @@
 using System.Threading.Tasks;
 using FluentAssertions;
+using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using HousingSearchApi.V1.Controllers;
-using HousingSearchApi.V1.Domain;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using NUnit.Framework;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Controllers
