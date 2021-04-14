@@ -1,48 +1,17 @@
-using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Docker.DotNet;
 using HousingSearchApi.Tests.V1.Helper;
 using HousingSearchApi.V1.Boundary.Response;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
-using Microsoft.Extensions.DependencyInjection;
-using Nest;
 using Newtonsoft.Json;
 using Xunit;
 
 namespace HousingSearchApi.Tests
 {
-    public class ESFixture : IDisposable
-    {
-        private MockWebApplicationFactory<Startup> _factory;
-
-        public ESFixture()
-        {
-            _factory = new MockWebApplicationFactory<Startup>();
-            TestDataHelper.InsertPersonInEs(_factory.Services.GetService<IElasticClient>());
-
-            // For the index to have time to be populated
-            Thread.Sleep(500);
-        }
-
-        public void Dispose()
-        {
-            _factory.Dispose();
-        }
-    }
-
-    [CollectionDefinition("ES collection")]
-    public class DatabaseCollection : ICollectionFixture<ESFixture>
-    {
-        // This class has no code, and is never created. Its purpose is simply
-        // to be the place to apply [CollectionDefinition] and all the
-        // ICollectionFixture<> interfaces.
-    }
-
     [Collection("ES collection")]
     public class IntegrationTests
     {
