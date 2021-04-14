@@ -55,7 +55,7 @@ namespace HousingSearchApi.V1.Controllers
             catch (Exception e)
             {
                 LambdaLogger.Log(e.Message + e.StackTrace);
-                return new OkObjectResult(e.Message);
+                return new BadRequestObjectResult(e.Message);
             }
         }
     }
