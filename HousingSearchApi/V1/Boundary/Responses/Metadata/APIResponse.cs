@@ -1,6 +1,3 @@
-using System.Net;
-using Newtonsoft.Json;
-
 namespace HousingSearchApi.V1.Boundary.Responses.Metadata
 {
     /// <summary>

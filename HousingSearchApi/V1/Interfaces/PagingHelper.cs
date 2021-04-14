@@ -1,4 +1,4 @@
-namespace HousingSearchApi.V1.Gateways
+namespace HousingSearchApi.V1.Interfaces
 {
     public class PagingHelper : IPagingHelper
     {

@@ -35,13 +35,13 @@ namespace HousingSearchApi.V1.Infrastructure
         public string Id { get; set; }
         public string Title { get; set; }
 
-        [Text(Name = "firstname")]
+        [Keyword(Name = "firstname")]
         public string Firstname { get; set; }
 
         [Text(Name = "middlename")]
         public string MiddleName { get; set; }
 
-        [Text(Name = "surname")]
+        [Keyword(Name = "surname")]
         public string Surname { get; set; }
 
         [Text(Name = "preferredFirstname")]

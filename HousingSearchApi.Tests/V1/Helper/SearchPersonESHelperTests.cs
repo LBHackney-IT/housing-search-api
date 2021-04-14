@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using FluentAssertions;
-using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Gateways;
+using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Infrastructure.Sorting;
+using HousingSearchApi.V1.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
 using Xunit;
@@ -20,12 +21,13 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             _classUnderTest = new SearchPersonESHelper(_services.BuildServiceProvider().GetService<IElasticClient>(),
                 _services.BuildServiceProvider().GetService<ISearchPersonsQueryContainerOrchestrator>(),
-                _services.BuildServiceProvider().GetService<IPagingHelper>());
+                _services.BuildServiceProvider().GetService<IPagingHelper>(),
+                _services.BuildServiceProvider().GetService<IPersonListSortFactory>());
         }
 
         [Fact]
         // In our case, the query should be a SHOULD (the ES option for OR), followed by wildcards for :
-        // firstname, lastname, middlename,prefferedfirstname, preferredsurname, dateofbirth
+        // firstname, surname, middlename,prefferedfirstname, preferredsurname, dateofbirth
         public async Task WhenCallingESHelperShouldGenerateTheRightQuery()
         {
             // arrange
