@@ -67,11 +67,16 @@ namespace HousingSearchApi.Tests
 
             // assert
             var result = JsonConvert.DeserializeObject<APIResponse<GetPersonListResponse>>(response.Content.ReadAsStringAsync().Result);
-            var firstSortedPerson = result.Results.Persons.First();
 
-            for (int i = 1; i < result.Results.Persons.Count; i++)
+            for (int i = 0; i < result.Results.Persons.Count; i++)
             {
-                firstSortedPerson.Surname.ToCharArray().First().Should().BeLessOrEqualTo(result.Results.Persons[i].Surname.ToCharArray().First());
+                // if i == to the last element, then break
+                if (i + 1 == result.Results.Persons.Count)
+                    break;
+
+                // We are comparing the first char of the first sorted person to the first char of every other person. It should be less than
+                // or equal to the next in line for asc
+                result.Results.Persons[i].Surname.ToCharArray().First().Should().BeLessOrEqualTo(result.Results.Persons[i + 1].Surname.ToCharArray().First());
             }
         }
 
@@ -83,11 +88,16 @@ namespace HousingSearchApi.Tests
 
             // assert
             var result = JsonConvert.DeserializeObject<APIResponse<GetPersonListResponse>>(response.Content.ReadAsStringAsync().Result);
-            var firstSortedPerson = result.Results.Persons.First();
 
             for (int i = 1; i < result.Results.Persons.Count; i++)
             {
-                firstSortedPerson.Surname.ToCharArray().First().Should().BeGreaterOrEqualTo(result.Results.Persons[i].Surname.ToCharArray().First());
+                // if i == to the last element, then break
+                if (i + 1 == result.Results.Persons.Count)
+                    break;
+
+                // We are comparing the first char of the first sorted person to the first char of every other person. It should be greater than
+                // or equal to the next in line for desc
+                result.Results.Persons[i].Surname.ToCharArray().First().Should().BeGreaterOrEqualTo(result.Results.Persons[i + 1].Surname.ToCharArray().First());
             }
         }
     }
