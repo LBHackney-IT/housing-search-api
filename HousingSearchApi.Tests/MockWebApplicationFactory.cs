@@ -8,7 +8,7 @@ namespace HousingSearchApi.Tests
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            
+
         }
     }
 }

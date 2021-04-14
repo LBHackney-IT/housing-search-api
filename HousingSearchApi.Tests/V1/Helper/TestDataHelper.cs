@@ -22,7 +22,7 @@ namespace HousingSearchApi.Tests.V1.Helper
                     .Properties(prop =>
                         prop.Keyword(field => field.Name("surname"))
                             .Keyword(field => field.Name("firstname")))));
-                
+
             await elasticClient.IndexManyAsync(CreateQueryablePerson(), "persons");
 
         }

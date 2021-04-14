@@ -47,7 +47,7 @@ namespace HousingSearchApi.Tests
         protected HttpClient Client { get; private set; }
         private MockWebApplicationFactory<Startup> _factory;
         private DockerClient _dockerClient;
-        
+
         public IntegrationTests()
         {
             // to allow ES to be populated
