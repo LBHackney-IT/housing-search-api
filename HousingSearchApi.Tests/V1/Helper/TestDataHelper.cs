@@ -12,19 +12,18 @@ namespace HousingSearchApi.Tests.V1.Helper
     {
         public static string[] Alphabet = { "aa", "bb", "cc", "dd", "ee", "vv", "ww", "xx", "yy", "zz" };
 
-        public static async Task InsertPersonInEs(IElasticClient elasticClient, string key = null,
+        public static void InsertPersonInEs(IElasticClient elasticClient, string key = null,
             QueryablePerson addressConfig = null)
         {
-            await elasticClient.Indices.DeleteAsync("persons");
+            elasticClient.Indices.Delete("persons");
 
-            await elasticClient.Indices.CreateAsync("persons", s =>
+            elasticClient.Indices.Create("persons", s =>
                 s.Map(x => x.AutoMap()
                     .Properties(prop =>
                         prop.Keyword(field => field.Name("surname"))
                             .Keyword(field => field.Name("firstname")))));
 
-            await elasticClient.IndexManyAsync(CreateQueryablePerson(), "persons");
-
+            elasticClient.IndexManyAsync(CreateQueryablePerson(), "persons");
         }
 
         private static List<QueryablePerson> CreateQueryablePerson()

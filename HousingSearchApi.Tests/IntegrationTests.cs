@@ -23,8 +23,10 @@ namespace HousingSearchApi.Tests
         public ESFixture()
         {
             _factory = new MockWebApplicationFactory<Startup>();
-            var result = TestDataHelper.InsertPersonInEs(_factory.Services.GetService<IElasticClient>());
-            result.Wait();
+            TestDataHelper.InsertPersonInEs(_factory.Services.GetService<IElasticClient>());
+
+            // For the index to have time to be populated
+            Thread.Sleep(500);
         }
 
         public void Dispose()
@@ -50,9 +52,6 @@ namespace HousingSearchApi.Tests
 
         public IntegrationTests()
         {
-            // to allow ES to be populated
-            Thread.Sleep(500);
-
             _factory = new MockWebApplicationFactory<Startup>();
             Client = _factory.CreateClient();
         }
