@@ -110,10 +110,7 @@ namespace HousingSearchApi.Tests
         [Fact]
         public async Task WhenRequestContainsSearchStringAndSortingLastNameDescShouldReturn200AndSortAppropriately()
         {
-            // arrange
-            Thread.Sleep(1000);
-
-            // act
+            // arrange + act
             var response = await Client.GetAsync($"api/v1/search/persons?searchText={TestDataHelper.Alphabet.Last()}&sortBy=surname&isDesc=true&pageSize=10000");
 
             // assert
