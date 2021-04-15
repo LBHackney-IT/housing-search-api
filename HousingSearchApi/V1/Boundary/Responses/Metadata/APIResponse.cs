@@ -12,7 +12,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Metadata
     {
         public T Results { get; set; }
 
-        public int Total { get; set; }
+        public long Total { get; set; }
 
         public APIResponse() { }
 

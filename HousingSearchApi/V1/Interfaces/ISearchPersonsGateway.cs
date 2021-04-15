@@ -29,6 +29,8 @@ namespace HousingSearchApi.V1.Interfaces
                 Person.Create(queryablePerson)
             ));
 
+            personListResponse.SetTotal(searchResponse.Total);
+
             return personListResponse;
         }
     }
