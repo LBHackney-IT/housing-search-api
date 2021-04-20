@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Infrastructure.Sorting;
 using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Interfaces.Sorting;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
 using Xunit;

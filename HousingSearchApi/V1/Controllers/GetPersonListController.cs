@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HousingSearchApi.V1.Controllers
 {
-    [ApiVersion("2")]
+    [ApiVersion("1")]
     [Produces("application/json")]
     [Route("api/v1/search/persons")]
     public class GetPersonListController : BaseController

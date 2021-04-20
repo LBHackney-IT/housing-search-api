@@ -1,6 +1,7 @@
+using HousingSearchApi.V1.Infrastructure;
 using Nest;
 
-namespace HousingSearchApi.V1.Infrastructure.Sorting
+namespace HousingSearchApi.V1.Interfaces.Sorting
 {
     public class SurnameDesc : IPersonListSort
     {

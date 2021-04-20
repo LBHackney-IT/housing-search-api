@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Infrastructure;
-using HousingSearchApi.V1.Infrastructure.Sorting;
+using HousingSearchApi.V1.Interfaces.Sorting;
 using Nest;
 
 namespace HousingSearchApi.V1.Interfaces
