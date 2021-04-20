@@ -1,34 +1,8 @@
 using System.Collections.Generic;
 using Nest;
 
-namespace HousingSearchApi.V1.Infrastructure
+namespace HousingSearchApi.V1.Domain.ES
 {
-    public class Identification
-    {
-        public string IdentificationType { get; set; }
-
-        public string Value { get; set; }
-
-        public bool OriginalDocumentSeen { get; set; }
-
-        public string LinkToDocument { get; set; }
-
-    }
-    public class Tenures
-    {
-        [Text(Name = "id")]
-        public string Id { get; set; }
-
-        [Text(Name = "type")]
-        public string Type { get; set; }
-
-        public string StartDate { get; set; }
-
-        public string EndDate { get; set; }
-
-        public string AssetFullAddress { get; set; }
-
-    }
     public class QueryablePerson
     {
         [Text(Name = "id")]

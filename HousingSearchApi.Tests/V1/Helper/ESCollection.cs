@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace HousingSearchApi.Tests
+namespace HousingSearchApi.Tests.V1.Helper
 {
     [CollectionDefinition("ES collection")]
     public class ESCollection : ICollectionFixture<ESFixture>

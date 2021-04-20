@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoFixture;
-using HousingSearchApi.V1.Infrastructure;
+using HousingSearchApi.V1.Domain;
+using HousingSearchApi.V1.Domain.ES;
 using Nest;
 
 namespace HousingSearchApi.Tests.V1.Helper

@@ -16,7 +16,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.Interfaces;
 using HousingSearchApi.V1.Interfaces.Sorting;

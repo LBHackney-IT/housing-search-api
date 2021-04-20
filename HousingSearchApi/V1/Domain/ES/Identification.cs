@@ -1,4 +1,4 @@
-namespace HousingSearchApi.V1.Domain
+namespace HousingSearchApi.V1.Domain.ES
 {
     public class Identification
     {

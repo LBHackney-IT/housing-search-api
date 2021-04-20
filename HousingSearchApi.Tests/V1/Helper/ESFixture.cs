@@ -1,10 +1,9 @@
 using System;
 using System.Threading;
-using HousingSearchApi.Tests.V1.Helper;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
 
-namespace HousingSearchApi.Tests
+namespace HousingSearchApi.Tests.V1.Helper
 {
     public class ESFixture : IDisposable
     {
