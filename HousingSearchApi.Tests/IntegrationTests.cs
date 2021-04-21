@@ -65,7 +65,7 @@ namespace HousingSearchApi.Tests
         {
             // act
             var response = await Client.GetAsync(new Uri($"api/v1/search/persons?searchText={TestDataHelper.Alphabet.Last()}&sortBy=surname&isDesc=false&pageSize=10000"))
-                .ConfigureAwait(false); 
+                .ConfigureAwait(false);
 
             // assert
             var result = JsonConvert.DeserializeObject<APIResponse<GetPersonListResponse>>(response.Content.ReadAsStringAsync().Result);
