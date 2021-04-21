@@ -22,7 +22,7 @@ namespace HousingSearchApi.V1.Interfaces
 
         public async Task<GetPersonListResponse> GetListOfPersons(GetPersonListRequest request)
         {
-            var searchResponse = await _esHelper.Search(request);
+            var searchResponse = await _esHelper.Search(request).ConfigureAwait(false);
             var personListResponse = new GetPersonListResponse();
 
             personListResponse.Persons.AddRange(searchResponse.Documents.Select(queryablePerson =>

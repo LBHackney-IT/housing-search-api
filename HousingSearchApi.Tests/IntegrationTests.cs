@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -17,7 +18,6 @@ namespace HousingSearchApi.Tests
     {
         protected HttpClient Client { get; private set; }
         private MockWebApplicationFactory<Startup> _factory;
-        private DockerClient _dockerClient;
 
         public IntegrationTests()
         {
@@ -29,7 +29,7 @@ namespace HousingSearchApi.Tests
         public async Task WhenRequestDoesNotContainSearchStringShouldReturnBadRequestResult()
         {
             // arrange + act
-            var response = await Client.GetAsync("api/v1/search/persons");
+            var response = await Client.GetAsync(new Uri("api/v1/search/persons")).ConfigureAwait(false); ;
 
             // assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -39,7 +39,7 @@ namespace HousingSearchApi.Tests
         public async Task WhenRequestContainsSearchStringShouldReturn200()
         {
             // arrange + act
-            var response = await Client.GetAsync("api/v1/search/persons?searchText=abc");
+            var response = await Client.GetAsync(new Uri("api/v1/search/persons?searchText=abc")).ConfigureAwait(false); ;
 
             // assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -52,7 +52,8 @@ namespace HousingSearchApi.Tests
             var pageSize = 5;
 
             // act
-            var response = await Client.GetAsync($"api/v1/search/persons?searchText={TestDataHelper.Alphabet.Last()}&pageSize={pageSize}");
+            var response = await Client.GetAsync(new Uri($"api/v1/search/persons?searchText={TestDataHelper.Alphabet.Last()}&pageSize={pageSize}"))
+                .ConfigureAwait(false); ;
 
             // assert
             var result = JsonConvert.DeserializeObject<APIResponse<GetPersonListResponse>>(response.Content.ReadAsStringAsync().Result);
@@ -63,7 +64,8 @@ namespace HousingSearchApi.Tests
         public async Task WhenRequestContainsSearchStringAndSortingLastNameAscShouldReturn200AndSortAppropriately()
         {
             // act
-            var response = await Client.GetAsync($"api/v1/search/persons?searchText={TestDataHelper.Alphabet.Last()}&sortBy=surname&isDesc=false&pageSize=10000");
+            var response = await Client.GetAsync(new Uri($"api/v1/search/persons?searchText={TestDataHelper.Alphabet.Last()}&sortBy=surname&isDesc=false&pageSize=10000"))
+                .ConfigureAwait(false); 
 
             // assert
             var result = JsonConvert.DeserializeObject<APIResponse<GetPersonListResponse>>(response.Content.ReadAsStringAsync().Result);
@@ -84,7 +86,8 @@ namespace HousingSearchApi.Tests
         public async Task WhenRequestContainsSearchStringAndSortingLastNameDescShouldReturn200AndSortAppropriately()
         {
             // arrange + act
-            var response = await Client.GetAsync($"api/v1/search/persons?searchText={TestDataHelper.Alphabet.Last()}&sortBy=surname&isDesc=true&pageSize=10000");
+            var response = await Client.GetAsync(new Uri($"api/v1/search/persons?searchText={TestDataHelper.Alphabet.Last()}&sortBy=surname&isDesc=true&pageSize=10000"))
+                .ConfigureAwait(false);
 
             // assert
             var result = JsonConvert.DeserializeObject<APIResponse<GetPersonListResponse>>(response.Content.ReadAsStringAsync().Result);

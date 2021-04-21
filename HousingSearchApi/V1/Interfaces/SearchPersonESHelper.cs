@@ -32,15 +32,17 @@ namespace HousingSearchApi.V1.Interfaces
             try
             {
                 LambdaLogger.Log("ES Search begins " + Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL"));
+                if (request == null)
+                    return new SearchResponse<QueryablePerson>();
 
                 var pageOffset = _pagingHelper.GetPageOffset(request.PageSize, request.Page);
 
                 var result = await _esClient.SearchAsync<QueryablePerson>(x => x.Index(_indices)
                     .Query(q => BaseQuery(request, q))
-                    .Sort(_iPersonListSortFactory.Create(request).Get)
+                    .Sort(_iPersonListSortFactory.Create(request).GetSortDescriptor)
                     .Size(request.PageSize)
                     .Skip(pageOffset)
-                    .TrackTotalHits());
+                    .TrackTotalHits()).ConfigureAwait(false);
 
                 LambdaLogger.Log("ES Search ended");
 
@@ -49,7 +51,8 @@ namespace HousingSearchApi.V1.Interfaces
             catch (Exception e)
             {
                 LambdaLogger.Log(e.Message);
-                throw e;
+
+                throw new Exception(e.Message);
             }
         }
 

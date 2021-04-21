@@ -12,12 +12,11 @@ namespace HousingSearchApi.Tests.V1.Helper
     {
         public static string[] Alphabet = { "aa", "bb", "cc", "dd", "ee", "vv", "ww", "xx", "yy", "zz" };
 
-        public static void InsertPersonInEs(IElasticClient elasticClient, string key = null,
-            QueryablePerson addressConfig = null)
+        public static void InsertPersonInEs(IElasticClient elasticClient)
         {
-            elasticClient.Indices.Delete("persons");
+            elasticClient?.Indices.Delete("persons");
 
-            elasticClient.Indices.Create("persons", s =>
+            elasticClient?.Indices.Create("persons", s =>
                 s.Map(x => x.AutoMap()
                     .Properties(prop =>
                         prop.Keyword(field => field.Name("surname"))

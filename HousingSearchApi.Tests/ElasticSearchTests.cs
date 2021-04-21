@@ -35,7 +35,9 @@ namespace HousingSearchApi.Tests
         {
             DeleteAddressesIndex(client);
 
-            //TODO: Index?
+            if (client == null)
+                return;
+
             await CreateIndex(Constants.EsIndex, client).ConfigureAwait(true);
         }
         public static ElasticClient SetupElasticsearchConnection()
@@ -62,6 +64,9 @@ namespace HousingSearchApi.Tests
 
         public static void DeleteAddressesIndex(ElasticClient client)
         {
+            if (client == null)
+                return;
+
             if (client.Indices.Exists(Constants.EsIndex).Exists)
             {
                 client.Indices.Delete(Constants.EsIndex);

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using HousingSearchApi.V1.Boundary.Requests;
@@ -36,13 +37,13 @@ namespace HousingSearchApi.Tests.V1.Helper
             // In our case, it wildcards the 6 fields by which we are searching.
             var correctQuery =
                 "{\"should\":[{\"wildcard\":{\"firstname\":{\"value\":\"*{0}*\"}}},{\"wildcard\":{\"surname\":{\"value\":\"*{0}*\"}}}]}";
-            correctQuery = correctQuery.Replace("{0}", searchText);
+            correctQuery = correctQuery.Replace("{0}", searchText, StringComparison.CurrentCulture);
 
             // act
-            var response = await _classUnderTest.Search(new GetPersonListRequest { SearchText = searchText });
+            var response = await _classUnderTest.Search(new GetPersonListRequest { SearchText = searchText }).ConfigureAwait(false);
 
             // assert
-            response.DebugInformation.IndexOf(correctQuery).Should().BeGreaterOrEqualTo(0);
+            response.DebugInformation.IndexOf(correctQuery, StringComparison.CurrentCulture).Should().BeGreaterOrEqualTo(0);
         }
     }
 }

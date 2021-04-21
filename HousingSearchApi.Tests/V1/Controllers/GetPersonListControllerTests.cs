@@ -29,7 +29,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
             var request = new GetPersonListRequest();
 
             // when
-            await _classUnderTest.GetPersonList(request);
+            await _classUnderTest.GetPersonList(request).ConfigureAwait(false);
 
             // then
             _mockGetPersonListUseCase.Verify(x => x.ExecuteAsync(request), Times.Once);
@@ -46,7 +46,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
                 .Throws(notFoundException);
 
             // when
-            var result = await _classUnderTest.GetPersonList(request);
+            var result = await _classUnderTest.GetPersonList(request).ConfigureAwait(false);
 
             // then
             result.Should().BeOfType(typeof(NotFoundObjectResult));

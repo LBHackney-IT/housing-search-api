@@ -6,7 +6,7 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
 {
     public class SurnameAsc : IPersonListSort
     {
-        public SortDescriptor<QueryablePerson> Get(SortDescriptor<QueryablePerson> descriptor)
+        public SortDescriptor<QueryablePerson> GetSortDescriptor(SortDescriptor<QueryablePerson> descriptor)
         {
             return descriptor
                 .Ascending(f => f.Surname)
