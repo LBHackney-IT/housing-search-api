@@ -5,11 +5,11 @@ using Nest;
 
 namespace HousingSearchApi.Tests.V1.Helper
 {
-    public class ESFixture : IDisposable
+    public class ElasticSearchFixture : IDisposable
     {
         private MockWebApplicationFactory<Startup> _factory;
 
-        public ESFixture()
+        public ElasticSearchFixture()
         {
             _factory = new MockWebApplicationFactory<Startup>();
             TestDataHelper.InsertPersonInEs(_factory.Services.GetService<IElasticClient>());

@@ -10,26 +10,26 @@ using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Helper
 {
-    public class SearchPersonESHelperTests
+    public class SearchPersonElasticSearchHelperTests
     {
-        private SearchPersonESHelper _classUnderTest;
+        private SearchPersonElasticSearchHelper _classUnderTest;
         private ServiceCollection _services;
 
-        public SearchPersonESHelperTests()
+        public SearchPersonElasticSearchHelperTests()
         {
             _services = new ServiceCollection();
             Startup.ConfigureServices(_services);
 
-            _classUnderTest = new SearchPersonESHelper(_services.BuildServiceProvider().GetService<IElasticClient>(),
+            _classUnderTest = new SearchPersonElasticSearchHelper(_services.BuildServiceProvider().GetService<IElasticClient>(),
                 _services.BuildServiceProvider().GetService<ISearchPersonsQueryContainerOrchestrator>(),
                 _services.BuildServiceProvider().GetService<IPagingHelper>(),
                 _services.BuildServiceProvider().GetService<IPersonListSortFactory>());
         }
 
         [Fact]
-        // In our case, the query should be a SHOULD (the ES option for OR), followed by wildcards for :
+        // In our case, the query should be a SHOULD (the ElasticSearch option for OR), followed by wildcards for :
         // firstname, surname, middlename,prefferedfirstname, preferredsurname, dateofbirth
-        public async Task WhenCallingESHelperShouldGenerateTheRightQuery()
+        public async Task WhenCallingElasticSearchHelperShouldGenerateTheRightQuery()
         {
             // arrange
             var searchText = "abc";

@@ -1,8 +1,7 @@
 using System.Linq;
 using FluentAssertions;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Domain.ES;
+using HousingSearchApi.V1.Domain.ElasticSearch;
 using HousingSearchApi.V1.Interfaces;
 using Nest;
 using Xunit;

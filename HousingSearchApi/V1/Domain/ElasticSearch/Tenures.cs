@@ -1,6 +1,6 @@
 using Nest;
 
-namespace HousingSearchApi.V1.Domain.ES
+namespace HousingSearchApi.V1.Domain.ElasticSearch
 {
     public class Tenures
     {

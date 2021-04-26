@@ -4,7 +4,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Docker.DotNet;
 using HousingSearchApi.Tests.V1.Helper;
 using HousingSearchApi.V1.Boundary.Response;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
@@ -13,7 +12,7 @@ using Xunit;
 
 namespace HousingSearchApi.Tests
 {
-    [Collection("ES collection")]
+    [Collection("ElasticSearch collection")]
     public class IntegrationTests
     {
         protected HttpClient Client { get; private set; }

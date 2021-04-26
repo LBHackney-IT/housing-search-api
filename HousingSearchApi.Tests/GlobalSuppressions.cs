@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable", Justification = "<Pending>", Scope = "type", Target = "~T:HousingSearchApi.Tests.V1.Controllers.GetPersonListControllerTests")]
 [assembly: SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable", Justification = "<Pending>", Scope = "type", Target = "~T:HousingSearchApi.Tests.IntegrationTests")]
-[assembly: SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "<Pending>", Scope = "type", Target = "~T:HousingSearchApi.Tests.V1.Helper.ESFixture")]
+[assembly: SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "<Pending>", Scope = "type", Target = "~T:HousingSearchApi.Tests.V1.Helper.ElasticSearchFixture")]
 [assembly: SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "<Pending>", Scope = "member", Target = "~F:HousingSearchApi.Tests.V1.Helper.TestDataHelper.Alphabet")]
 [assembly: SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>", Scope = "member", Target = "~M:HousingSearchApi.Tests.ElasticsearchTests.SetupElasticsearchConnection~Nest.ElasticClient")]
-[assembly: SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize", Justification = "<Pending>", Scope = "member", Target = "~M:HousingSearchApi.Tests.V1.Helper.ESFixture.Dispose")]
+[assembly: SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize", Justification = "<Pending>", Scope = "member", Target = "~M:HousingSearchApi.Tests.V1.Helper.ElasticSearchFixture.Dispose")]

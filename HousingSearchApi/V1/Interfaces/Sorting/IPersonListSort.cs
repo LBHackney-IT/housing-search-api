@@ -1,5 +1,4 @@
-using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Domain.ES;
+using HousingSearchApi.V1.Domain.ElasticSearch;
 using Nest;
 
 namespace HousingSearchApi.V1.Interfaces.Sorting

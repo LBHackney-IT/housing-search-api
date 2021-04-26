@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using HousingSearchApi.V1.Domain.ES;
+using HousingSearchApi.V1.Domain.ElasticSearch;
 
 namespace HousingSearchApi.V1.Domain
 {
@@ -21,19 +21,19 @@ namespace HousingSearchApi.V1.Domain
                 PlaceOfBirth = person.PlaceOfBirth,
                 DateOfBirth = person.DateOfBirth,
                 Gender = person.Gender,
-                Identification = Create(person.Identification ?? new List<ES.Identification>()),
+                Identification = Create(person.Identification ?? new List<ElasticSearch.Identification>()),
                 PersonTypes = person.PersonTypes,
                 IsPersonCautionaryAlert = person.IsPersonCautionaryAlert,
                 IsTenureCautionaryAlert = person.IsTenureCautionaryAlert,
-                Tenures = Create(person.Tenures ?? new List<ES.Tenures>())
+                Tenures = Create(person.Tenures ?? new List<ElasticSearch.Tenures>())
             };
         }
 
-        private static List<Identification> Create(List<ES.Identification> identifications)
+        private static List<Identification> Create(List<ElasticSearch.Identification> identifications)
         {
             var identList = new List<Identification>();
 
-            foreach (ES.Identification identification in identifications)
+            foreach (ElasticSearch.Identification identification in identifications)
             {
                 identList.Add(new Identification
                 {
@@ -47,11 +47,11 @@ namespace HousingSearchApi.V1.Domain
             return identList;
         }
 
-        private static List<Tenures> Create(List<ES.Tenures> tenures)
+        private static List<Tenures> Create(List<ElasticSearch.Tenures> tenures)
         {
             var tenureList = new List<Tenures>();
 
-            foreach (ES.Tenures tenure in tenures)
+            foreach (ElasticSearch.Tenures tenure in tenures)
             {
                 tenureList.Add(new Tenures
                 {

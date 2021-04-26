@@ -13,16 +13,16 @@ namespace HousingSearchApi.V1.Interfaces
 
     public class SearchPersonsGateway : ISearchPersonsGateway
     {
-        private readonly ISearchPersonESHelper _esHelper;
+        private readonly ISearchPersonElasticSearchHelper _elasticSearchHelper;
 
-        public SearchPersonsGateway(ISearchPersonESHelper esHelper)
+        public SearchPersonsGateway(ISearchPersonElasticSearchHelper elasticSearchHelper)
         {
-            _esHelper = esHelper;
+            _elasticSearchHelper = elasticSearchHelper;
         }
 
         public async Task<GetPersonListResponse> GetListOfPersons(GetPersonListRequest request)
         {
-            var searchResponse = await _esHelper.Search(request).ConfigureAwait(false);
+            var searchResponse = await _elasticSearchHelper.Search(request).ConfigureAwait(false);
             var personListResponse = new GetPersonListResponse();
 
             personListResponse.Persons.AddRange(searchResponse.Documents.Select(queryablePerson =>

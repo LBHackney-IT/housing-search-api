@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoFixture;
-using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Domain.ES;
+using HousingSearchApi.V1.Domain.ElasticSearch;
 using Nest;
 
 namespace HousingSearchApi.Tests.V1.Helper
