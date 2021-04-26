@@ -2,7 +2,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Response;
-using HousingSearchApi.V1.Domain;
 
 namespace HousingSearchApi.V1.Interfaces
 {
@@ -26,8 +25,8 @@ namespace HousingSearchApi.V1.Interfaces
             var personListResponse = new GetPersonListResponse();
 
             personListResponse.Persons.AddRange(searchResponse.Documents.Select(queryablePerson =>
-                Person.Create(queryablePerson)
-            ));
+                queryablePerson.Create())
+            );
 
             personListResponse.SetTotal(searchResponse.Total);
 
