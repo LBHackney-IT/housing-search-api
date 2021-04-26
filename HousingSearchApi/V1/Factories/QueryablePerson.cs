@@ -12,31 +12,31 @@ namespace HousingSearchApi.V1.Factories
         {
             return new Person
             {
-                Id = this.Id,
-                Title = this.Title,
-                Firstname = this.Firstname,
-                MiddleName = this.MiddleName,
-                Surname = this.Surname,
-                PreferredFirstname = this.PreferredFirstname,
-                PreferredSurname = this.PreferredSurname,
-                Ethinicity = this.Ethinicity,
-                Nationality = this.Nationality,
-                PlaceOfBirth = this.PlaceOfBirth,
-                DateOfBirth = this.DateOfBirth,
-                Gender = this.Gender,
-                Identification = Create(this.Identification ?? new List<Domain.ElasticSearch.Identification>()),
-                PersonTypes = this.PersonTypes,
-                IsPersonCautionaryAlert = this.IsPersonCautionaryAlert,
-                IsTenureCautionaryAlert = this.IsTenureCautionaryAlert,
-                Tenures = Create(this.Tenures ?? new List<Domain.ElasticSearch.Tenures>())
+                Id = Id,
+                Title = Title,
+                Firstname = Firstname,
+                MiddleName = MiddleName,
+                Surname = Surname,
+                PreferredFirstname = PreferredFirstname,
+                PreferredSurname = PreferredSurname,
+                Ethinicity = Ethinicity,
+                Nationality = Nationality,
+                PlaceOfBirth = PlaceOfBirth,
+                DateOfBirth = DateOfBirth,
+                Gender = Gender,
+                Identification = Create(Identification ?? new List<Identification>()),
+                PersonTypes = PersonTypes,
+                IsPersonCautionaryAlert = IsPersonCautionaryAlert,
+                IsTenureCautionaryAlert = IsTenureCautionaryAlert,
+                Tenures = Create(Tenures ?? new List<Tenures>())
             };
         }
 
-        private static List<Domain.Identification> Create(List<Domain.ElasticSearch.Identification> identifications)
+        private static List<Domain.Identification> Create(List<Identification> identifications)
         {
             var identList = new List<Domain.Identification>();
 
-            foreach (Domain.ElasticSearch.Identification identification in identifications)
+            foreach (Identification identification in identifications)
             {
                 identList.Add(new Domain.Identification
                 {
@@ -50,11 +50,11 @@ namespace HousingSearchApi.V1.Factories
             return identList;
         }
 
-        private static List<Domain.Tenures> Create(List<Domain.ElasticSearch.Tenures> tenures)
+        private static List<Domain.Tenures> Create(List<Tenures> tenures)
         {
             var tenureList = new List<Domain.Tenures>();
 
-            foreach (Domain.ElasticSearch.Tenures tenure in tenures)
+            foreach (Tenures tenure in tenures)
             {
                 tenureList.Add(new Domain.Tenures
                 {
