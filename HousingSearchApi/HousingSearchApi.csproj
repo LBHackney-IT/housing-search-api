@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <Folder Include="V1\Domain\ElasticSearch\" />
+    <Folder Include="V1\Factories\" />
   </ItemGroup>
 
 </Project>

@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using HousingSearchApi.V1.Domain;
 using Nest;
-using Identification = HousingSearchApi.V1.Gateways.Identification;
-using Tenures = HousingSearchApi.V1.Gateways.Tenures;
 
-namespace HousingSearchApi.V1.Factories
+namespace HousingSearchApi.V1.Gateways
 {
     public class QueryablePerson
     {
@@ -52,7 +50,7 @@ namespace HousingSearchApi.V1.Factories
 
         public string Gender { get; set; }
 
-        public List<Identification> Identification { get; set; }
+        public List<Domain.Identification> Identification { get; set; }
 
         public List<string> PersonTypes { get; set; }
 
@@ -60,7 +58,7 @@ namespace HousingSearchApi.V1.Factories
 
         public bool IsTenureCautionaryAlert { get; set; }
 
-        public List<Tenures> Tenures { get; set; }
+        public List<Gateways.Tenures> Tenures { get; set; }
 
     }
 }

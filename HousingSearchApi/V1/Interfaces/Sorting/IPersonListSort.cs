@@ -1,4 +1,4 @@
-using HousingSearchApi.V1.Factories;
+using HousingSearchApi.V1.Gateways;
 using Nest;
 
 namespace HousingSearchApi.V1.Interfaces.Sorting
