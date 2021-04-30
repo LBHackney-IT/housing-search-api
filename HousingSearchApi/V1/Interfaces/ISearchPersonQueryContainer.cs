@@ -1,5 +1,4 @@
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Domain.ElasticSearch;
 using HousingSearchApi.V1.Factories;
 using Nest;
 

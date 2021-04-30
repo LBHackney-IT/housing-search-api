@@ -46,7 +46,7 @@ namespace HousingSearchApi.V1.Controllers
 
             try
             {
-                var personsSearchResult = await _getPersonListUseCase.ExecuteAsync(request).ConfigureAwait(false); ;
+                var personsSearchResult = await _getPersonListUseCase.ExecuteAsync(request).ConfigureAwait(false);
                 var apiResponse = new APIResponse<GetPersonListResponse>(personsSearchResult);
                 apiResponse.Total = personsSearchResult.Total();
 

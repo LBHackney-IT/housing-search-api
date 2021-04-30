@@ -1,13 +1,9 @@
-using Nest;
-
-namespace HousingSearchApi.V1.Domain.ElasticSearch
+namespace HousingSearchApi.V1.Domain
 {
-    public class Tenures
+    public class Tenure
     {
-        [Text(Name = "id")]
         public string Id { get; set; }
 
-        [Text(Name = "type")]
         public string Type { get; set; }
 
         public string StartDate { get; set; }

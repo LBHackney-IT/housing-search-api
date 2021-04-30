@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Domain.ElasticSearch;
 using HousingSearchApi.V1.Factories;
 using HousingSearchApi.V1.Interfaces.Sorting;
 using Nest;

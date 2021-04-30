@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoFixture;
-using HousingSearchApi.V1.Domain.ElasticSearch;
 using HousingSearchApi.V1.Factories;
 using Nest;
 

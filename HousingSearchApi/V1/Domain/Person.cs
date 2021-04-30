@@ -36,6 +36,6 @@ namespace HousingSearchApi.V1.Domain
 
         public bool IsTenureCautionaryAlert { get; set; }
 
-        public List<Tenures> Tenures { get; set; }
+        public List<Tenure> Tenures { get; set; }
     }
 }

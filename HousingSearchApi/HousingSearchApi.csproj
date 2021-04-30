@@ -33,4 +33,8 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="V1\Domain\ElasticSearch\" />
+  </ItemGroup>
+
 </Project>

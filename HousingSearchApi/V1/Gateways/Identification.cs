@@ -1,4 +1,4 @@
-namespace HousingSearchApi.V1.Domain.ElasticSearch
+namespace HousingSearchApi.V1.Gateways
 {
     public class Identification
     {

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using HousingSearchApi.V1.Domain;
 using Nest;
-using Identification = HousingSearchApi.V1.Domain.ElasticSearch.Identification;
-using Tenures = HousingSearchApi.V1.Domain.ElasticSearch.Tenures;
+using Identification = HousingSearchApi.V1.Gateways.Identification;
+using Tenures = HousingSearchApi.V1.Gateways.Tenures;
 
 namespace HousingSearchApi.V1.Factories
 {
@@ -50,13 +50,13 @@ namespace HousingSearchApi.V1.Factories
             return identList;
         }
 
-        private static List<Domain.Tenures> Create(List<Tenures> tenures)
+        private static List<Domain.Tenure> Create(List<Tenures> tenures)
         {
-            var tenureList = new List<Domain.Tenures>();
+            var tenureList = new List<Domain.Tenure>();
 
             foreach (Tenures tenure in tenures)
             {
-                tenureList.Add(new Domain.Tenures
+                tenureList.Add(new Domain.Tenure
                 {
                     AssetFullAddress = tenure.AssetFullAddress,
                     EndDate = tenure.EndDate,
