@@ -3,7 +3,7 @@ using System.Linq;
 using HousingSearchApi.V1.Domain;
 using Nest;
 
-namespace HousingSearchApi.V1.Gateways
+namespace HousingSearchApi.V1.Gateways.Models
 {
     public class QueryablePerson
     {
@@ -58,7 +58,7 @@ namespace HousingSearchApi.V1.Gateways
 
         public bool IsTenureCautionaryAlert { get; set; }
 
-        public List<Gateways.Tenures> Tenures { get; set; }
+        public List<Tenures> Tenures { get; set; }
 
     }
 }

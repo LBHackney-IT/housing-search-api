@@ -1,6 +1,6 @@
 using Nest;
 
-namespace HousingSearchApi.V1.Gateways
+namespace HousingSearchApi.V1.Gateways.Models
 {
     public class Tenures
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoFixture;
 using HousingSearchApi.V1.Gateways;
+using HousingSearchApi.V1.Gateways.Models;
 using Nest;
 
 namespace HousingSearchApi.Tests.V1.Helper

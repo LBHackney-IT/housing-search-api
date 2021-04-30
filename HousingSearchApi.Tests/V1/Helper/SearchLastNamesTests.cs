@@ -4,7 +4,7 @@ using HousingSearchApi.V1.Interfaces;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Nest;
 using Xunit;
-using QueryablePerson = HousingSearchApi.V1.Gateways.QueryablePerson;
+using QueryablePerson = HousingSearchApi.V1.Gateways.Models.QueryablePerson;
 
 namespace HousingSearchApi.Tests.V1.Helper
 {
