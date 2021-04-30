@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using HousingSearchApi.V1.Domain;
 using Nest;
 using Identification = HousingSearchApi.V1.Gateways.Identification;
@@ -10,63 +11,15 @@ namespace HousingSearchApi.V1.Factories
     {
         public Person Create()
         {
-            return new Person
-            {
-                Id = Id,
-                Title = Title,
-                Firstname = Firstname,
-                MiddleName = MiddleName,
-                Surname = Surname,
-                PreferredFirstname = PreferredFirstname,
-                PreferredSurname = PreferredSurname,
-                Ethinicity = Ethinicity,
-                Nationality = Nationality,
-                PlaceOfBirth = PlaceOfBirth,
-                DateOfBirth = DateOfBirth,
-                Gender = Gender,
-                Identification = Create(Identification ?? new List<Identification>()),
-                PersonTypes = PersonTypes,
-                IsPersonCautionaryAlert = IsPersonCautionaryAlert,
-                IsTenureCautionaryAlert = IsTenureCautionaryAlert,
-                Tenures = Create(Tenures ?? new List<Tenures>())
-            };
-        }
+            var listOfIdentifications = Identification.Select(x => Domain.Identification.Create(x.IdentificationType,
+                x.Value, x.OriginalDocumentSeen, x.LinkToDocument)).ToList();
+            var listOfTenures =
+                Tenures.Select(x => Tenure.Create(x.Id, x.Type, x.StartDate, x.EndDate, x.AssetFullAddress)).ToList();
 
-        private static List<Domain.Identification> Create(List<Identification> identifications)
-        {
-            var identList = new List<Domain.Identification>();
-
-            foreach (Identification identification in identifications)
-            {
-                identList.Add(new Domain.Identification
-                {
-                    IdentificationType = identification.IdentificationType,
-                    LinkToDocument = identification.LinkToDocument,
-                    OriginalDocumentSeen = identification.OriginalDocumentSeen,
-                    Value = identification.Value
-                });
-            }
-
-            return identList;
-        }
-
-        private static List<Domain.Tenure> Create(List<Tenures> tenures)
-        {
-            var tenureList = new List<Domain.Tenure>();
-
-            foreach (Tenures tenure in tenures)
-            {
-                tenureList.Add(new Domain.Tenure
-                {
-                    AssetFullAddress = tenure.AssetFullAddress,
-                    EndDate = tenure.EndDate,
-                    Id = tenure.Id,
-                    StartDate = tenure.StartDate,
-                    Type = tenure.Type
-                });
-            }
-
-            return tenureList;
+            return Person.Create(Id, Title, Firstname, MiddleName, Surname, PreferredFirstname,
+                PreferredSurname, Ethinicity, Nationality, PlaceOfBirth, DateOfBirth, Gender, listOfIdentifications,
+                PersonTypes,
+                IsPersonCautionaryAlert, IsTenureCautionaryAlert, listOfTenures);
         }
 
         [Text(Name = "id")]

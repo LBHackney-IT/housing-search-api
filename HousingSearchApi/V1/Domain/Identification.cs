@@ -2,13 +2,27 @@ namespace HousingSearchApi.V1.Domain
 {
     public class Identification
     {
-        public string IdentificationType { get; set; }
+        public static Identification Create(string identificationType, string value, bool originalDocumentSeen,
+            string linkToDocument)
+        {
+            return new Identification(identificationType, value, originalDocumentSeen, linkToDocument);
+        }
 
-        public string Value { get; set; }
+        private Identification(string identificationType, string value, bool originalDocumentSeen, string linkToDocument)
+        {
+            IdentificationType = identificationType;
+            Value = value;
+            OriginalDocumentSeen = originalDocumentSeen;
+            LinkToDocument = linkToDocument;
+        }
 
-        public bool OriginalDocumentSeen { get; set; }
+        public string IdentificationType { get; }
 
-        public string LinkToDocument { get; set; }
+        public string Value { get; }
+
+        public bool OriginalDocumentSeen { get; }
+
+        public string LinkToDocument { get; }
 
     }
 }

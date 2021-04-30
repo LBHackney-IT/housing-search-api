@@ -2,15 +2,29 @@ namespace HousingSearchApi.V1.Domain
 {
     public class Tenure
     {
-        public string Id { get; set; }
+        public static Tenure Create(string id, string type, string startDate, string endDate, string assetFullAddress)
+        {
+            return new Tenure(id, type, startDate, endDate, assetFullAddress);
+        }
 
-        public string Type { get; set; }
+        private Tenure(string id, string type, string startDate, string endDate, string assetFullAddress)
+        {
+            Id = id;
+            Type = type;
+            StartDate = startDate;
+            EndDate = endDate;
+            AssetFullAddress = assetFullAddress;
+        }
 
-        public string StartDate { get; set; }
+        public string Id { get; }
 
-        public string EndDate { get; set; }
+        public string Type { get; }
 
-        public string AssetFullAddress { get; set; }
+        public string StartDate { get; }
+
+        public string EndDate { get; }
+
+        public string AssetFullAddress { get; }
 
     }
 }
