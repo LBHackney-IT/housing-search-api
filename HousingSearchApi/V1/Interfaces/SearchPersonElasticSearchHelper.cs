@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Infrastructure;
-using HousingSearchApi.V1.Infrastructure.Sorting;
+using HousingSearchApi.V1.Gateways;
+using HousingSearchApi.V1.Gateways.Models;
+using HousingSearchApi.V1.Interfaces.Sorting;
 using Nest;
 
 namespace HousingSearchApi.V1.Interfaces
 {
-    public class SearchPersonESHelper : ISearchPersonESHelper
+    public class SearchPersonElasticSearchHelper : ISearchPersonElasticSearchHelper
     {
         private IElasticClient _esClient;
         private readonly ISearchPersonsQueryContainerOrchestrator _containerOrchestrator;
@@ -17,7 +18,7 @@ namespace HousingSearchApi.V1.Interfaces
         private readonly IPersonListSortFactory _iPersonListSortFactory;
         private Indices.ManyIndices _indices;
 
-        public SearchPersonESHelper(IElasticClient esClient, ISearchPersonsQueryContainerOrchestrator containerOrchestrator,
+        public SearchPersonElasticSearchHelper(IElasticClient esClient, ISearchPersonsQueryContainerOrchestrator containerOrchestrator,
             IPagingHelper pagingHelper, IPersonListSortFactory iPersonListSortFactory)
         {
             _esClient = esClient;
@@ -30,25 +31,28 @@ namespace HousingSearchApi.V1.Interfaces
         {
             try
             {
-                LambdaLogger.Log("ES Search begins " + Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL"));
+                LambdaLogger.Log("ElasticSearch Search begins " + Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL"));
+                if (request == null)
+                    return new SearchResponse<QueryablePerson>();
 
                 var pageOffset = _pagingHelper.GetPageOffset(request.PageSize, request.Page);
 
                 var result = await _esClient.SearchAsync<QueryablePerson>(x => x.Index(_indices)
                     .Query(q => BaseQuery(request, q))
-                    .Sort(_iPersonListSortFactory.Create(request).Get)
+                    .Sort(_iPersonListSortFactory.Create(request).GetSortDescriptor)
                     .Size(request.PageSize)
                     .Skip(pageOffset)
-                    .TrackTotalHits());
+                    .TrackTotalHits()).ConfigureAwait(false);
 
-                LambdaLogger.Log("ES Search ended");
+                LambdaLogger.Log("ElasticSearch Search ended");
 
                 return result;
             }
             catch (Exception e)
             {
                 LambdaLogger.Log(e.Message);
-                throw e;
+
+                throw new Exception(e.Message);
             }
         }
 

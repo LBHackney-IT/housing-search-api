@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HousingSearchApi.V1.Controllers
 {
-    [ApiVersion("2")]
+    [ApiVersion("1")]
     [Produces("application/json")]
     [Route("api/v1/search/persons")]
     public class GetPersonListController : BaseController
@@ -46,7 +46,7 @@ namespace HousingSearchApi.V1.Controllers
 
             try
             {
-                var personsSearchResult = await _getPersonListUseCase.ExecuteAsync(request);
+                var personsSearchResult = await _getPersonListUseCase.ExecuteAsync(request).ConfigureAwait(false);
                 var apiResponse = new APIResponse<GetPersonListResponse>(personsSearchResult);
                 apiResponse.Total = personsSearchResult.Total();
 

@@ -16,10 +16,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Infrastructure;
-using HousingSearchApi.V1.Infrastructure.Sorting;
 using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Interfaces.Sorting;
 using HousingSearchApi.V1.UseCase;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -139,16 +138,13 @@ namespace HousingSearchApi
 
         private static void RegisterGateways(IServiceCollection services)
         {
-            services.AddScoped<IExampleGateway, ExampleGateway>();
             services.AddScoped<ISearchPersonsGateway, SearchPersonsGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
         {
-            services.AddScoped<IGetAllUseCase, GetAllUseCase>();
-            services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
-            services.AddScoped<ISearchPersonESHelper, SearchPersonESHelper>();
+            services.AddScoped<ISearchPersonElasticSearchHelper, SearchPersonElasticSearchHelper>();
             services.AddScoped<ISearchPersonsQueryContainerOrchestrator, SearchPersonsQueryContainerOrchestrator>();
             services.AddScoped<IPagingHelper, PagingHelper>();
             services.AddScoped<IPersonListSortFactory, PersonListSortFactory>();
@@ -188,7 +184,7 @@ namespace HousingSearchApi
             }
 
             //Get All ApiVersions,
-            var api = app.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
+            var api = app?.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
             _apiVersions = api.ApiVersionDescriptions.ToList();
 
             //Swagger ui to view the swagger.json file

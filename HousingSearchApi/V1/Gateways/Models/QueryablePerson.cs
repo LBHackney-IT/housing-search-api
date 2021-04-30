@@ -1,36 +1,25 @@
 using System.Collections.Generic;
+using System.Linq;
+using HousingSearchApi.V1.Domain;
 using Nest;
 
-namespace HousingSearchApi.V1.Infrastructure
+namespace HousingSearchApi.V1.Gateways.Models
 {
-    public class Identification
-    {
-        public string IdentificationType { get; set; }
-
-        public string Value { get; set; }
-
-        public bool OriginalDocumentSeen { get; set; }
-
-        public string LinkToDocument { get; set; }
-
-    }
-    public class Tenures
-    {
-        [Text(Name = "id")]
-        public string Id { get; set; }
-
-        [Text(Name = "type")]
-        public string Type { get; set; }
-
-        public string StartDate { get; set; }
-
-        public string EndDate { get; set; }
-
-        public string AssetFullAddress { get; set; }
-
-    }
     public class QueryablePerson
     {
+        public Person Create()
+        {
+            var listOfIdentifications = Identification.Select(x => Domain.Identification.Create(x.IdentificationType,
+                x.Value, x.OriginalDocumentSeen, x.LinkToDocument)).ToList();
+            var listOfTenures =
+                Tenures.Select(x => Tenure.Create(x.Id, x.Type, x.StartDate, x.EndDate, x.AssetFullAddress)).ToList();
+
+            return Person.Create(Id, Title, Firstname, MiddleName, Surname, PreferredFirstname,
+                PreferredSurname, Ethinicity, Nationality, PlaceOfBirth, DateOfBirth, Gender, listOfIdentifications,
+                PersonTypes,
+                IsPersonCautionaryAlert, IsTenureCautionaryAlert, listOfTenures);
+        }
+
         [Text(Name = "id")]
         public string Id { get; set; }
         public string Title { get; set; }
@@ -61,7 +50,7 @@ namespace HousingSearchApi.V1.Infrastructure
 
         public string Gender { get; set; }
 
-        public List<Identification> Identification { get; set; }
+        public List<Domain.Identification> Identification { get; set; }
 
         public List<string> PersonTypes { get; set; }
 

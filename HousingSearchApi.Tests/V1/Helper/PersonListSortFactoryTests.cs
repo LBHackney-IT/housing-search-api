@@ -1,6 +1,6 @@
 using FluentAssertions;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Infrastructure.Sorting;
+using HousingSearchApi.V1.Interfaces.Sorting;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Helper
