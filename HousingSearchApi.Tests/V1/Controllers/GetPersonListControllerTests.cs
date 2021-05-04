@@ -10,6 +10,7 @@ using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Controllers
 {
+    [Collection("LogCall collection")]
     public class GetPersonListControllerTests
     {
         private Mock<IGetPersonListUseCase> _mockGetPersonListUseCase;
