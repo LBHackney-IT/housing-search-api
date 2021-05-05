@@ -9,10 +9,10 @@ namespace HousingSearchApi.V1.Gateways.Models
     {
         public Person Create()
         {
-            var listOfIdentifications = Identification.Select(x => Domain.Identification.Create(x.IdentificationType,
-                x.Value, x.OriginalDocumentSeen, x.LinkToDocument)).ToList();
-            var listOfTenures =
-                Tenures.Select(x => Tenure.Create(x.Id, x.Type, x.StartDate, x.EndDate, x.AssetFullAddress)).ToList();
+            var listOfIdentifications = Identification != null ? Identification.Select(x => Domain.Identification.Create(x?.IdentificationType,
+                x?.Value, x.OriginalDocumentSeen, x?.LinkToDocument)).ToList() : new List<Domain.Identification>();
+            var listOfTenures = Tenures != null ?
+                Tenures.Select(x => Tenure.Create(x?.Id, x?.Type, x?.StartDate, x?.EndDate, x?.AssetFullAddress)).ToList() : new List<Tenure>();
 
             return Person.Create(Id, Title, Firstname, MiddleName, Surname, PreferredFirstname,
                 PreferredSurname, Ethinicity, Nationality, PlaceOfBirth, DateOfBirth, Gender, listOfIdentifications,
