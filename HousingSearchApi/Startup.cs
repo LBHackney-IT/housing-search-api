@@ -48,7 +48,7 @@ namespace HousingSearchApi
         private const string ApiName = "Your API Name";
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public static void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
 
@@ -127,6 +127,8 @@ namespace HousingSearchApi
                 if (File.Exists(xmlPath))
                     c.IncludeXmlComments(xmlPath);
             });
+            ConfigureLogging(services, Configuration);
+
             ConfigureDbContext(services);
             RegisterGateways(services);
             RegisterUseCases(services);
