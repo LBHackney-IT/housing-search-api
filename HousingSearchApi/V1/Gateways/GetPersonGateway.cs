@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HousingSearchApi.V1.Domain;
+using HousingSearchApi.V1.Logging;
 using Microsoft.Extensions.Logging;
 using Nest;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace HousingSearchApi.V1.Gateways
 {
@@ -17,9 +19,9 @@ namespace HousingSearchApi.V1.Gateways
             _logger = logger;
         }
 
+        [LogCall(LogLevel.Information)]
         public Task<List<Person>> Search(SearchParameters parameters)
         {
-            _logger.LogDebug($"Returning results based on the following parameters {parameters}");
             return Task.FromResult(new List<Person>());
         }
     }
