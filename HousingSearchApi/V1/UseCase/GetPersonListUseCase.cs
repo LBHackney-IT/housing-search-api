@@ -15,6 +15,7 @@ namespace HousingSearchApi.V1.UseCase
         {
             _searchPersonsGateway = searchPersonsGateway;
         }
+
         [LogCall]
         public async Task<GetPersonListResponse> ExecuteAsync(GetPersonListRequest getPersonListRequest)
         {

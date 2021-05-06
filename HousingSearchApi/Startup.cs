@@ -215,6 +215,7 @@ namespace HousingSearchApi
             app.UseCorrelation();
             app.UseLoggingScope();
             app.UseCustomExceptionHandler(logger);
+            app.UseLogCall();
 
             if (env.IsDevelopment())
             {

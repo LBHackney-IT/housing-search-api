@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using System;
+using Xunit;
 
 namespace HousingSearchApi.Tests
 {
@@ -30,4 +31,8 @@ namespace HousingSearchApi.Tests
             return mockLogger;
         }
     }
+
+    [CollectionDefinition("LogCall collection")]
+    public class LogCallAspectFixtureCollection : ICollectionFixture<LogCallAspectFixture>
+    { }
 }

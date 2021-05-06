@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Response;
+using HousingSearchApi.V1.Logging;
 
 namespace HousingSearchApi.V1.Interfaces
 {
@@ -19,9 +20,10 @@ namespace HousingSearchApi.V1.Interfaces
             _elasticSearchHelper = elasticSearchHelper;
         }
 
-        public async Task<GetPersonListResponse> GetListOfPersons(GetPersonListRequest request)
+        [LogCall]
+        public async Task<GetPersonListResponse> GetListOfPersons(GetPersonListRequest query)
         {
-            var searchResponse = await _elasticSearchHelper.Search(request).ConfigureAwait(false);
+            var searchResponse = await _elasticSearchHelper.Search(query).ConfigureAwait(false);
             var personListResponse = new GetPersonListResponse();
 
             personListResponse.Persons.AddRange(searchResponse.Documents.Select(queryablePerson =>

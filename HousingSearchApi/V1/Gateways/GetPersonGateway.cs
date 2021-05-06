@@ -19,7 +19,7 @@ namespace HousingSearchApi.V1.Gateways
             _logger = logger;
         }
 
-        [LogCall(LogLevel.Information)]
+        [LogCall]
         public Task<List<Person>> Search(SearchParameters parameters)
         {
             return Task.FromResult(new List<Person>());
