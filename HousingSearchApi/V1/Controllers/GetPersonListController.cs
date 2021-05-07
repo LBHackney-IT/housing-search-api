@@ -6,8 +6,10 @@ using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Response;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
+using HousingSearchApi.V1.Logging;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace HousingSearchApi.V1.Controllers
 {
@@ -27,6 +29,7 @@ namespace HousingSearchApi.V1.Controllers
         [ProducesResponseType(typeof(APIResponse<NotFoundException>), 404)]
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
         [HttpGet, MapToApiVersion("1")]
+        [LogCall(LogLevel.Information)]
         public async Task<IActionResult> GetPersonList([FromQuery] GetPersonListRequest request)
         {
             if (!ModelState.IsValid)

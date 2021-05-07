@@ -25,9 +25,14 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Nest;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Diagnostics.CodeAnalysis;
+using HousingSearchApi.V1.Logging;
+using Microsoft.Extensions.Logging;
+using HousingSearchApi.V1;
 
 namespace HousingSearchApi
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -43,7 +48,7 @@ namespace HousingSearchApi
         private const string ApiName = "Your API Name";
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public static void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
 
@@ -122,10 +127,13 @@ namespace HousingSearchApi
                 if (File.Exists(xmlPath))
                     c.IncludeXmlComments(xmlPath);
             });
+            ConfigureLogging(services, Configuration);
+
             ConfigureDbContext(services);
             RegisterGateways(services);
             RegisterUseCases(services);
             ConfigureElasticsearch(services);
+            services.AddLogCallAspect();
         }
 
         private static void ConfigureDbContext(IServiceCollection services)
@@ -134,6 +142,37 @@ namespace HousingSearchApi
 
             services.AddDbContext<DatabaseContext>(
                 opt => opt.UseNpgsql(connectionString));
+        }
+
+        private static void ConfigureLogging(IServiceCollection services, IConfiguration configuration)
+        {
+            // We rebuild the logging stack so as to ensure the console logger is not used in production.
+            // See here: https://weblog.west-wind.com/posts/2018/Dec/31/Dont-let-ASPNET-Core-Default-Console-Logging-Slow-your-App-down
+            services.AddLogging(config =>
+            {
+                // clear out default configuration
+                config.ClearProviders();
+                config.AddConfiguration(configuration.GetSection("Logging"));
+                config.AddDebug();
+                config.AddEventSourceLogger();
+
+                // Create and populate LambdaLoggerOptions object
+                var loggerOptions = new LambdaLoggerOptions
+                {
+                    IncludeCategory = false,
+                    IncludeLogLevel = true,
+                    IncludeNewline = true,
+                    IncludeEventId = true,
+                    IncludeException = true,
+                    IncludeScopes = true
+                };
+                config.AddLambdaLogger(loggerOptions);
+
+                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
+                {
+                    config.AddConsole();
+                }
+            });
         }
 
         private static void RegisterGateways(IServiceCollection services)
@@ -162,8 +201,9 @@ namespace HousingSearchApi
             services.TryAddSingleton<IElasticClient>(esClient);
         }
 
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
@@ -173,6 +213,9 @@ namespace HousingSearchApi
             app.UseXRay("housing-search-api");
 
             app.UseCorrelation();
+            app.UseLoggingScope();
+            app.UseCustomExceptionHandler(logger);
+            app.UseLogCall();
 
             if (env.IsDevelopment())
             {

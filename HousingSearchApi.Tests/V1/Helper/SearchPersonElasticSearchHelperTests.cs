@@ -4,7 +4,9 @@ using FluentAssertions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Interfaces;
 using HousingSearchApi.V1.Interfaces.Sorting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Nest;
 using Xunit;
 
@@ -12,21 +14,28 @@ namespace HousingSearchApi.Tests.V1.Helper
 {
     public class SearchPersonElasticSearchHelperTests
     {
-        private SearchPersonElasticSearchHelper _classUnderTest;
-        private ServiceCollection _services;
+        private readonly SearchPersonElasticSearchHelper _classUnderTest;
+        private readonly ServiceCollection _services;
 
         public SearchPersonElasticSearchHelperTests()
         {
             _services = new ServiceCollection();
-            Startup.ConfigureServices(_services);
 
-            _classUnderTest = new SearchPersonElasticSearchHelper(_services.BuildServiceProvider().GetService<IElasticClient>(),
-                _services.BuildServiceProvider().GetService<ISearchPersonsQueryContainerOrchestrator>(),
-                _services.BuildServiceProvider().GetService<IPagingHelper>(),
-                _services.BuildServiceProvider().GetService<IPersonListSortFactory>());
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .AddJsonFile("appsettings.json")
+                .Build();
+            var startup = new Startup(configuration);
+            startup.ConfigureServices(_services);
+            var serviceProvider = _services.BuildServiceProvider();
+            _classUnderTest = new SearchPersonElasticSearchHelper(serviceProvider.GetService<IElasticClient>(),
+                serviceProvider.GetService<ISearchPersonsQueryContainerOrchestrator>(),
+                serviceProvider.GetService<IPagingHelper>(),
+                serviceProvider.GetService<IPersonListSortFactory>(),
+                serviceProvider.GetService<ILogger<SearchPersonElasticSearchHelper>>());
         }
 
-        [Fact]
+        [Fact(Skip = "Actually an intgration test as requires a real Elastic search instance running.")]
         // In our case, the query should be a SHOULD (the ElasticSearch option for OR), followed by wildcards for :
         // firstname, surname, middlename,prefferedfirstname, preferredsurname, dateofbirth
         public async Task WhenCallingElasticSearchHelperShouldGenerateTheRightQuery()

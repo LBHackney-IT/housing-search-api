@@ -1,23 +1,27 @@
-using System.Threading.Tasks;
 using FluentAssertions;
 using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Boundary.Response;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using HousingSearchApi.V1.Controllers;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Controllers
 {
+    [Collection("LogCall collection")]
     public class GetPersonListControllerTests
     {
-        private Mock<IGetPersonListUseCase> _mockGetPersonListUseCase;
-        private GetPersonListController _classUnderTest;
+        private readonly Mock<IGetPersonListUseCase> _mockGetPersonListUseCase;
+        private readonly GetPersonListController _classUnderTest;
 
 
         public GetPersonListControllerTests()
         {
+            new LogCallAspectFixture().RunBeforeTests();
+
             _mockGetPersonListUseCase = new Mock<IGetPersonListUseCase>();
             _classUnderTest = new GetPersonListController(_mockGetPersonListUseCase.Object);
         }
@@ -27,6 +31,8 @@ namespace HousingSearchApi.Tests.V1.Controllers
         {
             // given
             var request = new GetPersonListRequest();
+            var response = new GetPersonListResponse();
+            _mockGetPersonListUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
 
             // when
             await _classUnderTest.GetPersonList(request).ConfigureAwait(false);

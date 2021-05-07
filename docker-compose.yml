@@ -8,11 +8,15 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - 3000:3000        
+
   housing-search-api-test:
     image: housing-search-api-test
     build:
       context: .
-      dockerfile: HousingSearchApi.Tests/Dockerfile          
+      dockerfile: HousingSearchApi.Tests/Dockerfile
+    depends_on:
+        - kibana
+      
   test-elasticsearch:
     image: test-elasticsearch
     container_name: test-elasticsearch
