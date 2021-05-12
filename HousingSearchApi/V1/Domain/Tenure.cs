@@ -1,22 +1,30 @@
-using Newtonsoft.Json;
-
 namespace HousingSearchApi.V1.Domain
 {
     public class Tenure
     {
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        public static Tenure Create(string id, string type, string startDate, string endDate, string assetFullAddress)
+        {
+            return new Tenure(id, type, startDate, endDate, assetFullAddress);
+        }
 
-        [JsonProperty("startDate")]
-        public string StartDate { get; set; }
+        private Tenure(string id, string type, string startDate, string endDate, string assetFullAddress)
+        {
+            Id = id;
+            Type = type;
+            StartDate = startDate;
+            EndDate = endDate;
+            AssetFullAddress = assetFullAddress;
+        }
 
-        [JsonProperty("endDate")]
-        public string EndDate { get; set; }
+        public string Id { get; }
 
-        [JsonProperty("type")]
-        public string Type { get; set; }
+        public string Type { get; }
 
-        [JsonProperty("assetFullAddress")]
-        public string AssetFullAddress { get; set; }
+        public string StartDate { get; }
+
+        public string EndDate { get; }
+
+        public string AssetFullAddress { get; }
+
     }
 }

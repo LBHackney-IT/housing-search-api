@@ -1,6 +1,6 @@
 using System;
 using FluentAssertions;
-using HousingSearchApi.V1.Gateways;
+using HousingSearchApi.V1.Interfaces;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Helper

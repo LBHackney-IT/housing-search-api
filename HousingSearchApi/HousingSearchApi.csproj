@@ -7,13 +7,14 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
         <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
     </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="5.1.1" />
     <PackageReference Include="Amazon.Lambda.Logging.AspNetCore" Version="3.1.0" />
+    <PackageReference Include="AspectInjector" Version="2.5.0" />
     <PackageReference Include="AWSXRayRecorder.Core" Version="2.10.0" />
     <PackageReference Include="AWSXRayRecorder.Handlers.AspNetCore" Version="2.7.2" />
     <PackageReference Include="AWSXRayRecorder.Handlers.AwsSdk" Version="2.8.2" />
@@ -34,7 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="V1\Boundary\Requests\" />
+    <Folder Include="V1\Domain\ElasticSearch\" />
+    <Folder Include="V1\Factories\" />
   </ItemGroup>
 
 </Project>

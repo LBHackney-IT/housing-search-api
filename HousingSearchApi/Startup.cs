@@ -16,16 +16,23 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Infrastructure;
+using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Interfaces.Sorting;
 using HousingSearchApi.V1.UseCase;
 using HousingSearchApi.V1.UseCase.Interfaces;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Nest;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Diagnostics.CodeAnalysis;
+using HousingSearchApi.V1.Logging;
+using Microsoft.Extensions.Logging;
+using HousingSearchApi.V1;
 
 namespace HousingSearchApi
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -41,7 +48,7 @@ namespace HousingSearchApi
         private const string ApiName = "Your API Name";
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public static void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
 
@@ -120,10 +127,13 @@ namespace HousingSearchApi
                 if (File.Exists(xmlPath))
                     c.IncludeXmlComments(xmlPath);
             });
+            ConfigureLogging(services, Configuration);
+
             ConfigureDbContext(services);
             RegisterGateways(services);
             RegisterUseCases(services);
             ConfigureElasticsearch(services);
+            services.AddLogCallAspect();
         }
 
         private static void ConfigureDbContext(IServiceCollection services)
@@ -134,20 +144,51 @@ namespace HousingSearchApi
                 opt => opt.UseNpgsql(connectionString));
         }
 
+        private static void ConfigureLogging(IServiceCollection services, IConfiguration configuration)
+        {
+            // We rebuild the logging stack so as to ensure the console logger is not used in production.
+            // See here: https://weblog.west-wind.com/posts/2018/Dec/31/Dont-let-ASPNET-Core-Default-Console-Logging-Slow-your-App-down
+            services.AddLogging(config =>
+            {
+                // clear out default configuration
+                config.ClearProviders();
+                config.AddConfiguration(configuration.GetSection("Logging"));
+                config.AddDebug();
+                config.AddEventSourceLogger();
+
+                // Create and populate LambdaLoggerOptions object
+                var loggerOptions = new LambdaLoggerOptions
+                {
+                    IncludeCategory = false,
+                    IncludeLogLevel = true,
+                    IncludeNewline = true,
+                    IncludeEventId = true,
+                    IncludeException = true,
+                    IncludeScopes = true
+                };
+                config.AddLambdaLogger(loggerOptions);
+
+                var aspNetcoreEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                if ((aspNetcoreEnvironment != Environments.Production)
+                    && (aspNetcoreEnvironment != Environments.Staging))
+                {
+                    config.AddConsole();
+                }
+            });
+        }
+
         private static void RegisterGateways(IServiceCollection services)
         {
-            services.AddScoped<IExampleGateway, ExampleGateway>();
             services.AddScoped<ISearchPersonsGateway, SearchPersonsGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
         {
-            services.AddScoped<IGetAllUseCase, GetAllUseCase>();
-            services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
-            services.AddScoped<ISearchPersonESHelper, SearchPersonESHelper>();
+            services.AddScoped<ISearchPersonElasticSearchHelper, SearchPersonElasticSearchHelper>();
             services.AddScoped<ISearchPersonsQueryContainerOrchestrator, SearchPersonsQueryContainerOrchestrator>();
             services.AddScoped<IPagingHelper, PagingHelper>();
+            services.AddScoped<IPersonListSortFactory, PersonListSortFactory>();
         }
 
         private static void ConfigureElasticsearch(IServiceCollection services)
@@ -159,11 +200,12 @@ namespace HousingSearchApi
                     .PrettyJson().ThrowExceptions().DisableDirectStreaming();
             var esClient = new ElasticClient(connectionSettings);
 
-            services.AddSingleton<IElasticClient>(esClient);
+            services.TryAddSingleton<IElasticClient>(esClient);
         }
 
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
@@ -173,6 +215,9 @@ namespace HousingSearchApi
             app.UseXRay("housing-search-api");
 
             app.UseCorrelation();
+            app.UseLoggingScope();
+            app.UseCustomExceptionHandler(logger);
+            app.UseLogCall();
 
             if (env.IsDevelopment())
             {
@@ -184,7 +229,7 @@ namespace HousingSearchApi
             }
 
             //Get All ApiVersions,
-            var api = app.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
+            var api = app?.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
             _apiVersions = api.ApiVersionDescriptions.ToList();
 
             //Swagger ui to view the swagger.json file

@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
-using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Gateways;
+using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Boundary.Response;
+using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Logging;
 using HousingSearchApi.V1.UseCase.Interfaces;
 
 namespace HousingSearchApi.V1.UseCase
@@ -14,9 +16,10 @@ namespace HousingSearchApi.V1.UseCase
             _searchPersonsGateway = searchPersonsGateway;
         }
 
+        [LogCall]
         public async Task<GetPersonListResponse> ExecuteAsync(GetPersonListRequest getPersonListRequest)
         {
-            return await _searchPersonsGateway.GetListOfPersons(getPersonListRequest);
+            return await _searchPersonsGateway.GetListOfPersons(getPersonListRequest).ConfigureAwait(false);
         }
     }
 }

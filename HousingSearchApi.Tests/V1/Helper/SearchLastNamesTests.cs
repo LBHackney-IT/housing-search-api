@@ -1,20 +1,20 @@
 using FluentAssertions;
-using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Gateways;
+using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Interfaces;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Nest;
 using Xunit;
-using QueryablePerson = HousingSearchApi.V1.Infrastructure.QueryablePerson;
+using QueryablePerson = HousingSearchApi.V1.Gateways.Models.QueryablePerson;
 
 namespace HousingSearchApi.Tests.V1.Helper
 {
-    public class SearchLastNamesTests
+    public class SearchSurnamesTests
     {
-        private SearchLastNames _sut;
+        private SearchSurnames _sut;
 
-        public SearchLastNamesTests()
+        public SearchSurnamesTests()
         {
-            _sut = new SearchLastNames();
+            _sut = new SearchSurnames();
         }
 
         [Theory]

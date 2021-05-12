@@ -2,16 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
-using Amazon.XRay.Recorder.Core;
+using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Boundary.Response;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
-using HousingSearchApi.V1.Domain;
+using HousingSearchApi.V1.Logging;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace HousingSearchApi.V1.Controllers
 {
-    [ApiVersion("2")]
+    [ApiVersion("1")]
     [Produces("application/json")]
     [Route("api/v1/search/persons")]
     public class GetPersonListController : BaseController
@@ -27,6 +29,7 @@ namespace HousingSearchApi.V1.Controllers
         [ProducesResponseType(typeof(APIResponse<NotFoundException>), 404)]
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
         [HttpGet, MapToApiVersion("1")]
+        [LogCall(LogLevel.Information)]
         public async Task<IActionResult> GetPersonList([FromQuery] GetPersonListRequest request)
         {
             if (!ModelState.IsValid)
@@ -46,16 +49,16 @@ namespace HousingSearchApi.V1.Controllers
 
             try
             {
-                var personsSearchResult = await _getPersonListUseCase.ExecuteAsync(request);
+                var personsSearchResult = await _getPersonListUseCase.ExecuteAsync(request).ConfigureAwait(false);
                 var apiResponse = new APIResponse<GetPersonListResponse>(personsSearchResult);
-                apiResponse.Total = personsSearchResult.Persons?.Count ?? 0;
+                apiResponse.Total = personsSearchResult.Total();
 
                 return new OkObjectResult(apiResponse);
             }
             catch (Exception e)
             {
                 LambdaLogger.Log(e.Message + e.StackTrace);
-                return new OkObjectResult(e.Message);
+                return new BadRequestObjectResult(e.Message);
             }
         }
     }
