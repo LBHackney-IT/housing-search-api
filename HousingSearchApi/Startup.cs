@@ -1,34 +1,36 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Elasticsearch.Net;
+using Hackney.Core.HealthCheck;
+using HousingSearchApi.V1;
+using HousingSearchApi.V1.HealthCheck;
+using HousingSearchApi.V1.Infrastructure;
+using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Interfaces.Sorting;
+using HousingSearchApi.V1.Logging;
+using HousingSearchApi.V1.UseCase;
+using HousingSearchApi.V1.UseCase.Interfaces;
 using HousingSearchApi.Versioning;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using HousingSearchApi.V1.Infrastructure;
-using HousingSearchApi.V1.Interfaces;
-using HousingSearchApi.V1.Interfaces.Sorting;
-using HousingSearchApi.V1.UseCase;
-using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Nest;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using HousingSearchApi.V1.Logging;
-using Microsoft.Extensions.Logging;
-using HousingSearchApi.V1;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace HousingSearchApi
 {
@@ -129,19 +131,10 @@ namespace HousingSearchApi
             });
             ConfigureLogging(services, Configuration);
 
-            ConfigureDbContext(services);
             RegisterGateways(services);
             RegisterUseCases(services);
             ConfigureElasticsearch(services);
             services.AddLogCallAspect();
-        }
-
-        private static void ConfigureDbContext(IServiceCollection services)
-        {
-            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
-
-            services.AddDbContext<DatabaseContext>(
-                opt => opt.UseNpgsql(connectionString));
         }
 
         private static void ConfigureLogging(IServiceCollection services, IConfiguration configuration)
@@ -201,6 +194,8 @@ namespace HousingSearchApi
             var esClient = new ElasticClient(connectionSettings);
 
             services.TryAddSingleton<IElasticClient>(esClient);
+
+            services.AddElasticSearchHealthCheck();
         }
 
 
@@ -229,7 +224,7 @@ namespace HousingSearchApi
             }
 
             //Get All ApiVersions,
-            var api = app?.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
+            var api = app.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
             _apiVersions = api.ApiVersionDescriptions.ToList();
 
             //Swagger ui to view the swagger.json file
@@ -248,6 +243,11 @@ namespace HousingSearchApi
             {
                 // SwaggerGen won't find controllers that are routed via this technique.
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapHealthChecks("/health", new HealthCheckOptions()
+                {
+                    ResponseWriter = HealthCheckResponseWriter.WriteResponse
+                });
             });
         }
     }
