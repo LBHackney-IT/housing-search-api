@@ -1,6 +1,9 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("HousingSearchApi.Tests")]
 
 namespace HousingSearchApi.V1.HealthCheck
 {
