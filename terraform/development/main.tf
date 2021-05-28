@@ -52,5 +52,5 @@ module "elasticsearch_db_development" {
 }
 
 resource "aws_ssm_parameter" "search_elasticsearch_domain" {
-  name = "/housing-search-api/production/elasticsearch-domain"
+  name = "/housing-search-api/development/elasticsearch-domain"
 }
