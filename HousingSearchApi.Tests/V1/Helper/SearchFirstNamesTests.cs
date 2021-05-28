@@ -10,7 +10,7 @@ namespace HousingSearchApi.Tests.V1.Helper
 {
     public class SearchFirstNamesTests
     {
-        private SearchFirstNames _sut;
+        private readonly SearchFirstNames _sut;
 
         public SearchFirstNamesTests()
         {

@@ -24,17 +24,17 @@ namespace HousingSearchApi.Tests
             Client = _factory.CreateClient();
         }
 
-        [Fact(Skip = "Intgration tests currently not working as they need the persons index set up in elastic search")]
+        [Fact(Skip = "Integration tests currently not working as they need the persons index set up in elastic search")]
         public async Task WhenRequestDoesNotContainSearchStringShouldReturnBadRequestResult()
         {
             // arrange + act
-            var response = await Client.GetAsync(new Uri("api/v1/search/persons")).ConfigureAwait(false); ;
+            var response = await Client.GetAsync(new Uri("api/v1/search/persons")).ConfigureAwait(false);
 
             // assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        [Fact(Skip = "Intgration tests currently not working as they need the persons index set up in elastic search")]
+        [Fact(Skip = "Integration tests currently not working as they need the persons index set up in elastic search")]
         public async Task WhenRequestContainsSearchStringShouldReturn200()
         {
             // arrange + act
@@ -44,7 +44,7 @@ namespace HousingSearchApi.Tests
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
-        [Fact(Skip = "Intgration tests currently not working as they need the persons index set up in elastic search")]
+        [Fact(Skip = "Integration tests currently not working as they need the persons index set up in elastic search")]
         public async Task WhenRequestGetsResultMaxPageSizeWouldBeTheOneRequestedInTheQueryString()
         {
             // arrange +
@@ -59,7 +59,7 @@ namespace HousingSearchApi.Tests
             result.Results.Persons.Count.Should().Be(pageSize);
         }
 
-        [Fact(Skip = "Intgration tests currently not working as they need the persons index set up in elastic search")]
+        [Fact(Skip = "Integration tests currently not working as they need the persons index set up in elastic search")]
         public async Task WhenRequestContainsSearchStringAndSortingLastNameAscShouldReturn200AndSortAppropriately()
         {
             // act
@@ -81,7 +81,7 @@ namespace HousingSearchApi.Tests
             }
         }
 
-        [Fact(Skip = "Intgration tests currently not working as they need the persons index set up in elastic search")]
+        [Fact(Skip = "Integration tests currently not working as they need the persons index set up in elastic search")]
         public async Task WhenRequestContainsSearchStringAndSortingLastNameDescShouldReturn200AndSortAppropriately()
         {
             // arrange + act
