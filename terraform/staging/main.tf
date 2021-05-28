@@ -51,3 +51,9 @@ module "elasticsearch_db_staging" {
   region           = data.aws_region.current.name
   account_id       = data.aws_caller_identity.current.account_id
 }
+
+resource "aws_ssm_parameter" "search_elasticsearch_domain" {
+  name = "/housing-search-api/staging/elasticsearch-domain"
+  type = "String"
+  value = "https://vpc-housing-search-api-es-7royucdycdim5wkm37s6neti5i.eu-west-2.es.amazonaws.com"
+}
