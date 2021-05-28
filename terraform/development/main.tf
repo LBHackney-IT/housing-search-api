@@ -54,5 +54,5 @@ module "elasticsearch_db_development" {
 resource "aws_ssm_parameter" "search_elasticsearch_domain" {
   name = "/housing-search-api/development/elasticsearch-domain"
   type = "String"
-  value = aws_elasticsearch_domain.lbh_es.endpoint
+  value = elasticsearch_db_development.aws_elasticsearch_domain.lbh_es.endpoint
 }
