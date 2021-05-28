@@ -4,8 +4,10 @@ services:
   housing-search-api:
     image: housing-search-api
     build:
-      context: HousingSearchApi/
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: HousingSearchApi/Dockerfile
+      args:
+      - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
     ports:
       - 3000:3000        
 
@@ -14,6 +16,8 @@ services:
     build:
       context: .
       dockerfile: HousingSearchApi.Tests/Dockerfile
+      args:
+      - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
     depends_on:
         - kibana
       

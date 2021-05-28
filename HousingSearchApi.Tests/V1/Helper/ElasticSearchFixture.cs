@@ -1,13 +1,13 @@
-using System;
-using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
+using System;
+using System.Threading;
 
 namespace HousingSearchApi.Tests.V1.Helper
 {
     public class ElasticSearchFixture : IDisposable
     {
-        private MockWebApplicationFactory<Startup> _factory;
+        private readonly MockWebApplicationFactory<Startup> _factory;
 
         public ElasticSearchFixture()
         {
@@ -20,7 +20,18 @@ namespace HousingSearchApi.Tests.V1.Helper
 
         public void Dispose()
         {
-            _factory.Dispose();
+            Dispose(true);
+        }
+
+        private bool _disposed;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing && !_disposed)
+            {
+                if (null != _factory)
+                    _factory.Dispose();
+                _disposed = true;
+            }
         }
     }
 }
