@@ -17,7 +17,6 @@ namespace HousingSearchApi.V1.Interfaces
         public QueryContainer Create(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
             if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
-            var searchText = request.SearchText?.Replace(" ", "").ToLower();
 
             var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
 
