@@ -63,4 +63,6 @@ module "elasticsearch_db_staging" {
 
 resource "aws_ssm_parameter" "search_elasticsearch_domain" {
   name = "/housing-search-api/staging/elasticsearch-domain"
+  type = "String"
+  value = aws_elasticsearch_domain.lbh_es.endpoint
 }
