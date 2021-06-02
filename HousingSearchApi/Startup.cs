@@ -1,5 +1,6 @@
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Elasticsearch.Net;
+using FluentValidation.AspNetCore;
 using Hackney.Core.HealthCheck;
 using Hackney.Core.Logging;
 using Hackney.Core.Middleware.CorrelationId;
@@ -48,8 +49,8 @@ namespace HousingSearchApi
 
         public IConfiguration Configuration { get; }
         private static List<ApiVersionDescription> _apiVersions { get; set; }
-        //TODO update the below to the name of your API
-        private const string ApiName = "Your API Name";
+
+        private const string ApiName = "Housing Search";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -58,6 +59,7 @@ namespace HousingSearchApi
 
             services
                 .AddMvc()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()))
                 .AddNewtonsoftJson(x =>
                 {
                     x.SerializerSettings.ContractResolver = new DefaultContractResolver

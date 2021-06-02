@@ -9,6 +9,12 @@
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
     <NoWarn>CA1305;CA1051;CA1822;CA1001;CA1062;CA1303;CA1304;CA2000</NoWarn>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="TestResults\**" />
+    <Content Remove="TestResults\**" />
+    <EmbeddedResource Remove="TestResults\**" />
+    <None Remove="TestResults\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.11.0" />
