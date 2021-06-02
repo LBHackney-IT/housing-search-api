@@ -1,8 +1,8 @@
-using System.Linq;
-using System.Threading.Tasks;
+using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Response;
-using HousingSearchApi.V1.Logging;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HousingSearchApi.V1.Interfaces
 {

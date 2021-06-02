@@ -1,12 +1,14 @@
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Elasticsearch.Net;
 using Hackney.Core.HealthCheck;
-using HousingSearchApi.V1;
+using Hackney.Core.Logging;
+using Hackney.Core.Middleware.CorrelationId;
+using Hackney.Core.Middleware.Exception;
+using Hackney.Core.Middleware.Logging;
 using HousingSearchApi.V1.HealthCheck;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.Interfaces;
 using HousingSearchApi.V1.Interfaces.Sorting;
-using HousingSearchApi.V1.Logging;
 using HousingSearchApi.V1.UseCase;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using HousingSearchApi.Versioning;
@@ -129,7 +131,7 @@ namespace HousingSearchApi
                 if (File.Exists(xmlPath))
                     c.IncludeXmlComments(xmlPath);
             });
-            ConfigureLogging(services, Configuration);
+            services.ConfigureLambdaLogging(Configuration);
 
             RegisterGateways(services);
             RegisterUseCases(services);
@@ -138,39 +140,6 @@ namespace HousingSearchApi
             services.AddScoped<IWildCardAppenderAndPrepender, WildCardAppenderAndPrepender>();
 
             services.AddLogCallAspect();
-        }
-
-        private static void ConfigureLogging(IServiceCollection services, IConfiguration configuration)
-        {
-            // We rebuild the logging stack so as to ensure the console logger is not used in production.
-            // See here: https://weblog.west-wind.com/posts/2018/Dec/31/Dont-let-ASPNET-Core-Default-Console-Logging-Slow-your-App-down
-            services.AddLogging(config =>
-            {
-                // clear out default configuration
-                config.ClearProviders();
-                config.AddConfiguration(configuration.GetSection("Logging"));
-                config.AddDebug();
-                config.AddEventSourceLogger();
-
-                // Create and populate LambdaLoggerOptions object
-                var loggerOptions = new LambdaLoggerOptions
-                {
-                    IncludeCategory = false,
-                    IncludeLogLevel = true,
-                    IncludeNewline = true,
-                    IncludeEventId = true,
-                    IncludeException = true,
-                    IncludeScopes = true
-                };
-                config.AddLambdaLogger(loggerOptions);
-
-                var aspNetcoreEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                if ((aspNetcoreEnvironment != Environments.Production)
-                    && (aspNetcoreEnvironment != Environments.Staging))
-                {
-                    config.AddConsole();
-                }
-            });
         }
 
         private static void RegisterGateways(IServiceCollection services)
@@ -212,7 +181,7 @@ namespace HousingSearchApi
 
             app.UseXRay("housing-search-api");
 
-            app.UseCorrelation();
+            app.UseCorrelationId();
             app.UseLoggingScope();
             app.UseCustomExceptionHandler(logger);
             app.UseLogCall();
