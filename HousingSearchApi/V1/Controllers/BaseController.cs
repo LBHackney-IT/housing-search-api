@@ -1,8 +1,8 @@
-using System.Collections.Generic;
+using Hackney.Core.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using HousingSearchApi.V1.Infrastructure;
+using System.Collections.Generic;
 
 namespace HousingSearchApi.V1.Controllers
 {
@@ -15,10 +15,10 @@ namespace HousingSearchApi.V1.Controllers
 
         public string GetCorrelationId()
         {
-            if (HttpContext.Request.Headers[Constants.CorrelationId].Count == 0)
+            if (HttpContext.Request.Headers[HeaderConstants.CorrelationId].Count == 0)
                 throw new KeyNotFoundException("Request is missing a correlationId");
 
-            return HttpContext.Request.Headers[Constants.CorrelationId];
+            return HttpContext.Request.Headers[HeaderConstants.CorrelationId];
         }
 
         public static void ConfigureJsonSerializer()
