@@ -1,10 +1,9 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Hackney.Core.Logging;
 using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Logging;
 using Microsoft.Extensions.Logging;
 using Nest;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HousingSearchApi.V1.Gateways
 {

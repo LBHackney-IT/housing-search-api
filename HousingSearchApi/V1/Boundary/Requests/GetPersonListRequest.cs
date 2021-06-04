@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HousingSearchApi.V1.Boundary.Requests
@@ -8,8 +7,6 @@ namespace HousingSearchApi.V1.Boundary.Requests
         private const int DefaultPageSize = 12;
 
         [FromQuery(Name = "searchText")]
-        [Required]
-        [MinLength(2)]
         public string SearchText { get; set; }
 
         [FromQuery(Name = "pageSize")]

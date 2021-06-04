@@ -1,12 +1,12 @@
-using System.Collections.Generic;
 using FluentAssertions;
+using Hackney.Core.Middleware;
+using HousingSearchApi.V1.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Routing;
 using NUnit.Framework;
-using HousingSearchApi.V1.Controllers;
-using HousingSearchApi.V1.Infrastructure;
+using System.Collections.Generic;
 
 namespace HousingSearchApi.Tests.V1.Controllers
 {
@@ -40,7 +40,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public void GetCorrelationShouldReturnCorrelationIdWhenExists()
         {
             // Arrange
-            _stubHttpContext.Request.Headers.Add(Constants.CorrelationId, "123");
+            _stubHttpContext.Request.Headers.Add(HeaderConstants.CorrelationId, "123");
 
             // Act
             var result = _sut.GetCorrelationId();
