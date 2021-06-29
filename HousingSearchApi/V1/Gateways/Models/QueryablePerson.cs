@@ -27,7 +27,7 @@ namespace HousingSearchApi.V1.Gateways.Models
         [Keyword(Name = "firstname")]
         public string Firstname { get; set; }
 
-        [Text(Name = "middlename")]
+        [Text(Name = "middleName")]
         public string MiddleName { get; set; }
 
         [Keyword(Name = "surname")]
