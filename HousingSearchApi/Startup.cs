@@ -1,5 +1,4 @@
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
-using Elasticsearch.Net;
 using FluentValidation.AspNetCore;
 using Hackney.Core.HealthCheck;
 using Hackney.Core.Logging;
@@ -21,11 +20,9 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Nest;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
@@ -137,7 +134,8 @@ namespace HousingSearchApi
 
             RegisterGateways(services);
             RegisterUseCases(services);
-            ConfigureElasticsearch(services);
+            services.ConfigureElasticSearch();
+            services.AddElasticSearchHealthCheck();
 
             services.AddScoped<IWildCardAppenderAndPrepender, WildCardAppenderAndPrepender>();
 
@@ -157,21 +155,6 @@ namespace HousingSearchApi
             services.AddScoped<IPagingHelper, PagingHelper>();
             services.AddScoped<IPersonListSortFactory, PersonListSortFactory>();
         }
-
-        private static void ConfigureElasticsearch(IServiceCollection services)
-        {
-            var url = Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL") ?? "http://localhost:9200";
-            var pool = new SingleNodeConnectionPool(new Uri(url));
-            var connectionSettings =
-                new ConnectionSettings(pool)
-                    .PrettyJson().ThrowExceptions().DisableDirectStreaming();
-            var esClient = new ElasticClient(connectionSettings);
-
-            services.TryAddSingleton<IElasticClient>(esClient);
-
-            services.AddElasticSearchHealthCheck();
-        }
-
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)

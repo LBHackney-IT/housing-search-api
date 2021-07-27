@@ -1,4 +1,5 @@
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
+using HousingSearchApi.Tests.V1.Helper;
 using System;
 using System.Net.Http;
 using System.Threading;
@@ -11,19 +12,16 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         AsA = "Api client",
         IWant = "to be able to validate that the service status is healty",
         SoThat = "I can be sure that calls made to it will succeed.")]
+    [Collection("ElasticSearch collection")]
     public class HealthCheckTests : IDisposable
     {
-        private readonly HttpClient _client;
-        private readonly MockWebApplicationFactory<Startup> _factory;
+        private readonly ElasticSearchFixture _elasticSearchFixture;
         private readonly HealthCheckSteps _steps;
 
-        public HealthCheckTests()
+        public HealthCheckTests(ElasticSearchFixture elasticSearchFixture)
         {
-            _factory = new MockWebApplicationFactory<Startup>();
-            _client = _factory.CreateClient();
-            _steps = new HealthCheckSteps(_client);
-
-            Thread.Sleep(500);
+            _elasticSearchFixture = elasticSearchFixture;
+            _steps = new HealthCheckSteps(_elasticSearchFixture.Client);
         }
 
         public void Dispose()
@@ -38,13 +36,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         {
             if (disposing && !_disposed)
             {
-                _client.Dispose();
-                _factory.Dispose();
                 _disposed = true;
             }
         }
 
-        [Fact(Skip = "Integration tests currently not working")]
+        [Fact]
         public void ServiceReturnsHealthyStatus()
         {
             this.Given("A running service")

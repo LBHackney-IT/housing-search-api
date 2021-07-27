@@ -2,7 +2,7 @@ using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Helper
 {
-    [CollectionDefinition("ElasticSearch collection")]
+    [CollectionDefinition("ElasticSearch collection", DisableParallelization = true)]
     public class ElasticSearchCollection : ICollectionFixture<ElasticSearchFixture>
     {
         // This class has no code, and is never created. Its purpose is simply
