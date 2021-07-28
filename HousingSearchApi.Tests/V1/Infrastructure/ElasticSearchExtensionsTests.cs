@@ -1,6 +1,8 @@
 using FluentAssertions;
 using HousingSearchApi.V1.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Nest;
 using System;
 using System.Linq;
@@ -10,23 +12,36 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
 {
     public class ElasticSearchExtensionsTests
     {
-        private const string EnvVarKey = "ELASTICSEARCH_DOMAIN_URL";
+        private readonly Mock<IConfiguration> _mockConfiguration;
+        private const string ConfigKey = "ELASTICSEARCH_DOMAIN_URL";
         private const string EsNodeUrl = "http://somedomain:9200";
 
         public ElasticSearchExtensionsTests()
         {
-            Environment.SetEnvironmentVariable(EnvVarKey, null);
+            _mockConfiguration = new Mock<IConfiguration>();
+            ConfigureConfig(_mockConfiguration, EsNodeUrl);
         }
 
-        private void ConfigureEnvVar(string url)
+        private void ConfigureConfig(Mock<IConfiguration> mockConfig, string url)
         {
-            Environment.SetEnvironmentVariable(EnvVarKey, url);
+            var section = new Mock<IConfigurationSection>();
+            section.Setup(x => x.Key).Returns(ConfigKey);
+            section.Setup(x => x.Value).Returns(url);
+            mockConfig.Setup(x => x.GetSection(ConfigKey))
+                              .Returns(section.Object);
         }
 
         [Fact]
         public void ConfigureElasticSearchTestNullServicesThrows()
         {
-            Action act = () => ElasticSearchExtensions.ConfigureElasticSearch((IServiceCollection) null);
+            Action act = () => ElasticSearchExtensions.ConfigureElasticSearch((IServiceCollection) null, _mockConfiguration.Object);
+            act.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void ConfigureElasticSearchTestNullConfigurationThrows()
+        {
+            Action act = () => ElasticSearchExtensions.ConfigureElasticSearch(new ServiceCollection(), null);
             act.Should().Throw<ArgumentNullException>();
         }
 
@@ -36,10 +51,12 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
         [InlineData(EsNodeUrl)]
         public void ConfigureElasticSearchTestRegistersServices(string url)
         {
-            ConfigureEnvVar(url);
+            ConfigureConfig(_mockConfiguration, url);
 
             var services = new ServiceCollection();
-            services.ConfigureElasticSearch();
+            services.ConfigureElasticSearch(_mockConfiguration.Object);
+
+            _mockConfiguration.Verify(x => x.GetSection(ConfigKey), Times.Once);
 
             var serviceProvider = services.BuildServiceProvider();
             var esClient = serviceProvider.GetService<IElasticClient>();

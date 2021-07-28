@@ -15,9 +15,9 @@ namespace HousingSearchApi.Tests.V1.Helper
 
         public static List<QueryablePerson> InsertPersonsInEs(IElasticClient elasticClient)
         {
-            elasticClient?.Indices.Delete(Index);
+            elasticClient.Indices.Delete(Index);
 
-            elasticClient?.Indices.Create(Index, s =>
+            elasticClient.Indices.Create(Index, s =>
                 s.Map(x => x.AutoMap()
                     .Properties(prop =>
                         prop.Keyword(field => field.Name("surname"))
@@ -26,7 +26,15 @@ namespace HousingSearchApi.Tests.V1.Helper
             var persons = CreateQueryablePerson();
             elasticClient.IndexManyAsync(persons, Index);
 
-            Thread.Sleep(500);
+            var timeout = DateTime.UtcNow.AddSeconds(10); // 10 second timeout (make configurable?)
+            while (DateTime.UtcNow < timeout)
+            {
+                var count = elasticClient.Cluster.Stats().Indices.Documents.Count;
+                if (count >= persons.Count)
+                    break;
+
+                Thread.Sleep(200);
+            }
 
             return persons;
         }
@@ -37,7 +45,19 @@ namespace HousingSearchApi.Tests.V1.Helper
             var random = new Random();
             var fixture = new Fixture();
 
-            for (int i = 0; i < 1000; i++)
+            // Make sure there are 10 of each surname first
+            foreach (var name in Alphabet)
+            {
+                var persons = fixture.Build<QueryablePerson>()
+                                    .With(x => x.Firstname, "Some first name")
+                                    .With(x => x.Surname, name)
+                                    .CreateMany(10);
+
+                listOfPersons.AddRange(persons);
+            }
+
+            // Add loads more at random
+            for (int i = 0; i < 900; i++)
             {
                 var person = fixture.Create<QueryablePerson>();
 

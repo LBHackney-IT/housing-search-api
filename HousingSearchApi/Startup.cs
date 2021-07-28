@@ -134,7 +134,7 @@ namespace HousingSearchApi
 
             RegisterGateways(services);
             RegisterUseCases(services);
-            services.ConfigureElasticSearch();
+            services.ConfigureElasticSearch(Configuration);
             services.AddElasticSearchHealthCheck();
 
             services.AddScoped<IWildCardAppenderAndPrepender, WildCardAppenderAndPrepender>();

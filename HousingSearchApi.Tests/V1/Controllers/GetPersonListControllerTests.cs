@@ -41,7 +41,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
             _mockGetPersonListUseCase.Verify(x => x.ExecuteAsync(request), Times.Once);
         }
 
-        [Fact(Skip = "Until I figure out why this thing is breaking")]
+        [Fact(Skip = "This test fails because the call to the use case returns a NotFound exception, which is caught and converted into a BadRequest response. Need to validate this is the required functionality.")]
         public async Task GetPersonListShouldReturnNotFoundObjectResultIfNotFound()
         {
             // given

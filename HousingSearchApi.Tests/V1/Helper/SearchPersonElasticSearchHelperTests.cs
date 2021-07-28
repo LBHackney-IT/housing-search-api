@@ -12,6 +12,7 @@ using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Helper
 {
+    [Collection("ElasticSearch collection")]
     public class SearchPersonElasticSearchHelperTests
     {
         private readonly SearchPersonElasticSearchHelper _classUnderTest;
@@ -35,7 +36,7 @@ namespace HousingSearchApi.Tests.V1.Helper
                 serviceProvider.GetService<ILogger<SearchPersonElasticSearchHelper>>());
         }
 
-        [Fact(Skip = "Actually an intgration test as requires a real Elastic search instance running.")]
+        [Fact(Skip = "The implementation of this test was done before the search implementation was refactored. As a result the assertion is incorrect and need to be re-assessed.")]
         // In our case, the query should be a SHOULD (the ElasticSearch option for OR), followed by wildcards for :
         // firstname, surname, middlename,prefferedfirstname, preferredsurname, dateofbirth
         public async Task WhenCallingElasticSearchHelperShouldGenerateTheRightQuery()

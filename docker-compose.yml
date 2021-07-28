@@ -10,6 +10,8 @@ services:
       - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
     environment:
       - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
+    networks:
+      - elastic
     ports:
       - 3000:3000        
     depends_on:
@@ -24,6 +26,8 @@ services:
       - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
     environment:
       - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
+    networks:
+      - elastic
     depends_on:
       #- kibana
       - test-elasticsearch

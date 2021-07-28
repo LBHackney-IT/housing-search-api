@@ -52,7 +52,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             }
         }
 
-        private static void WaitForESInstance(IElasticClient elasticSearchClient)
+        private void WaitForESInstance(IElasticClient elasticSearchClient)
         {
             Exception ex = null;
             var timeout = DateTime.UtcNow.AddSeconds(10); // 5 second timeout (make configurable?)
