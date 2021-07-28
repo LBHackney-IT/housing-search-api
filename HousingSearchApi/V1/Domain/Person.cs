@@ -5,9 +5,7 @@ namespace HousingSearchApi.V1.Domain
     public class Person
     {
         public Person()
-        {
-
-        }
+        { }
 
         public static Person Create(string id, string title, string firstname, string middleName, string surname,
             string preferredFirstname, string preferredSurname, string ethinicity, string nationality,
@@ -49,38 +47,38 @@ namespace HousingSearchApi.V1.Domain
             Tenures = tenures;
         }
 
-        public string Id { get; }
+        public string Id { get; set; }
 
-        public string Title { get; }
+        public string Title { get; set; }
 
-        public string Firstname { get; }
+        public string Firstname { get; set; }
 
-        public string MiddleName { get; }
+        public string MiddleName { get; set; }
 
-        public string Surname { get; }
+        public string Surname { get; set; }
 
-        public string PreferredFirstname { get; }
+        public string PreferredFirstname { get; set; }
 
-        public string PreferredSurname { get; }
+        public string PreferredSurname { get; set; }
 
-        public string Ethinicity { get; }
+        public string Ethinicity { get; set; }
 
-        public string Nationality { get; }
+        public string Nationality { get; set; }
 
-        public string PlaceOfBirth { get; }
+        public string PlaceOfBirth { get; set; }
 
-        public string DateOfBirth { get; }
+        public string DateOfBirth { get; set; }
 
-        public string Gender { get; }
+        public string Gender { get; set; }
 
-        public List<Identification> Identification { get; }
+        public List<Identification> Identification { get; set; }
 
-        public List<string> PersonTypes { get; }
+        public List<string> PersonTypes { get; set; }
 
-        public bool IsPersonCautionaryAlert { get; }
+        public bool IsPersonCautionaryAlert { get; set; }
 
-        public bool IsTenureCautionaryAlert { get; }
+        public bool IsTenureCautionaryAlert { get; set; }
 
-        public List<Tenure> Tenures { get; }
+        public List<Tenure> Tenures { get; set; }
     }
 }

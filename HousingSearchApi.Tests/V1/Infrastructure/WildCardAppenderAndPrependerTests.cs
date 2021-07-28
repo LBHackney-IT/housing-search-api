@@ -6,7 +6,7 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
 {
     public class WildCardAppenderAndPrependerTests
     {
-        private WildCardAppenderAndPrepender _sut;
+        private readonly WildCardAppenderAndPrepender _sut;
 
         public WildCardAppenderAndPrependerTests()
         {

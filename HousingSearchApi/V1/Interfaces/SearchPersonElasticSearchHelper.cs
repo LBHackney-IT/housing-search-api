@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Nest;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HousingSearchApi.V1.Interfaces
@@ -32,7 +33,8 @@ namespace HousingSearchApi.V1.Interfaces
         {
             try
             {
-                _logger.LogDebug($"ElasticSearch Search begins {Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL")}");
+                var esNodes = string.Join(';', _esClient.ConnectionSettings.ConnectionPool.Nodes.Select(x => x.Uri));
+                _logger.LogDebug($"ElasticSearch Search begins {esNodes}");
                 if (request == null)
                     return new SearchResponse<QueryablePerson>();
 
