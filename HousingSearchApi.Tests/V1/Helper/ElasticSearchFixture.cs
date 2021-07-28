@@ -58,7 +58,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         private void WaitForESInstance(IElasticClient elasticSearchClient)
         {
             Exception ex = null;
-            var timeout = DateTime.UtcNow.AddSeconds(10); // 5 second timeout (make configurable?)
+            var timeout = DateTime.UtcNow.AddSeconds(10); // 10 second timeout to make sure the ES instance has started and is ready to use.
             while (DateTime.UtcNow < timeout)
             {
                 try

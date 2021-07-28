@@ -26,7 +26,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             var persons = CreateQueryablePerson();
             elasticClient.IndexManyAsync(persons, Index);
 
-            var timeout = DateTime.UtcNow.AddSeconds(10); // 10 second timeout (make configurable?)
+            var timeout = DateTime.UtcNow.AddSeconds(10); // 10 second timeout to make sure all the data is there.
             while (DateTime.UtcNow < timeout)
             {
                 var count = elasticClient.Cluster.Stats().Indices.Documents.Count;
@@ -45,7 +45,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             var random = new Random();
             var fixture = new Fixture();
 
-            // Make sure there are 10 of each surname first
+            // Make sure there are 10 of each surname first in case there are tests that depend on some being there.
             foreach (var name in Alphabet)
             {
                 var persons = fixture.Build<QueryablePerson>()
