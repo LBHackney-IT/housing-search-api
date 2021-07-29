@@ -8,8 +8,14 @@ services:
       dockerfile: HousingSearchApi/Dockerfile
       args:
       - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
+    environment:
+      - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
+    networks:
+      - elastic
     ports:
       - 3000:3000        
+    depends_on:
+      - test-elasticsearch
 
   housing-search-api-test:
     image: housing-search-api-test
@@ -18,8 +24,13 @@ services:
       dockerfile: HousingSearchApi.Tests/Dockerfile
       args:
       - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
+    environment:
+      - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
+    networks:
+      - elastic
     depends_on:
-        - kibana
+      #- kibana
+      - test-elasticsearch
       
   test-elasticsearch:
     image: test-elasticsearch
@@ -34,25 +45,25 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
       - 9200:9200
+      - 9300:9300
     volumes:
       - esdata-test:/usr/share/elasticsearch/data
     networks:
-      elastic:
-        aliases:
-          - test-elasticsearch
-          - elastic
-          - elasticsearch
-  kibana:
-        image: docker.elastic.co/kibana/kibana:7.9.3
-        ports:
-            - "5601:5601"
-        networks:
-            - elastic
-        depends_on:
-            - test-elasticsearch
+      - elastic
+
+  #kibana:
+  #      image: docker.elastic.co/kibana/kibana:7.9.3
+  #      ports:
+  #          - "5601:5601"
+  #      networks:
+  #          - elastic
+  #      depends_on:
+  #          - test-elasticsearch
+
 volumes:
     esdata-test:
         driver: local
+
 networks:
   elastic:
     driver: bridge
