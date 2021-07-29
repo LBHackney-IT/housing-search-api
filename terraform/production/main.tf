@@ -40,16 +40,17 @@ module "elasticsearch_db_production" {
   environment_name = "production"
   port             = 443
   domain_name      = "housing-search-api-es"
-  subnet_ids       = [tolist(data.aws_subnet_ids.production.ids)[0]]
+  subnet_ids       = data.aws_subnet_ids.production.ids
   project_name     = "housing-search-api"
   es_version       = "7.8"
-  encrypt_at_rest  = "false"
-  instance_type    = "t3.small.elasticsearch"
-  instance_count   = "1"
+  encrypt_at_rest  = "true"
+  instance_type    = "t3.medium.elasticsearch"
+  instance_count   = "2"
   ebs_enabled      = "true"
-  ebs_volume_size  = "10"
+  ebs_volume_size  = "30"
   region           = data.aws_region.current.name
   account_id       = data.aws_caller_identity.current.account_id
+  zone_awareness_enabled = true
 }
 
 resource "aws_ssm_parameter" "search_elasticsearch_domain" {
