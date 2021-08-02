@@ -1,5 +1,6 @@
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using FluentValidation.AspNetCore;
+using Hackney.Core.DI;
 using Hackney.Core.HealthCheck;
 using Hackney.Core.Logging;
 using Hackney.Core.Middleware.CorrelationId;
@@ -131,6 +132,7 @@ namespace HousingSearchApi
                     c.IncludeXmlComments(xmlPath);
             });
             services.ConfigureLambdaLogging(Configuration);
+            services.AddTokenFactory();
 
             RegisterGateways(services);
             RegisterUseCases(services);
