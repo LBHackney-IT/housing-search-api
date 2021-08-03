@@ -1,4 +1,4 @@
-﻿namespace HousingSearchApi.V1.Domain.Tenure
+namespace HousingSearchApi.V1.Domain.Tenure
 {
     public class TenuredAsset
     {
