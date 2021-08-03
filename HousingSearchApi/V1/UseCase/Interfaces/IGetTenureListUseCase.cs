@@ -8,4 +8,12 @@ namespace HousingSearchApi.V1.UseCase.Interfaces
     {
         Task<GetPersonListResponse> ExecuteAsync(GetTenureListRequest getPersonListRequest);
     }
+
+    class GetTenureListUseCase : IGetTenureListUseCase
+    {
+        public Task<GetPersonListResponse> ExecuteAsync(GetTenureListRequest getPersonListRequest)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }
