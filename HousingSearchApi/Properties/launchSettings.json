@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "transactions_api": {
+    "housing_search_api": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/v1/healthcheck/ping",
