@@ -5,7 +5,7 @@
   </PropertyGroup>
     <PropertyGroup>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <NoWarn>$(NoWarn);1591;S1075;CA1303;CA1062;CA2000</NoWarn>
+        <NoWarn>$(NoWarn);1591;S1075;CA1303;CA1062;CA2000;CA1724</NoWarn>
         <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
