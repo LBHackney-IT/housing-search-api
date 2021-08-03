@@ -3,8 +3,6 @@ using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Gateways.Models;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.Interfaces;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Internal;
 using Nest;
 using Xunit;
 

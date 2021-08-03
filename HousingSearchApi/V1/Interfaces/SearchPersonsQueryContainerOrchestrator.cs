@@ -1,5 +1,4 @@
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Gateways.Models;
 using HousingSearchApi.V1.Infrastructure;
 using Nest;

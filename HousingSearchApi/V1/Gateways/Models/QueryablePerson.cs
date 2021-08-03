@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using HousingSearchApi.V1.Domain;
+using HousingSearchApi.V1.Domain.Person;
 using Nest;
 
 namespace HousingSearchApi.V1.Gateways.Models
@@ -9,8 +9,8 @@ namespace HousingSearchApi.V1.Gateways.Models
     {
         public Person Create()
         {
-            var listOfIdentifications = Identification != null ? Identification.Select(x => Domain.Identification.Create(x?.IdentificationType,
-                x?.Value, x.OriginalDocumentSeen, x?.LinkToDocument)).ToList() : new List<Domain.Identification>();
+            var listOfIdentifications = Identification != null ? Identification.Select(x => Domain.Person.Identification.Create(x?.IdentificationType,
+                x?.Value, x.OriginalDocumentSeen, x?.LinkToDocument)).ToList() : new List<Domain.Person.Identification>();
             var listOfTenures = Tenures != null ?
                 Tenures.Select(x => Tenure.Create(x?.Id, x?.Type, x?.StartDate, x?.EndDate, x?.AssetFullAddress)).ToList() : new List<Tenure>();
 
@@ -50,7 +50,7 @@ namespace HousingSearchApi.V1.Gateways.Models
 
         public string Gender { get; set; }
 
-        public List<Domain.Identification> Identification { get; set; }
+        public List<Domain.Person.Identification> Identification { get; set; }
 
         public List<string> PersonTypes { get; set; }
 
