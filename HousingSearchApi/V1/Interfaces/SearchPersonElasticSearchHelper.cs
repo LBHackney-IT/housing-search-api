@@ -29,7 +29,7 @@ namespace HousingSearchApi.V1.Interfaces
             _logger = logger;
             _indices = Indices.Index(new List<IndexName> { "persons" });
         }
-        public async Task<ISearchResponse<QueryablePerson>> Search(GetPersonListRequest request)
+        public async Task<ISearchResponse<QueryablePerson>> SearchPersons(GetPersonListRequest request)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace HousingSearchApi.V1.Interfaces
                 var pageOffset = _pagingHelper.GetPageOffset(request.PageSize, request.Page);
 
                 var result = await _esClient.SearchAsync<QueryablePerson>(x => x.Index(_indices)
-                    .Query(q => BaseQuery(request, q))
+                    .Query(q => BasePersonQuery(request, q))
                     .Sort(_iPersonListSortFactory.Create(request).GetSortDescriptor)
                     .Size(request.PageSize)
                     .Skip(pageOffset)
@@ -58,9 +58,43 @@ namespace HousingSearchApi.V1.Interfaces
             }
         }
 
-        private QueryContainer BaseQuery(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
+        public async Task<ISearchResponse<QueryableTenure>> SearchTenures(GetTenureListRequest request)
         {
-            return _containerOrchestrator.Create(request, q);
+            try
+            {
+                var esNodes = string.Join(';', _esClient.ConnectionSettings.ConnectionPool.Nodes.Select(x => x.Uri));
+                _logger.LogDebug($"ElasticSearch Search begins {esNodes}");
+                if (request == null)
+                    return new SearchResponse<QueryableTenure>();
+
+                var pageOffset = _pagingHelper.GetPageOffset(request.PageSize, request.Page);
+
+                var result = await _esClient.SearchAsync<QueryableTenure>(x => x.Index(_indices)
+                    .Query(q => BaseTenureQuery(request, q))
+                    .Size(request.PageSize)
+                    .Skip(pageOffset)
+                    .TrackTotalHits()).ConfigureAwait(false);
+
+                _logger.LogDebug("ElasticSearch Search ended");
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "ElasticSearch Search threw an exception");
+                throw;
+            }
+        }
+
+        private QueryContainer BaseTenureQuery(GetTenureListRequest request, QueryContainerDescriptor<QueryableTenure> q)
+        {
+            return _containerOrchestrator.CreateTenure(request, q);
+        }
+
+
+        private QueryContainer BasePersonQuery(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
+        {
+            return _containerOrchestrator.CreatePerson(request, q);
         }
     }
 }

@@ -49,9 +49,9 @@ namespace HousingSearchApi.V1.Controllers
 
             try
             {
-                var personsSearchResult = await _getTenureListUseCase.ExecuteAsync(request).ConfigureAwait(false);
-                var apiResponse = new APIResponse<GetPersonListResponse>(personsSearchResult);
-                apiResponse.Total = personsSearchResult.Total();
+                var tenuresSearchResult = await _getTenureListUseCase.ExecuteAsync(request).ConfigureAwait(false);
+                var apiResponse = new APIResponse<GetTenureListResponse>(tenuresSearchResult);
+                apiResponse.Total = tenuresSearchResult.Total();
 
                 return new OkObjectResult(apiResponse);
             }
