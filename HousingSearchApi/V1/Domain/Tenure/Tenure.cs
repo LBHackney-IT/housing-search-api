@@ -6,7 +6,7 @@ namespace HousingSearchApi.V1.Domain.Tenure
 {
     public class Tenure
     {
-        public static Tenure Create(string id,string paymentReference, string startOfTenureDate, string endOfTenureDate,
+        public static Tenure Create(string id, string paymentReference, string startOfTenureDate, string endOfTenureDate,
             List<QueryableHouseholdMember> houseHoldMembers, QueryableTenuredAsset tenuredAsset, QueryableTenureType tenureType)
         {
             return new Tenure(id, paymentReference, startOfTenureDate, endOfTenureDate, houseHoldMembers,
