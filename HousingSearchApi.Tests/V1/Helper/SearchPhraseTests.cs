@@ -24,7 +24,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnNullIfRequestSearchTextIsEmpty(string searchText)
         {
             // Arrange + Act
-            var result = _sut.Create(new GetPersonListRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
+            var result = _sut.CreatePersonQuery(new GetPersonListRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert
             result.Should().BeNull();
@@ -38,7 +38,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             var nameToExpect = "*SomeName* *LastName*";
 
             // Act
-            var result = _sut.Create(new GetPersonListRequest { SearchText = nameToSearchFor },
+            var result = _sut.CreatePersonQuery(new GetPersonListRequest { SearchText = nameToSearchFor },
                 new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert

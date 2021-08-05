@@ -38,7 +38,8 @@ namespace HousingSearchApi.V1.Interfaces
                 m.Query(string.Join(' ', listOfWildCardedWords))
                     .Fields(f => f.Field(p => p.PaymentReference)
                         .Field(p => p.TenuredAsset.FullAddress)
-                        .Field(p => p.HouseholdMembers))
+                        .Field(p => p.HouseholdMembers)
+                        .Field("householdMembers.fullName"))
                     .Type(TextQueryType.MostFields));
 
             return searchSurnames;
