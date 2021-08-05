@@ -38,7 +38,7 @@ namespace HousingSearchApi.Tests
             if (client == null)
                 return;
 
-            await CreateIndex(Constants.EsIndex, client).ConfigureAwait(true);
+            await CreateIndeces(Constants.EsIndex, client).ConfigureAwait(true);
         }
         public static ElasticClient SetupElasticsearchConnection()
         {
@@ -53,12 +53,18 @@ namespace HousingSearchApi.Tests
             return new ElasticClient(settings);
         }
 
-        private static async Task CreateIndex(string name, IElasticClient client)
+        private static async Task CreateIndeces(string name, IElasticClient client)
         {
-            var settingsDoc = await File.ReadAllTextAsync("./../../../../data/elasticsearch/index.json")
+            var personSettingsDoc = await File.ReadAllTextAsync("./../../../../data/elasticsearch/personIndex.json")
                 .ConfigureAwait(true);
 
-            await client.LowLevel.Indices.CreateAsync<BytesResponse>(name, settingsDoc)
+            await client.LowLevel.Indices.CreateAsync<BytesResponse>(name, personSettingsDoc)
+                .ConfigureAwait(true);
+
+            var tenureSettingsDoc = await File.ReadAllTextAsync("./../../../../data/elasticsearch/tenureIndex.json")
+                .ConfigureAwait(true);
+
+            await client.LowLevel.Indices.CreateAsync<BytesResponse>(name, tenureSettingsDoc)
                 .ConfigureAwait(true);
         }
 

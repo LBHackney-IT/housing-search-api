@@ -17,7 +17,8 @@ namespace HousingSearchApi.V1.Interfaces
         private readonly IPagingHelper _pagingHelper;
         private readonly IPersonListSortFactory _iPersonListSortFactory;
         private readonly ILogger<SearchPersonElasticSearchHelper> _logger;
-        private readonly Indices.ManyIndices _indices;
+        private readonly Indices.ManyIndices _personIndices;
+        private readonly Indices.ManyIndices _tenureIndices;
 
         public SearchPersonElasticSearchHelper(IElasticClient esClient, ISearchPersonsQueryContainerOrchestrator containerOrchestrator,
             IPagingHelper pagingHelper, IPersonListSortFactory iPersonListSortFactory, ILogger<SearchPersonElasticSearchHelper> logger)
@@ -27,7 +28,8 @@ namespace HousingSearchApi.V1.Interfaces
             _pagingHelper = pagingHelper;
             _iPersonListSortFactory = iPersonListSortFactory;
             _logger = logger;
-            _indices = Indices.Index(new List<IndexName> { "persons" });
+            _personIndices = Indices.Index(new List<IndexName> { "persons" });
+            _tenureIndices = Indices.Index(new List<IndexName> { "tenures" });
         }
         public async Task<ISearchResponse<QueryablePerson>> SearchPersons(GetPersonListRequest request)
         {
@@ -40,7 +42,7 @@ namespace HousingSearchApi.V1.Interfaces
 
                 var pageOffset = _pagingHelper.GetPageOffset(request.PageSize, request.Page);
 
-                var result = await _esClient.SearchAsync<QueryablePerson>(x => x.Index(_indices)
+                var result = await _esClient.SearchAsync<QueryablePerson>(x => x.Index(_personIndices)
                     .Query(q => BasePersonQuery(request, q))
                     .Sort(_iPersonListSortFactory.Create(request).GetSortDescriptor)
                     .Size(request.PageSize)
@@ -69,7 +71,7 @@ namespace HousingSearchApi.V1.Interfaces
 
                 var pageOffset = _pagingHelper.GetPageOffset(request.PageSize, request.Page);
 
-                var result = await _esClient.SearchAsync<QueryableTenure>(x => x.Index(_indices)
+                var result = await _esClient.SearchAsync<QueryableTenure>(x => x.Index(_tenureIndices)
                     .Query(q => BaseTenureQuery(request, q))
                     .Size(request.PageSize)
                     .Skip(pageOffset)
