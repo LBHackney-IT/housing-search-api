@@ -1,11 +1,16 @@
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using FluentValidation.AspNetCore;
-using Hackney.Core.DI;
-using Hackney.Core.HealthCheck;
-using Hackney.Core.Logging;
-using Hackney.Core.Middleware.CorrelationId;
-using Hackney.Core.Middleware.Exception;
-using Hackney.Core.Middleware.Logging;
+using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Gateways;
+using HousingSearchApi.V1.Gateways.Interfaces;
+using HousingSearchApi.V1.Gateways.Models;
+// TODO: 1 Return when last commit
+//using Hackney.Core.DI;
+//using Hackney.Core.HealthCheck;
+//using Hackney.Core.Logging;
+//using Hackney.Core.Middleware.CorrelationId;
+//using Hackney.Core.Middleware.Exception;
+//using Hackney.Core.Middleware.Logging;
 using HousingSearchApi.V1.HealthCheck;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.Interfaces;
@@ -131,8 +136,9 @@ namespace HousingSearchApi
                 if (File.Exists(xmlPath))
                     c.IncludeXmlComments(xmlPath);
             });
-            services.ConfigureLambdaLogging(Configuration);
-            services.AddTokenFactory();
+            // TODO: 1 Return when last commit
+            //services.ConfigureLambdaLogging(Configuration);
+            //services.AddTokenFactory();
 
             RegisterGateways(services);
             RegisterUseCases(services);
@@ -141,16 +147,23 @@ namespace HousingSearchApi
 
             services.AddScoped<IWildCardAppenderAndPrepender, WildCardAppenderAndPrepender>();
 
-            services.AddLogCallAspect();
+            // TODO: 1 Return when last commit
+            //services.AddLogCallAspect();
         }
 
         private static void RegisterGateways(IServiceCollection services)
         {
             services.AddScoped<ISearchPersonsGateway, SearchPersonsGateway>();
+            services.AddScoped<ISearchAssetsGateway, SearchAssetsGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
         {
+            services.AddScoped<ISearchElasticSearchHelper<GetAssetListRequest, QueryableAsset>, SearchElasticSearchHelper<GetAssetListRequest, QueryableAsset>>();
+            services.AddScoped<ISearchQueryContainerOrchestrator<GetAssetListRequest, QueryableAsset>, SearchAssetsQueryContainerOrchestrator>();
+            services.AddScoped<IListSortFactory<GetAssetListRequest, QueryableAsset>, AssetListSortFactory>();
+            services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();
+
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
             services.AddScoped<ISearchPersonElasticSearchHelper, SearchPersonElasticSearchHelper>();
             services.AddScoped<ISearchPersonsQueryContainerOrchestrator, SearchPersonsQueryContainerOrchestrator>();
@@ -168,10 +181,11 @@ namespace HousingSearchApi
 
             app.UseXRay("housing-search-api");
 
-            app.UseCorrelationId();
-            app.UseLoggingScope();
-            app.UseCustomExceptionHandler(logger);
-            app.UseLogCall();
+            // TODO: 1 Return when last commit
+            //app.UseCorrelationId();
+            //app.UseLoggingScope();
+            //app.UseCustomExceptionHandler(logger);
+            //app.UseLogCall();
 
             if (env.IsDevelopment())
             {
@@ -203,10 +217,11 @@ namespace HousingSearchApi
                 // SwaggerGen won't find controllers that are routed via this technique.
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 
-                endpoints.MapHealthChecks("/api/v1/healthcheck/ping", new HealthCheckOptions()
-                {
-                    ResponseWriter = HealthCheckResponseWriter.WriteResponse
-                });
+                // TODO: 1 Return when last commit
+                //endpoints.MapHealthChecks("/api/v1/healthcheck/ping", new HealthCheckOptions()
+                //{
+                //    ResponseWriter = HealthCheckResponseWriter.WriteResponse
+                //});
             });
         }
     }

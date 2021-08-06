@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace HousingSearchApi.V1.Boundary.Requests.Validation
 {
-    public class GetPersonListRequestValidator : AbstractValidator<GetPersonListRequest>
+    public class GetAssetListRequestValidator : AbstractValidator<GetAssetListRequest>
     {
-        public GetPersonListRequestValidator()
+        public GetAssetListRequestValidator()
         {
             // TODO: 1 Return when last commit
             //RuleFor(x => x.SearchText).NotNull()

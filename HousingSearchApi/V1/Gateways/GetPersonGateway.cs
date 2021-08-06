@@ -1,4 +1,5 @@
-using Hackney.Core.Logging;
+// TODO: 1 Return when last commit
+//using Hackney.Core.Logging;
 using HousingSearchApi.V1.Domain;
 using Microsoft.Extensions.Logging;
 using Nest;
@@ -17,8 +18,8 @@ namespace HousingSearchApi.V1.Gateways
             _esClient = esClient;
             _logger = logger;
         }
-
-        [LogCall]
+        // TODO: 1 Return when last commit
+        //[LogCall]
         public Task<List<Person>> Search(SearchParameters parameters)
         {
             return Task.FromResult(new List<Person>());

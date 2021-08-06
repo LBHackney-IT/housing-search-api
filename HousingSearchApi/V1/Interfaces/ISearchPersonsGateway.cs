@@ -1,4 +1,5 @@
-using Hackney.Core.Logging;
+// TODO: 1 Return when last commit
+//using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Response;
 using System.Linq;
@@ -19,8 +20,8 @@ namespace HousingSearchApi.V1.Interfaces
         {
             _elasticSearchHelper = elasticSearchHelper;
         }
-
-        [LogCall]
+        // TODO: 1 Return when last commit
+        //[LogCall]
         public async Task<GetPersonListResponse> GetListOfPersons(GetPersonListRequest query)
         {
             var searchResponse = await _elasticSearchHelper.Search(query).ConfigureAwait(false);

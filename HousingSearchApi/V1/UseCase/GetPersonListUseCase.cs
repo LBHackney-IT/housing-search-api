@@ -1,4 +1,5 @@
-using Hackney.Core.Logging;
+// TODO: 1 Return when last commit
+//using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Response;
 using HousingSearchApi.V1.Interfaces;
@@ -15,8 +16,8 @@ namespace HousingSearchApi.V1.UseCase
         {
             _searchPersonsGateway = searchPersonsGateway;
         }
-
-        [LogCall]
+        // TODO: 1 Return when last commit
+        //[LogCall]
         public async Task<GetPersonListResponse> ExecuteAsync(GetPersonListRequest getPersonListRequest)
         {
             return await _searchPersonsGateway.GetListOfPersons(getPersonListRequest).ConfigureAwait(false);
