@@ -16,10 +16,10 @@
     <None Remove="TestResults\**" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\HousingSearchApi\data\elasticsearch\personIndex.json" Link="V1\Helper\Indeces\personIndex.json">
+    <Content Include="..\HousingSearchApi\data\elasticsearch\personIndex.json" Link="V1\Helper\Indices\personIndex.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\HousingSearchApi\data\elasticsearch\tenureIndex.json" Link="V1\Helper\Indeces\tenureIndex.json">
+    <Content Include="..\HousingSearchApi\data\elasticsearch\tenureIndex.json" Link="V1\Helper\Indices\tenureIndex.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <Folder Include="V1\E2ETests\" />
     <Folder Include="V1\Factories\" />
     <Folder Include="V1\Gateways\" />
-    <Folder Include="V1\Helper\Indeces\" />
+    <Folder Include="V1\Helper\Indices\" />
     <Folder Include="V1\UseCase\Interfaces\" />
   </ItemGroup>
 
