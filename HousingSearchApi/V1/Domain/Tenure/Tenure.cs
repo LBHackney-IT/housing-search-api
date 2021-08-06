@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HousingSearchApi.V1.Gateways.Models;
+using HousingSearchApi.V1.Helper;
 
 namespace HousingSearchApi.V1.Domain.Tenure
 {
@@ -32,5 +33,6 @@ namespace HousingSearchApi.V1.Domain.Tenure
         public string StartOfTenureDate { get; set; }
         public string EndOfTenureDate { get; set; }
         public TenureType TenureType { get; set; }
+        public bool IsActive => TenureHelpers.IsTenureActive(EndOfTenureDate);
     }
 }
