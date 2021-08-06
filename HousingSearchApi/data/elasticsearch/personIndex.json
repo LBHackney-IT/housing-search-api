@@ -1,215 +1,237 @@
 {
-  "settings": {
-    "analysis": {
-      "analyzer": {
-        "whitespace_removed": {
-          "tokenizer": "keyword",
-          "filter": [
-            "lowercase"
-          ],
-          "char_filter": [
-            "remove_whitespace"
-          ]
-        },
-        "address_text": {
-          "type": "custom",
-          "tokenizer": "classic",
-          "ignore_case": true,
-          "char_filter": [
-            "remove_apostrophes"
-          ],
-          "filter": [
-            "lowercase",
-            "common_street_terms_synonyms",
-            "ignore_unmeaningful_building_words",
-            "remove_numbers"
-          ]
-        },
-        "extract_number_analyzer" : {
-          "tokenizer" : "standard",
-          "filter" : ["extract_numbers", "decimal_digit"]
+  "aliases": {
+
+  },
+  "mappings": {
+    "properties": {
+      "dateOfBirth": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
         }
       },
-      "char_filter": {
-        "remove_whitespace": {
-          "type": "pattern_replace",
-          "pattern": " ",
-          "replacement": ""
-        },
-        "remove_apostrophes": {
-          "type": "pattern_replace",
-          "pattern": "'",
-          "replacement": ""
+      "ethinicity": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
         }
       },
-      "filter": {
-        "common_street_terms_synonyms": {
-          "type": "synonym",
-          "lenient": false,
-          "synonyms": [ "road, raod, lane, lanes, street, streat, avenue, rd, str, avn, ave, close => road" ]
-        },
-        "ignore_unmeaningful_building_words": {
-          "type": "stop",
-          "ignore_case": true,
-          "stopwords": [
-            "flat",
-            "flt",
-            "apt",
-            "apartment",
-            "fat"
-          ]
-        },
-        "extract_numbers" : {
-          "type" : "keep_types",
-          "types" : [ "<NUM>" ]
-        },
-        "remove_numbers" : {
-          "type" : "keep_types",
-          "types" : [ "<NUM>" ],
-          "mode": "exclude"
+      "firstname": {
+        "type": "keyword",
+        "normalizer": "my_normalizer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "gender": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "id": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "identification": {
+        "properties": {
+          "identificationType": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "linkToDocument": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "originalDocumentSeen": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "isPersonCautionaryAlert": {
+        "type": "boolean"
+      },
+      "isTenureCautionaryAlert": {
+        "type": "boolean"
+      },
+      "middlename": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "nationality": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "personTypes": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "placeOfBirth": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "preferredFirstname": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "preferredSurname": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "surname": {
+        "type": "keyword",
+        "normalizer": "my_normalizer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "tenures": {
+        "properties": {
+          "assetFullAddress": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "endDate": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "startDate": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "title": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
         }
       }
     }
   },
-  "mappings" : {
-    "properties" : {
-      "lpi_last_update_date" : {
-        "type" : "integer"
-      },
-      "lpi_key" : {
-        "type" : "keyword"
-      },
-      "lpi_logical_status" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
+  "settings": {
+    "analysis": {
+      "normalizer": {
+        "my_normalizer": {
+          "type": "custom",
+          "char_filter": [
+
+          ],
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
         }
-      },
-      "building_number" : {
-        "type" : "keyword",
-        "fields": {
-          "sort": {
-            "type": "icu_collation_keyword",
-            "index": false,
-            "numeric": true,
-            "case_level": false
-          }
-        }
-      },
-      "gazetteer" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
-      },
-      "line1" : {
-        "type" : "text",
-        "analyzer": "standard",
-        "copy_to": "full_address",
-        "similarity": "boolean"
-      },
-      "line2" : {
-        "type" : "text",
-        "analyzer": "standard",
-        "similarity": "boolean",
-        "copy_to": "full_address"
-      },
-      "line3" : {
-        "type" : "text",
-        "analyzer": "standard",
-        "copy_to": "full_address",
-        "similarity": "boolean"
-      },
-      "line4" : {
-        "type" : "text",
-        "analyzer": "standard",
-        "similarity": "boolean",
-        "copy_to": "full_address"
-      },
-      "full_address" : {
-        "type" : "text",
-        "analyzer": "address_text",
-        "similarity": "boolean",
-        "fields": {
-          "extracted_numbers": {
-            "type": "text",
-            "analyzer": "extract_number_analyzer",
-            "similarity": "boolean"
-          },
-          "exact_text": {
-            "type" : "text",
-            "analyzer": "standard",
-            "similarity": "boolean"
-          }
-        }
-      },
-      "neverexport" : {
-        "type" : "boolean"
-      },
-      "paon_start_num" : {
-        "type" : "integer"
-      },
-      "parent_uprn" : {
-        "type" : "long"
-      },
-      "postcode" : {
-        "type" : "text",
-        "analyzer" : "whitespace_removed",
-        "fielddata" : true
-      },
-      "property_shell" : {
-        "type" : "boolean"
-      },
-      "street_description" : {
-        "type" : "text",
-        "analyzer" : "whitespace_removed",
-        "fielddata" : true
-      },
-      "town" : {
-        "type" : "keyword"
-      },
-      "uprn" : {
-        "type" : "long"
-      },
-      "usrn" : {
-        "type" : "integer"
-      },
-      "sao_text" : {
-        "type" : "keyword"
-      },
-      "unit_number" : {
-        "type" : "integer"
-      },
-      "blpu_class" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
-      },
-      "usage_primary" : {
-        "type" : "text",
-        "fields" : {
-          "keyword" : {
-            "type" : "keyword",
-            "ignore_above" : 256
-          }
-        }
-      },
-      "blpu_last_update_date": {
-        "type": "integer"
-      },
-      "blpu_start_date": {
-        "type": "integer"
       }
+    },
+    "index": {
+      "number_of_shards": "1",
+      "number_of_replicas": "1"
     }
   }
 }
