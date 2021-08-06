@@ -35,9 +35,9 @@ namespace HousingSearchApi.Tests.V1.Helper
             //            prop.Keyword(field => field.Name("surname"))
             //                .Keyword(field => field.Name("firstname")))));
 
-            var personSettingsDoc = File.ReadAllTextAsync("./../../../../data/elasticsearch/personIndex.json").Result;
+            var personSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/personIndex.json").Result;
             elasticClient.LowLevel.Indices.CreateAsync<BytesResponse>(PersonIndex, personSettingsDoc).ConfigureAwait(true);
-            var tenureSettingsDoc = File.ReadAllTextAsync("./../../../../data/elasticsearch/tenureIndex.json").Result;
+            var tenureSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/tenureIndex.json").Result;
             elasticClient.LowLevel.Indices
                 .CreateAsync<BytesResponse>(TenureIndex, tenureSettingsDoc).ConfigureAwait(true);
 

@@ -15,6 +15,14 @@
     <EmbeddedResource Remove="TestResults\**" />
     <None Remove="TestResults\**" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\HousingSearchApi\data\elasticsearch\personIndex.json" Link="V1\Helper\personIndex.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\HousingSearchApi\data\elasticsearch\tenureIndex.json" Link="V1\Helper\tenureIndex.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.11.0" />
