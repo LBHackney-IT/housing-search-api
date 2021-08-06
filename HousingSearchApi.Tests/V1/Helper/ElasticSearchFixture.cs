@@ -26,13 +26,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             Client = _factory.CreateClient();
 
             WaitForESInstance(ElasticSearchClient);
-            Persons = TestDataHelper.InsertPersonsInEs(ElasticSearchClient);
-
-            _cleanup.Add(() =>
-            {
-                ElasticSearchClient.DeleteManyAsync(Persons, TestDataHelper.Index)
-                                   .GetAwaiter().GetResult();
-            });
+            TestDataHelper.InsertDataInEs(ElasticSearchClient);
         }
 
         public void Dispose()
