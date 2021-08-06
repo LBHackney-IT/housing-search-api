@@ -20,20 +20,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public static void InsertDataInEs(IElasticClient elasticClient)
         {
             elasticClient.Indices.Delete(PersonIndex);
-
-            //elasticClient.Indices.Create(TenureIndex, s =>
-            //    s.Map(x => x.AutoMap()
-            //        .Properties(prop =>
-            //            prop.Keyword(field => field.Name("surname"))
-            //                .Keyword(field => field.Name("firstname")))));
-
             elasticClient.Indices.Delete(TenureIndex);
-
-            //elasticClient.Indices.Create(PersonIndex, s =>
-            //    s.Map(x => x.AutoMap()
-            //        .Properties(prop =>
-            //            prop.Keyword(field => field.Name("surname"))
-            //                .Keyword(field => field.Name("firstname")))));
 
             var personSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/personIndex.json").Result;
             elasticClient.LowLevel.Indices.CreateAsync<BytesResponse>(PersonIndex, personSettingsDoc).ConfigureAwait(true);
