@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace HousingSearchApi.V1.Interfaces
 {
-    public interface ISearchPersonsGateway
+    public interface ISearchGateway
     {
         Task<GetPersonListResponse> GetListOfPersons(GetPersonListRequest query);
         Task<GetTenureListResponse> GetListOfTenures(GetTenureListRequest getTenureListRequest);

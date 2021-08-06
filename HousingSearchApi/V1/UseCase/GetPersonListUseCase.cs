@@ -9,17 +9,17 @@ namespace HousingSearchApi.V1.UseCase
 {
     public class GetPersonListUseCase : IGetPersonListUseCase
     {
-        private readonly ISearchPersonsGateway _searchPersonsGateway;
+        private readonly ISearchGateway _searchGateway;
 
-        public GetPersonListUseCase(ISearchPersonsGateway searchPersonsGateway)
+        public GetPersonListUseCase(ISearchGateway searchGateway)
         {
-            _searchPersonsGateway = searchPersonsGateway;
+            _searchGateway = searchGateway;
         }
 
         [LogCall]
         public async Task<GetPersonListResponse> ExecuteAsync(GetPersonListRequest getPersonListRequest)
         {
-            return await _searchPersonsGateway.GetListOfPersons(getPersonListRequest).ConfigureAwait(false);
+            return await _searchGateway.GetListOfPersons(getPersonListRequest).ConfigureAwait(false);
         }
     }
 }

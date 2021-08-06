@@ -6,11 +6,11 @@ using HousingSearchApi.V1.Boundary.Response;
 
 namespace HousingSearchApi.V1.Interfaces
 {
-    public class SearchPersonsGateway : ISearchPersonsGateway
+    public class SearchGateway : ISearchGateway
     {
         private readonly ISearchPersonElasticSearchHelper _elasticSearchHelper;
 
-        public SearchPersonsGateway(ISearchPersonElasticSearchHelper elasticSearchHelper)
+        public SearchGateway(ISearchPersonElasticSearchHelper elasticSearchHelper)
         {
             _elasticSearchHelper = elasticSearchHelper;
         }

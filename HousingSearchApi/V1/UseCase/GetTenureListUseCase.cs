@@ -9,17 +9,17 @@ namespace HousingSearchApi.V1.UseCase
 {
     public class GetTenureListUseCase : IGetTenureListUseCase
     {
-        private readonly ISearchPersonsGateway _searchPersonsGateway;
+        private readonly ISearchGateway _searchGateway;
 
-        public GetTenureListUseCase(ISearchPersonsGateway searchPersonsGateway)
+        public GetTenureListUseCase(ISearchGateway searchGateway)
         {
-            _searchPersonsGateway = searchPersonsGateway;
+            _searchGateway = searchGateway;
         }
 
         [LogCall]
         public async Task<GetTenureListResponse> ExecuteAsync(GetTenureListRequest getTenureListRequest)
         {
-            return await _searchPersonsGateway.GetListOfTenures(getTenureListRequest).ConfigureAwait(false);
+            return await _searchGateway.GetListOfTenures(getTenureListRequest).ConfigureAwait(false);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace HousingSearchApi.V1.Controllers
             _getTenureListUseCase = getTenureListUseCase;
         }
 
-        [ProducesResponseType(typeof(APIResponse<GetPersonListResponse>), 200)]
+        [ProducesResponseType(typeof(APIResponse<GetTenureListResponse>), 200)]
         [ProducesResponseType(typeof(APIResponse<NotFoundException>), 404)]
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
         [HttpGet, MapToApiVersion("1")]
