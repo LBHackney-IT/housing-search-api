@@ -21,18 +21,18 @@ namespace HousingSearchApi.V1.Domain
             PostPreamble = postPreamble;
         }
 
-        public string Uprn { get; }
+        public string Uprn { get; set; }
 
-        public string AddressLine1 { get; }
+        public string AddressLine1 { get; set; }
 
-        public string AddressLine2 { get; }
+        public string AddressLine2 { get; set; }
 
-        public string AddressLine3 { get; }
+        public string AddressLine3 { get; set; }
 
-        public string AddressLine4 { get; }
+        public string AddressLine4 { get; set; }
 
-        public string PostCode { get; }
+        public string PostCode { get; set; }
 
-        public string PostPreamble { get; }
+        public string PostPreamble { get; set; }
     }
 }

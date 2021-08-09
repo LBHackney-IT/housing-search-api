@@ -164,6 +164,8 @@ namespace HousingSearchApi
             services.AddScoped<IListSortFactory<GetAssetListRequest, QueryableAsset>, AssetListSortFactory>();
             services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();
 
+            services.AddScoped<IListSortFactory<GetPersonListRequest, QueryablePerson>, PersonListSortFactory>();
+
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
             services.AddScoped<ISearchPersonElasticSearchHelper, SearchPersonElasticSearchHelper>();
             services.AddScoped<ISearchPersonsQueryContainerOrchestrator, SearchPersonsQueryContainerOrchestrator>();

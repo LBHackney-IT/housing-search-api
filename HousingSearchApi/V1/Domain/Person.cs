@@ -8,25 +8,25 @@ namespace HousingSearchApi.V1.Domain
         { }
 
         public static Person Create(string id, string title, string firstname, string middleName, string surname,
-            string preferredFirstname, string preferredSurname, string ethinicity, string nationality,
+            string preferredFirstname, string preferredSurname, decimal totalBalance, string ethinicity, string nationality,
             string placeOfBirth, string dateOfBirth, string gender,
             List<Identification> identifications,
             List<string> personTypes, bool isPersonCautionaryAlert, bool isTenureCautionaryAlert,
-            List<Tenure> tenures)
+            List<Tenure> tenures, List<PersonProperty> properties)
         {
             return new Person(id, title, firstname, middleName, surname,
-                preferredFirstname, preferredSurname, ethinicity, nationality,
+                preferredFirstname, preferredSurname, totalBalance, ethinicity, nationality,
                 placeOfBirth, dateOfBirth, gender,
                 identifications,
                 personTypes, isPersonCautionaryAlert, isTenureCautionaryAlert,
-                tenures);
+                tenures, properties);
         }
 
         private Person(string id, string title, string firstname, string middleName, string surname,
-            string preferredFirstname, string preferredSurname, string ethinicity, string nationality, string placeOfBirth, string dateOfBirth, string gender,
+            string preferredFirstname, string preferredSurname, decimal totalBalance, string ethinicity, string nationality, string placeOfBirth, string dateOfBirth, string gender,
             List<Identification> identification,
             List<string> personTypes, bool isPersonCautionaryAlert, bool isTenureCautionaryAlert,
-            List<Tenure> tenures)
+            List<Tenure> tenures, List<PersonProperty> properties)
         {
             Id = id;
             Title = title;
@@ -35,6 +35,7 @@ namespace HousingSearchApi.V1.Domain
             Surname = surname;
             PreferredFirstname = preferredFirstname;
             PreferredSurname = preferredSurname;
+            TotalBalance = totalBalance;
             Ethinicity = ethinicity;
             Nationality = nationality;
             PlaceOfBirth = placeOfBirth;
@@ -45,6 +46,7 @@ namespace HousingSearchApi.V1.Domain
             IsPersonCautionaryAlert = isPersonCautionaryAlert;
             IsTenureCautionaryAlert = isTenureCautionaryAlert;
             Tenures = tenures;
+            Properties = properties;
         }
 
         public string Id { get; set; }
@@ -60,6 +62,8 @@ namespace HousingSearchApi.V1.Domain
         public string PreferredFirstname { get; set; }
 
         public string PreferredSurname { get; set; }
+
+        public decimal TotalBalance { get; set; }
 
         public string Ethinicity { get; set; }
 
@@ -80,5 +84,7 @@ namespace HousingSearchApi.V1.Domain
         public bool IsTenureCautionaryAlert { get; set; }
 
         public List<Tenure> Tenures { get; set; }
+
+        public List<PersonProperty> Properties { get; set; }
     }
 }

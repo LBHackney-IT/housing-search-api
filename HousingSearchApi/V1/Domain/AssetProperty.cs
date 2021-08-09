@@ -18,10 +18,10 @@ namespace HousingSearchApi.V1.Domain
             AssetAddress = assetAddress;
         }
 
-        public string Name { get; }
+        public string Name { get; set; }
 
-        public decimal TotalBalance { get; }
+        public decimal TotalBalance { get; set; }
 
-        public AssetAddress AssetAddress { get; }
+        public AssetAddress AssetAddress { get; set; }
     }
 }

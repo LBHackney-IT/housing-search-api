@@ -1,0 +1,226 @@
+{
+  "aliases": {
+
+  },
+  "mappings": {
+    "properties": {
+      "assetId": {
+        "type": "keyword",
+        "normalizer": "my_normalizer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "assetType": {
+        "type": "keyword",
+        "normalizer": "my_normalizer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "assetName": {
+        "type": "keyword",
+        "normalizer": "my_normalizer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "assetAddress": {
+        "properties": {
+          "uprn": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "addressLine1": {
+            "type": "keyword",
+            "normalizer": "my_normalizer",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "addressLine2": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "addressLine3": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "addressLine4": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "postCode": {
+            "type": "keyword",
+            "normalizer": "my_normalizer",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "postPreamble": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "totalDwellingRent": {
+        "type": "double"
+      },
+      "totalNonDwellingRent": {
+        "type": "double"
+      },
+      "totalServiceCharges": {
+        "type": "double"
+      },
+      "totalRentalServiceCharges": {
+        "type": "double"
+      },
+      "totalBalance": {
+        "type": "double"
+      },
+      "property": {
+        "properties": {
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "totalBalance": {
+            "type": "double"
+          },
+          "assetAddress": {
+            "properties": {
+              "uprn": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "addressLine1": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "addressLine2": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "addressLine3": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "addressLine4": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "postCode": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "postPreamble": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "settings": {
+    "analysis": {
+      "normalizer": {
+        "my_normalizer": {
+          "type": "custom",
+          "char_filter": [
+
+          ],
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        }
+      }
+    },
+    "index": {
+      "number_of_shards": "1",
+      "number_of_replicas": "1"
+    }
+  }
+}

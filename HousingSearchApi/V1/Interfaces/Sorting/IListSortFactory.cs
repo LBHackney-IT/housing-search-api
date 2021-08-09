@@ -6,6 +6,6 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
         where TRequest : class
         where TQueryable : class
     {
-        SortDescriptor<TQueryable> DynamicSort(SortDescriptor<TQueryable> f, TRequest request);
+        SortDescriptor<TQueryable> DynamicSort(SortDescriptor<TQueryable> sortDescriptor, TRequest request);
     }
 }

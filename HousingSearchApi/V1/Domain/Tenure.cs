@@ -4,23 +4,28 @@ namespace HousingSearchApi.V1.Domain
     {
         public Tenure() { }
 
-        public static Tenure Create(string id, string type, string startDate, string endDate, string assetFullAddress)
+        public static Tenure Create(string id, string type, decimal totalBalance, string startDate, string endDate, string assetFullAddress, string postCode, string rentAccountNumber)
         {
-            return new Tenure(id, type, startDate, endDate, assetFullAddress);
+            return new Tenure(id, type, totalBalance, startDate, endDate, assetFullAddress, postCode, rentAccountNumber);
         }
 
-        private Tenure(string id, string type, string startDate, string endDate, string assetFullAddress)
+        private Tenure(string id, string type, decimal totalBalance, string startDate, string endDate, string assetFullAddress, string postCode, string rentAccountNumber)
         {
             Id = id;
             Type = type;
+            TotalBalance = totalBalance;
             StartDate = startDate;
             EndDate = endDate;
             AssetFullAddress = assetFullAddress;
+            PostCode = postCode;
+            RentAccountNumber = rentAccountNumber;
         }
 
         public string Id { get; set; }
 
         public string Type { get; set; }
+
+        public decimal TotalBalance { get; set; }
 
         public string StartDate { get; set; }
 
@@ -28,5 +33,8 @@ namespace HousingSearchApi.V1.Domain
 
         public string AssetFullAddress { get; set; }
 
+        public string PostCode { get; set; }
+
+        public string RentAccountNumber { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+using HousingSearchApi.V1.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HousingSearchApi.V1.Boundary.Requests
@@ -5,6 +6,9 @@ namespace HousingSearchApi.V1.Boundary.Requests
     public class GetPersonListRequest
     {
         private const int DefaultPageSize = 12;
+
+        [FromQuery(Name = "personType")]
+        public PersonType PersonType { get; set; }
 
         [FromQuery(Name = "searchText")]
         public string SearchText { get; set; }

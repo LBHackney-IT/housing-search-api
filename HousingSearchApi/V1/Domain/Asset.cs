@@ -36,24 +36,24 @@ namespace HousingSearchApi.V1.Domain
             Properties = properties;
         }
 
-        public string AssetId { get; }
+        public string AssetId { get; set; }
 
-        public AssetType AssetType { get; }
+        public AssetType AssetType { get; set; }
 
-        public string AssetName { get; }
+        public string AssetName { get; set; }
 
-        public List<AssetProperty> Properties { get; }
+        public List<AssetProperty> Properties { get; set; }
 
-        public AssetAddress AssetAddress { get; }
+        public AssetAddress AssetAddress { get; set; }
 
-        public decimal TotalDwellingRent { get; }
+        public decimal TotalDwellingRent { get; set; }
 
-        public decimal TotalNonDwellingRent { get; }
+        public decimal TotalNonDwellingRent { get; set; }
 
-        public decimal TotalServiceCharges { get; }
+        public decimal TotalServiceCharges { get; set; }
 
-        public decimal TotalRentalServiceCharges { get; }
+        public decimal TotalRentalServiceCharges { get; set; }
 
-        public decimal TotalBalance { get; }
+        public decimal TotalBalance { get; set; }
     }
 }
