@@ -33,38 +33,42 @@ namespace HousingSearchApi.V1.Controllers
         //[LogCall(LogLevel.Information)]
         public async Task<IActionResult> GetAssetList([FromQuery] GetAssetListRequest request)
         {
-            if (!ModelState.IsValid)
+            // ToDo: Debug this
+            return await UseErrorHandling(async() =>  
             {
-                var errors = new List<ValidationError>();
-
-                var err = new ValidationError();
-
-                err.FieldName = "Insufficient characters";
-                errors.Add(err);
-
-                return new BadRequestObjectResult(new ErrorResponse(errors)
+                if (!ModelState.IsValid)
                 {
-                    StatusCode = 400
-                });
-            }
+                    var errors = new List<ValidationError>();
 
-            try
-            {
-                var assetsSearchResult = await _getAssetListUseCase.ExecuteAsync(request).ConfigureAwait(false);
-                var apiResponse = new APIResponse<GetAssetListResponse>(assetsSearchResult);
-                apiResponse.Total = assetsSearchResult.Total();
+                    var err = new ValidationError();
 
-                // TODO: Maybe move to middleware?
-                Response.Headers.Add("x-page-number", request.PageNumber.ToString());
-                Response.Headers.Add("x-page-size", request.PageSize.ToString());
+                    err.FieldName = "Insufficient characters";
+                    errors.Add(err);
 
-                return new OkObjectResult(apiResponse);
-            }
-            catch (Exception e)
-            {
-                LambdaLogger.Log(e.Message + e.StackTrace);
-                return new BadRequestObjectResult(e.Message);
-            }
+                    return BadRequest(new ErrorResponse(errors)
+                    {
+                        StatusCode = 400
+                    });
+                }
+
+                try
+                {
+                    var assetsSearchResult = await _getAssetListUseCase.ExecuteAsync(request).ConfigureAwait(false);
+                    var apiResponse = new APIResponse<GetAssetListResponse>(assetsSearchResult);
+                    apiResponse.Total = assetsSearchResult.Total;
+
+                    // TODO: Maybe move to middleware?
+                    Response.Headers.Add("x-page-number", request.PageNumber.ToString());
+                    Response.Headers.Add("x-page-size", request.PageSize.ToString());
+
+                    return Ok(apiResponse);
+                }
+                catch (Exception e)
+                {
+                    LambdaLogger.Log(e.Message + e.StackTrace);
+                    return BadRequest(e.Message);
+                }
+            }).ConfigureAwait(false);
         }
     }
 }

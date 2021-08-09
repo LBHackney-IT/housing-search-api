@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Nest;
 using System;
+using System.Linq.Expressions;
 
 namespace HousingSearchApi.V1.Infrastructure
 {
@@ -25,6 +26,28 @@ namespace HousingSearchApi.V1.Infrastructure
             var esClient = new ElasticClient(connectionSettings);
 
             services.TryAddSingleton<IElasticClient>(esClient);
+        }
+
+        /// <summary>
+        /// Applies Descending() or Ascending() method based on <paramref name="isDesc"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sortDescriptor"></param>
+        /// <param name="isDesc"></param>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public static SortDescriptor<T> SetSortOrder<T>(this SortDescriptor<T> sortDescriptor, bool isDesc, Expression<Func<T, string>> expression) where T: class
+        {
+            if (isDesc)
+            {
+                sortDescriptor.Descending(expression);
+            }
+            else
+            {
+                sortDescriptor.Ascending(expression);
+            }
+
+            return sortDescriptor;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace HousingSearchApi.V1.Gateways
 
             assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset => queryableAsset.Create()));
 
-            assetListResponse.SetTotal(searchResponse.Total);
+            assetListResponse.Total = searchResponse.Total;
 
             return assetListResponse;
         }

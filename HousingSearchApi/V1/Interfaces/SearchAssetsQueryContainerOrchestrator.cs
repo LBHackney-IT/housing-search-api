@@ -24,10 +24,7 @@ namespace HousingSearchApi.V1.Interfaces
                 result = q.Bool(bq => bq
                     .Must(mq => mq
                         .ConstantScore(cs => cs
-                            .Filter(f => f.Term(field => field.AssetType, request.AssetType.ToString().ToLower()))
-                                      )
-                         )
-                                );
+                            .Filter(f => f.Term(field => field.AssetType, request.AssetType.ToString().ToLower())))));
 
                 return result;
             }
@@ -42,10 +39,7 @@ namespace HousingSearchApi.V1.Interfaces
                     .Type(TextQueryType.MostFields)))
                 .Must(mq => mq
                         .ConstantScore(cs => cs
-                            .Filter(f => f.Term(field => field.AssetType, request.AssetType.ToString().ToLower()))
-                                      )
-                     )
-                            );
+                            .Filter(f => f.Term(field => field.AssetType, request.AssetType.ToString().ToLower())))));
 
             return result;
         }

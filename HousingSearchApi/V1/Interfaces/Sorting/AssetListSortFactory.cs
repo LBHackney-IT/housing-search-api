@@ -1,5 +1,6 @@
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Gateways.Models;
+using HousingSearchApi.V1.Infrastructure;
 using Nest;
 
 namespace HousingSearchApi.V1.Interfaces.Sorting
@@ -11,28 +12,14 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
             var sortBy = request.SortBy.ToLower();
 
             // TODO: Add other fields
-            switch (request.SortBy)
+            switch (sortBy)
             {
                 case "assetname":
-                    if (!request.IsDesc)
-                    {
-                        f.Ascending(x => x.AssetName);
-                    }
-                    else
-                    {
-                        f.Descending(x => x.AssetName);
-                    }
+                    f.SetSortOrder(request.IsDesc, x => x.AssetName);
                     break;
 
                 default:
-                    if (!request.IsDesc)
-                    {
-                        f.Ascending(x => x.AssetName);
-                    }
-                    else
-                    {
-                        f.Descending(x => x.AssetName);
-                    }
+                    f.SetSortOrder(request.IsDesc, x => x.AssetName);
                     break;
             }
 
