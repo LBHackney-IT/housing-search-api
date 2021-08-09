@@ -31,7 +31,7 @@ namespace HousingSearchApi.V1.Controllers
         //[LogCall(LogLevel.Information)]
         public async Task<IActionResult> GetAssetList([FromQuery] GetAssetListRequest request)
         {
-            return await UseErrorHandling(async() =>
+            return await UseErrorHandling(async () =>
             {
                 if (!ModelState.IsValid)
                 {
