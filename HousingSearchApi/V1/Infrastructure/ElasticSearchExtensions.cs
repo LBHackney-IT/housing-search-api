@@ -36,7 +36,7 @@ namespace HousingSearchApi.V1.Infrastructure
         /// <param name="isDesc"></param>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public static SortDescriptor<T> SetSortOrder<T>(this SortDescriptor<T> sortDescriptor, bool isDesc, Expression<Func<T, string>> expression) where T: class
+        public static SortDescriptor<T> SetSortOrder<T>(this SortDescriptor<T> sortDescriptor, bool isDesc, Expression<Func<T, string>> expression) where T : class
         {
             if (isDesc)
             {

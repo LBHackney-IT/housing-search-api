@@ -4,6 +4,7 @@ using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using HousingSearchApi.V1.UseCase.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
@@ -22,23 +23,23 @@ namespace HousingSearchApi.V1.Controllers
             _getAssetListUseCase = getAssetListUseCase;
         }
 
-        [ProducesResponseType(typeof(APIResponse<GetAssetListResponse>), 200)]
-        [ProducesResponseType(typeof(APIResponse<NotFoundException>), 404)]
-        [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
+        [ProducesResponseType(typeof(GetAssetListResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(BaseErrorResponse), StatusCodes.Status500InternalServerError)]
         [HttpGet, MapToApiVersion("1")]
         // TODO: 1 Return when last commit
         //[LogCall(LogLevel.Information)]
         public async Task<IActionResult> GetAssetList([FromQuery] GetAssetListRequest request)
         {
-            return await UseErrorHandling(async() =>  
+            return await UseErrorHandling(async() =>
             {
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(new BaseErrorResponse(GetErrorMessage(ModelState), HttpStatusCode.BadRequest));
                 }
-          
+
                 var assetsSearchResult = await _getAssetListUseCase.ExecuteAsync(request).ConfigureAwait(false);
-                    
+
                 // TODO: Maybe move to middleware?
                 Response.Headers.Add("x-page-number", request.PageNumber.ToString());
                 Response.Headers.Add("x-page-size", request.PageSize.ToString());
