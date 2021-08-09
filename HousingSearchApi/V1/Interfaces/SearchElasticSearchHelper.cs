@@ -61,9 +61,9 @@ namespace HousingSearchApi.V1.Interfaces
             }
         }
 
-        private QueryContainer BaseQuery(TRequest request, QueryContainerDescriptor<TQueryable> q)
+        private QueryContainer BaseQuery(TRequest request, QueryContainerDescriptor<TQueryable> queryDescriptor)
         {
-            return _containerOrchestrator.Create(request, q);
+            return _containerOrchestrator.Create(request, queryDescriptor);
         }
     }
 }

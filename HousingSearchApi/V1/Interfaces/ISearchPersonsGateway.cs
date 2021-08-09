@@ -1,7 +1,7 @@
 // TODO: 1 Return when last commit
 //using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Boundary.Response;
+using HousingSearchApi.V1.Boundary.Responses;
 using System.Linq;
 using System.Threading.Tasks;
 

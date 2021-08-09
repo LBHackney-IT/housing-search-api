@@ -7,23 +7,54 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
 {
     public class AssetListSortFactory : IListSortFactory<GetAssetListRequest, QueryableAsset>
     {
-        public SortDescriptor<QueryableAsset> DynamicSort(SortDescriptor<QueryableAsset> f, GetAssetListRequest request)
+        public SortDescriptor<QueryableAsset> DynamicSort(SortDescriptor<QueryableAsset> sortDescriptor, GetAssetListRequest request)
         {
-            var sortBy = request.SortBy.ToLower();
+            var sortBy = request.SortBy?.ToLower();
 
-            // TODO: Add other fields
             switch (sortBy)
             {
                 case "assetname":
-                    f.SetSortOrder(request.IsDesc, x => x.AssetName);
+                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.AssetName);
+                    break;
+
+                case "assetid":
+                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.AssetId);
+                    break;
+
+                case "postCode":
+                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.QueryableAssetAddress.PostCode.ToString());
+                    break;
+
+                case "address":
+                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.QueryableAssetAddress.AddressLine1.ToString());
+                    break;
+
+                case "totalbalance":
+                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.TotalBalance.ToString());
+                    break;
+
+                case "totaldwellingrent":
+                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.TotalDwellingRent.ToString());
+                    break;
+
+                case "totalnondwellingrent":
+                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.TotalNonDwellingRent.ToString());
+                    break;
+
+                case "totalrentalservicecharges":
+                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.TotalRentalServiceCharges.ToString());
+                    break;
+
+                case "totalservicecharges":
+                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.TotalServiceCharges.ToString());
                     break;
 
                 default:
-                    f.SetSortOrder(request.IsDesc, x => x.AssetName);
+                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.AssetId);
                     break;
             }
 
-            return f;
+            return sortDescriptor;
         }
     }
 }

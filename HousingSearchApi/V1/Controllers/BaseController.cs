@@ -4,9 +4,12 @@ using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using HousingSearchApi.V1.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -44,20 +47,32 @@ namespace HousingSearchApi.V1.Controllers
             };
         }
 
+        public static string GetErrorMessage(ModelStateDictionary modelState)
+        {
+            return string.Join(" ", modelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)));
+        }
+
         protected async Task<IActionResult> UseErrorHandling(Func<Task<IActionResult>> action)
         {
             try
             {
                 return await action().ConfigureAwait(false);
             }
-            catch(NotFoundException ex)
+            catch (ArgumentNullException ex)
             {
-                return NotFound(new BaseErrorResponse(ex.GetFullMessage(), HttpStatusCode.NotFound));
+                return BadRequest(new BaseErrorResponse(ex.Message, HttpStatusCode.BadRequest));
             }
-            // ToDO: add more catches
-            catch(Exception ex)
+            catch (ArgumentException ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new BaseErrorResponse(ex.GetFullMessage()));
+                return BadRequest(new BaseErrorResponse(ex.Message, HttpStatusCode.BadRequest));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(new BaseErrorResponse(ex.Message, HttpStatusCode.BadRequest));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int) HttpStatusCode.InternalServerError, new BaseErrorResponse(ex.GetFullMessage()));
             }
         }
     }

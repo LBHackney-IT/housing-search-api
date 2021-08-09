@@ -1,14 +1,11 @@
-using Amazon.Lambda.Core;
 // TODO: 1 Return when last commit
 //using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Boundary.Response;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace HousingSearchApi.V1.Controllers
@@ -33,41 +30,21 @@ namespace HousingSearchApi.V1.Controllers
         //[LogCall(LogLevel.Information)]
         public async Task<IActionResult> GetAssetList([FromQuery] GetAssetListRequest request)
         {
-            // ToDo: Debug this
             return await UseErrorHandling(async() =>  
             {
                 if (!ModelState.IsValid)
                 {
-                    var errors = new List<ValidationError>();
-
-                    var err = new ValidationError();
-
-                    err.FieldName = "Insufficient characters";
-                    errors.Add(err);
-
-                    return BadRequest(new ErrorResponse(errors)
-                    {
-                        StatusCode = 400
-                    });
+                    return BadRequest(new BaseErrorResponse(GetErrorMessage(ModelState), HttpStatusCode.BadRequest));
                 }
+          
+                var assetsSearchResult = await _getAssetListUseCase.ExecuteAsync(request).ConfigureAwait(false);
+                    
+                // TODO: Maybe move to middleware?
+                Response.Headers.Add("x-page-number", request.PageNumber.ToString());
+                Response.Headers.Add("x-page-size", request.PageSize.ToString());
 
-                try
-                {
-                    var assetsSearchResult = await _getAssetListUseCase.ExecuteAsync(request).ConfigureAwait(false);
-                    var apiResponse = new APIResponse<GetAssetListResponse>(assetsSearchResult);
-                    apiResponse.Total = assetsSearchResult.Total;
+                return Ok(assetsSearchResult);
 
-                    // TODO: Maybe move to middleware?
-                    Response.Headers.Add("x-page-number", request.PageNumber.ToString());
-                    Response.Headers.Add("x-page-size", request.PageSize.ToString());
-
-                    return Ok(apiResponse);
-                }
-                catch (Exception e)
-                {
-                    LambdaLogger.Log(e.Message + e.StackTrace);
-                    return BadRequest(e.Message);
-                }
             }).ConfigureAwait(false);
         }
     }

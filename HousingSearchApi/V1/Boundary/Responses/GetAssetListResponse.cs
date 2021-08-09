@@ -1,7 +1,7 @@
 using HousingSearchApi.V1.Domain;
 using System.Collections.Generic;
 
-namespace HousingSearchApi.V1.Boundary.Response
+namespace HousingSearchApi.V1.Boundary.Responses
 {
     public class GetAssetListResponse
     {

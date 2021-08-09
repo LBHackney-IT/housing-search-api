@@ -15,13 +15,13 @@ namespace HousingSearchApi.V1.Interfaces
             _wildCardAppenderAndPrepender = wildCardAppenderAndPrepender;
         }
 
-        public QueryContainer Create(GetAssetListRequest request, QueryContainerDescriptor<QueryableAsset> q)
+        public QueryContainer Create(GetAssetListRequest request, QueryContainerDescriptor<QueryableAsset> queryDescriptor)
         {
             QueryContainer result = new QueryContainer();
 
             if (string.IsNullOrWhiteSpace(request.SearchText))
             {
-                result = q.Bool(bq => bq
+                result = queryDescriptor.Bool(bq => bq
                     .Must(mq => mq
                         .ConstantScore(cs => cs
                             .Filter(f => f.Term(field => field.AssetType, request.AssetType.ToString().ToLower())))));
@@ -33,7 +33,7 @@ namespace HousingSearchApi.V1.Interfaces
 
             listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
 
-            result = q.Bool(bq => bq
+            result = queryDescriptor.Bool(bq => bq
                 .Filter(f => f.QueryString(m => m.Query(string.Join(' ', listOfWildCardedWords))
                     .Fields(f => f.Field("*"))
                     .Type(TextQueryType.MostFields)))
