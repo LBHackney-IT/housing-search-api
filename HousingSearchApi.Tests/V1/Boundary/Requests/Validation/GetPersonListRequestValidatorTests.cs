@@ -3,7 +3,7 @@ using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Requests.Validation;
 using Xunit;
 
-namespace HousingSearchApi.Tests.V1.Boundary.Request.Validation
+namespace HousingSearchApi.Tests.V1.Boundary.Requests.Validation
 {
     public class GetPersonListRequestValidatorTests
     {

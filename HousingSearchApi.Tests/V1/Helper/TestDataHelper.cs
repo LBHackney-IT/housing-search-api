@@ -3,30 +3,39 @@ using HousingSearchApi.V1.Gateways.Models;
 using Nest;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
+using Elasticsearch.Net;
+using QueryableTenure = HousingSearchApi.V1.Gateways.Models.QueryableTenure;
 
 namespace HousingSearchApi.Tests.V1.Helper
 {
     public static class TestDataHelper
     {
-        public static readonly string Index = "persons";
+        public static readonly string PersonIndex = "persons";
+        public static readonly string TenureIndex = "tenures";
         public static string[] Alphabet = { "aa", "bb", "cc", "dd", "ee", "vv", "ww", "xx", "yy", "zz" };
 
-        public static List<QueryablePerson> InsertPersonsInEs(IElasticClient elasticClient)
+        public static void InsertDataInEs(IElasticClient elasticClient)
         {
-            elasticClient.Indices.Delete(Index);
+            elasticClient.Indices.Delete(PersonIndex);
+            elasticClient.Indices.Delete(TenureIndex);
 
-            elasticClient.Indices.Create(Index, s =>
-                s.Map(x => x.AutoMap()
-                    .Properties(prop =>
-                        prop.Keyword(field => field.Name("surname"))
-                            .Keyword(field => field.Name("firstname")))));
+            var personSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/personIndex.json").Result;
+            elasticClient.LowLevel.Indices.CreateAsync<BytesResponse>(PersonIndex, personSettingsDoc).ConfigureAwait(true);
+            var tenureSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/tenureIndex.json").Result;
+            elasticClient.LowLevel.Indices
+                .CreateAsync<BytesResponse>(TenureIndex, tenureSettingsDoc).ConfigureAwait(true);
 
             var persons = CreateQueryablePerson();
-            elasticClient.IndexManyAsync(persons, Index);
+            var tenures = CreateQueryableTenure();
+
+            elasticClient.IndexManyAsync(persons, PersonIndex);
+            elasticClient.IndexManyAsync(tenures, TenureIndex);
 
             var timeout = DateTime.UtcNow.AddSeconds(10); // 10 second timeout to make sure all the data is there.
+
             while (DateTime.UtcNow < timeout)
             {
                 var count = elasticClient.Cluster.Stats().Indices.Documents.Count;
@@ -35,8 +44,6 @@ namespace HousingSearchApi.Tests.V1.Helper
 
                 Thread.Sleep(200);
             }
-
-            return persons;
         }
 
         private static List<QueryablePerson> CreateQueryablePerson()
@@ -82,6 +89,24 @@ namespace HousingSearchApi.Tests.V1.Helper
             listOfPersons.Add(firstPerson);
 
             return listOfPersons;
+        }
+
+        private static List<QueryableTenure> CreateQueryableTenure()
+        {
+            var listOfTenures = new List<QueryableTenure>();
+            var random = new Random();
+            var fixture = new Fixture();
+
+            // Make sure there are 10 of each surname first in case there are tests that depend on some being there.
+            foreach (var name in Alphabet)
+            {
+                var tenures = fixture.Build<QueryableTenure>()
+                    .CreateMany(10);
+
+                listOfTenures.AddRange(tenures);
+            }
+
+            return listOfTenures;
         }
     }
 }
