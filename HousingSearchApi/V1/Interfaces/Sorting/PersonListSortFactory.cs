@@ -5,7 +5,7 @@ using Nest;
 
 namespace HousingSearchApi.V1.Interfaces.Sorting
 {
-    public class PersonListSortFactory : IPersonListSortFactory, IListSortFactory<GetPersonListRequest, QueryablePerson>
+    public class PersonListSortFactory : IPersonListSortFactory
     {
         public IPersonListSort Create(GetPersonListRequest request)
         {

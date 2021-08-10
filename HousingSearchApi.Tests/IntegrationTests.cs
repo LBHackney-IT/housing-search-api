@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using FluentAssertions;
 using HousingSearchApi.Tests.V1.Helper;
-using HousingSearchApi.V1.Boundary.Response;
+using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using Xunit;
 
