@@ -4,5 +4,7 @@ namespace HousingSearchApi.V1.Infrastructure
     {
         // Elastic Search
         public const string EsIndex = "hackney_persons";
+
+        public const int DefaultPageSize = 12;
     }
 }

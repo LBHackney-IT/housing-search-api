@@ -18,9 +18,12 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
                     return new SurnameDesc();
                 case false:
                     return new SurnameAsc();
+                // TODO: Add more classes for all sorting fields
             }
         }
 
+        // Hanna Holasava
+        // I can suggest to use the next method instead of creating new class for each field
         public SortDescriptor<QueryablePerson> DynamicSort(SortDescriptor<QueryablePerson> sortDescriptor, GetPersonListRequest request)
         {
             var sortBy = request.SortBy?.ToLower();
@@ -57,10 +60,6 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
 
                 case "placeofbirth":
                     sortDescriptor.SetSortOrder(request.IsDesc, x => x.PlaceOfBirth);
-                    break;
-
-                case "totalbalance":
-                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.TotalBalance.ToString());
                     break;
 
                 default:

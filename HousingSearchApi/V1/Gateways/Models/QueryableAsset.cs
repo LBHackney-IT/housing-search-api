@@ -9,12 +9,11 @@ namespace HousingSearchApi.V1.Gateways.Models
     {
         public Asset Create()
         {
-            var properties = Properties != null ?
+            var properties = Properties == null ? new List<AssetProperty>() :
                 Properties.Select(x => AssetProperty.Create(x?.Name, x.TotalBalance,
                     AssetAddress.Create(x.AssetAddress.Uprn, x.AssetAddress.AddressLine1, x.AssetAddress.AddressLine2,
                                         x.AssetAddress.AddressLine3, x.AssetAddress.AddressLine4,
-                                        x.AssetAddress.PostCode, x.AssetAddress.PostPreamble))).ToList()
-                                            : new List<AssetProperty>();
+                                        x.AssetAddress.PostCode, x.AssetAddress.PostPreamble))).ToList();
 
             var assetAddress = AssetAddress.Create(QueryableAssetAddress.Uprn, QueryableAssetAddress.AddressLine1,
                                                    QueryableAssetAddress.AddressLine2, QueryableAssetAddress.AddressLine3,

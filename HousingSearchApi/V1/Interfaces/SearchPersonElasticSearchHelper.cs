@@ -16,19 +16,17 @@ namespace HousingSearchApi.V1.Interfaces
         private readonly ISearchPersonsQueryContainerOrchestrator _containerOrchestrator;
         private readonly IPagingHelper _pagingHelper;
         private readonly IPersonListSortFactory _iPersonListSortFactory;
-        private readonly IListSortFactory<GetPersonListRequest, QueryablePerson> _listSortFactory;
         private readonly ILogger<SearchPersonElasticSearchHelper> _logger;
         private readonly Indices.ManyIndices _indices;
 
         public SearchPersonElasticSearchHelper(IElasticClient esClient, ISearchPersonsQueryContainerOrchestrator containerOrchestrator,
-            IPagingHelper pagingHelper, IPersonListSortFactory iPersonListSortFactory, IListSortFactory<GetPersonListRequest, QueryablePerson> listSortFactory,
+            IPagingHelper pagingHelper, IPersonListSortFactory iPersonListSortFactory,
             ILogger<SearchPersonElasticSearchHelper> logger)
         {
             _esClient = esClient;
             _containerOrchestrator = containerOrchestrator;
             _pagingHelper = pagingHelper;
             _iPersonListSortFactory = iPersonListSortFactory;
-            _listSortFactory = listSortFactory;
             _logger = logger;
             _indices = Indices.Index(new List<IndexName> { "persons" });
         }
@@ -45,7 +43,7 @@ namespace HousingSearchApi.V1.Interfaces
 
                 var result = await _esClient.SearchAsync<QueryablePerson>(x => x.Index(_indices)
                     .Query(q => BaseQuery(request, q))
-                    .Sort(s => _listSortFactory.DynamicSort(s, request))
+                    .Sort(_iPersonListSortFactory.Create(request).GetSortDescriptor)
                     .Size(request.PageSize)
                     .Skip(pageOffset)
                     .TrackTotalHits()).ConfigureAwait(false);

@@ -4,9 +4,7 @@ namespace HousingSearchApi.V1.Domain
 {
     public class Asset
     {
-        public Asset()
-        {
-        }
+        public Asset() { }
 
         public static Asset Create(string assetId, AssetType assetType, string assetName,
             AssetAddress assetAddress, decimal totalDwellingRent,

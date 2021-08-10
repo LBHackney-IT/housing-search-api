@@ -9,17 +9,18 @@ namespace HousingSearchApi.V1.Gateways.Models
     {
         public Person Create()
         {
-            var listOfIdentifications = Identification != null ? Identification.Select(x => Domain.Identification.Create(x?.IdentificationType,
-                x?.Value, x.OriginalDocumentSeen, x?.LinkToDocument)).ToList() : new List<Identification>();
-            var listOfTenures = Tenures != null ?
-                Tenures.Select(x => Tenure.Create(x?.Id, x?.Type, x.TotalBalance, x?.StartDate, x?.EndDate, x?.AssetFullAddress, x?.PostCode, x?.RentAccountNumber)).ToList() : new List<Tenure>();
-            var listOfProperties = Properties != null ?
-                Properties.Select(x => PersonProperty.Create(x?.Id, x?.Type, x.TotalBalance, x?.AssetFullAddress, x?.PostCode, x?.RentAccountNumber)).ToList() : new List<PersonProperty>();
+            var listOfIdentifications = Identification == null ? new List<Identification>() :
+                Identification.Select(x => Domain.Identification.Create(x?.IdentificationType, x?.Value, x.OriginalDocumentSeen, x?.LinkToDocument)).ToList();
+
+            var listOfTenures = Tenures == null ? new List<Tenure>() :
+                Tenures.Select(x => Tenure.Create(x?.Id, x?.Type, x.TotalBalance, x?.StartDate, x?.EndDate, x?.AssetFullAddress, x?.PostCode, x?.RentAccountNumber)).ToList();
+
+            var listOfProperties = Properties == null ? new List<PersonProperty>() :
+                Properties.Select(x => PersonProperty.Create(x?.Id, x?.Type, x.TotalBalance, x?.AssetFullAddress, x?.PostCode, x?.RentAccountNumber)).ToList();
 
             return Person.Create(Id, Title, Firstname, MiddleName, Surname, PreferredFirstname,
                 PreferredSurname, TotalBalance, Ethinicity, Nationality, PlaceOfBirth, DateOfBirth, Gender, listOfIdentifications,
-                PersonTypes,
-                IsPersonCautionaryAlert, IsTenureCautionaryAlert, listOfTenures, listOfProperties);
+                PersonTypes, IsPersonCautionaryAlert, IsTenureCautionaryAlert, listOfTenures, listOfProperties);
         }
 
         [Text(Name = "id")]

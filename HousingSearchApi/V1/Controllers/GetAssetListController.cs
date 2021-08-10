@@ -2,7 +2,6 @@
 //using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
-using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +22,13 @@ namespace HousingSearchApi.V1.Controllers
             _getAssetListUseCase = getAssetListUseCase;
         }
 
+        /// <summary>
+        /// Get list of assets by provided filters
+        /// </summary>
+        /// <param name="request">Filter model</param>
+        /// <response code="200">OK. Asset list weas received successfully</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="500">Internal Server Error</response>
         [ProducesResponseType(typeof(GetAssetListResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(BaseErrorResponse), StatusCodes.Status500InternalServerError)]
