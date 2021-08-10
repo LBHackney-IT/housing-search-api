@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace HousingSearchApi.V1.Domain
+namespace HousingSearchApi.V1.Domain.Person
 {
     public class Person
     {

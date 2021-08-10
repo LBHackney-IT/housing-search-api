@@ -1,4 +1,4 @@
-using HousingSearchApi.V1.Domain;
+using HousingSearchApi.V1.Domain.Asset;
 using Nest;
 using System.Collections.Generic;
 using System.Linq;

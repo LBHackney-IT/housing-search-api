@@ -1,6 +1,5 @@
 using FluentValidation;
-// TODO: 1 Return when last commit
-//using Hackney.Core.Validation;
+using Hackney.Core.Validation;
 
 namespace HousingSearchApi.V1.Boundary.Requests.Validation
 {
@@ -8,13 +7,12 @@ namespace HousingSearchApi.V1.Boundary.Requests.Validation
     {
         public GetPersonListRequestValidator()
         {
-            // TODO: 1 Return when last commit
-            //RuleFor(x => x.SearchText).NotNull()
-            //                          .NotEmpty()
-            //                          .MinimumLength(2)
-            //                          .NotXssString();
-            //RuleFor(x => x.PageSize).GreaterThan(0);
-            //RuleFor(x => x.SortBy).NotXssString();
+            RuleFor(x => x.SearchText).NotNull()
+                                      .NotEmpty()
+                                      .MinimumLength(2)
+                                      .NotXssString();
+            RuleFor(x => x.PageSize).GreaterThan(0);
+            RuleFor(x => x.SortBy).NotXssString();
         }
     }
 }

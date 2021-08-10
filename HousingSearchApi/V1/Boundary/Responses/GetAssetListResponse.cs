@@ -1,4 +1,4 @@
-using HousingSearchApi.V1.Domain;
+using HousingSearchApi.V1.Domain.Asset;
 using System.Collections.Generic;
 
 namespace HousingSearchApi.V1.Boundary.Responses

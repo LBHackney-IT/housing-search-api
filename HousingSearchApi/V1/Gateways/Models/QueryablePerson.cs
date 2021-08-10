@@ -1,4 +1,4 @@
-using HousingSearchApi.V1.Domain;
+using HousingSearchApi.V1.Domain.Person;
 using Nest;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +9,9 @@ namespace HousingSearchApi.V1.Gateways.Models
     {
         public Person Create()
         {
-            var listOfIdentifications = Identification == null ? new List<Identification>() :
-                Identification.Select(x => Domain.Identification.Create(x?.IdentificationType, x?.Value, x.OriginalDocumentSeen, x?.LinkToDocument)).ToList();
-
+            var listOfIdentifications = Identification != null ? Identification.Select(x => Domain.Person.Identification.Create(x?.IdentificationType,
+                x?.Value, x.OriginalDocumentSeen, x?.LinkToDocument)).ToList() : new List<Domain.Person.Identification>();
+          
             var listOfTenures = Tenures == null ? new List<Tenure>() :
                 Tenures.Select(x => Tenure.Create(x?.Id, x?.Type, x.TotalBalance, x?.StartDate, x?.EndDate, x?.AssetFullAddress, x?.PostCode, x?.RentAccountNumber)).ToList();
 
@@ -75,7 +75,7 @@ namespace HousingSearchApi.V1.Gateways.Models
         public bool IsTenureCautionaryAlert { get; set; }
 
         [Text(Name = "tenures")]
-        public List<QueryableTenure> Tenures { get; set; }
+        public List<QueryablePersonTenure> Tenures { get; set; }
 
         [Text(Name = "properties")]
         public List<QueryablePersonProperty> Properties { get; set; }

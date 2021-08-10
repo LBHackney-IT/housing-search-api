@@ -15,7 +15,7 @@ namespace HousingSearchApi.V1.Interfaces
             _wildCardAppenderAndPrepender = wildCardAppenderAndPrepender;
         }
 
-        public QueryContainer Create(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> queryDescriptor)
+        public QueryContainer CreatePersonQuery(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> queryDescriptor)
         {
             QueryContainer result = new QueryContainer();
 
@@ -42,6 +42,23 @@ namespace HousingSearchApi.V1.Interfaces
                             .Filter(f => f.Term(field => field.PersonTypes, request.PersonType.ToString().ToLower())))));
 
             return result;
+        }
+        
+        public QueryContainer CreateTenureQuery(GetTenureListRequest request, QueryContainerDescriptor<QueryableTenure> queryDescriptor)
+        {
+            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
+
+            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
+
+            var searchSurnames = queryDescriptor.QueryString(m =>
+                m.Query(string.Join(' ', listOfWildCardedWords))
+                    .Fields(f => f.Field(p => p.PaymentReference)
+                        .Field(p => p.TenuredAsset.FullAddress)
+                        .Field(p => p.HouseholdMembers)
+                        .Field("householdMembers.fullName"))
+                    .Type(TextQueryType.MostFields));
+
+            return searchSurnames;
         }
     }
 }

@@ -31,12 +31,14 @@ namespace HousingSearchApi.V1.Infrastructure
         /// <summary>
         /// Applies Descending() or Ascending() method based on <paramref name="isDesc"/>
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TQueryable">Type of entity to apply sort</typeparam>
+        /// <typeparam name="TValue">Type of field by which sorting is applied</typeparam>
         /// <param name="sortDescriptor"></param>
         /// <param name="isDesc"></param>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public static SortDescriptor<T> SetSortOrder<T>(this SortDescriptor<T> sortDescriptor, bool isDesc, Expression<Func<T, string>> expression) where T : class
+        public static SortDescriptor<TQueryable> SetSortOrder<TQueryable, TValue>(this SortDescriptor<TQueryable> sortDescriptor, bool isDesc, Expression<Func<TQueryable, TValue>> expression) where TQueryable : class
+
         {
             if (isDesc)
             {

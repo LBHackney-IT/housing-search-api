@@ -1,5 +1,4 @@
-// TODO: 1 Return when last commit
-//using Hackney.Core.Logging;
+using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Gateways.Interfaces;
@@ -16,8 +15,7 @@ namespace HousingSearchApi.V1.UseCase
         {
             _searchAssetsGateway = searchPersonsGateway;
         }
-        // TODO: 1 Return when last commit
-        //[LogCall]
+        [LogCall]
         public async Task<GetAssetListResponse> ExecuteAsync(GetAssetListRequest getAssetListRequest)
         {
             var response = await _searchAssetsGateway.GetListOfAssets(getAssetListRequest).ConfigureAwait(false);

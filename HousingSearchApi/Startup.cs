@@ -4,13 +4,12 @@ using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Gateways.Interfaces;
 using HousingSearchApi.V1.Gateways.Models;
-// TODO: 1 Return when last commit
-//using Hackney.Core.DI;
-//using Hackney.Core.HealthCheck;
-//using Hackney.Core.Logging;
-//using Hackney.Core.Middleware.CorrelationId;
-//using Hackney.Core.Middleware.Exception;
-//using Hackney.Core.Middleware.Logging;
+using Hackney.Core.DI;
+using Hackney.Core.HealthCheck;
+using Hackney.Core.Logging;
+using Hackney.Core.Middleware.CorrelationId;
+using Hackney.Core.Middleware.Exception;
+using Hackney.Core.Middleware.Logging;
 using HousingSearchApi.V1.HealthCheck;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.Interfaces;
@@ -136,9 +135,8 @@ namespace HousingSearchApi
                 if (File.Exists(xmlPath))
                     c.IncludeXmlComments(xmlPath);
             });
-            // TODO: 1 Return when last commit
-            //services.ConfigureLambdaLogging(Configuration);
-            //services.AddTokenFactory();
+            services.ConfigureLambdaLogging(Configuration);
+            services.AddTokenFactory();
 
             RegisterGateways(services);
             RegisterUseCases(services);
@@ -147,13 +145,12 @@ namespace HousingSearchApi
 
             services.AddScoped<IWildCardAppenderAndPrepender, WildCardAppenderAndPrepender>();
 
-            // TODO: 1 Return when last commit
-            //services.AddLogCallAspect();
+            services.AddLogCallAspect();
         }
 
         private static void RegisterGateways(IServiceCollection services)
         {
-            services.AddScoped<ISearchPersonsGateway, SearchPersonsGateway>();
+            services.AddScoped<ISearchGateway, SearchGateway>();
             services.AddScoped<ISearchAssetsGateway, SearchAssetsGateway>();
         }
 
@@ -165,6 +162,7 @@ namespace HousingSearchApi
             services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();
 
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
+            services.AddScoped<IGetTenureListUseCase, GetTenureListUseCase>();
             services.AddScoped<ISearchPersonElasticSearchHelper, SearchPersonElasticSearchHelper>();
             services.AddScoped<ISearchPersonsQueryContainerOrchestrator, SearchPersonsQueryContainerOrchestrator>();
             services.AddScoped<IPagingHelper, PagingHelper>();
@@ -181,11 +179,10 @@ namespace HousingSearchApi
 
             app.UseXRay("housing-search-api");
 
-            // TODO: 1 Return when last commit
-            //app.UseCorrelationId();
-            //app.UseLoggingScope();
-            //app.UseCustomExceptionHandler(logger);
-            //app.UseLogCall();
+            app.UseCorrelationId();
+            app.UseLoggingScope();
+            app.UseCustomExceptionHandler(logger);
+            app.UseLogCall();
 
             if (env.IsDevelopment())
             {
@@ -217,11 +214,10 @@ namespace HousingSearchApi
                 // SwaggerGen won't find controllers that are routed via this technique.
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 
-                // TODO: 1 Return when last commit
-                //endpoints.MapHealthChecks("/api/v1/healthcheck/ping", new HealthCheckOptions()
-                //{
-                //    ResponseWriter = HealthCheckResponseWriter.WriteResponse
-                //});
+                endpoints.MapHealthChecks("/api/v1/healthcheck/ping", new HealthCheckOptions()
+                {
+                    ResponseWriter = HealthCheckResponseWriter.WriteResponse
+                });
             });
         }
     }

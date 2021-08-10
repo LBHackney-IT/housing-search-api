@@ -14,22 +14,22 @@ namespace HousingSearchApi.V1.Controllers
 {
     [ApiVersion("1")]
     [Produces("application/json")]
-    [Route("api/v1/search/persons")]
-    public class GetPersonListController : BaseController
+    [Route("api/v1/search/tenures")]
+    public class GetTenureListController : BaseController
     {
-        private readonly IGetPersonListUseCase _getPersonListUseCase;
+        private readonly IGetTenureListUseCase _getTenureListUseCase;
 
-        public GetPersonListController(IGetPersonListUseCase getPersonListUseCase)
+        public GetTenureListController(IGetTenureListUseCase getTenureListUseCase)
         {
-            _getPersonListUseCase = getPersonListUseCase;
+            _getTenureListUseCase = getTenureListUseCase;
         }
 
-        [ProducesResponseType(typeof(APIResponse<GetPersonListResponse>), 200)]
+        [ProducesResponseType(typeof(APIResponse<GetTenureListResponse>), 200)]
         [ProducesResponseType(typeof(APIResponse<NotFoundException>), 404)]
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
         [HttpGet, MapToApiVersion("1")]
         [LogCall(LogLevel.Information)]
-        public async Task<IActionResult> GetPersonList([FromQuery] GetPersonListRequest request)
+        public async Task<IActionResult> GetPersonList([FromQuery] GetTenureListRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -48,9 +48,9 @@ namespace HousingSearchApi.V1.Controllers
 
             try
             {
-                var personsSearchResult = await _getPersonListUseCase.ExecuteAsync(request).ConfigureAwait(false);
-                var apiResponse = new APIResponse<GetPersonListResponse>(personsSearchResult);
-                apiResponse.Total = personsSearchResult.Total();
+                var tenuresSearchResult = await _getTenureListUseCase.ExecuteAsync(request).ConfigureAwait(false);
+                var apiResponse = new APIResponse<GetTenureListResponse>(tenuresSearchResult);
+                apiResponse.Total = tenuresSearchResult.Total();
 
                 return new OkObjectResult(apiResponse);
             }

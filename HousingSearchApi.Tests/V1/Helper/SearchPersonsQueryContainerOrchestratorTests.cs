@@ -1,4 +1,3 @@
-using System.Linq;
 using FluentAssertions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Gateways.Models;
@@ -22,7 +21,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnSearchPhraseQueryStringContainer()
         {
             // Arrange + Act
-            var result = _sut.Create(new GetPersonListRequest { SearchText = "abc" },
+            var result = _sut.CreatePerson(new GetPersonListRequest { SearchText = "abc" },
                 new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert

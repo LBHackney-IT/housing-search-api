@@ -29,6 +29,10 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
                     sortDescriptor.SetSortOrder(request.IsDesc, x => x.QueryableAssetAddress.AddressLine1);
                     break;
 
+                case "totalbalance":
+                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.TotalBalance);
+                    break;
+
                 default:
                     sortDescriptor.SetSortOrder(request.IsDesc, x => x.AssetId);
                     break;

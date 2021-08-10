@@ -1,3 +1,4 @@
+using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Gateways.Interfaces;
@@ -16,8 +17,7 @@ namespace HousingSearchApi.V1.Gateways
         {
             _elasticSearchHelper = elasticSearchHelper;
         }
-        // TODO: 1 Return when last commit
-        //[LogCall]
+        [LogCall]
         public async Task<GetAssetListResponse> GetListOfAssets(GetAssetListRequest query)
         {
             var searchResponse = await _elasticSearchHelper.Search(query).ConfigureAwait(false);

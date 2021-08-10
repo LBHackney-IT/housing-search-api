@@ -1,10 +1,10 @@
-// TODO: 1 Return when last commit
-//using Hackney.Core.Logging;
+using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -33,8 +33,7 @@ namespace HousingSearchApi.V1.Controllers
         [ProducesResponseType(typeof(BaseErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(BaseErrorResponse), StatusCodes.Status500InternalServerError)]
         [HttpGet, MapToApiVersion("1")]
-        // TODO: 1 Return when last commit
-        //[LogCall(LogLevel.Information)]
+        [LogCall(LogLevel.Information)]
         public async Task<IActionResult> GetAssetList([FromQuery] GetAssetListRequest request)
         {
             return await UseErrorHandling(async () =>

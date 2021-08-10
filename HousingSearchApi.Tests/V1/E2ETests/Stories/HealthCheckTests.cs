@@ -1,8 +1,6 @@
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
 using HousingSearchApi.Tests.V1.Helper;
 using System;
-using System.Net.Http;
-using System.Threading;
 using TestStack.BDDfy;
 using Xunit;
 

@@ -164,20 +164,20 @@ workflows:
           requires:
             - build-and-test
           filters:
-            branches:
-              only: master
+           branches:
+            only: master
       - terraform-init-and-apply-to-development:
           requires:
             - assume-role-development
           filters:
-            branches:
-              only: master
+           branches:
+            only: master
       - deploy-to-development:
           requires:
             - terraform-init-and-apply-to-development
           filters:
-            branches:
-              only: master
+           branches:
+            only: master
   check-and-deploy-staging-and-production:
       jobs:
       - check-code-formatting
