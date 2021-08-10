@@ -1,6 +1,6 @@
 To work with local ElasticSearch you need to do next steps:
 
-1. Install docker and write next command 
+1. Install docker and run the next command 
 docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.14.0
 If all works fine you can go to page localhost:9200
 
