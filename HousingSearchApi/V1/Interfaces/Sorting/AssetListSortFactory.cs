@@ -22,7 +22,7 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
                     break;
 
                 case "postCode":
-                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.QueryableAssetAddress.PostCode.ToString());
+                    sortDescriptor.SetSortOrder(request.IsDesc, x => x.QueryableAssetAddress.PostCode);
                     break;
 
                 case "address":
