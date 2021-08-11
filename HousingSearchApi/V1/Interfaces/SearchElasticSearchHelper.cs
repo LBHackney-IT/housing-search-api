@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace HousingSearchApi.V1.Interfaces
 {
     public class SearchElasticSearchHelper<TRequest, TQueryable> : ISearchElasticSearchHelper<TRequest, TQueryable>
-        where TRequest : APIRequest
+        where TRequest : GetAssetListRequest
         where TQueryable : class
     {
         private readonly IElasticClient _esClient;

@@ -1,6 +1,7 @@
 using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
+using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,7 @@ namespace HousingSearchApi.V1.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(new BaseErrorResponse(GetErrorMessage(ModelState), HttpStatusCode.BadRequest));
+                    return BadRequest(new BaseErrorResponse(ModelState.GetErrorMessage(), HttpStatusCode.BadRequest));
                 }
 
                 var assetsSearchResult = await _getAssetListUseCase.ExecuteAsync(request).ConfigureAwait(false);

@@ -43,11 +43,6 @@ namespace HousingSearchApi.V1.Controllers
             };
         }
 
-        public static string GetErrorMessage(ModelStateDictionary modelState)
-        {
-            return string.Join(" ", modelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)));
-        }
-
         protected async Task<IActionResult> UseErrorHandling(Func<Task<IActionResult>> action)
         {
             try
