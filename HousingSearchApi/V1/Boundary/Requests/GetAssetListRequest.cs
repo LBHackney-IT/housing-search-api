@@ -1,16 +1,10 @@
 using HousingSearchApi.V1.Domain.Asset;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 namespace HousingSearchApi.V1.Boundary.Requests
 {
     public class GetAssetListRequest
     {
-        public GetAssetListRequest()
-        {
-            PageSize = Startup.StaticConfiguration.GetValue<int>("DefaultPageSize");
-        }
-
         /// <summary>
         /// Text which used for search
         /// </summary>
@@ -36,7 +30,7 @@ namespace HousingSearchApi.V1.Boundary.Requests
         /// 3
         /// </example>
         [FromQuery(Name = "pageSize")]
-        public int PageSize { get; set; }
+        public int PageSize { get; set; } = 12;
 
         /// <summary>
         /// Number of current page

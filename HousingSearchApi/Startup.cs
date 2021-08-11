@@ -45,17 +45,11 @@ namespace HousingSearchApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            StaticConfiguration = configuration;
 
             AWSSDKHandler.RegisterXRayForAllServices();
         }
 
         public IConfiguration Configuration { get; }
-
-        // Hanna Holosova
-        // We need this variable, because of Request models, which use variable from appsettings.json
-        // and we can't use DI in these models.
-        public static IConfiguration StaticConfiguration { get; private set; }
 
         private static List<ApiVersionDescription> _apiVersions { get; set; }
 

@@ -12,13 +12,13 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
             if (string.IsNullOrEmpty(request.SortBy))
                 return new DefaultSort();
 
+            // TODO: Add more classes for all sorting fields
             switch (request.IsDesc)
             {
                 case true:
                     return new SurnameDesc();
                 case false:
                     return new SurnameAsc();
-                // TODO: Add more classes for all sorting fields
             }
         }
 
