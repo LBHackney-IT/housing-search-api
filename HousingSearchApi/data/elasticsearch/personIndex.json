@@ -5,7 +5,8 @@
   "mappings": {
     "properties": {
       "dateOfBirth": {
-        "type": "text",
+        "type": "keyword",
+        "normalizer": "my_normalizer",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -13,8 +14,12 @@
           }
         }
       },
+      "totalBalance": {
+        "type": "double"
+      },
       "ethinicity": {
-        "type": "text",
+        "type": "keyword",
+        "normalizer": "my_normalizer",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -33,7 +38,8 @@
         }
       },
       "gender": {
-        "type": "text",
+        "type": "keyword",
+        "normalizer": "my_normalizer",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -42,7 +48,8 @@
         }
       },
       "id": {
-        "type": "text",
+        "type": "keyword",
+        "normalizer": "my_normalizer",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -91,7 +98,8 @@
         "type": "boolean"
       },
       "middlename": {
-        "type": "text",
+        "type": "keyword",
+        "normalizer": "my_normalizer",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -100,7 +108,8 @@
         }
       },
       "nationality": {
-        "type": "text",
+        "type": "keyword",
+        "normalizer": "my_normalizer",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -118,7 +127,8 @@
         }
       },
       "placeOfBirth": {
-        "type": "text",
+        "type": "keyword",
+        "normalizer": "my_normalizer",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -193,6 +203,79 @@
             }
           },
           "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "totalBalance": {
+            "type": "double"
+          },
+          "postCode": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "rentAccountNumber": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "properties": {
+        "properties": {
+          "assetFullAddress": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "totalBalance": {
+            "type": "double"
+          },
+          "postCode": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "rentAccountNumber": {
             "type": "text",
             "fields": {
               "keyword": {

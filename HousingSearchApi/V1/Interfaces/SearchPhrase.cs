@@ -43,7 +43,7 @@ namespace HousingSearchApi.V1.Interfaces
 
             return result;
         }
- 
+
         public QueryContainer CreateTenureQuery(GetTenureListRequest request, QueryContainerDescriptor<QueryableTenure> queryDescriptor)
         {
             if (string.IsNullOrWhiteSpace(request.SearchText)) return null;

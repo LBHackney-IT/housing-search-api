@@ -9,6 +9,7 @@ using FluentAssertions;
 using HousingSearchApi.Tests.V1.Helper;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
+using HousingSearchApi.V1.Domain;
 using Xunit;
 
 namespace HousingSearchApi.Tests
@@ -62,9 +63,10 @@ namespace HousingSearchApi.Tests
         {
             // arrange +
             var pageSize = 5;
+            var personType = PersonType.Rent;
 
             // act
-            var route = new Uri($"api/v1/search/persons?searchText={TestDataHelper.Alphabet.Last()}&pageSize={pageSize}",
+            var route = new Uri($"api/v1/search/persons?searchText={TestDataHelper.Alphabet.Last()}&pageSize={pageSize}&personType={personType}",
                                 UriKind.Relative);
             var response = await Client.GetAsync(route).ConfigureAwait(false);
 
