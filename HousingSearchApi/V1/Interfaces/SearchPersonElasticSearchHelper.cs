@@ -88,6 +88,11 @@ namespace HousingSearchApi.V1.Interfaces
             }
         }
 
+        public Task<ISearchResponse<QueryableAsset>> SearchAssets(HousingSearchRequest query)
+        {
+            throw new NotImplementedException();
+        }
+
         private QueryContainer BaseTenureQuery(HousingSearchRequest request, QueryContainerDescriptor<QueryableTenure> q)
         {
             return _containerOrchestrator.CreateTenure(request, q);

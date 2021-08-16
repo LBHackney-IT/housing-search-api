@@ -10,5 +10,7 @@ namespace HousingSearchApi.V1.Interfaces
             QueryContainerDescriptor<QueryablePerson> q);
 
         QueryContainer CreateTenure(HousingSearchRequest request, QueryContainerDescriptor<QueryableTenure> queryContainerDescriptor);
+
+        QueryContainer CreateAsset(HousingSearchRequest request, QueryContainerDescriptor<QueryableAsset> queryContainerDescriptor);
     }
 }

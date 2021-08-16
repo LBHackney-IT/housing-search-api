@@ -24,5 +24,10 @@ namespace HousingSearchApi.V1.Interfaces
         {
             return new SearchPhrase(_wildCardAppenderAndPrepender).CreateTenureQuery(request, q);
         }
+
+        public QueryContainer CreateAsset(HousingSearchRequest request, QueryContainerDescriptor<QueryableAsset> queryContainerDescriptor)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

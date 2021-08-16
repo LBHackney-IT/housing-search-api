@@ -9,5 +9,6 @@ namespace HousingSearchApi.V1.Interfaces
     {
         Task<ISearchResponse<QueryablePerson>> SearchPersons(HousingSearchRequest request);
         Task<ISearchResponse<QueryableTenure>> SearchTenures(HousingSearchRequest query);
+        Task<ISearchResponse<QueryableAsset>> SearchAssets(HousingSearchRequest query);
     }
 }
