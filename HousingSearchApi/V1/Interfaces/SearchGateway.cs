@@ -44,5 +44,10 @@ namespace HousingSearchApi.V1.Interfaces
 
             return tenureListResponse;
         }
+
+        public Task<GetAssetListResponse> GetListOfAssets(HousingSearchRequest query)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
