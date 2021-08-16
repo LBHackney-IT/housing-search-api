@@ -1,7 +1,5 @@
 {
-  "aliases": {
-
-  },
+  "aliases": {},
   "mappings": {
     "properties": {
       "id": {
@@ -13,17 +11,7 @@
           }
         }
       },
-      "paymentReference": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
-      "startOfTenureDate": {
+      "assetId": {
         "type": "text",
         "fields": {
           "keyword": {
@@ -32,7 +20,7 @@
           }
         }
       },
-      "endOfTenureDate": {
+      "assetType": {
         "type": "text",
         "fields": {
           "keyword": {
@@ -41,27 +29,9 @@
           }
         }
       },
-      "householdMembers": {
+      "assetAddress": {
         "properties": {
-          "id": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "type": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "fullName": {
+          "uprn": {
             "type": "keyword",
             "normalizer": "my_normalizer",
             "fields": {
@@ -71,7 +41,53 @@
               }
             }
           },
-          "isResponsible": {
+          "postPreamble": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "addressLine1": {
+            "type": "keyword",
+            "normalizer": "my_normalizer",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "postCode": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "addressLine2": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "addressLine3": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "addressLine4": {
             "type": "text",
             "fields": {
               "keyword": {
@@ -82,9 +98,27 @@
           }
         }
       },
-      "tenuredAsset": {
+      "tenure": {
         "properties": {
           "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "startOfTenureDate": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "endOfTenureDate": {
             "type": "text",
             "fields": {
               "keyword": {
@@ -102,38 +136,7 @@
               }
             }
           },
-          "fullAddress": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "uprn": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          }
-        }
-      },
-      "tenureType": {
-        "properties": {
-          "code": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "description": {
+          "paymentReference": {
             "type": "text",
             "fields": {
               "keyword": {
@@ -151,9 +154,7 @@
       "normalizer": {
         "my_normalizer": {
           "type": "custom",
-          "char_filter": [
-
-          ],
+          "char_filter": [],
           "filter": [
             "lowercase",
             "asciifolding"
