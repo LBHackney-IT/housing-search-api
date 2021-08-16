@@ -16,7 +16,7 @@ namespace HousingSearchApi.V1.Interfaces
         }
 
         [LogCall]
-        public async Task<GetPersonListResponse> GetListOfPersons(GetPersonListRequest query)
+        public async Task<GetPersonListResponse> GetListOfPersons(HousingSearchRequest query)
         {
             var searchResponse = await _elasticSearchHelper.SearchPersons(query).ConfigureAwait(false);
             var personListResponse = new GetPersonListResponse();
@@ -31,7 +31,7 @@ namespace HousingSearchApi.V1.Interfaces
         }
 
         [LogCall]
-        public async Task<GetTenureListResponse> GetListOfTenures(GetTenureListRequest query)
+        public async Task<GetTenureListResponse> GetListOfTenures(HousingSearchRequest query)
         {
             var searchResponse = await _elasticSearchHelper.SearchTenures(query).ConfigureAwait(false);
             var tenureListResponse = new GetTenureListResponse();

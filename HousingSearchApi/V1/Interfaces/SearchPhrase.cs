@@ -14,7 +14,7 @@ namespace HousingSearchApi.V1.Interfaces
             _wildCardAppenderAndPrepender = wildCardAppenderAndPrepender;
         }
 
-        public QueryContainer CreatePersonQuery(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
+        public QueryContainer CreatePersonQuery(HousingSearchRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
             if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
 
@@ -28,7 +28,7 @@ namespace HousingSearchApi.V1.Interfaces
             return searchSurnames;
         }
 
-        public QueryContainer CreateTenureQuery(GetTenureListRequest request, QueryContainerDescriptor<QueryableTenure> q)
+        public QueryContainer CreateTenureQuery(HousingSearchRequest request, QueryContainerDescriptor<QueryableTenure> q)
         {
             if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
 

@@ -21,7 +21,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnSearchPhraseQueryStringContainer()
         {
             // Arrange + Act
-            var result = _sut.CreatePerson(new GetPersonListRequest { SearchText = "abc" },
+            var result = _sut.CreatePerson(new HousingSearchRequest { SearchText = "abc" },
                 new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert

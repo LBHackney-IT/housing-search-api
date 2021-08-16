@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HousingSearchApi.V1.Boundary.Requests
 {
-    public class GetTenureListRequest
+    public class HousingSearchRequest
     {
         private const int DefaultPageSize = 12;
 

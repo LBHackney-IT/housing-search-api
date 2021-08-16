@@ -30,7 +30,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetTenureListShouldCallGetTenureListUseCase()
         {
             // given
-            var request = new GetTenureListRequest();
+            var request = new HousingSearchRequest();
             var response = new GetTenureListResponse();
             _mockGetTenureListUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
 
@@ -45,7 +45,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetTenureListShouldReturnNotFoundObjectResultIfNotFound()
         {
             // given
-            var request = new GetTenureListRequest();
+            var request = new HousingSearchRequest();
             var notFoundException = new NotFoundException();
 
             _mockGetTenureListUseCase.Setup(x => x.ExecuteAsync(request))

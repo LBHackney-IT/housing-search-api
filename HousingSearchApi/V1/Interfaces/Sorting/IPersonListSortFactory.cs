@@ -4,6 +4,6 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
 {
     public interface IPersonListSortFactory
     {
-        IPersonListSort Create(GetPersonListRequest request);
+        IPersonListSort Create(HousingSearchRequest request);
     }
 }

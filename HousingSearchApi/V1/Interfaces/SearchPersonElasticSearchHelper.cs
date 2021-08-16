@@ -31,7 +31,7 @@ namespace HousingSearchApi.V1.Interfaces
             _personIndices = Indices.Index(new List<IndexName> { "persons" });
             _tenureIndices = Indices.Index(new List<IndexName> { "tenures" });
         }
-        public async Task<ISearchResponse<QueryablePerson>> SearchPersons(GetPersonListRequest request)
+        public async Task<ISearchResponse<QueryablePerson>> SearchPersons(HousingSearchRequest request)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace HousingSearchApi.V1.Interfaces
             }
         }
 
-        public async Task<ISearchResponse<QueryableTenure>> SearchTenures(GetTenureListRequest request)
+        public async Task<ISearchResponse<QueryableTenure>> SearchTenures(HousingSearchRequest request)
         {
             try
             {
@@ -88,13 +88,13 @@ namespace HousingSearchApi.V1.Interfaces
             }
         }
 
-        private QueryContainer BaseTenureQuery(GetTenureListRequest request, QueryContainerDescriptor<QueryableTenure> q)
+        private QueryContainer BaseTenureQuery(HousingSearchRequest request, QueryContainerDescriptor<QueryableTenure> q)
         {
             return _containerOrchestrator.CreateTenure(request, q);
         }
 
 
-        private QueryContainer BasePersonQuery(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
+        private QueryContainer BasePersonQuery(HousingSearchRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
             return _containerOrchestrator.CreatePerson(request, q);
         }

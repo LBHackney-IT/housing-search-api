@@ -30,7 +30,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetPersonListShouldCallGetPersonListUseCase()
         {
             // given
-            var request = new GetPersonListRequest();
+            var request = new HousingSearchRequest();
             var response = new GetPersonListResponse();
             _mockGetPersonListUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
 
@@ -45,7 +45,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetPersonListShouldReturnNotFoundObjectResultIfNotFound()
         {
             // given
-            var request = new GetPersonListRequest();
+            var request = new HousingSearchRequest();
             var notFoundException = new NotFoundException();
 
             _mockGetPersonListUseCase.Setup(x => x.ExecuteAsync(request))

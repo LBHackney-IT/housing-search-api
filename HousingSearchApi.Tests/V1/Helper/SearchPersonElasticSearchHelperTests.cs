@@ -50,7 +50,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             correctQuery = correctQuery.Replace("{0}", searchText, StringComparison.CurrentCulture);
 
             // act
-            var response = await _classUnderTest.SearchPersons(new GetPersonListRequest { SearchText = searchText }).ConfigureAwait(false);
+            var response = await _classUnderTest.SearchPersons(new HousingSearchRequest { SearchText = searchText }).ConfigureAwait(false);
 
             // assert
             response.DebugInformation.IndexOf(correctQuery, StringComparison.CurrentCulture).Should().BeGreaterOrEqualTo(0);

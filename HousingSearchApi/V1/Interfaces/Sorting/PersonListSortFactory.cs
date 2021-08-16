@@ -4,7 +4,7 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
 {
     public class PersonListSortFactory : IPersonListSortFactory
     {
-        public IPersonListSort Create(GetPersonListRequest request)
+        public IPersonListSort Create(HousingSearchRequest request)
         {
             if (string.IsNullOrEmpty(request.SortBy))
                 return new DefaultSort();

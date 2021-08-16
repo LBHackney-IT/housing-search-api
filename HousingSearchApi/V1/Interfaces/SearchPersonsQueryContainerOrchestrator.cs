@@ -14,13 +14,13 @@ namespace HousingSearchApi.V1.Interfaces
             _wildCardAppenderAndPrepender = wildCardAppenderAndPrepender;
         }
 
-        public QueryContainer CreatePerson(GetPersonListRequest request,
+        public QueryContainer CreatePerson(HousingSearchRequest request,
             QueryContainerDescriptor<QueryablePerson> q)
         {
             return new SearchPhrase(_wildCardAppenderAndPrepender).CreatePersonQuery(request, q);
         }
 
-        public QueryContainer CreateTenure(GetTenureListRequest request, QueryContainerDescriptor<QueryableTenure> q)
+        public QueryContainer CreateTenure(HousingSearchRequest request, QueryContainerDescriptor<QueryableTenure> q)
         {
             return new SearchPhrase(_wildCardAppenderAndPrepender).CreateTenureQuery(request, q);
         }

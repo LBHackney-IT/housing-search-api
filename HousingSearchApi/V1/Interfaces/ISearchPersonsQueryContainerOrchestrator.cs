@@ -6,9 +6,9 @@ namespace HousingSearchApi.V1.Interfaces
 {
     public interface ISearchPersonsQueryContainerOrchestrator
     {
-        QueryContainer CreatePerson(GetPersonListRequest request,
+        QueryContainer CreatePerson(HousingSearchRequest request,
             QueryContainerDescriptor<QueryablePerson> q);
 
-        QueryContainer CreateTenure(GetTenureListRequest request, QueryContainerDescriptor<QueryableTenure> queryContainerDescriptor);
+        QueryContainer CreateTenure(HousingSearchRequest request, QueryContainerDescriptor<QueryableTenure> queryContainerDescriptor);
     }
 }

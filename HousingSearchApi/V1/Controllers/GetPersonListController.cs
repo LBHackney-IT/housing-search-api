@@ -30,7 +30,7 @@ namespace HousingSearchApi.V1.Controllers
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
         [HttpGet, MapToApiVersion("1")]
         [LogCall(LogLevel.Information)]
-        public async Task<IActionResult> GetPersonList([FromQuery] GetPersonListRequest request)
+        public async Task<IActionResult> GetPersonList([FromQuery] HousingSearchRequest request)
         {
             if (!ModelState.IsValid)
             {

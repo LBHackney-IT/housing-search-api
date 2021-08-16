@@ -3,7 +3,7 @@ using Hackney.Core.Validation;
 
 namespace HousingSearchApi.V1.Boundary.Requests.Validation
 {
-    public class GetPersonListRequestValidator : AbstractValidator<GetPersonListRequest>
+    public class GetPersonListRequestValidator : AbstractValidator<HousingSearchRequest>
     {
         public GetPersonListRequestValidator()
         {
