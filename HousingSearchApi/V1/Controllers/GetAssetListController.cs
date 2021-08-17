@@ -2,14 +2,13 @@ using Amazon.Lambda.Core;
 using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Response;
-using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using HousingSearchApi.V1.Helper;
 
 namespace HousingSearchApi.V1.Controllers
 {
@@ -34,17 +33,7 @@ namespace HousingSearchApi.V1.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var errors = new List<ValidationError>();
-
-                var err = new ValidationError();
-
-                err.FieldName = "Insufficient characters";
-                errors.Add(err);
-
-                return new BadRequestObjectResult(new ErrorResponse(errors)
-                {
-                    StatusCode = 400
-                });
+                return ModelValidationHelper.Return400ForInvalidRequest();
             }
 
             try

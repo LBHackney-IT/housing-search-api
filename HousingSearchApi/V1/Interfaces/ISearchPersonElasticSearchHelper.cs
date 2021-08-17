@@ -7,8 +7,6 @@ namespace HousingSearchApi.V1.Interfaces
 {
     public interface ISearchPersonElasticSearchHelper
     {
-        Task<ISearchResponse<QueryablePerson>> SearchPersons(HousingSearchRequest request);
-        Task<ISearchResponse<QueryableTenure>> SearchTenures(HousingSearchRequest query);
-        Task<ISearchResponse<QueryableAsset>> SearchAssets(HousingSearchRequest query);
+        Task<ISearchResponse<T>> Search<T>(HousingSearchRequest request) where T : class;
     }
 }

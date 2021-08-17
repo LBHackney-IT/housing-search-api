@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Response;
+using HousingSearchApi.V1.Gateways.Models;
 
 namespace HousingSearchApi.V1.Interfaces
 {
@@ -18,7 +19,7 @@ namespace HousingSearchApi.V1.Interfaces
         [LogCall]
         public async Task<GetPersonListResponse> GetListOfPersons(HousingSearchRequest query)
         {
-            var searchResponse = await _elasticSearchHelper.SearchPersons(query).ConfigureAwait(false);
+            var searchResponse = await _elasticSearchHelper.Search<QueryablePerson>(query).ConfigureAwait(false);
             var personListResponse = new GetPersonListResponse();
 
             personListResponse.Persons.AddRange(searchResponse.Documents.Select(queryablePerson =>
@@ -33,7 +34,7 @@ namespace HousingSearchApi.V1.Interfaces
         [LogCall]
         public async Task<GetTenureListResponse> GetListOfTenures(HousingSearchRequest query)
         {
-            var searchResponse = await _elasticSearchHelper.SearchTenures(query).ConfigureAwait(false);
+            var searchResponse = await _elasticSearchHelper.Search<QueryableTenure>(query).ConfigureAwait(false);
             var tenureListResponse = new GetTenureListResponse();
 
             tenureListResponse.Tenures.AddRange(searchResponse.Documents.Select(queryablePerson =>
