@@ -4,17 +4,17 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
 {
     public class PersonListSortFactory : IPersonListSortFactory
     {
-        public IPersonListSort Create(HousingSearchRequest request)
+        public ISort<T> Create<T>(HousingSearchRequest request) where T : class
         {
             if (string.IsNullOrEmpty(request.SortBy))
-                return new DefaultSort();
+                return new DefaultSort<T>();
 
             switch (request.IsDesc)
             {
                 case true:
-                    return new SurnameDesc();
+                    return (ISort<T>) new SurnameDesc();
                 case false:
-                    return new SurnameAsc();
+                    return (ISort<T>) new SurnameAsc();
             }
         }
     }

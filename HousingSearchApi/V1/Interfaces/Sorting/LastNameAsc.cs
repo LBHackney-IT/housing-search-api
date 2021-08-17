@@ -3,7 +3,7 @@ using Nest;
 
 namespace HousingSearchApi.V1.Interfaces.Sorting
 {
-    public class SurnameAsc : IPersonListSort
+    public class SurnameAsc : ISort<QueryablePerson>
     {
         public SortDescriptor<QueryablePerson> GetSortDescriptor(SortDescriptor<QueryablePerson> descriptor)
         {

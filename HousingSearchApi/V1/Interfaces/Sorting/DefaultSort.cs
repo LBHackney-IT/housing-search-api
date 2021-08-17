@@ -1,13 +1,14 @@
-using HousingSearchApi.V1.Gateways.Models;
 using Nest;
 
 namespace HousingSearchApi.V1.Interfaces.Sorting
 {
-    public class DefaultSort : IPersonListSort
+    public class DefaultSort<T> : ISort<T> where T : class
+
     {
-        public SortDescriptor<QueryablePerson> GetSortDescriptor(SortDescriptor<QueryablePerson> descriptor)
-        {
-            return descriptor;
+
+        public SortDescriptor<T> GetSortDescriptor(SortDescriptor<T> descriptor)
+    {
+        return descriptor;
         }
     }
 }
