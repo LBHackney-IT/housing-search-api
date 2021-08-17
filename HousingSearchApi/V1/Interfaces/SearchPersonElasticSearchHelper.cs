@@ -1,5 +1,4 @@
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Gateways.Models;
 using HousingSearchApi.V1.Interfaces.Sorting;
 using Microsoft.Extensions.Logging;
 using Nest;
@@ -17,19 +16,17 @@ namespace HousingSearchApi.V1.Interfaces
         private readonly IPagingHelper _pagingHelper;
         private readonly IPersonListSortFactory _iPersonListSortFactory;
         private readonly ILogger<SearchPersonElasticSearchHelper> _logger;
-        private readonly Indices.ManyIndices _personIndices;
-        private readonly Indices.ManyIndices _tenureIndices;
+        private readonly IndexSelector _indexSelector;
 
         public SearchPersonElasticSearchHelper(IElasticClient esClient, IQueryFactory queryFactory,
-            IPagingHelper pagingHelper, IPersonListSortFactory iPersonListSortFactory, ILogger<SearchPersonElasticSearchHelper> logger)
+            IPagingHelper pagingHelper, IPersonListSortFactory iPersonListSortFactory, ILogger<SearchPersonElasticSearchHelper> logger, IndexSelector indexSelector)
         {
             _esClient = esClient;
             _queryFactory = queryFactory;
             _pagingHelper = pagingHelper;
             _iPersonListSortFactory = iPersonListSortFactory;
             _logger = logger;
-            _personIndices = Indices.Index(new List<IndexName> { "persons" });
-            _tenureIndices = Indices.Index(new List<IndexName> { "tenures" });
+            _indexSelector = indexSelector;
         }
 
         public async Task<ISearchResponse<T>> Search<T>(HousingSearchRequest request) where T : class
@@ -43,7 +40,7 @@ namespace HousingSearchApi.V1.Interfaces
 
                 var pageOffset = _pagingHelper.GetPageOffset(request.PageSize, request.Page);
 
-                var result = await _esClient.SearchAsync<T>(x => x.Index(_personIndices)
+                var result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
                     .Query(q => BaseQuery<T>(request).Create(request, q))
                     .Sort(_iPersonListSortFactory.Create<T>(request).GetSortDescriptor)
                     .Size(request.PageSize)
