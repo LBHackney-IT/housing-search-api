@@ -60,7 +60,7 @@ namespace HousingSearchApi.Tests
         [Fact]
         public async Task WhenRequestGetsResultMaxPageSizeWouldBeTheOneRequestedInTheQueryString()
         {
-            // arrange +
+            // arrange
             var pageSize = 5;
 
             // act
