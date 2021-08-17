@@ -6,7 +6,7 @@ namespace HousingSearchApi.V1.Interfaces
     public interface IQueryGenerator<T> where T : class
 
     {
-    QueryContainer Create(HousingSearchRequest request,
-        QueryContainerDescriptor<T> q);
+        QueryContainer Create(HousingSearchRequest request,
+            QueryContainerDescriptor<T> q);
     }
 }

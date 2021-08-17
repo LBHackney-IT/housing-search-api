@@ -46,9 +46,19 @@ namespace HousingSearchApi.V1.Interfaces
             return tenureListResponse;
         }
 
-        public Task<GetAssetListResponse> GetListOfAssets(HousingSearchRequest query)
+        [LogCall]
+        public async Task<GetAssetListResponse> GetListOfAssets(HousingSearchRequest query)
         {
-            throw new System.NotImplementedException();
+            var searchResponse = await _elasticSearchHelper.Search<QueryableAsset>(query).ConfigureAwait(false);
+            var assetListResponse = new GetAssetListResponse();
+
+            assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryablePerson =>
+                queryablePerson.Create())
+            );
+
+            assetListResponse.SetTotal(searchResponse.Total);
+
+            return assetListResponse;
         }
     }
 }

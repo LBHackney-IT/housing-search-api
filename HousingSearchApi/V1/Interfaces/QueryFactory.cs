@@ -17,7 +17,7 @@ namespace HousingSearchApi.V1.Interfaces
         {
             if (typeof(T) == typeof(QueryablePerson))
             {
-                return (IQueryGenerator<T>)new PersonQueryGenerator(_wildCardAppenderAndPrepender);
+                return (IQueryGenerator<T>) new PersonQueryGenerator(_wildCardAppenderAndPrepender);
             }
 
             if (typeof(T) == typeof(QueryableTenure))
