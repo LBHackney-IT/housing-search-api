@@ -14,7 +14,7 @@ namespace HousingSearchApi.Tests.V1.Helper
 
         public SearchPersonsQueryContainerOrchestratorTests()
         {
-            _sut = new SearchPersonsQueryContainerOrchestrator(new WildCardAppenderAndPrepender());
+            _sut = new SearchPersonsQueryContainerOrchestrator(new QueryFactory(new WildCardAppenderAndPrepender()));
         }
 
         [Fact]

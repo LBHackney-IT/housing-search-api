@@ -7,27 +7,27 @@ namespace HousingSearchApi.V1.Interfaces
 {
     public class SearchPersonsQueryContainerOrchestrator : ISearchPersonsQueryContainerOrchestrator
     {
-        private readonly IWildCardAppenderAndPrepender _wildCardAppenderAndPrepender;
+        private readonly IQueryFactory _queryFactory;
 
-        public SearchPersonsQueryContainerOrchestrator(IWildCardAppenderAndPrepender wildCardAppenderAndPrepender)
+        public SearchPersonsQueryContainerOrchestrator(IQueryFactory queryFactory)
         {
-            _wildCardAppenderAndPrepender = wildCardAppenderAndPrepender;
+            _queryFactory = queryFactory;
         }
 
         public QueryContainer CreatePerson(HousingSearchRequest request,
-            QueryContainerDescriptor<QueryablePerson> q)
+            QueryContainerDescriptor<QueryablePerson> query)
         {
-            return new SearchPhrase(_wildCardAppenderAndPrepender).CreatePersonQuery(request, q);
+            return _queryFactory.CreateQuery<QueryablePerson>(request).Create(request, query);
         }
 
-        public QueryContainer CreateTenure(HousingSearchRequest request, QueryContainerDescriptor<QueryableTenure> q)
+        public QueryContainer CreateTenure(HousingSearchRequest request, QueryContainerDescriptor<QueryableTenure> query)
         {
-            return new SearchPhrase(_wildCardAppenderAndPrepender).CreateTenureQuery(request, q);
+            return _queryFactory.CreateQuery<QueryableTenure>(request).Create(request, query);
         }
 
-        public QueryContainer CreateAsset(HousingSearchRequest request, QueryContainerDescriptor<QueryableAsset> queryContainerDescriptor)
+        public QueryContainer CreateAsset(HousingSearchRequest request, QueryContainerDescriptor<QueryableAsset> query)
         {
-            throw new System.NotImplementedException();
+            return _queryFactory.CreateQuery<QueryableAsset>(request).Create(request, query);
         }
     }
 }

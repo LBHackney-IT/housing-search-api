@@ -140,6 +140,7 @@ namespace HousingSearchApi
             services.AddElasticSearchHealthCheck();
 
             services.AddScoped<IWildCardAppenderAndPrepender, WildCardAppenderAndPrepender>();
+            services.AddScoped<IQueryFactory, QueryFactory>();
 
             services.AddLogCallAspect();
         }

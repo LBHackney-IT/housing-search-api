@@ -11,11 +11,11 @@ namespace HousingSearchApi.Tests.V1.Helper
 {
     public class SearchPhraseTests
     {
-        private readonly SearchPhrase _sut;
+        private readonly PersonQueryGenerator _sut;
 
         public SearchPhraseTests()
         {
-            _sut = new SearchPhrase(new WildCardAppenderAndPrepender());
+            _sut = new PersonQueryGenerator(new WildCardAppenderAndPrepender());
         }
 
         [Theory]
@@ -24,7 +24,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnNullIfRequestSearchTextIsEmpty(string searchText)
         {
             // Arrange + Act
-            var result = _sut.CreatePersonQuery(new HousingSearchRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
+            var result = _sut.Create(new HousingSearchRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert
             result.Should().BeNull();
@@ -38,7 +38,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             var nameToExpect = "*SomeName* *LastName*";
 
             // Act
-            var result = _sut.CreatePersonQuery(new HousingSearchRequest { SearchText = nameToSearchFor },
+            var result = _sut.Create(new HousingSearchRequest { SearchText = nameToSearchFor },
                 new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert

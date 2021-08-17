@@ -1,5 +1,3 @@
-using System;
-
 namespace HousingSearchApi.V1.Domain.Asset
 {
     public class Asset
