@@ -43,7 +43,7 @@ namespace HousingSearchApi.V1.Interfaces
 
                 var pageOffset = _pagingHelper.GetPageOffset(request.PageSize, request.Page);
 
-                var result = await _esClient.SearchAsync<T>(x => x.Index(_tenureIndices)
+                var result = await _esClient.SearchAsync<T>(x => x.Index(_personIndices)
                     .Query(q => BaseQuery<T>(request).Create(request, q))
                     .Sort(_iPersonListSortFactory.Create<T>(request).GetSortDescriptor)
                     .Size(request.PageSize)

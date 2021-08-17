@@ -7,8 +7,8 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
     {
 
         public SortDescriptor<T> GetSortDescriptor(SortDescriptor<T> descriptor)
-    {
-        return descriptor;
+        {
+            return descriptor;
         }
     }
 }
