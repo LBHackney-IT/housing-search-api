@@ -16,10 +16,10 @@ namespace HousingSearchApi.V1.Interfaces
         private readonly IPagingHelper _pagingHelper;
         private readonly IPersonListSortFactory _iPersonListSortFactory;
         private readonly ILogger<SearchPersonElasticSearchHelper> _logger;
-        private readonly IndexSelector _indexSelector;
+        private readonly IIndexSelector _indexSelector;
 
         public SearchPersonElasticSearchHelper(IElasticClient esClient, IQueryFactory queryFactory,
-            IPagingHelper pagingHelper, IPersonListSortFactory iPersonListSortFactory, ILogger<SearchPersonElasticSearchHelper> logger, IndexSelector indexSelector)
+            IPagingHelper pagingHelper, IPersonListSortFactory iPersonListSortFactory, ILogger<SearchPersonElasticSearchHelper> logger, IIndexSelector indexSelector)
         {
             _esClient = esClient;
             _queryFactory = queryFactory;

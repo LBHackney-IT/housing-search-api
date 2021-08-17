@@ -34,7 +34,8 @@ namespace HousingSearchApi.Tests.V1.Helper
                 serviceProvider.GetService<IQueryFactory>(),
                 serviceProvider.GetService<IPagingHelper>(),
                 serviceProvider.GetService<IPersonListSortFactory>(),
-                serviceProvider.GetService<ILogger<SearchPersonElasticSearchHelper>>());
+                serviceProvider.GetService<ILogger<SearchPersonElasticSearchHelper>>(),
+                serviceProvider.GetService<IIndexSelector>());
         }
 
         [Fact]

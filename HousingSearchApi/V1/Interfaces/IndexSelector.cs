@@ -11,7 +11,7 @@ namespace HousingSearchApi.V1.Interfaces
         {
             var type = typeof(T);
 
-            if(type == typeof(QueryablePerson))
+            if (type == typeof(QueryablePerson))
                 return Indices.Index(new List<IndexName> { "persons" });
 
             if (type == typeof(QueryablePerson))
