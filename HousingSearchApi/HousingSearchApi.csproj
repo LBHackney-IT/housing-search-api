@@ -12,9 +12,13 @@
     </PropertyGroup>
     <ItemGroup>
       <Compile Remove="V1\Domain\ElasticSearch\**" />
+      <Compile Remove="V1\Factories\**" />
       <Content Remove="V1\Domain\ElasticSearch\**" />
+      <Content Remove="V1\Factories\**" />
       <EmbeddedResource Remove="V1\Domain\ElasticSearch\**" />
+      <EmbeddedResource Remove="V1\Factories\**" />
       <None Remove="V1\Domain\ElasticSearch\**" />
+      <None Remove="V1\Factories\**" />
     </ItemGroup>
 
   <ItemGroup>
@@ -38,10 +42,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.4.1" />
       <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.4.1" />
       <PackageReference Include="Hackney.Core" Version="1.0.22" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="V1\Factories\" />
   </ItemGroup>
 
 </Project>

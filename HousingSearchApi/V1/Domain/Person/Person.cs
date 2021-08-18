@@ -4,29 +4,28 @@ namespace HousingSearchApi.V1.Domain.Person
 {
     public class Person
     {
-        public Person()
-        { }
+        public Person() { }
 
         public static Person Create(string id, string title, string firstname, string middleName, string surname,
             string preferredFirstname, string preferredSurname, decimal totalBalance, string ethinicity, string nationality,
             string placeOfBirth, string dateOfBirth, string gender,
             List<Identification> identifications,
             List<string> personTypes, bool isPersonCautionaryAlert, bool isTenureCautionaryAlert,
-            List<Tenure> tenures, List<PersonProperty> properties)
+            List<PersonTenure> tenures)
         {
             return new Person(id, title, firstname, middleName, surname,
                 preferredFirstname, preferredSurname, totalBalance, ethinicity, nationality,
                 placeOfBirth, dateOfBirth, gender,
                 identifications,
                 personTypes, isPersonCautionaryAlert, isTenureCautionaryAlert,
-                tenures, properties);
+                tenures);
         }
 
         private Person(string id, string title, string firstname, string middleName, string surname,
             string preferredFirstname, string preferredSurname, decimal totalBalance, string ethinicity, string nationality, string placeOfBirth, string dateOfBirth, string gender,
             List<Identification> identification,
             List<string> personTypes, bool isPersonCautionaryAlert, bool isTenureCautionaryAlert,
-            List<Tenure> tenures, List<PersonProperty> properties)
+            List<PersonTenure> tenures)
         {
             Id = id;
             Title = title;
@@ -46,7 +45,6 @@ namespace HousingSearchApi.V1.Domain.Person
             IsPersonCautionaryAlert = isPersonCautionaryAlert;
             IsTenureCautionaryAlert = isTenureCautionaryAlert;
             Tenures = tenures;
-            Properties = properties;
         }
 
         public string Id { get; set; }
@@ -83,8 +81,6 @@ namespace HousingSearchApi.V1.Domain.Person
 
         public bool IsTenureCautionaryAlert { get; set; }
 
-        public List<Tenure> Tenures { get; set; }
-
-        public List<PersonProperty> Properties { get; set; }
+        public List<PersonTenure> Tenures { get; set; }
     }
 }

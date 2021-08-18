@@ -1,15 +1,15 @@
 namespace HousingSearchApi.V1.Domain.Person
 {
-    public class Tenure
+    public class PersonTenure
     {
-        public Tenure() { }
+        public PersonTenure() { }
 
-        public static Tenure Create(string id, string type, decimal totalBalance, string startDate, string endDate, string assetFullAddress, string postCode, string rentAccountNumber)
+        public static PersonTenure Create(string id, string type, decimal totalBalance, string startDate, string endDate, string assetFullAddress, string postCode, string rentAccountNumber)
         {
-            return new Tenure(id, type, totalBalance, startDate, endDate, assetFullAddress, postCode, rentAccountNumber);
+            return new PersonTenure(id, type, totalBalance, startDate, endDate, assetFullAddress, postCode, rentAccountNumber);
         }
 
-        private Tenure(string id, string type, decimal totalBalance, string startDate, string endDate, string assetFullAddress, string postCode, string rentAccountNumber)
+        private PersonTenure(string id, string type, decimal totalBalance, string startDate, string endDate, string assetFullAddress, string postCode, string rentAccountNumber)
         {
             Id = id;
             Type = type;

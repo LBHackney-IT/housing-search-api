@@ -12,15 +12,12 @@ namespace HousingSearchApi.V1.Gateways.Models
             var listOfIdentifications = Identification != null ? Identification.Select(x => Domain.Person.Identification.Create(x?.IdentificationType,
                 x?.Value, x.OriginalDocumentSeen, x?.LinkToDocument)).ToList() : new List<Domain.Person.Identification>();
 
-            var listOfTenures = Tenures == null ? new List<Tenure>() :
-                Tenures.Select(x => Tenure.Create(x?.Id, x?.Type, x.TotalBalance, x?.StartDate, x?.EndDate, x?.AssetFullAddress, x?.PostCode, x?.RentAccountNumber)).ToList();
-
-            var listOfProperties = Properties == null ? new List<PersonProperty>() :
-                Properties.Select(x => PersonProperty.Create(x?.Id, x?.Type, x.TotalBalance, x?.AssetFullAddress, x?.PostCode, x?.RentAccountNumber)).ToList();
+            var listOfTenures = Tenures == null ? new List<PersonTenure>() :
+                Tenures.Select(x => PersonTenure.Create(x?.Id, x?.Type, x.TotalBalance, x?.StartDate, x?.EndDate, x?.AssetFullAddress, x?.PostCode, x?.RentAccountNumber)).ToList();
 
             return Person.Create(Id, Title, Firstname, MiddleName, Surname, PreferredFirstname,
                 PreferredSurname, TotalBalance, Ethinicity, Nationality, PlaceOfBirth, DateOfBirth, Gender, listOfIdentifications,
-                PersonTypes, IsPersonCautionaryAlert, IsTenureCautionaryAlert, listOfTenures, listOfProperties);
+                PersonTypes, IsPersonCautionaryAlert, IsTenureCautionaryAlert, listOfTenures);
         }
 
         [Text(Name = "id")]
@@ -76,8 +73,5 @@ namespace HousingSearchApi.V1.Gateways.Models
 
         [Text(Name = "tenures")]
         public List<QueryablePersonTenure> Tenures { get; set; }
-
-        [Text(Name = "properties")]
-        public List<QueryablePersonProperty> Properties { get; set; }
     }
 }

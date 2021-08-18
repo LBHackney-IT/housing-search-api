@@ -234,58 +234,6 @@
           }
         }
       },
-      "properties": {
-        "properties": {
-          "assetFullAddress": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "id": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "type": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "totalBalance": {
-            "type": "double"
-          },
-          "postCode": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "rentAccountNumber": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          }
-        }
-      },
       "title": {
         "type": "text",
         "fields": {
@@ -302,9 +250,7 @@
       "normalizer": {
         "my_normalizer": {
           "type": "custom",
-          "char_filter": [
-
-          ],
+          "char_filter": [ ],
           "filter": [
             "lowercase",
             "asciifolding"

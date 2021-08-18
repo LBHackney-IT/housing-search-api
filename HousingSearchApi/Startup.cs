@@ -1,9 +1,5 @@
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using FluentValidation.AspNetCore;
-using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Gateways;
-using HousingSearchApi.V1.Gateways.Interfaces;
-using HousingSearchApi.V1.Gateways.Models;
 using Hackney.Core.DI;
 using Hackney.Core.HealthCheck;
 using Hackney.Core.Logging;
@@ -152,16 +148,10 @@ namespace HousingSearchApi
         private static void RegisterGateways(IServiceCollection services)
         {
             services.AddScoped<ISearchGateway, SearchGateway>();
-            services.AddScoped<ISearchAssetsGateway, SearchAssetsGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
         {
-            services.AddScoped<ISearchElasticSearchHelper<GetAssetListRequest, QueryableAsset>, SearchElasticSearchHelper<GetAssetListRequest, QueryableAsset>>();
-            services.AddScoped<ISearchQueryContainerOrchestrator<GetAssetListRequest, QueryableAsset>, SearchAssetsQueryContainerOrchestrator>();
-            services.AddScoped<IListSortFactory<GetAssetListRequest, QueryableAsset>, AssetListSortFactory>();
-            services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();
-
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
             services.AddScoped<IGetTenureListUseCase, GetTenureListUseCase>();
             services.AddScoped<ISearchPersonElasticSearchHelper, SearchPersonElasticSearchHelper>();
