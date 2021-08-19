@@ -40,22 +40,5 @@ namespace HousingSearchApi.Tests.V1.Controllers
             // then
             _mockGetAssetListUseCase.Verify(x => x.ExecuteAsync(request), Times.Once);
         }
-
-        [Fact(Skip = "This test fails because the call to the use case returns a NotFound exception, which is caught and converted into a BadRequest response. Need to validate this is the required functionality.")]
-        public async Task GetTenureListShouldReturnNotFoundObjectResultIfNotFound()
-        {
-            // given
-            var request = new HousingSearchRequest();
-            var notFoundException = new NotFoundException();
-
-            _mockGetAssetListUseCase.Setup(x => x.ExecuteAsync(request))
-                .Throws(notFoundException);
-
-            // when
-            var result = await _classUnderTest.GetAssetList(request).ConfigureAwait(false);
-
-            // then
-            result.Should().BeOfType(typeof(NotFoundObjectResult));
-        }
     }
 }
