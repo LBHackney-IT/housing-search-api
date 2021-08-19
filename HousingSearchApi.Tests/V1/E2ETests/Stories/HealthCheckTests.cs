@@ -1,6 +1,7 @@
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
 using HousingSearchApi.Tests.V1.Helper;
 using System;
+using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using TestStack.BDDfy;
 using Xunit;
 
@@ -13,13 +14,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
     [Collection("ElasticSearch collection")]
     public class HealthCheckTests : IDisposable
     {
-        private readonly ElasticSearchFixture _elasticSearchFixture;
+        private readonly PersonsFixture _personsFixture;
         private readonly HealthCheckSteps _steps;
 
-        public HealthCheckTests(ElasticSearchFixture elasticSearchFixture)
+        public HealthCheckTests(PersonsFixture personsFixture)
         {
-            _elasticSearchFixture = elasticSearchFixture;
-            _steps = new HealthCheckSteps(_elasticSearchFixture.Client);
+            _personsFixture = personsFixture;
+            _steps = new HealthCheckSteps(_personsFixture.HttpClient);
         }
 
         public void Dispose()

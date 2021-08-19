@@ -1,3 +1,4 @@
+using System.Net.Http;
 using HousingSearchApi.V1.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -11,8 +12,8 @@ namespace HousingSearchApi.Tests
         : WebApplicationFactory<TStartup> where TStartup : class
     {
         private IConfiguration _configuration;
-        public IElasticClient ElasticSearchClient { get; private set; }
 
+        public IElasticClient ElasticSearchClient { get; private set; }
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureAppConfiguration(b =>
