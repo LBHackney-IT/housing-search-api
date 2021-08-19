@@ -14,6 +14,11 @@ namespace HousingSearchApi.V1.Domain.Tenure
                 tenuredAsset, tenureType);
         }
 
+        public Tenure()
+        {
+
+        }
+
         private Tenure(string id, string paymentReference, string startOfTenureDate, string endOfTenureDate,
             List<QueryableHouseholdMember> houseHoldMembers, QueryableTenuredAsset tenuredAsset, QueryableTenureType tenureType)
         {

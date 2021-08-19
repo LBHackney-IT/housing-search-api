@@ -8,6 +8,11 @@ namespace HousingSearchApi.V1.Domain.Asset
             return new Asset(id, assetId, assetType, isAssetCautionaryAlerted, assetAddress, tenure);
         }
 
+        public Asset()
+        {
+
+        }
+
         private Asset(string id, string assetId, string assetType,
             bool isAssetCautionaryAlerted, AssetAddress assetAddress, Tenure.Tenure tenure)
         {

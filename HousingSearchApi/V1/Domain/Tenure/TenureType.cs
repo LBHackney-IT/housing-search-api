@@ -12,6 +12,11 @@ namespace HousingSearchApi.V1.Domain.Tenure
             return new TenureType(tenureType);
         }
 
+        public TenureType()
+        {
+
+        }
+
         private TenureType(QueryableTenureType tenureType)
         {
             Description = tenureType?.Description;

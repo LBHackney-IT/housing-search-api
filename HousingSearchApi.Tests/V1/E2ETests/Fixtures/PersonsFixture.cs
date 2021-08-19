@@ -33,18 +33,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                     .ConfigureAwait(true);
 
                 var persons = CreatePersonData();
-                ElasticSearchClient.IndexManyAsync(persons, INDEX);
+                var awaitable = ElasticSearchClient.IndexManyAsync(persons, INDEX).ConfigureAwait(true);
 
-                var timeout = DateTime.UtcNow.AddSeconds(10); // 10 second timeout to make sure all the data is there.
-
-                while (DateTime.UtcNow < timeout)
+                while (!awaitable.GetAwaiter().IsCompleted)
                 {
-                    var count = ElasticSearchClient.Cluster.Stats().Indices.Documents.Count;
-                    if (count >= persons.Count)
-                        break;
 
-                    Thread.Sleep(200);
                 }
+
+                Thread.Sleep(5000);
             }
         }
 

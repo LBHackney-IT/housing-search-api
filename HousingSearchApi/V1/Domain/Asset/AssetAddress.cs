@@ -9,6 +9,11 @@ namespace HousingSearchApi.V1.Domain.Asset
                 postCode, postPreamble);
         }
 
+        public AssetAddress()
+        {
+
+        }
+
         private AssetAddress(string uprn, string addressLine1, string addressLine2,
             string addressLine3, string addressLine4, string postCode, string postPreamble)
         {

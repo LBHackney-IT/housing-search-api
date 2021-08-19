@@ -14,6 +14,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
     {
         public List<QueryablePerson> Persons { get; private set; }
         private const string INDEX = "tenures";
+        public static string[] Alphabet = { "aa", "bb", "cc", "dd", "ee", "vv", "ww", "xx", "yy", "zz" };
 
         public TenureFixture(IElasticClient elasticClient, HttpClient httpClient) : base(elasticClient, httpClient)
         {
@@ -31,18 +32,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                     .ConfigureAwait(true);
 
                 var tenures = CreateTenureData();
-                ElasticSearchClient.IndexManyAsync(tenures, INDEX);
+                var awaitable = ElasticSearchClient.IndexManyAsync(tenures, INDEX).ConfigureAwait(true);
 
-                var timeout = DateTime.UtcNow.AddSeconds(10); // 10 second timeout to make sure all the data is there.
-
-                while (DateTime.UtcNow < timeout)
+                while (!awaitable.GetAwaiter().IsCompleted)
                 {
-                    var count = ElasticSearchClient.Cluster.Stats().Indices.Documents.Count;
-                    if (count >= tenures.Count)
-                        break;
 
-                    Thread.Sleep(200);
                 }
+
+                Thread.Sleep(5000);
             }
         }
 
@@ -51,6 +48,17 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             var listOfTenures = new List<QueryableTenure>();
             var random = new Random();
             var fixture = new Fixture();
+
+            foreach (var value in Alphabet)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    var tenure = fixture.Create<QueryableTenure>();
+                    tenure.PaymentReference = value;
+
+                    listOfTenures.Add(tenure);
+                }
+            }
 
             // Add loads more at random
             for (int i = 0; i < 900; i++)

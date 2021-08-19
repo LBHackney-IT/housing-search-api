@@ -1,5 +1,7 @@
 {
-  "aliases": {},
+  "aliases": {
+
+  },
   "mappings": {
     "properties": {
       "id": {
@@ -154,7 +156,9 @@
       "normalizer": {
         "my_normalizer": {
           "type": "custom",
-          "char_filter": [],
+          "char_filter": [
+
+          ],
           "filter": [
             "lowercase",
             "asciifolding"

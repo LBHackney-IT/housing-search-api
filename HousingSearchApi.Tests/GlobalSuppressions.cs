@@ -12,3 +12,5 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>", Scope = "member", Target = "~M:HousingSearchApi.Tests.ElasticsearchTests.SetupElasticsearchConnection~Nest.ElasticClient")]
 [assembly: SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize", Justification = "<Pending>", Scope = "member", Target = "~M:HousingSearchApi.Tests.V1.Helper.PersonsFixture.Dispose")]
 [assembly: SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "<Pending>", Scope = "member", Target = "~F:HousingSearchApi.Tests.V1.E2ETests.Fixtures.PersonsFixture.Alphabet")]
+[assembly: SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "<Pending>", Scope = "member", Target = "~F:HousingSearchApi.Tests.V1.E2ETests.Fixtures.AssetFixture.Alphabet")]
+[assembly: SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "<Pending>", Scope = "member", Target = "~F:HousingSearchApi.Tests.V1.E2ETests.Fixtures.TenureFixture.Alphabet")]

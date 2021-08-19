@@ -12,25 +12,25 @@ using HousingSearchApi.V1.Boundary.Responses.Metadata;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 {
-    public class GetTenureSteps : BaseSteps
+    public class GetAssetSteps : BaseSteps
     {
-        public GetTenureSteps(HttpClient httpClient) : base(httpClient)
+        public GetAssetSteps(HttpClient httpClient) : base(httpClient)
         {
         }
 
         public async Task WhenRequestDoesNotContainSearchString()
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/tenures", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/assets", UriKind.Relative)).ConfigureAwait(false);
         }
 
         public async Task WhenRequestContainsSearchString()
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/tenures?searchText=abc", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/assets?searchText=abc", UriKind.Relative)).ConfigureAwait(false);
         }
 
         public async Task WhenAPageSizeIsProvided(int pageSize)
         {
-            var route = new Uri($"api/v1/search/tenures?searchText={TenureFixture.Alphabet.Last()}&pageSize={pageSize}",
+            var route = new Uri($"api/v1/search/assets?searchText={AssetFixture.Alphabet.Last()}&pageSize={pageSize}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -49,9 +49,9 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task ThenTheReturningResultsShouldBeOfThatSize(int pageSize)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var result = JsonSerializer.Deserialize<APIResponse<GetTenureListResponse>>(resultBody, _jsonOptions);
+            var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);
 
-            result.Results.Tenures.Count.Should().Be(pageSize);
+            result.Results.Assets.Count.Should().Be(pageSize);
         }
     }
 }
