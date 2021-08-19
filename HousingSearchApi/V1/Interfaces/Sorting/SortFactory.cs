@@ -22,7 +22,7 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
                 }
             }
 
-            throw new NotImplementedException($"Sorting for type {typeof(T)} is not implemented");
+            return new DefaultSort<T>();
         }
     }
 }
