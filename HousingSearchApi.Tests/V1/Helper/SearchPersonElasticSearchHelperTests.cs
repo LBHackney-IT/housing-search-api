@@ -16,7 +16,7 @@ namespace HousingSearchApi.Tests.V1.Helper
     [Collection("ElasticSearch collection")]
     public class SearchPersonElasticSearchHelperTests
     {
-        private readonly SearchPersonElasticSearchHelper _classUnderTest;
+        private readonly ElasticElasticSearchHelper _classUnderTest;
         private readonly ServiceCollection _services;
 
         public SearchPersonElasticSearchHelperTests()
@@ -30,11 +30,11 @@ namespace HousingSearchApi.Tests.V1.Helper
             var startup = new Startup(configuration);
             startup.ConfigureServices(_services);
             var serviceProvider = _services.BuildServiceProvider();
-            _classUnderTest = new SearchPersonElasticSearchHelper(serviceProvider.GetService<IElasticClient>(),
+            _classUnderTest = new ElasticElasticSearchHelper(serviceProvider.GetService<IElasticClient>(),
                 serviceProvider.GetService<IQueryFactory>(),
                 serviceProvider.GetService<IPagingHelper>(),
-                serviceProvider.GetService<IPersonListSortFactory>(),
-                serviceProvider.GetService<ILogger<SearchPersonElasticSearchHelper>>(),
+                serviceProvider.GetService<ISortFactory>(),
+                serviceProvider.GetService<ILogger<ElasticElasticSearchHelper>>(),
                 serviceProvider.GetService<IIndexSelector>());
         }
 

@@ -8,11 +8,11 @@ namespace HousingSearchApi.Tests.V1.Helper
 {
     public class PersonListSortFactoryTests
     {
-        private PersonListSortFactory _sut;
+        private SortFactory _sut;
 
         public PersonListSortFactoryTests()
         {
-            _sut = new PersonListSortFactory();
+            _sut = new SortFactory();
         }
 
         [Fact]

@@ -155,9 +155,9 @@ namespace HousingSearchApi
         {
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
             services.AddScoped<IGetTenureListUseCase, GetTenureListUseCase>();
-            services.AddScoped<ISearchPersonElasticSearchHelper, SearchPersonElasticSearchHelper>();
+            services.AddScoped<IElasticSearchHelper, ElasticElasticSearchHelper>();
             services.AddScoped<IPagingHelper, PagingHelper>();
-            services.AddScoped<IPersonListSortFactory, PersonListSortFactory>();
+            services.AddScoped<ISortFactory, SortFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

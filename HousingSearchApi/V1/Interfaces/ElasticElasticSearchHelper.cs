@@ -9,22 +9,22 @@ using System.Threading.Tasks;
 
 namespace HousingSearchApi.V1.Interfaces
 {
-    public class SearchPersonElasticSearchHelper : ISearchPersonElasticSearchHelper
+    public class ElasticElasticSearchHelper : IElasticSearchHelper
     {
         private readonly IElasticClient _esClient;
         private readonly IQueryFactory _queryFactory;
         private readonly IPagingHelper _pagingHelper;
-        private readonly IPersonListSortFactory _iPersonListSortFactory;
-        private readonly ILogger<SearchPersonElasticSearchHelper> _logger;
+        private readonly ISortFactory _iSortFactory;
+        private readonly ILogger<ElasticElasticSearchHelper> _logger;
         private readonly IIndexSelector _indexSelector;
 
-        public SearchPersonElasticSearchHelper(IElasticClient esClient, IQueryFactory queryFactory,
-            IPagingHelper pagingHelper, IPersonListSortFactory iPersonListSortFactory, ILogger<SearchPersonElasticSearchHelper> logger, IIndexSelector indexSelector)
+        public ElasticElasticSearchHelper(IElasticClient esClient, IQueryFactory queryFactory,
+            IPagingHelper pagingHelper, ISortFactory iSortFactory, ILogger<ElasticElasticSearchHelper> logger, IIndexSelector indexSelector)
         {
             _esClient = esClient;
             _queryFactory = queryFactory;
             _pagingHelper = pagingHelper;
-            _iPersonListSortFactory = iPersonListSortFactory;
+            _iSortFactory = iSortFactory;
             _logger = logger;
             _indexSelector = indexSelector;
         }
@@ -42,7 +42,7 @@ namespace HousingSearchApi.V1.Interfaces
 
                 var result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
                     .Query(q => BaseQuery<T>(request).Create(request, q))
-                    .Sort(_iPersonListSortFactory.Create<T>(request).GetSortDescriptor)
+                    .Sort(_iSortFactory.Create<T>(request).GetSortDescriptor)
                     .Size(request.PageSize)
                     .Skip(pageOffset)
                     .TrackTotalHits()).ConfigureAwait(false);
