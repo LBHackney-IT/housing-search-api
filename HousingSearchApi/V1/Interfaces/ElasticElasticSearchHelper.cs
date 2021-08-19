@@ -3,7 +3,6 @@ using HousingSearchApi.V1.Interfaces.Sorting;
 using Microsoft.Extensions.Logging;
 using Nest;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 

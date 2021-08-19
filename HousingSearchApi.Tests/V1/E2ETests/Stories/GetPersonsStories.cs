@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
 using TestStack.BDDfy;

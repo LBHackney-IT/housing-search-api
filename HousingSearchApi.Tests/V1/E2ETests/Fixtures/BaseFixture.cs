@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using Nest;
@@ -24,7 +23,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             EnsureEnvVarConfigured("ELASTICSEARCH_DOMAIN_URL", "http://localhost:9200");
 
             Exception ex = null;
-            var timeout = DateTime.UtcNow.AddSeconds(10); // 10 second timeout to make sure the ES instance has started and is ready to use.
+            var timeout = DateTime.UtcNow.AddSeconds(20); // 10 second timeout to make sure the ES instance has started and is ready to use.
             while (DateTime.UtcNow < timeout)
             {
                 try

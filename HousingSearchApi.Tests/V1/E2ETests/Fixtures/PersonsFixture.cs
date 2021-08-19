@@ -6,11 +6,8 @@ using System.Net.Http;
 using System.Threading;
 using AutoFixture;
 using Elasticsearch.Net;
-using HousingSearchApi.Tests.V1.E2ETests.Fixtures.DataHelpers;
-using HousingSearchApi.Tests.V1.Helper;
 using HousingSearchApi.V1.Gateways.Models;
 using Nest;
-// ReSharper disable All
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 {
@@ -27,9 +24,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public void GivenAPersonIndexExists()
         {
+            ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
+
             if (!ElasticSearchClient.Indices.Exists(Indices.Index(INDEX)).Exists)
             {
-                var personSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/tenureIndex.json").Result;
+                var personSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/personIndex.json").Result;
                 ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(INDEX, personSettingsDoc)
                     .ConfigureAwait(true);
 

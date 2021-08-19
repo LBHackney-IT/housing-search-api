@@ -1,4 +1,3 @@
-using System.Net.Http;
 using HousingSearchApi.V1.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

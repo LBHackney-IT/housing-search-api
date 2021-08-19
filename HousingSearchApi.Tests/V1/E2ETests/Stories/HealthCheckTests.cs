@@ -1,5 +1,4 @@
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
-using HousingSearchApi.Tests.V1.Helper;
 using System;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using TestStack.BDDfy;

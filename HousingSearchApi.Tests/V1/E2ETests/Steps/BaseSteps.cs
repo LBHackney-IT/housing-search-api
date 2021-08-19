@@ -1,10 +1,6 @@
-using System;
-using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using FluentAssertions;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 {
