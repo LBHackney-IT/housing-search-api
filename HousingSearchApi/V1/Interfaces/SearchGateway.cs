@@ -9,17 +9,17 @@ namespace HousingSearchApi.V1.Interfaces
 {
     public class SearchGateway : ISearchGateway
     {
-        private readonly IElasticSearchHelper _elasticElasticSearchHelper;
+        private readonly IElasticSearchWrapper _elasticElasticSearchWrapper;
 
-        public SearchGateway(IElasticSearchHelper elasticElasticSearchHelper)
+        public SearchGateway(IElasticSearchWrapper elasticElasticSearchWrapper)
         {
-            _elasticElasticSearchHelper = elasticElasticSearchHelper;
+            _elasticElasticSearchWrapper = elasticElasticSearchWrapper;
         }
 
         [LogCall]
         public async Task<GetPersonListResponse> GetListOfPersons(HousingSearchRequest query)
         {
-            var searchResponse = await _elasticElasticSearchHelper.Search<QueryablePerson>(query).ConfigureAwait(false);
+            var searchResponse = await _elasticElasticSearchWrapper.Search<QueryablePerson>(query).ConfigureAwait(false);
             var personListResponse = new GetPersonListResponse();
 
             personListResponse.Persons.AddRange(searchResponse.Documents.Select(queryablePerson =>
@@ -34,7 +34,7 @@ namespace HousingSearchApi.V1.Interfaces
         [LogCall]
         public async Task<GetTenureListResponse> GetListOfTenures(HousingSearchRequest query)
         {
-            var searchResponse = await _elasticElasticSearchHelper.Search<QueryableTenure>(query).ConfigureAwait(false);
+            var searchResponse = await _elasticElasticSearchWrapper.Search<QueryableTenure>(query).ConfigureAwait(false);
             var tenureListResponse = new GetTenureListResponse();
 
             tenureListResponse.Tenures.AddRange(searchResponse.Documents.Select(queryablePerson =>
@@ -49,7 +49,7 @@ namespace HousingSearchApi.V1.Interfaces
         [LogCall]
         public async Task<GetAssetListResponse> GetListOfAssets(HousingSearchRequest query)
         {
-            var searchResponse = await _elasticElasticSearchHelper.Search<QueryableAsset>(query).ConfigureAwait(false);
+            var searchResponse = await _elasticElasticSearchWrapper.Search<QueryableAsset>(query).ConfigureAwait(false);
             var assetListResponse = new GetAssetListResponse();
 
             assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryablePerson =>

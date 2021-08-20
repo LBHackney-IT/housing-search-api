@@ -4,7 +4,7 @@ using Nest;
 
 namespace HousingSearchApi.V1.Interfaces
 {
-    public interface IElasticSearchHelper
+    public interface IElasticSearchWrapper
     {
         Task<ISearchResponse<T>> Search<T>(HousingSearchRequest request) where T : class;
     }

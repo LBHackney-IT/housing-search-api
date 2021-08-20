@@ -155,7 +155,7 @@ namespace HousingSearchApi
         {
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
             services.AddScoped<IGetTenureListUseCase, GetTenureListUseCase>();
-            services.AddScoped<IElasticSearchHelper, ElasticElasticSearchHelper>();
+            services.AddScoped<IElasticSearchWrapper, ElasticElasticSearchWrapper>();
             services.AddScoped<IPagingHelper, PagingHelper>();
             services.AddScoped<ISortFactory, SortFactory>();
             services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();

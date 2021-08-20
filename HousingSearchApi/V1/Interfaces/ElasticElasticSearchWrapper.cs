@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace HousingSearchApi.V1.Interfaces
 {
-    public class ElasticElasticSearchHelper : IElasticSearchHelper
+    public class ElasticElasticSearchWrapper : IElasticSearchWrapper
     {
         private readonly IElasticClient _esClient;
         private readonly IQueryFactory _queryFactory;
         private readonly IPagingHelper _pagingHelper;
         private readonly ISortFactory _iSortFactory;
-        private readonly ILogger<ElasticElasticSearchHelper> _logger;
+        private readonly ILogger<ElasticElasticSearchWrapper> _logger;
         private readonly IIndexSelector _indexSelector;
 
-        public ElasticElasticSearchHelper(IElasticClient esClient, IQueryFactory queryFactory,
-            IPagingHelper pagingHelper, ISortFactory iSortFactory, ILogger<ElasticElasticSearchHelper> logger, IIndexSelector indexSelector)
+        public ElasticElasticSearchWrapper(IElasticClient esClient, IQueryFactory queryFactory,
+            IPagingHelper pagingHelper, ISortFactory iSortFactory, ILogger<ElasticElasticSearchWrapper> logger, IIndexSelector indexSelector)
         {
             _esClient = esClient;
             _queryFactory = queryFactory;
