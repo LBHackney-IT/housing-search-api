@@ -33,12 +33,7 @@ Swagger Hub - https://app.swaggerhub.com/apis/Hackney/housingSearchApi/1.0.0
 - BDDFy for E2E tests
 
 ## Implementing a new search endpoint
-```mermaid
-graph LR
-Controller[New Search Endpoint] --> UseCase[New Search Usecase] --> Gateway[Search Gateway] --> Wrapper[Elastic Search Wrapper]
-Wrapper--> QueryFactory[Query Factory] --> QueryGenerator[New Query Generator]
-Wrapper--> Sort[New Sort Generator]
-```
+
 ### Create the controller endpoint.
 
 You will need to create a new controller and expose a new search endpoint. Refer to any of the existing ones, as well as to the Swagger Hub ( https://app.swaggerhub.com/apis/Hackney/housingSearchApi/1.0.0 ) regarding the request and response format. Most of our searches use the same HousingSearchQuery for a request. The response will vary based on the information you are requesting.
