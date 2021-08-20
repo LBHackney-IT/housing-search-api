@@ -17,7 +17,6 @@ namespace HousingSearchApi.Tests.V1.Controllers
         private readonly Mock<IGetAssetListUseCase> _mockGetAssetListUseCase;
         private readonly GetAssetListController _classUnderTest;
 
-
         public GetTenureListControllerTests()
         {
             new LogCallAspectFixture().RunBeforeTests();
