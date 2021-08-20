@@ -11,9 +11,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="TestResults\**" />
+    <Compile Remove="V1\Domain\**" />
+    <Compile Remove="V1\Factories\**" />
+    <Compile Remove="V1\Gateways\**" />
+    <Compile Remove="V1\UseCase\**" />
     <Content Remove="TestResults\**" />
+    <Content Remove="V1\Domain\**" />
+    <Content Remove="V1\Factories\**" />
+    <Content Remove="V1\Gateways\**" />
+    <Content Remove="V1\UseCase\**" />
     <EmbeddedResource Remove="TestResults\**" />
+    <EmbeddedResource Remove="V1\Domain\**" />
+    <EmbeddedResource Remove="V1\Factories\**" />
+    <EmbeddedResource Remove="V1\Gateways\**" />
+    <EmbeddedResource Remove="V1\UseCase\**" />
     <None Remove="TestResults\**" />
+    <None Remove="V1\Domain\**" />
+    <None Remove="V1\Factories\**" />
+    <None Remove="V1\Gateways\**" />
+    <None Remove="V1\UseCase\**" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\HousingSearchApi\data\elasticsearch\personIndex.json" Link="V1\Helper\Indices\personIndex.json">
@@ -55,11 +71,7 @@
 
   <ItemGroup>
     <Folder Include="V1\Boundary\Responses\" />
-    <Folder Include="V1\Domain\" />
-    <Folder Include="V1\Factories\" />
-    <Folder Include="V1\Gateways\" />
     <Folder Include="V1\Helper\Indices\" />
-    <Folder Include="V1\UseCase\Interfaces\" />
   </ItemGroup>
 
 </Project>
