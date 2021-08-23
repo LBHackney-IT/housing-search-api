@@ -15,6 +15,7 @@ namespace HousingSearchApi.V1.Controllers
     [ApiVersion("1")]
     [Produces("application/json")]
     [Route("api/v1/search/persons")]
+    [ApiController]
     public class GetPersonListController : BaseController
     {
         private readonly IGetPersonListUseCase _getPersonListUseCase;

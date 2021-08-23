@@ -15,6 +15,7 @@ namespace HousingSearchApi.V1.Controllers
     [ApiVersion("1")]
     [Produces("application/json")]
     [Route("api/v1/search/assets")]
+    [ApiController]
     public class GetAssetListController : BaseController
     {
         private readonly IGetAssetListUseCase _getAssetListUseCase;
@@ -33,6 +34,7 @@ namespace HousingSearchApi.V1.Controllers
         {
             try
             {
+
                 var assetsSearchResult = await _getAssetListUseCase.ExecuteAsync(request).ConfigureAwait(false);
                 var apiResponse = new APIResponse<GetAssetListResponse>(assetsSearchResult);
                 apiResponse.Total = assetsSearchResult.Total();
