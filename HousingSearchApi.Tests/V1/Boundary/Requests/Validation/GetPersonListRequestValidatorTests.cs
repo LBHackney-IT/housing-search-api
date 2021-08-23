@@ -7,11 +7,11 @@ namespace HousingSearchApi.Tests.V1.Boundary.Requests.Validation
 {
     public class GetPersonListRequestValidatorTests
     {
-        private readonly GetPersonListRequestValidator _sut;
+        private readonly HousingSearchRequestValidator _sut;
 
         public GetPersonListRequestValidatorTests()
         {
-            _sut = new GetPersonListRequestValidator();
+            _sut = new HousingSearchRequestValidator();
         }
 
         private static HousingSearchRequest CreateValidRequest()

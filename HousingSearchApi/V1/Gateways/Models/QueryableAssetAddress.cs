@@ -22,7 +22,7 @@ namespace HousingSearchApi.V1.Gateways.Models
         [Text(Name = "postCode")]
         public string PostCode { get; set; }
 
-        [Text(Name = "postCode")]
+        [Text(Name = "postPreamble")]
         public string PostPreamble { get; set; }
     }
 }
