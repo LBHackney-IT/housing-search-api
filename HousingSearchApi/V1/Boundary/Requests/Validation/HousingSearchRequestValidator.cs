@@ -3,9 +3,9 @@ using Hackney.Core.Validation;
 
 namespace HousingSearchApi.V1.Boundary.Requests.Validation
 {
-    public class GetPersonListRequestValidator : AbstractValidator<GetPersonListRequest>
+    public class HousingSearchRequestValidator : AbstractValidator<HousingSearchRequest>
     {
-        public GetPersonListRequestValidator()
+        public HousingSearchRequestValidator()
         {
             RuleFor(x => x.SearchText).NotNull()
                                       .NotEmpty()

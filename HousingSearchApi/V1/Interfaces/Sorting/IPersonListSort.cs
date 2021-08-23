@@ -1,10 +1,9 @@
-using HousingSearchApi.V1.Gateways.Models;
 using Nest;
 
 namespace HousingSearchApi.V1.Interfaces.Sorting
 {
-    public interface IPersonListSort
+    public interface ISort<T> where T : class
     {
-        SortDescriptor<QueryablePerson> GetSortDescriptor(SortDescriptor<QueryablePerson> descriptor);
+        SortDescriptor<T> GetSortDescriptor(SortDescriptor<T> descriptor);
     }
 }

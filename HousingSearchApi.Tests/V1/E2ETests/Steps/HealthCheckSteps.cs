@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using HousingSearchApi.Tests.V1.E2ETests.Steps.Base;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Steps

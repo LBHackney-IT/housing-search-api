@@ -22,6 +22,7 @@ namespace HousingSearchApi.V1.Gateways.Models
 
         [Text(Name = "id")]
         public string Id { get; set; }
+
         public string Title { get; set; }
 
         [Keyword(Name = "firstname")]
