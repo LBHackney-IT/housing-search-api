@@ -16,7 +16,7 @@ namespace HousingSearchApi.V1.Interfaces
 
         public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
-            if(request is GetPersonListRequest personListRequest)
+            if (request is GetPersonListRequest personListRequest)
             {
                 QueryContainer queryContainer = new QueryContainer();
 

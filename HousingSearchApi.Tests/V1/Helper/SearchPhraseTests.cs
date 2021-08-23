@@ -28,7 +28,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         {
             // Arrange + Act
             var result = _sut.Create(new GetPersonListRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
-            
+
             // Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<QueryContainerDescriptor<QueryablePerson>>();
