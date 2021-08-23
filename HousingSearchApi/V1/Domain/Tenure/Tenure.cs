@@ -14,6 +14,11 @@ namespace HousingSearchApi.V1.Domain.Tenure
                 tenuredAsset, tenureType);
         }
 
+        public Tenure()
+        {
+
+        }
+
         private Tenure(string id, string paymentReference, string startOfTenureDate, string endOfTenureDate,
             List<QueryableHouseholdMember> houseHoldMembers, QueryableTenuredAsset tenuredAsset, QueryableTenureType tenureType)
         {
@@ -21,7 +26,7 @@ namespace HousingSearchApi.V1.Domain.Tenure
             PaymentReference = paymentReference;
             StartOfTenureDate = startOfTenureDate;
             EndOfTenureDate = endOfTenureDate;
-            HouseholdMembers = houseHoldMembers.Select(HouseholdMember.Create).ToList();
+            HouseholdMembers = houseHoldMembers != null && houseHoldMembers.Any() ? houseHoldMembers.Select(HouseholdMember.Create).ToList() : new List<HouseholdMember>();
             TenureType = TenureType.Create(tenureType);
             TenuredAsset = TenuredAsset.Create(tenuredAsset);
         }

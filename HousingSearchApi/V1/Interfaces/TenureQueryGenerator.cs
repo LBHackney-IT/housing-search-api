@@ -5,30 +5,16 @@ using Nest;
 
 namespace HousingSearchApi.V1.Interfaces
 {
-    public class SearchPhrase : ISearchPersonQueryContainer
+    public class TenureQueryGenerator : IQueryGenerator<QueryableTenure>
     {
         private readonly IWildCardAppenderAndPrepender _wildCardAppenderAndPrepender;
 
-        public SearchPhrase(IWildCardAppenderAndPrepender wildCardAppenderAndPrepender)
+        public TenureQueryGenerator(IWildCardAppenderAndPrepender wildCardAppenderAndPrepender)
         {
             _wildCardAppenderAndPrepender = wildCardAppenderAndPrepender;
         }
 
-        public QueryContainer CreatePersonQuery(GetPersonListRequest request, QueryContainerDescriptor<QueryablePerson> q)
-        {
-            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
-
-            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
-
-            var searchSurnames = q.QueryString(m =>
-                m.Query(string.Join(' ', listOfWildCardedWords))
-                    .Fields(f => f.Field(p => p.Firstname).Field(p => p.Surname))
-                    .Type(TextQueryType.MostFields));
-
-            return searchSurnames;
-        }
-
-        public QueryContainer CreateTenureQuery(GetTenureListRequest request, QueryContainerDescriptor<QueryableTenure> q)
+        public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryableTenure> q)
         {
             if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
 

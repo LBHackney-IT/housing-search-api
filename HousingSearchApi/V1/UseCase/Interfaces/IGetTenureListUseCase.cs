@@ -6,6 +6,6 @@ namespace HousingSearchApi.V1.UseCase.Interfaces
 {
     public interface IGetTenureListUseCase
     {
-        Task<GetTenureListResponse> ExecuteAsync(GetTenureListRequest getPersonListRequest);
+        Task<GetTenureListResponse> ExecuteAsync(HousingSearchRequest getPersonListRequest);
     }
 }

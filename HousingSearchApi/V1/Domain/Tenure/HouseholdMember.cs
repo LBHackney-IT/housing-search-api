@@ -16,6 +16,11 @@ namespace HousingSearchApi.V1.Domain.Tenure
             return new HouseholdMember(householdMember);
         }
 
+        public HouseholdMember()
+        {
+
+        }
+
         private HouseholdMember(QueryableHouseholdMember householdMember)
         {
             FullName = householdMember.FullName;

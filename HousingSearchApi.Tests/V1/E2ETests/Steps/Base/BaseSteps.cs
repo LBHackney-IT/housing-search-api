@@ -2,7 +2,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace HousingSearchApi.Tests.V1.E2ETests.Steps
+namespace HousingSearchApi.Tests.V1.E2ETests.Steps.Base
 {
     public class BaseSteps
     {
