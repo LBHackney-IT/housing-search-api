@@ -1,4 +1,3 @@
-using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Domain;
 using System;
 using System.Collections.Generic;
@@ -7,9 +6,9 @@ namespace HousingSearchApi.V1.Infrastructure
 {
     public static class TypeMappingExtensions
     {
-        public static List<string> GetPersonTypes(this GetPersonListRequest request)
+        public static List<string> GetPersonTypes(this PersonType personType)
         {
-            if (request.PersonType == PersonType.Rent)
+            if (personType == PersonType.Rent)
             {
                 return new List<string>()
                 {
@@ -38,7 +37,7 @@ namespace HousingSearchApi.V1.Infrastructure
                     "Tenant Garage"
                 };
             }
-            else if (request.PersonType == PersonType.Leaseholder)
+            else if (personType == PersonType.Leaseholder)
             {
                 return new List<string>()
                 {

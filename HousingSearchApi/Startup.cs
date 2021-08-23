@@ -58,7 +58,11 @@ namespace HousingSearchApi
 
             services
                 .AddMvc()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()))
+                .AddFluentValidation(fv =>
+                {
+                    fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+                    fv.LocalizationEnabled = false;
+                })
                 .AddNewtonsoftJson(x =>
                 {
                     x.SerializerSettings.ContractResolver = new DefaultContractResolver
@@ -67,6 +71,7 @@ namespace HousingSearchApi
                     };
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services.AddApiVersioning(o =>
             {
                 o.DefaultApiVersion = new ApiVersion(1, 0);
@@ -141,6 +146,8 @@ namespace HousingSearchApi
             services.AddElasticSearchHealthCheck();
 
             services.AddScoped<IWildCardAppenderAndPrepender, WildCardAppenderAndPrepender>();
+            services.AddScoped<IQueryFactory, QueryFactory>();
+            services.AddScoped<IIndexSelector, IndexSelector>();
 
             services.AddLogCallAspect();
         }
@@ -154,10 +161,10 @@ namespace HousingSearchApi
         {
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
             services.AddScoped<IGetTenureListUseCase, GetTenureListUseCase>();
-            services.AddScoped<ISearchPersonElasticSearchHelper, SearchPersonElasticSearchHelper>();
-            services.AddScoped<ISearchPersonsQueryContainerOrchestrator, SearchPersonsQueryContainerOrchestrator>();
+            services.AddScoped<IElasticSearchWrapper, ElasticElasticSearchWrapper>();
             services.AddScoped<IPagingHelper, PagingHelper>();
-            services.AddScoped<IPersonListSortFactory, PersonListSortFactory>();
+            services.AddScoped<ISortFactory, SortFactory>();
+            services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

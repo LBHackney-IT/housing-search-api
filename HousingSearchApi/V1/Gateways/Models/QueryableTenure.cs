@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
-using HousingSearchApi.V1.Domain.Tenure;
 using Nest;
-using Tenure = HousingSearchApi.V1.Domain.Person.PersonTenure;
 
 namespace HousingSearchApi.V1.Gateways.Models
 {

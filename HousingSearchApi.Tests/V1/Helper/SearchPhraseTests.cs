@@ -14,11 +14,11 @@ namespace HousingSearchApi.Tests.V1.Helper
 {
     public class SearchPhraseTests
     {
-        private readonly SearchPhrase _sut;
+        private readonly PersonQueryGenerator _sut;
 
         public SearchPhraseTests()
         {
-            _sut = new SearchPhrase(new WildCardAppenderAndPrepender());
+            _sut = new PersonQueryGenerator(new WildCardAppenderAndPrepender());
         }
 
         [Theory]
@@ -27,25 +27,36 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnFilterOnlyByTypeIfRequestSearchTextIsEmpty(string searchText)
         {
             // Arrange + Act
-            var result = _sut.CreatePersonQuery(new GetPersonListRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
-
+            var result = _sut.Create(new GetPersonListRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
+            
             // Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<QueryContainerDescriptor<QueryablePerson>>();
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("AnyData")]
+        [InlineData(null)]
+        public void ShouldReturnNullIfRequestIsBaseType(string searchText)
+        {
+            // Arrange + Act
+            var result = _sut.Create(new HousingSearchRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
+
+            // Assert
+            result.Should().BeNull();
         }
 
         [Fact]
         public void ShouldReturnQueryThatSearchesForProvidedTextAndProvidedType()
         {
             // Arrange
-
             var nameToSearchFor = "SomeName LastName";
             var nameToExpect = "*SomeName* *LastName*";
-            var expectedTypes = new GetPersonListRequest() { PersonType = PersonType.Leaseholder }.GetPersonTypes();
+            var expectedTypes = PersonType.Leaseholder.GetPersonTypes();
 
             // Act
-
-            var result = _sut.CreatePersonQuery(new GetPersonListRequest { SearchText = nameToSearchFor, PersonType = PersonType.Leaseholder },
+            var result = _sut.Create(new GetPersonListRequest { SearchText = nameToSearchFor, PersonType = PersonType.Leaseholder },
                 new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert

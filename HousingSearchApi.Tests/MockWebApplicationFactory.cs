@@ -11,8 +11,8 @@ namespace HousingSearchApi.Tests
         : WebApplicationFactory<TStartup> where TStartup : class
     {
         private IConfiguration _configuration;
-        public IElasticClient ElasticSearchClient { get; private set; }
 
+        public IElasticClient ElasticSearchClient { get; private set; }
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureAppConfiguration(b =>

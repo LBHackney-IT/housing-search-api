@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using HousingSearchApi.V1.Domain.Person;
-using HousingSearchApi.V1.Domain.Tenure;
 
 namespace HousingSearchApi.V1.Boundary.Responses
 {

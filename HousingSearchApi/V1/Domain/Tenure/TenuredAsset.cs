@@ -14,12 +14,17 @@ namespace HousingSearchApi.V1.Domain.Tenure
             return new TenuredAsset(tenuredAsset);
         }
 
+        public TenuredAsset()
+        {
+
+        }
+
         private TenuredAsset(QueryableTenuredAsset tenuredAsset)
         {
-            FullAddress = tenuredAsset.FullAddress;
-            Uprn = tenuredAsset.Uprn;
-            Id = tenuredAsset.Id;
-            Type = tenuredAsset.Type;
+            FullAddress = tenuredAsset?.FullAddress;
+            Uprn = tenuredAsset?.Uprn;
+            Id = tenuredAsset?.Id;
+            Type = tenuredAsset?.Type;
         }
     }
 }

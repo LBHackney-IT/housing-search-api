@@ -17,9 +17,9 @@ namespace HousingSearchApi.V1.UseCase
         }
 
         [LogCall]
-        public async Task<GetTenureListResponse> ExecuteAsync(GetTenureListRequest getTenureListRequest)
+        public async Task<GetTenureListResponse> ExecuteAsync(HousingSearchRequest housingSearchRequest)
         {
-            return await _searchGateway.GetListOfTenures(getTenureListRequest).ConfigureAwait(false);
+            return await _searchGateway.GetListOfTenures(housingSearchRequest).ConfigureAwait(false);
         }
     }
 }
