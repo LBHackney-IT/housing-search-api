@@ -10,7 +10,7 @@ You will get list of all current indices
 
 3. If you want to add index (table) - create PUT request with following path
 http://localhost:9200/index_name
-In body you need to insert configuration for index (for example: asset_index.json in this folder)
+In body you need to insert configuration for index (for example: personIndex.json)
 
 4. For insert data in index you need to create POST request with following path
 http://localhost:9200/index_name/_create/id

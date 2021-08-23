@@ -3,6 +3,7 @@ using HousingSearchApi.V1.Gateways.Models;
 using HousingSearchApi.V1.Infrastructure;
 using Nest;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HousingSearchApi.V1.Interfaces
 {
@@ -19,27 +20,30 @@ namespace HousingSearchApi.V1.Interfaces
         {
             QueryContainer result = new QueryContainer();
 
+            var types = request.GetPersonTypes();
+
+            var listOfWildCardedTypes = _wildCardAppenderAndPrepender.Process(types);
+
+            // Hanna Holosova
+            // Because of GetPersonListRequestValidator we cannot be there. So do we need this one?
             if (string.IsNullOrWhiteSpace(request.SearchText))
             {
                 result = queryDescriptor.Bool(bq => bq
-                    .Must(mq => mq
-                        .ConstantScore(cs => cs
-                            .Filter(f => f.Term(field => field.PersonTypes, request.PersonType.ToString().ToLower())))));
+                    .Filter(f => f.QueryString(q => q.Query(string.Join(' ', listOfWildCardedTypes)).Fields(f => f.Field(ff => ff.PersonTypes)).Type(TextQueryType.MostFields))));
 
                 return result;
             }
 
-            var listOfWildCardedWords = new List<string>();
-
-            listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
+            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
 
             result = queryDescriptor.Bool(bq => bq
-                .Filter(f => f.QueryString(m => m.Query(string.Join(' ', listOfWildCardedWords))
+                .Filter(filter => filter.QueryString(q => q.Query(string.Join(' ', listOfWildCardedWords))
                     .Fields(f => f.Field("*"))
-                    .Type(TextQueryType.MostFields)))
-                .Must(mq => mq
-                        .ConstantScore(cs => cs
-                            .Filter(f => f.Term(field => field.PersonTypes, request.PersonType.ToString().ToLower())))));
+                    .Type(TextQueryType.MostFields))
+                    &&
+                        filter.QueryString(q => q.Query(string.Join(' ', listOfWildCardedTypes))
+                    .Fields(f => f.Field(ff => ff.PersonTypes))
+                    .Type(TextQueryType.BestFields))));
 
             return result;
         }

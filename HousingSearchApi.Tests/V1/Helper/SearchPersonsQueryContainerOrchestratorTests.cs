@@ -22,9 +22,18 @@ namespace HousingSearchApi.Tests.V1.Helper
         [Fact]
         public void ShouldReturnSearchPhraseQueryStringContainer()
         {
-            // Arrange + Act
-            var result = _sut.CreatePerson(new GetPersonListRequest { SearchText = "abc", PersonType = PersonType.Rent },
-                new QueryContainerDescriptor<QueryablePerson>());
+            // Arrange
+            var request = new GetPersonListRequest
+            {
+                SearchText = "abc",
+                PersonType = PersonType.Rent
+            };
+
+            var expectedTypes = string.Join(' ', request.GetPersonTypes().Select(_ => _ = $"*{_}*").ToList());
+
+            // Act
+
+            var result = _sut.CreatePerson(request, new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert
 
@@ -32,37 +41,39 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             query.Should().NotBeNull();
 
-            var searchByType = query.Bool.Must;
+            var searchFilter = query.Bool.Filter;
 
-            searchByType.Should().HaveCount(1);
+            searchFilter.Should().HaveCount(1);
 
-            var iSearchByType = searchByType.FirstOrDefault() as IQueryContainer;
+            var queryFilter = searchFilter.FirstOrDefault() as IQueryContainer;
 
-            iSearchByType.Should().NotBeNull();
+            queryFilter.Should().NotBeNull();
 
-            iSearchByType.ConstantScore.Should().NotBeNull();
+            queryFilter.Bool.Should().NotBeNull();
 
-            var typeFilter = iSearchByType.ConstantScore.Filter;
+            var mustValues = queryFilter.Bool.Must;
 
-            var iTypeFilter = typeFilter as IQueryContainer;
+            mustValues.Should().HaveCount(2);
+            
+            var listFilters = mustValues.ToList();
 
-            iTypeFilter.Should().NotBeNull();
+            var firstMustQuery = listFilters[0] as IQueryContainer;
 
-            iTypeFilter.Term.Value.Should().BeEquivalentTo("rent");
+            firstMustQuery.QueryString.Query.Should().BeEquivalentTo("*abc*");
 
-            query.Bool.Filter.Should().HaveCount(1);
+            firstMustQuery.QueryString.Fields.Should().HaveCount(1);
 
-            var iFilterByText = query.Bool.Filter.FirstOrDefault() as IQueryContainer;
+            firstMustQuery.QueryString.Fields.FirstOrDefault().Name.Should().Be("*");
 
-            iFilterByText.Should().NotBeNull();
+            firstMustQuery.QueryString.Type.Should().Be(TextQueryType.MostFields);
 
-            iFilterByText.QueryString.Query.Should().Be("*abc*");
+            var secondMustQuery = listFilters[1] as IQueryContainer;
 
-            iFilterByText.QueryString.Fields.Should().HaveCount(1);
+            secondMustQuery.QueryString.Query.Should().BeEquivalentTo(expectedTypes);
 
-            iFilterByText.QueryString.Fields.FirstOrDefault().Name.Should().Be("*");
+            secondMustQuery.QueryString.Fields.Should().HaveCount(1);
 
-            iFilterByText.QueryString.Type.Should().Be(TextQueryType.MostFields);
+            secondMustQuery.QueryString.Type.Should().Be(TextQueryType.MostFields);
         }
     }
 }

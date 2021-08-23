@@ -4,9 +4,11 @@
   },
   "mappings": {
     "properties": {
+      "totalBalance": {
+        "type": "double"
+      },
       "dateOfBirth": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
+        "type": "text",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -14,12 +16,8 @@
           }
         }
       },
-      "totalBalance": {
-        "type": "double"
-      },
       "ethinicity": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
+        "type": "text",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -38,8 +36,7 @@
         }
       },
       "gender": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
+        "type": "text",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -48,8 +45,7 @@
         }
       },
       "id": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
+        "type": "text",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -98,8 +94,7 @@
         "type": "boolean"
       },
       "middlename": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
+        "type": "text",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -108,8 +103,7 @@
         }
       },
       "nationality": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
+        "type": "text",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -127,8 +121,7 @@
         }
       },
       "placeOfBirth": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
+        "type": "text",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -250,7 +243,9 @@
       "normalizer": {
         "my_normalizer": {
           "type": "custom",
-          "char_filter": [ ],
+          "char_filter": [
+
+          ],
           "filter": [
             "lowercase",
             "asciifolding"

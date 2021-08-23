@@ -38,11 +38,14 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnQueryThatSearchesForProvidedTextAndProvidedType()
         {
             // Arrange
+
             var nameToSearchFor = "SomeName LastName";
             var nameToExpect = "*SomeName* *LastName*";
+            var expectedTypes = string.Join(' ', new GetPersonListRequest() { PersonType = PersonType.Leaseholder }.GetPersonTypes().Select(_ => _ = $"*{_}*").ToList());
 
             // Act
-            var result = _sut.CreatePersonQuery(new GetPersonListRequest { SearchText = nameToSearchFor, PersonType = PersonType.Rent },
+
+            var result = _sut.CreatePersonQuery(new GetPersonListRequest { SearchText = nameToSearchFor, PersonType = PersonType.Leaseholder },
                 new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert
@@ -51,37 +54,39 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             query.Should().NotBeNull();
 
-            var searchByType = query.Bool.Must;
+            var searchFilter = query.Bool.Filter;
 
-            searchByType.Should().HaveCount(1);
+            searchFilter.Should().HaveCount(1);
 
-            var iSearchByType = searchByType.FirstOrDefault() as IQueryContainer;
+            var queryFilter = searchFilter.FirstOrDefault() as IQueryContainer;
 
-            iSearchByType.Should().NotBeNull();
+            queryFilter.Should().NotBeNull();
 
-            iSearchByType.ConstantScore.Should().NotBeNull();
+            queryFilter.Bool.Should().NotBeNull();
 
-            var typeFilter = iSearchByType.ConstantScore.Filter;
+            var mustValues = queryFilter.Bool.Must;
 
-            var iTypeFilter = typeFilter as IQueryContainer;
+            mustValues.Should().HaveCount(2);
 
-            iTypeFilter.Should().NotBeNull();
+            var listFilters = mustValues.ToList();
 
-            iTypeFilter.Term.Value.Should().BeEquivalentTo("rent");
+            var firstMustQuery = listFilters[0] as IQueryContainer;
 
-            query.Bool.Filter.Should().HaveCount(1);
+            firstMustQuery.QueryString.Query.Should().BeEquivalentTo(nameToExpect);
 
-            var iFilterByText = query.Bool.Filter.FirstOrDefault() as IQueryContainer;
+            firstMustQuery.QueryString.Fields.Should().HaveCount(1);
 
-            iFilterByText.Should().NotBeNull();
+            firstMustQuery.QueryString.Fields.FirstOrDefault().Name.Should().Be("*");
 
-            iFilterByText.QueryString.Query.Should().Be(nameToExpect);
+            firstMustQuery.QueryString.Type.Should().Be(TextQueryType.MostFields);
 
-            iFilterByText.QueryString.Fields.Should().HaveCount(1);
+            var secondMustQuery = listFilters[1] as IQueryContainer;
 
-            iFilterByText.QueryString.Fields.FirstOrDefault().Name.Should().Be("*");
+            secondMustQuery.QueryString.Query.Should().BeEquivalentTo(expectedTypes);
 
-            iFilterByText.QueryString.Type.Should().Be(TextQueryType.MostFields);
+            secondMustQuery.QueryString.Fields.Should().HaveCount(1);
+
+            secondMustQuery.QueryString.Type.Should().Be(TextQueryType.MostFields);
         }
     }
 }

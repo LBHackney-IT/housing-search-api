@@ -15,5 +15,17 @@ namespace HousingSearchApi.V1.Infrastructure
 
             return listOfWildcardWords;
         }
+
+        public List<string> Process(IEnumerable<string> phrases)
+        {
+            var listOfWildcardWords = new List<string>();
+
+            foreach (var phrase in phrases)
+            {
+                listOfWildcardWords.Add($"*{phrase}*");
+            }
+
+            return listOfWildcardWords;
+        }
     }
 }
