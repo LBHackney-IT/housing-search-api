@@ -31,11 +31,6 @@ namespace HousingSearchApi.V1.Controllers
         [LogCall(LogLevel.Information)]
         public async Task<IActionResult> GetPersonList([FromQuery] HousingSearchRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return ModelValidationHelper.Return400ForInvalidRequest();
-            }
-
             try
             {
                 var personsSearchResult = await _getPersonListUseCase.ExecuteAsync(request).ConfigureAwait(false);

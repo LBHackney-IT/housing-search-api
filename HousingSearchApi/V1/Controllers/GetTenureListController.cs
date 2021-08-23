@@ -31,11 +31,6 @@ namespace HousingSearchApi.V1.Controllers
         [LogCall(LogLevel.Information)]
         public async Task<IActionResult> GetTenureList([FromQuery] HousingSearchRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return ModelValidationHelper.Return400ForInvalidRequest();
-            }
-
             try
             {
                 var tenuresSearchResult = await _getTenureListUseCase.ExecuteAsync(request).ConfigureAwait(false);
