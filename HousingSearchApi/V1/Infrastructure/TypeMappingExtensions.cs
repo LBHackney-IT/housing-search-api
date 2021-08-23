@@ -7,7 +7,7 @@ namespace HousingSearchApi.V1.Infrastructure
 {
     public static class TypeMappingExtensions
     {
-        public static IEnumerable<string> GetPersonTypes(this GetPersonListRequest request)
+        public static List<string> GetPersonTypes(this GetPersonListRequest request)
         {
             if (request.PersonType == PersonType.Rent)
             {

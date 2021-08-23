@@ -29,7 +29,7 @@ namespace HousingSearchApi.Tests.V1.Helper
                 PersonType = PersonType.Rent
             };
 
-            var expectedTypes = string.Join(' ', request.GetPersonTypes().Select(_ => _ = $"*{_}*").ToList());
+            var expectedTypes = request.GetPersonTypes();
 
             // Act
 
@@ -54,7 +54,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             var mustValues = queryFilter.Bool.Must;
 
             mustValues.Should().HaveCount(2);
-            
+
             var listFilters = mustValues.ToList();
 
             var firstMustQuery = listFilters[0] as IQueryContainer;
@@ -69,7 +69,7 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             var secondMustQuery = listFilters[1] as IQueryContainer;
 
-            secondMustQuery.QueryString.Query.Should().BeEquivalentTo(expectedTypes);
+            secondMustQuery.QueryString.Query.Should().BeEquivalentTo(string.Join(' ', expectedTypes));
 
             secondMustQuery.QueryString.Fields.Should().HaveCount(1);
 

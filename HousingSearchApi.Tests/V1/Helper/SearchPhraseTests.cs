@@ -41,7 +41,7 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             var nameToSearchFor = "SomeName LastName";
             var nameToExpect = "*SomeName* *LastName*";
-            var expectedTypes = string.Join(' ', new GetPersonListRequest() { PersonType = PersonType.Leaseholder }.GetPersonTypes().Select(_ => _ = $"*{_}*").ToList());
+            var expectedTypes = new GetPersonListRequest() { PersonType = PersonType.Leaseholder }.GetPersonTypes();
 
             // Act
 
@@ -82,7 +82,7 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             var secondMustQuery = listFilters[1] as IQueryContainer;
 
-            secondMustQuery.QueryString.Query.Should().BeEquivalentTo(expectedTypes);
+            secondMustQuery.QueryString.Query.Should().BeEquivalentTo(string.Join(' ', expectedTypes));
 
             secondMustQuery.QueryString.Fields.Should().HaveCount(1);
 

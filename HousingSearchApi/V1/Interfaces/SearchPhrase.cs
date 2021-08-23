@@ -2,8 +2,6 @@ using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Gateways.Models;
 using HousingSearchApi.V1.Infrastructure;
 using Nest;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace HousingSearchApi.V1.Interfaces
 {
@@ -22,28 +20,26 @@ namespace HousingSearchApi.V1.Interfaces
 
             var types = request.GetPersonTypes();
 
-            var listOfWildCardedTypes = _wildCardAppenderAndPrepender.Process(types);
-
             // Hanna Holosova
             // Because of GetPersonListRequestValidator we cannot be there. So do we need this one?
             if (string.IsNullOrWhiteSpace(request.SearchText))
             {
                 result = queryDescriptor.Bool(bq => bq
-                    .Filter(f => f.QueryString(q => q.Query(string.Join(' ', listOfWildCardedTypes)).Fields(f => f.Field(ff => ff.PersonTypes)).Type(TextQueryType.MostFields))));
+                    .Filter(f => f.QueryString(q => q.Query(string.Join(' ', types)).Fields(f => f.Field("tenures.type")).Type(TextQueryType.MostFields))));
 
                 return result;
             }
 
-            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
+            var wildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
 
             result = queryDescriptor.Bool(bq => bq
-                .Filter(filter => filter.QueryString(q => q.Query(string.Join(' ', listOfWildCardedWords))
+                .Filter(filter => filter.QueryString(q => q.Query(string.Join(' ', wildCardedWords))
                     .Fields(f => f.Field("*"))
                     .Type(TextQueryType.MostFields))
                     &&
-                        filter.QueryString(q => q.Query(string.Join(' ', listOfWildCardedTypes))
-                    .Fields(f => f.Field(ff => ff.PersonTypes))
-                    .Type(TextQueryType.BestFields))));
+                        filter.QueryString(q => q.Query(string.Join(' ', types))
+                    .Fields(f => f.Field("tenures.type"))
+                    .Type(TextQueryType.MostFields))));
 
             return result;
         }

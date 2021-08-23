@@ -58,8 +58,12 @@ namespace HousingSearchApi.Tests.V1.Helper
                 var persons = fixture.Build<QueryablePerson>()
                                     .With(x => x.Firstname, "Some first name")
                                     .With(x => x.Surname, name)
-                                    .With(x => x.PersonTypes, new List<string>() { "Rent" })
                                     .CreateMany(10);
+
+                foreach (var person in persons)
+                {
+                    person.Tenures.Add(new QueryablePersonTenure() { Type = "Secure" });
+                }
 
                 listOfPersons.AddRange(persons);
             }
