@@ -76,10 +76,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             }
 
             // Add first and last name combo
-            var specificPerson = fixture.Create<QueryablePerson>();
-            specificPerson.Firstname = Alphabet.First();
-            specificPerson.Surname = Alphabet.Last();
-            listOfPersons.Add(specificPerson);
+            AddThreePersonsWithSimilarNames(fixture, listOfPersons);
 
             var lastPerson = fixture.Create<QueryablePerson>();
             lastPerson.Firstname = Alphabet.Last();
@@ -93,6 +90,24 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             listOfPersons.Add(firstPerson);
 
             return listOfPersons;
+        }
+
+        private void AddThreePersonsWithSimilarNames(Fixture fixture, List<QueryablePerson> listOfPersons)
+        {
+            var specificPerson = fixture.Create<QueryablePerson>();
+            specificPerson.Firstname = "First";
+            specificPerson.Surname = "Last";
+            listOfPersons.Add(specificPerson);
+
+            var specificPerson2 = fixture.Create<QueryablePerson>();
+            specificPerson2.Firstname = "First";
+            specificPerson2.Surname = "Something";
+            listOfPersons.Add(specificPerson);
+
+            var specificPerson3 = fixture.Create<QueryablePerson>();
+            specificPerson3.Firstname = "Something";
+            specificPerson3.Surname = "Last";
+            listOfPersons.Add(specificPerson);
         }
     }
 }
