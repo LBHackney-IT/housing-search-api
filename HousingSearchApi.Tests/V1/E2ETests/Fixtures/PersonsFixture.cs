@@ -68,7 +68,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 listOfPersons.AddRange(persons);
             }
 
-            var allPersonTypes = PersonType.Leaseholder.GetPersonTypes().Concat(PersonType.Rent.GetPersonTypes()).ToList();
+            var allPersonTypes = PersonType.Leaseholder.GetPersonTypes().Concat(PersonType.Tenant.GetPersonTypes()).ToList();
 
             // Add loads more at random
             for (int i = 0; i < 900; i++)
