@@ -8,7 +8,7 @@ namespace HousingSearchApi.V1.Infrastructure
     {
         public static List<string> GetPersonTypes(this PersonType personType)
         {
-            if (personType == PersonType.Rent)
+            if (personType == PersonType.Tenant)
             {
                 return new List<string>()
                 {
