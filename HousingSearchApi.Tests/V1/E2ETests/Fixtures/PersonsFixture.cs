@@ -75,6 +75,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 listOfPersons.Add(person);
             }
 
+            // Add first and last name combo
+            var specificPerson = fixture.Create<QueryablePerson>();
+            specificPerson.Firstname = Alphabet.First();
+            specificPerson.Surname = Alphabet.Last();
+            listOfPersons.Add(specificPerson);
+
             var lastPerson = fixture.Create<QueryablePerson>();
             lastPerson.Firstname = Alphabet.Last();
             lastPerson.Surname = Alphabet.Last();
