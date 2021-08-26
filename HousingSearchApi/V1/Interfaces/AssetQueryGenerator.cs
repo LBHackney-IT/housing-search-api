@@ -22,7 +22,7 @@ namespace HousingSearchApi.V1.Interfaces
 
             var searchSurnames = q.QueryString(m =>
                 m.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
-                    .Fields(f => f.Field(p => p.AssetAddress.AddressLine1)
+                    .Fields(f => f.Field("assetAddress.addressLine1^3")
                         .Field(p => p.AssetAddress.PostCode)
                         .Field(p => p.AssetAddress.Uprn))
                     .Type(TextQueryType.MostFields));
