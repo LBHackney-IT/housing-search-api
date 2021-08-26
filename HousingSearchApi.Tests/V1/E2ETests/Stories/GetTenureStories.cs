@@ -57,9 +57,9 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         public void ServiceReturnsMostRelevantResultFirst()
         {
             this.Given(g => _tenureFixture.GivenATenureIndexExists())
-                .Given(g => _tenureFixture.GivenSimilarTenures("Reference", "FullAddress", "FullName"))
-                .When(w => _steps.WhenSearchingForASpecificTenure("Reference", "FullAddress", "FullName"))
-                .Then(t => _steps.ThenTheFirstOfTheReturningResultsShouldBeTheMostRelevantOne("Reference", "FullAddress", "FullName"))
+                .Given(g => _tenureFixture.GivenSimilarTenures("FirstEntry", "SecondEntry", "ThirdEntry"))
+                .When(w => _steps.WhenSearchingForASpecificTenure("FirstEntry", "SecondEntry", "ThirdEntry"))
+                .Then(t => _steps.ThenTheFirstOfTheReturningResultsShouldBeTheMostRelevantOne("FirstEntry", "SecondEntry", "ThirdEntry"))
                 .BDDfy();
         }
     }
