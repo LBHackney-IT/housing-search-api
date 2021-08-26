@@ -74,10 +74,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
                 listOfPersons.Add(person);
             }
-
-            // Add first and last name combo
-            AddThreePersonsWithSimilarNames(fixture, listOfPersons);
-
             var lastPerson = fixture.Create<QueryablePerson>();
             lastPerson.Firstname = Alphabet.Last();
             lastPerson.Surname = Alphabet.Last();
@@ -92,22 +88,31 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             return listOfPersons;
         }
 
-        private void AddThreePersonsWithSimilarNames(Fixture fixture, List<QueryablePerson> listOfPersons)
+        public void GivenThereExistPersonsWithSimilarFirstAndLastNames(string firstName, string lastName)
         {
+            var fixture = new Fixture();
+            var listOfPersons = new List<QueryablePerson>();
+
             var specificPerson = fixture.Create<QueryablePerson>();
-            specificPerson.Firstname = "First";
-            specificPerson.Surname = "Last";
+            specificPerson.Firstname = firstName;
+            specificPerson.Surname = lastName;
             listOfPersons.Add(specificPerson);
 
             var specificPerson2 = fixture.Create<QueryablePerson>();
-            specificPerson2.Firstname = "First";
+            specificPerson2.Firstname = firstName;
             specificPerson2.Surname = "Something";
             listOfPersons.Add(specificPerson);
 
             var specificPerson3 = fixture.Create<QueryablePerson>();
-            specificPerson3.Firstname = "Something";
+            specificPerson3.Firstname = lastName;
             specificPerson3.Surname = "Last";
             listOfPersons.Add(specificPerson);
+
+            var awaitable = ElasticSearchClient.IndexManyAsync(listOfPersons, INDEX).ConfigureAwait(true);
+
+            while (!awaitable.GetAwaiter().IsCompleted) { }
+
+            Thread.Sleep(1000);
         }
     }
 }

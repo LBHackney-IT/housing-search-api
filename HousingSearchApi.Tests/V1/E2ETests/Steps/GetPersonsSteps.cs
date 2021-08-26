@@ -28,9 +28,9 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/persons?searchText=abc", UriKind.Relative)).ConfigureAwait(false);
         }
 
-        public async Task WhenSearchingByFirstAndLastName()
+        public async Task WhenSearchingByFirstAndLastName(string firstName, string lastName)
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/persons?searchText=First%20Last", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/persons?searchText={firstName}%20{lastName}", UriKind.Relative)).ConfigureAwait(false);
         }
 
         public async Task WhenAPageSizeIsProvided(int pageSize)
@@ -75,13 +75,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             result.Results.Persons.Count.Should().Be(pageSize);
         }
 
-        public async Task ThenTheFirstResultShouldBeAnExactMatchOfFirstNameAndLastName()
+        public async Task ThenTheFirstResultShouldBeAnExactMatchOfFirstNameAndLastName(string firstName, string lastName)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetPersonListResponse>>(resultBody, _jsonOptions);
 
-            result.Results.Persons.First().Firstname.Should().Be("First");
-            result.Results.Persons.First().Surname.Should().Be("Last");
+            result.Results.Persons.First().Firstname.Should().Be(firstName);
+            result.Results.Persons.First().Surname.Should().Be(lastName);
         }
 
         public async Task ThenTheResultShouldBeSortedAsc()

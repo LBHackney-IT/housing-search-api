@@ -74,9 +74,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceReturnsExactMatchForFirstAndLastName()
         {
+            var firstName = "First";
+            var lastName = "Last";
+
             this.Given(g => _personsFixture.GivenAPersonIndexExists())
-                .When(w => _steps.WhenSearchingByFirstAndLastName())
-                .Then(t => _steps.ThenTheFirstResultShouldBeAnExactMatchOfFirstNameAndLastName())
+                .Given(g => _personsFixture.GivenThereExistPersonsWithSimilarFirstAndLastNames(firstName, lastName))
+                .When(w => _steps.WhenSearchingByFirstAndLastName(firstName, lastName))
+                .Then(t => _steps.ThenTheFirstResultShouldBeAnExactMatchOfFirstNameAndLastName(firstName, lastName))
                 .BDDfy();
         }
     }

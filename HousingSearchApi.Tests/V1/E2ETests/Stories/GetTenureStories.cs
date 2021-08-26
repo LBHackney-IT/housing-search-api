@@ -52,5 +52,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenTheReturningResultsShouldBeOfThatSize(5))
                 .BDDfy();
         }
+
+        [Fact]
+        public void ServiceReturnsMostRelevantResultFirst()
+        {
+            this.Given(g => _tenureFixture.GivenATenureIndexExists())
+                .Given(g => _tenureFixture.GivenSimilarTenures("Reference", "FullAddress", "FullName"))
+                .When(w => _steps.WhenSearchingForASpecificTenure("Reference", "FullAddress", "FullName"))
+                .Then(t => _steps.ThenTheFirstOfTheReturningResultsShouldBeTheMostRelevantOne("Reference", "FullAddress", "FullName"))
+                .BDDfy();
+        }
     }
 }
