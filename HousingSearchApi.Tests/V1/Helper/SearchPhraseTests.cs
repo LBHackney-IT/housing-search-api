@@ -47,16 +47,18 @@ namespace HousingSearchApi.Tests.V1.Helper
             result.Should().BeNull();
         }
 
-        [Fact]
-        public void ShouldReturnQueryThatSearchesForProvidedTextAndProvidedType()
+        [Theory]
+        [InlineData(PersonType.Tenant)]
+        [InlineData(PersonType.Leaseholder)]
+        public void ShouldReturnQueryThatSearchesForProvidedTextAndProvidedType(PersonType type)
         {
             // Arrange
             var nameToSearchFor = "SomeName LastName";
             var nameToExpect = "*SomeName* *LastName*";
-            var expectedTypes = PersonType.Leaseholder.GetPersonTypes();
+            var expectedTypes = type.GetPersonTypes();
 
             // Act
-            var result = _sut.Create(new GetPersonListRequest { SearchText = nameToSearchFor, PersonType = PersonType.Leaseholder },
+            var result = _sut.Create(new GetPersonListRequest { SearchText = nameToSearchFor, PersonType = type },
                 new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert

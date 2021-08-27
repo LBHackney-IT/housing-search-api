@@ -40,7 +40,6 @@ namespace HousingSearchApi.V1.Interfaces
 
                 var pageOffset = _pagingHelper.GetPageOffset(request.PageSize, request.Page);
 
-                // ToDo check if searcfhText is null
                 var result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
                     .Query(q => BaseQuery<T>(request).Create(request, q))
                     .Sort(_iSortFactory.Create<T>(request).GetSortDescriptor)
