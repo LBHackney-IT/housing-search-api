@@ -6,11 +6,16 @@ namespace HousingSearchApi.V1.Infrastructure
     {
         public List<string> Process(string phrase)
         {
+            if (string.IsNullOrEmpty(phrase))
+            {
+                return new List<string>();
+            }
+
             var listOfWildcardWords = new List<string>();
 
             foreach (var word in phrase.Split(' '))
             {
-                listOfWildcardWords.Add("*" + word + "*");
+                listOfWildcardWords.Add($"*{word}*");
             }
 
             return listOfWildcardWords;

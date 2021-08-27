@@ -1,5 +1,6 @@
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
+using HousingSearchApi.V1.Domain;
 using TestStack.BDDfy;
 using Xunit;
 
@@ -68,6 +69,24 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             this.Given(g => _personsFixture.GivenAPersonIndexExists())
                 .When(w => _steps.WhenARequestIsSortedByAFieldDesc())
                 .Then(t => _steps.ThenTheResultShouldBeSortedDesc())
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceReturnsOnlyLeaseholderPersons()
+        {
+            this.Given(g => _personsFixture.GivenAPersonIndexExists())
+                .When(w => _steps.WhenARequestContainsSearchByLeaseholder())
+                .Then(t => _steps.ThenTheResultShouldContainOnlyType(PersonType.Leaseholder))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceReturnsOnlyTenantPersons()
+        {
+            this.Given(g => _personsFixture.GivenAPersonIndexExists())
+                .When(w => _steps.WhenARequestContainsSearchByTenant())
+                .Then(t => _steps.ThenTheResultShouldContainOnlyType(PersonType.Tenant))
                 .BDDfy();
         }
     }

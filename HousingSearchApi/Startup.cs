@@ -46,6 +46,7 @@ namespace HousingSearchApi
         }
 
         public IConfiguration Configuration { get; }
+
         private static List<ApiVersionDescription> _apiVersions { get; set; }
 
         private const string ApiName = "Housing Search";
@@ -57,7 +58,11 @@ namespace HousingSearchApi
 
             services
                 .AddMvc()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()))
+                .AddFluentValidation(fv =>
+                {
+                    fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+                    fv.LocalizationEnabled = false;
+                })
                 .AddNewtonsoftJson(x =>
                 {
                     x.SerializerSettings.ContractResolver = new DefaultContractResolver
@@ -66,6 +71,7 @@ namespace HousingSearchApi
                     };
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services.AddApiVersioning(o =>
             {
                 o.DefaultApiVersion = new ApiVersion(1, 0);

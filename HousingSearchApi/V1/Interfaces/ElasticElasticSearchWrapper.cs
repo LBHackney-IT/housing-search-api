@@ -34,6 +34,7 @@ namespace HousingSearchApi.V1.Interfaces
             {
                 var esNodes = string.Join(';', _esClient.ConnectionSettings.ConnectionPool.Nodes.Select(x => x.Uri));
                 _logger.LogDebug($"ElasticSearch Search begins {esNodes}");
+
                 if (request == null)
                     return new SearchResponse<T>();
 

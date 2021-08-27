@@ -1,7 +1,7 @@
 using Amazon.Lambda.Core;
 using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Boundary.Response;
+using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +33,6 @@ namespace HousingSearchApi.V1.Controllers
         {
             try
             {
-
                 var assetsSearchResult = await _getAssetListUseCase.ExecuteAsync(request).ConfigureAwait(false);
                 var apiResponse = new APIResponse<GetAssetListResponse>(assetsSearchResult);
                 apiResponse.Total = assetsSearchResult.Total();

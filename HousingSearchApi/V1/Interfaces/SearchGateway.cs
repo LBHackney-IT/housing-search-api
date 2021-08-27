@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Boundary.Response;
+using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Gateways.Models;
 
 namespace HousingSearchApi.V1.Interfaces
@@ -15,7 +15,6 @@ namespace HousingSearchApi.V1.Interfaces
         {
             _elasticSearchWrapper = elasticSearchWrapper;
         }
-
         [LogCall]
         public async Task<GetPersonListResponse> GetListOfPersons(HousingSearchRequest query)
         {

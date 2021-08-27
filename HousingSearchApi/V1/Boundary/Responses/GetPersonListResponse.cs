@@ -1,16 +1,17 @@
 using System.Collections.Generic;
+using HousingSearchApi.V1.Domain.Person;
 
-namespace HousingSearchApi.V1.Boundary.Response
+namespace HousingSearchApi.V1.Boundary.Responses
 {
-    public class GetTenureListResponse
+    public class GetPersonListResponse
     {
         private long _total;
 
-        public List<Domain.Tenure.Tenure> Tenures { get; set; }
+        public List<Person> Persons { get; set; }
 
-        public GetTenureListResponse()
+        public GetPersonListResponse()
         {
-            Tenures = new List<Domain.Tenure.Tenure>();
+            Persons = new List<Person>();
         }
 
         public void SetTotal(long total)

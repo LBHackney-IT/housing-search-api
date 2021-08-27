@@ -6,7 +6,9 @@ using System.Net.Http;
 using System.Threading;
 using AutoFixture;
 using Elasticsearch.Net;
+using HousingSearchApi.V1.Domain;
 using HousingSearchApi.V1.Gateways.Models;
+using HousingSearchApi.V1.Infrastructure;
 using Nest;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
@@ -58,8 +60,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                                     .With(x => x.Surname, name)
                                     .CreateMany(10);
 
+                persons.ToList().ForEach(p => p.Tenures.Add(new QueryablePersonTenure()
+                {
+                    Type = "Secure"
+                }));
+
                 listOfPersons.AddRange(persons);
             }
+
+            var allPersonTypes = PersonType.Leaseholder.GetPersonTypes().Concat(PersonType.Tenant.GetPersonTypes()).ToList();
 
             // Add loads more at random
             for (int i = 0; i < 900; i++)
@@ -71,6 +80,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
                 var lastName = Alphabet[random.Next(0, Alphabet.Length)];
                 person.Surname = lastName;
+
+                person.Tenures.Add(new QueryablePersonTenure()
+                {
+                    Type = allPersonTypes[random.Next(0, allPersonTypes.Count - 1)]
+                });
 
                 listOfPersons.Add(person);
             }
