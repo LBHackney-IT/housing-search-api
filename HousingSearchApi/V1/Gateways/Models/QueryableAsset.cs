@@ -12,8 +12,7 @@ namespace HousingSearchApi.V1.Gateways.Models
                 AssetAddress.AddressLine3, AssetAddress.AddressLine4, AssetAddress.PostCode, AssetAddress.PostPreamble);
 
             var tenure = Domain.Tenure.Tenure.Create(Tenure.Id, Tenure.PaymentReference, Tenure.StartOfTenureDate,
-                Tenure.EndOfTenureDate,
-                Tenure.HouseholdMembers, Tenure.TenuredAsset, Tenure.TenureType);
+                Tenure.EndOfTenureDate, Tenure.TenuredAsset, Tenure.Type);
 
             return Asset.Create(Id, AssetId, AssetType, IsAssetCautionaryAlerted, assetAddress, tenure);
         }

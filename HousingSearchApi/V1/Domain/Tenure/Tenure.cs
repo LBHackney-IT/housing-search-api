@@ -8,9 +8,9 @@ namespace HousingSearchApi.V1.Domain.Tenure
     public class Tenure
     {
         public static Tenure Create(string id, string paymentReference, string startOfTenureDate, string endOfTenureDate,
-            List<QueryableHouseholdMember> houseHoldMembers, QueryableTenuredAsset tenuredAsset, QueryableTenureType tenureType)
+            QueryableTenuredAsset tenuredAsset, string tenureType)
         {
-            return new Tenure(id, paymentReference, startOfTenureDate, endOfTenureDate, houseHoldMembers,
+            return new Tenure(id, paymentReference, startOfTenureDate, endOfTenureDate,
                 tenuredAsset, tenureType);
         }
 
@@ -20,15 +20,14 @@ namespace HousingSearchApi.V1.Domain.Tenure
         }
 
         private Tenure(string id, string paymentReference, string startOfTenureDate, string endOfTenureDate,
-            List<QueryableHouseholdMember> houseHoldMembers, QueryableTenuredAsset tenuredAsset, QueryableTenureType tenureType)
+            QueryableTenuredAsset tenuredAsset, string tenureType)
         {
             Id = id;
             PaymentReference = paymentReference;
             StartOfTenureDate = startOfTenureDate;
             EndOfTenureDate = endOfTenureDate;
-            HouseholdMembers = houseHoldMembers != null && houseHoldMembers.Any() ? houseHoldMembers.Select(HouseholdMember.Create).ToList() : new List<HouseholdMember>();
-            TenureType = TenureType.Create(tenureType);
             TenuredAsset = TenuredAsset.Create(tenuredAsset);
+            Type = tenureType;
         }
 
         public string Id { get; set; }
@@ -37,7 +36,7 @@ namespace HousingSearchApi.V1.Domain.Tenure
         public TenuredAsset TenuredAsset { get; set; }
         public string StartOfTenureDate { get; set; }
         public string EndOfTenureDate { get; set; }
-        public TenureType TenureType { get; set; }
+        public string Type { get; set; }
         public bool IsActive => TenureHelpers.IsTenureActive(EndOfTenureDate);
     }
 }
