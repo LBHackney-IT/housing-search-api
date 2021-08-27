@@ -1,4 +1,4 @@
-using HousingSearchApi.V1.Gateways.Models;
+using HousingSearchApi.V1.Gateways.Models.Tenures;
 
 namespace HousingSearchApi.V1.Domain.Tenure
 {

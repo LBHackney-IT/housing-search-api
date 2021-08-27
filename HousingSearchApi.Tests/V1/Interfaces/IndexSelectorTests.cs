@@ -1,7 +1,8 @@
 using FluentAssertions;
-using HousingSearchApi.V1.Gateways.Models;
+using HousingSearchApi.V1.Gateways.Models.Assets;
+using HousingSearchApi.V1.Gateways.Models.Persons;
+using HousingSearchApi.V1.Gateways.Models.Tenures;
 using HousingSearchApi.V1.Interfaces;
-using NUnit.Framework;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Interfaces
@@ -36,10 +37,10 @@ namespace HousingSearchApi.Tests.V1.Interfaces
         }
 
         [Fact]
-        public void GivenAnIndexSelectorWhenQueryableTenurenShouldReturnTenuresIndex()
+        public void GivenAnIndexSelectorWhenQueryableTenureShouldReturnTenuresIndex()
         {
             // Arrange + act
-            var result = _sut.Create<QueryableTenure>();
+            var result = _sut.Create<HousingSearchApi.V1.Gateways.Models.Tenures.QueryableTenure>();
 
             // Assert
             result.Indices[0].Should().Be("tenures");

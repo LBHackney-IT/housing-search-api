@@ -1,7 +1,7 @@
 using HousingSearchApi.V1.Domain.Asset;
 using Nest;
 
-namespace HousingSearchApi.V1.Gateways.Models
+namespace HousingSearchApi.V1.Gateways.Models.Assets
 {
     public class QueryableAsset
     {
@@ -11,9 +11,9 @@ namespace HousingSearchApi.V1.Gateways.Models
                 AssetAddress.AddressLine2,
                 AssetAddress.AddressLine3, AssetAddress.AddressLine4, AssetAddress.PostCode, AssetAddress.PostPreamble);
 
-            var tenure = Domain.Tenure.Tenure.Create(Tenure.Id, Tenure.PaymentReference, Tenure.StartOfTenureDate,
+            var tenure = Domain.Asset.Tenure.Create(Tenure.Id, Tenure.PaymentReference, Tenure.StartOfTenureDate,
                 Tenure.EndOfTenureDate,
-                Tenure.HouseholdMembers, Tenure.TenuredAsset, Tenure.TenureType);
+                Tenure.TenuredAsset, Tenure.Type);
 
             return Asset.Create(Id, AssetId, AssetType, IsAssetCautionaryAlerted, assetAddress, tenure);
         }
