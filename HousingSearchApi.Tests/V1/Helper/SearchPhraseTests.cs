@@ -35,7 +35,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         {
             // Arrange
             var nameToSearchFor = "SomeName LastName";
-            var nameToExpect = "*SomeName* *LastName*";
+            var nameToExpect = "(*SomeName* AND *LastName*) *SomeName* *LastName*";
 
             // Act
             var result = _sut.Create(new HousingSearchRequest { SearchText = nameToSearchFor },

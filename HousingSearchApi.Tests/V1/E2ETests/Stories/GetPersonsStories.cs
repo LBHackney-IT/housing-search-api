@@ -70,5 +70,18 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenTheResultShouldBeSortedDesc())
                 .BDDfy();
         }
+
+        [Fact]
+        public void ServiceReturnsExactMatchForFirstAndLastName()
+        {
+            var firstName = "First";
+            var lastName = "Last";
+
+            this.Given(g => _personsFixture.GivenAPersonIndexExists())
+                .Given(g => _personsFixture.GivenThereExistPersonsWithSimilarFirstAndLastNames(firstName, lastName))
+                .When(w => _steps.WhenSearchingByFirstAndLastName(firstName, lastName))
+                .Then(t => _steps.ThenTheFirstResultShouldBeAnExactMatchOfFirstNameAndLastName(firstName, lastName))
+                .BDDfy();
+        }
     }
 }

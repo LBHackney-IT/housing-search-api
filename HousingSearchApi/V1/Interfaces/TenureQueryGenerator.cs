@@ -21,11 +21,11 @@ namespace HousingSearchApi.V1.Interfaces
             var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
 
             var searchSurnames = q.QueryString(m =>
-                m.Query(string.Join(' ', listOfWildCardedWords))
+                m.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
                     .Fields(f => f.Field(p => p.PaymentReference)
-                        .Field(p => p.TenuredAsset.FullAddress)
+                        .Field("tenuredAsset.fullAddress^3")
                         .Field(p => p.HouseholdMembers)
-                        .Field("householdMembers.fullName"))
+                        .Field("householdMembers.fullName^3"))
                     .Type(TextQueryType.MostFields));
 
             return searchSurnames;
