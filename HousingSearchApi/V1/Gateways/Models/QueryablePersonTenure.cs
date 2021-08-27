@@ -25,7 +25,7 @@ namespace HousingSearchApi.V1.Gateways.Models
         [Text(Name = "postCode")]
         public string PostCode { get; set; }
 
-        [Text(Name = "rentAccountNumber")]
-        public string RentAccountNumber { get; set; }
+        [Text(Name = "paymentReference")]
+        public string PaymentReference { get; set; }
     }
 }

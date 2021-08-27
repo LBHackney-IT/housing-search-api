@@ -13,7 +13,7 @@ namespace HousingSearchApi.V1.Gateways.Models
                 x?.Value, x.OriginalDocumentSeen, x?.LinkToDocument)).ToList() : new List<Domain.Person.Identification>();
 
             var listOfTenures = Tenures == null ? new List<PersonTenure>() :
-                Tenures.Select(x => PersonTenure.Create(x?.Id, x?.Type, x.TotalBalance, x?.StartDate, x?.EndDate, x?.AssetFullAddress, x?.PostCode, x?.RentAccountNumber)).ToList();
+                Tenures.Select(x => PersonTenure.Create(x?.Id, x?.Type, x.TotalBalance, x?.StartDate, x?.EndDate, x?.AssetFullAddress, x?.PostCode, x?.PaymentReference)).ToList();
 
             return Person.Create(Id, Title, Firstname, MiddleName, Surname, PreferredFirstname,
                 PreferredSurname, TotalBalance, Ethinicity, Nationality, PlaceOfBirth, DateOfBirth, Gender, listOfIdentifications,

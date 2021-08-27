@@ -4,12 +4,12 @@ namespace HousingSearchApi.V1.Domain.Person
     {
         public PersonTenure() { }
 
-        public static PersonTenure Create(string id, string type, decimal totalBalance, string startDate, string endDate, string assetFullAddress, string postCode, string rentAccountNumber)
+        public static PersonTenure Create(string id, string type, decimal totalBalance, string startDate, string endDate, string assetFullAddress, string postCode, string paymentReference)
         {
-            return new PersonTenure(id, type, totalBalance, startDate, endDate, assetFullAddress, postCode, rentAccountNumber);
+            return new PersonTenure(id, type, totalBalance, startDate, endDate, assetFullAddress, postCode, paymentReference);
         }
 
-        private PersonTenure(string id, string type, decimal totalBalance, string startDate, string endDate, string assetFullAddress, string postCode, string rentAccountNumber)
+        private PersonTenure(string id, string type, decimal totalBalance, string startDate, string endDate, string assetFullAddress, string postCode, string paymentReference)
         {
             Id = id;
             Type = type;
@@ -18,7 +18,7 @@ namespace HousingSearchApi.V1.Domain.Person
             EndDate = endDate;
             AssetFullAddress = assetFullAddress;
             PostCode = postCode;
-            RentAccountNumber = rentAccountNumber;
+            PaymentReference = paymentReference;
         }
 
         public string Id { get; set; }
@@ -35,6 +35,6 @@ namespace HousingSearchApi.V1.Domain.Person
 
         public string PostCode { get; set; }
 
-        public string RentAccountNumber { get; set; }
+        public string PaymentReference { get; set; }
     }
 }

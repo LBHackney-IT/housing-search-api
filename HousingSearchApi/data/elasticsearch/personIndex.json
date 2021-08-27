@@ -216,7 +216,7 @@
               }
             }
           },
-          "rentAccountNumber": {
+          "paymentReference": {
             "type": "text",
             "fields": {
               "keyword": {
