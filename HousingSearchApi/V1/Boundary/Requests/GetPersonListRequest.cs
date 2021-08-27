@@ -6,6 +6,6 @@ namespace HousingSearchApi.V1.Boundary.Requests
     public class GetPersonListRequest : HousingSearchRequest
     {
         [FromQuery(Name = "personType")]
-        public PersonType PersonType { get; set; }
+        public PersonType? PersonType { get; set; }
     }
 }

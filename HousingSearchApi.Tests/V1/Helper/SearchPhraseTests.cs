@@ -6,7 +6,6 @@ using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.Interfaces;
 using Nest;
 using System.Linq;
-using System.Linq.Expressions;
 using Xunit;
 
 
@@ -23,28 +22,42 @@ namespace HousingSearchApi.Tests.V1.Helper
 
         [Theory]
         [InlineData("")]
-        [InlineData(null)]
-        public void ShouldReturnFilterOnlyByTypeIfRequestSearchTextIsEmpty(string searchText)
-        {
-            // Arrange + Act
-            var result = _sut.Create(new GetPersonListRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
-
-            // Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<QueryContainerDescriptor<QueryablePerson>>();
-        }
-
-        [Theory]
-        [InlineData("")]
         [InlineData("AnyData")]
         [InlineData(null)]
-        public void ShouldReturnNullIfRequestIsBaseType(string searchText)
+        public void ShouldReturnNullIfRequestTypeIsUnknown(string searchText)
         {
             // Arrange + Act
             var result = _sut.Create(new HousingSearchRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert
             result.Should().BeNull();
+        }
+
+        [Theory]
+        [InlineData("AnyData", "*AnyData*")]
+        [InlineData("SomeName LastName", "*SomeName* *LastName*")]
+        public void ShouldReturnQueryThatSearchesForProvidedText(string searchText, string wildCardedSearchText)
+        {
+            // Arrange + Act
+            var result = _sut.Create(new GetPersonListRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
+
+            // Assert
+            result.Should().NotBeNull();
+
+            var query = result as IQueryContainer;
+            query.Should().NotBeNull();
+
+            var searchFilter = query.Bool.Filter.ToList();
+
+            searchFilter.Should().HaveCount(1);
+
+            var filterByText = searchFilter[0] as IQueryContainer;
+
+            filterByText.Should().NotBeNull();
+            filterByText.QueryString.Query.Should().BeEquivalentTo(wildCardedSearchText);
+            filterByText.QueryString.Fields.Should().HaveCount(1);
+            filterByText.QueryString.Fields.FirstOrDefault().Name.Should().Be("*");
+            filterByText.QueryString.Type.Should().Be(TextQueryType.MostFields);
         }
 
         [Theory]
@@ -61,45 +74,31 @@ namespace HousingSearchApi.Tests.V1.Helper
             var result = _sut.Create(new GetPersonListRequest { SearchText = nameToSearchFor, PersonType = type },
                 new QueryContainerDescriptor<QueryablePerson>());
 
-            // Assert
+            result.Should().NotBeNull();
 
+            // Assert
             var query = result as IQueryContainer;
 
             query.Should().NotBeNull();
 
-            var searchFilter = query.Bool.Filter;
+            var searchFilter = query.Bool.Filter.ToList();
 
-            searchFilter.Should().HaveCount(1);
+            searchFilter.Should().HaveCount(2);
 
-            var queryFilter = searchFilter.FirstOrDefault() as IQueryContainer;
+            var filterByText = searchFilter[0] as IQueryContainer;
 
-            queryFilter.Should().NotBeNull();
+            filterByText.Should().NotBeNull();
+            filterByText.QueryString.Query.Should().BeEquivalentTo(nameToExpect);
+            filterByText.QueryString.Fields.Should().HaveCount(1);
+            filterByText.QueryString.Fields.FirstOrDefault().Name.Should().Be("*");
+            filterByText.QueryString.Type.Should().Be(TextQueryType.MostFields);
 
-            queryFilter.Bool.Should().NotBeNull();
+            var filterByPersonType = searchFilter[1] as IQueryContainer;
 
-            var mustValues = queryFilter.Bool.Must;
-
-            mustValues.Should().HaveCount(2);
-
-            var listFilters = mustValues.ToList();
-
-            var firstMustQuery = listFilters[0] as IQueryContainer;
-
-            firstMustQuery.QueryString.Query.Should().BeEquivalentTo(nameToExpect);
-
-            firstMustQuery.QueryString.Fields.Should().HaveCount(1);
-
-            firstMustQuery.QueryString.Fields.FirstOrDefault().Name.Should().Be("*");
-
-            firstMustQuery.QueryString.Type.Should().Be(TextQueryType.MostFields);
-
-            var secondMustQuery = listFilters[1] as IQueryContainer;
-
-            secondMustQuery.QueryString.Query.Should().BeEquivalentTo(string.Join(' ', expectedTypes));
-
-            secondMustQuery.QueryString.Fields.Should().HaveCount(1);
-
-            secondMustQuery.QueryString.Type.Should().Be(TextQueryType.MostFields);
+            filterByPersonType.QueryString.Query.Should().BeEquivalentTo(string.Join(' ', expectedTypes));
+            filterByPersonType.QueryString.Fields.Should().HaveCount(1);
+            filterByPersonType.QueryString.Fields.FirstOrDefault().Name.Should().Be("tenures.type");
+            filterByPersonType.QueryString.Type.Should().Be(TextQueryType.MostFields);
         }
     }
 }
