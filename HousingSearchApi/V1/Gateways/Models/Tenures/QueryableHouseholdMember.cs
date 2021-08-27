@@ -1,4 +1,4 @@
-namespace HousingSearchApi.V1.Gateways.Models
+namespace HousingSearchApi.V1.Gateways.Models.Tenures
 {
     public class QueryableHouseholdMember
     {
