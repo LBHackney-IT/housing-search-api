@@ -1,6 +1,7 @@
 using HousingSearchApi.V1.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HousingSearchApi.V1.Infrastructure
 {
@@ -49,6 +50,16 @@ namespace HousingSearchApi.V1.Infrastructure
             }
 
             throw new ArgumentException("Invalid type of person.");
+        }
+
+        public static bool IsPersonTypeOf(this string personType, PersonType expectedEnumItem)
+        {
+            if (personType == null)
+                return false;
+
+            var allowedTypes = expectedEnumItem.GetPersonTypes().Select(s => s.ToUpper());
+
+            return allowedTypes.Contains(personType.ToUpper());
         }
     }
 }
