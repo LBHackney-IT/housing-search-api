@@ -10,7 +10,7 @@ namespace HousingSearchApi.V1.Infrastructure
             {
                 return new List<string>();
             }
-            
+
             var listOfWildcardWords = new List<string>();
 
             foreach (var word in phrase.Split(' '))
