@@ -57,7 +57,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             foreach (var name in Alphabet)
             {
                 var persons = fixture.Build<QueryablePerson>()
-                                    .With(x => x.Firstname, "Somefirstname")
+                                    .With(x => x.Firstname, "Some first name")
                                     .With(x => x.Surname, name)
                                     .CreateMany(10);
 
