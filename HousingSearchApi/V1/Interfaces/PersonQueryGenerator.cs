@@ -29,9 +29,9 @@ namespace HousingSearchApi.V1.Interfaces
             var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(personListRequest.SearchText);
 
             Func<QueryContainerDescriptor<QueryablePerson>, QueryContainer> filterBySearchTextContainer =
-                (containerDescriptor) => containerDescriptor.QueryString(q => q.Query(string.Join(' ', listOfWildCardedWords))
-                    .Fields(f => f.Field("*"))
-                    .Type(TextQueryType.MostFields));
+              (containerDescriptor) => containerDescriptor.QueryString(q => q.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
+                  .Fields(f => f.Field("*"))
+                  .Type(TextQueryType.MostFields));
 
             filters.Add(filterBySearchTextContainer);
 

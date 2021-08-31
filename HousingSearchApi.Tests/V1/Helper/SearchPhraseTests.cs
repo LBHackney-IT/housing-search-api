@@ -33,8 +33,8 @@ namespace HousingSearchApi.Tests.V1.Helper
         }
 
         [Theory]
-        [InlineData("AnyData", "*AnyData*")]
-        [InlineData("SomeName LastName", "*SomeName* *LastName*")]
+        [InlineData("AnyData", "(*AnyData*) *AnyData*")]
+        [InlineData("SomeName LastName", "(*SomeName* AND *LastName*) *SomeName* *LastName*")]
         public void ShouldReturnQueryThatSearchesForProvidedText(string searchText, string wildCardedSearchText)
         {
             // Arrange + Act
@@ -66,7 +66,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         {
             // Arrange
             var nameToSearchFor = "SomeName LastName";
-            var nameToExpect = "*SomeName* *LastName*";
+            var nameToExpect = "(*SomeName* AND *LastName*) *SomeName* *LastName*";
             var expectedTypes = type.GetPersonTypes();
 
             // Act

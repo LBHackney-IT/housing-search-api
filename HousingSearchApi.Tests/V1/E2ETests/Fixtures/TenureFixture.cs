@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using AutoFixture;
@@ -40,7 +41,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
                 }
 
-                Thread.Sleep(5000);
+                Thread.Sleep(1000);
             }
         }
 
@@ -70,6 +71,37 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             }
 
             return listOfTenures;
+        }
+
+        public void GivenSimilarTenures(string paymentReference, string fullAddress, string fullName)
+        {
+            var fixture = new Fixture();
+            var listOfTenures = new List<QueryableTenure>();
+
+            var firstTenure = fixture.Create<QueryableTenure>();
+            firstTenure.PaymentReference = paymentReference;
+            firstTenure.TenuredAsset.FullAddress = fullAddress;
+            firstTenure.HouseholdMembers.First().FullName = fullName;
+
+            listOfTenures.Add(firstTenure);
+
+            var secondTenure = fixture.Create<QueryableTenure>();
+            secondTenure.PaymentReference = paymentReference;
+            listOfTenures.Add(secondTenure);
+
+            var thirdTenure = fixture.Create<QueryableTenure>();
+            thirdTenure.TenuredAsset.FullAddress = fullAddress;
+            listOfTenures.Add(thirdTenure);
+
+            var forthTenure = fixture.Create<QueryableTenure>();
+            thirdTenure.HouseholdMembers.First().FullName = fullName;
+            listOfTenures.Add(forthTenure);
+
+            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
+
+            while (!awaitable.GetAwaiter().IsCompleted) { }
+
+            Thread.Sleep(1000);
         }
     }
 }
