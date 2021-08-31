@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Nest;
 
-namespace HousingSearchApi.V1.Gateways.Models
+namespace HousingSearchApi.V1.Gateways.Models.Tenures
 {
     public class QueryableTenure
     {

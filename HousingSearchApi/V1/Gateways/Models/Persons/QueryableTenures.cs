@@ -1,8 +1,8 @@
 using Nest;
 
-namespace HousingSearchApi.V1.Gateways.Models
+namespace HousingSearchApi.V1.Gateways.Models.Persons
 {
-    public class Tenures
+    public class QueryableTenures
     {
         [Text(Name = "id")]
         public string Id { get; set; }

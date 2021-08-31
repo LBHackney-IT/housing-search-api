@@ -1,5 +1,7 @@
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Gateways.Models;
+using HousingSearchApi.V1.Gateways.Models.Assets;
+using HousingSearchApi.V1.Gateways.Models.Persons;
+using HousingSearchApi.V1.Gateways.Models.Tenures;
 using HousingSearchApi.V1.Infrastructure;
 
 namespace HousingSearchApi.V1.Interfaces
@@ -20,7 +22,7 @@ namespace HousingSearchApi.V1.Interfaces
                 return (IQueryGenerator<T>) new PersonQueryGenerator(_wildCardAppenderAndPrepender);
             }
 
-            if (typeof(T) == typeof(QueryableTenure))
+            if (typeof(T) == typeof(Gateways.Models.Tenures.QueryableTenure))
             {
                 return (IQueryGenerator<T>) new TenureQueryGenerator(_wildCardAppenderAndPrepender);
             }

@@ -1,6 +1,6 @@
 using FluentAssertions;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Gateways.Models;
+using HousingSearchApi.V1.Gateways.Models.Persons;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.Interfaces;
 using Nest;
@@ -35,7 +35,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         {
             // Arrange
             var nameToSearchFor = "SomeName LastName";
-            var nameToExpect = "*SomeName* *LastName*";
+            var nameToExpect = "(*SomeName* AND *LastName*) *SomeName* *LastName*";
 
             // Act
             var result = _sut.Create(new HousingSearchRequest { SearchText = nameToSearchFor },
