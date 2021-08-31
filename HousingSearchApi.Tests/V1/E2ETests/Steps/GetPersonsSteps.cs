@@ -32,7 +32,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenSearchingByFirstAndLastName(string firstName, string lastName)
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/persons?searchText={firstName}%20{lastName}&pageSize=1000", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/persons?searchText={firstName}%20{lastName}", UriKind.Relative)).ConfigureAwait(false);
         }
 
         public async Task WhenAPageSizeIsProvided(int pageSize)
