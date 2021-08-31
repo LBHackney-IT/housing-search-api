@@ -1,16 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
-using HousingSearchApi.V1.Gateways.Models.Tenures;
+using HousingSearchApi.V1.Gateways.Models.Assets;
 using HousingSearchApi.V1.Helper;
 
-namespace HousingSearchApi.V1.Domain.Tenure
+namespace HousingSearchApi.V1.Domain.Asset
 {
     public class Tenure
     {
         public static Tenure Create(string id, string paymentReference, string startOfTenureDate, string endOfTenureDate,
-            List<QueryableHouseholdMember> houseHoldMembers, QueryableTenuredAsset tenuredAsset, QueryableTenureType tenureType)
+            QueryableTenuredAsset tenuredAsset, string tenureType)
         {
-            return new Tenure(id, paymentReference, startOfTenureDate, endOfTenureDate, houseHoldMembers,
+            return new Tenure(id, paymentReference, startOfTenureDate, endOfTenureDate,
                 tenuredAsset, tenureType);
         }
 
@@ -20,24 +18,22 @@ namespace HousingSearchApi.V1.Domain.Tenure
         }
 
         private Tenure(string id, string paymentReference, string startOfTenureDate, string endOfTenureDate,
-            List<QueryableHouseholdMember> houseHoldMembers, QueryableTenuredAsset tenuredAsset, QueryableTenureType tenureType)
+            QueryableTenuredAsset tenuredAsset, string tenureType)
         {
             Id = id;
             PaymentReference = paymentReference;
             StartOfTenureDate = startOfTenureDate;
             EndOfTenureDate = endOfTenureDate;
-            HouseholdMembers = houseHoldMembers != null && houseHoldMembers.Any() ? houseHoldMembers.Select(HouseholdMember.Create).ToList() : new List<HouseholdMember>();
-            TenureType = TenureType.Create(tenureType);
+            Type = tenureType;
             TenuredAsset = TenuredAsset.Create(tenuredAsset);
         }
 
         public string Id { get; set; }
         public string PaymentReference { get; set; }
-        public List<HouseholdMember> HouseholdMembers { get; set; }
         public TenuredAsset TenuredAsset { get; set; }
         public string StartOfTenureDate { get; set; }
         public string EndOfTenureDate { get; set; }
-        public TenureType TenureType { get; set; }
+        public string Type { get; set; }
         public bool IsActive => TenureHelpers.IsTenureActive(EndOfTenureDate);
     }
 }

@@ -1,6 +1,6 @@
-using HousingSearchApi.V1.Gateways.Models.Tenures;
+using HousingSearchApi.V1.Gateways.Models.Assets;
 
-namespace HousingSearchApi.V1.Domain.Tenure
+namespace HousingSearchApi.V1.Domain.Asset
 {
     public class TenuredAsset
     {

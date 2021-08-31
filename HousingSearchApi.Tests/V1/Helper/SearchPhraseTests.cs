@@ -1,13 +1,12 @@
 using FluentAssertions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Gateways.Models;
+using HousingSearchApi.V1.Gateways.Models.Persons;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.Interfaces;
 using Nest;
 using System.Linq;
 using Xunit;
-
 
 namespace HousingSearchApi.Tests.V1.Helper
 {

@@ -3,7 +3,7 @@ using Nest;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HousingSearchApi.V1.Gateways.Models
+namespace HousingSearchApi.V1.Gateways.Models.Persons
 {
     public class QueryablePerson
     {

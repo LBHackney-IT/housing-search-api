@@ -5,7 +5,8 @@ using System.Net.Http;
 using System.Threading;
 using AutoFixture;
 using Elasticsearch.Net;
-using HousingSearchApi.V1.Gateways.Models;
+using HousingSearchApi.V1.Gateways.Models.Persons;
+using HousingSearchApi.V1.Gateways.Models.Tenures;
 using Nest;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures

@@ -1,15 +1,16 @@
+using AutoFixture;
+using Elasticsearch.Net;
+using HousingSearchApi.V1.Domain;
+using HousingSearchApi.V1.Gateways.Models;
+using HousingSearchApi.V1.Gateways.Models.Persons;
+using HousingSearchApi.V1.Infrastructure;
+using Nest;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
-using AutoFixture;
-using Elasticsearch.Net;
-using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Gateways.Models;
-using HousingSearchApi.V1.Infrastructure;
-using Nest;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 {
