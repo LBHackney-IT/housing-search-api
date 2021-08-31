@@ -65,6 +65,7 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
         [Fact]
         public void ShouldThrowsArgumentException()
         {
+            // We need to check for the value that is NOT in enum
             PersonType type = (PersonType) 2;
 
             Action act = () => type.GetPersonTypes();
