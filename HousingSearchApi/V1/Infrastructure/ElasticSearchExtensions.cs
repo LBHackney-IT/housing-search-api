@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Nest;
 using System;
-using System.Linq.Expressions;
 
 namespace HousingSearchApi.V1.Infrastructure
 {
@@ -26,30 +25,6 @@ namespace HousingSearchApi.V1.Infrastructure
             var esClient = new ElasticClient(connectionSettings);
 
             services.TryAddSingleton<IElasticClient>(esClient);
-        }
-
-        /// <summary>
-        /// Applies Descending() or Ascending() method based on <paramref name="isDesc"/>
-        /// </summary>
-        /// <typeparam name="TQueryable">Type of entity to apply sort</typeparam>
-        /// <typeparam name="TValue">Type of field by which sorting is applied</typeparam>
-        /// <param name="sortDescriptor"></param>
-        /// <param name="isDesc"></param>
-        /// <param name="expression"></param>
-        /// <returns></returns>
-        public static SortDescriptor<TQueryable> SetSortOrder<TQueryable, TValue>(this SortDescriptor<TQueryable> sortDescriptor, bool isDesc, Expression<Func<TQueryable, TValue>> expression) where TQueryable : class
-
-        {
-            if (isDesc)
-            {
-                sortDescriptor.Descending(expression);
-            }
-            else
-            {
-                sortDescriptor.Ascending(expression);
-            }
-
-            return sortDescriptor;
         }
     }
 }
