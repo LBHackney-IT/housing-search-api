@@ -1,5 +1,6 @@
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
+using HousingSearchApi.V1.Domain;
 using TestStack.BDDfy;
 using Xunit;
 
@@ -74,13 +75,31 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceReturnsExactMatchForFirstAndLastName()
         {
-            var firstName = "First";
-            var lastName = "Last";
+            var firstName = "Bob";
+            var lastName = "Smith";
 
             this.Given(g => _personsFixture.GivenAPersonIndexExists())
                 .Given(g => _personsFixture.GivenThereExistPersonsWithSimilarFirstAndLastNames(firstName, lastName))
                 .When(w => _steps.WhenSearchingByFirstAndLastName(firstName, lastName))
                 .Then(t => _steps.ThenTheFirstResultShouldBeAnExactMatchOfFirstNameAndLastName(firstName, lastName))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceReturnsOnlyLeaseholderPersons()
+        {
+            this.Given(g => _personsFixture.GivenAPersonIndexExists())
+                .When(w => _steps.WhenARequestContainsSearchByLeaseholder())
+                .Then(t => _steps.ThenTheResultShouldContainOnlyType(PersonType.Leaseholder))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceReturnsOnlyTenantPersons()
+        {
+            this.Given(g => _personsFixture.GivenAPersonIndexExists())
+                .When(w => _steps.WhenARequestContainsSearchByTenant())
+                .Then(t => _steps.ThenTheResultShouldContainOnlyType(PersonType.Tenant))
                 .BDDfy();
         }
     }

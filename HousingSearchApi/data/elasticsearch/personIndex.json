@@ -4,6 +4,9 @@
   },
   "mappings": {
     "properties": {
+      "totalBalance": {
+        "type": "double"
+      },
       "dateOfBirth": {
         "type": "text",
         "fields": {
@@ -193,6 +196,27 @@
             }
           },
           "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "totalBalance": {
+            "type": "double"
+          },
+          "postCode": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "paymentReference": {
             "type": "text",
             "fields": {
               "keyword": {

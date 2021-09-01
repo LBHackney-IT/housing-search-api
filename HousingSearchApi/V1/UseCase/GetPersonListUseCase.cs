@@ -1,6 +1,6 @@
 using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Boundary.Response;
+using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Interfaces;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using System.Threading.Tasks;
@@ -15,7 +15,6 @@ namespace HousingSearchApi.V1.UseCase
         {
             _searchGateway = searchGateway;
         }
-
         [LogCall]
         public async Task<GetPersonListResponse> ExecuteAsync(HousingSearchRequest housingSearchRequest)
         {
