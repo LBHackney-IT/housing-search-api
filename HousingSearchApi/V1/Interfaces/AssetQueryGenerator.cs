@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Gateways.Models.Assets;
 using HousingSearchApi.V1.Infrastructure;
 using Nest;
@@ -16,18 +19,35 @@ namespace HousingSearchApi.V1.Interfaces
 
         public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryableAsset> q)
         {
-            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
+            if (!(request is HousingSearchRequest housingSearchRequest)) return null;
 
-            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
+            var queryContainer = new QueryContainer();
+            var filters = new List<Func<QueryContainerDescriptor<QueryableAsset>, QueryContainer>>();
 
-            var searchSurnames = q.QueryString(m =>
-                m.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
-                    .Fields(f => f.Field("assetAddress.addressLine1^3")
-                        .Field(p => p.AssetAddress.PostCode)
-                        .Field(p => p.AssetAddress.Uprn))
+            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(housingSearchRequest.SearchText);
+
+            Func<QueryContainerDescriptor<QueryableAsset>, QueryContainer> filterBySearchTextContainer =
+                (containerDescriptor) => containerDescriptor.QueryString(q => q.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
+                    .Fields(f => f.Field("*"))
                     .Type(TextQueryType.MostFields));
 
-            return searchSurnames;
+            filters.Add(filterBySearchTextContainer);
+
+            if (!string.IsNullOrWhiteSpace(housingSearchRequest.AssetTypes))
+            {
+                var types = housingSearchRequest.AssetTypes.Split(",");
+
+                Func<QueryContainerDescriptor<QueryableAsset>, QueryContainer> filterByTypeContainer =
+                    (containerDescriptor) => containerDescriptor.QueryString(q => q.Query(string.Join(' ', types))
+                        .Fields(f => f.Field(asset => asset.AssetType))
+                        .Type(TextQueryType.MostFields));
+
+                filters.Add(filterByTypeContainer);
+            }
+
+            queryContainer = q.Bool(bq => bq.Filter(filters.ToArray()));
+
+            return queryContainer;
         }
     }
 }

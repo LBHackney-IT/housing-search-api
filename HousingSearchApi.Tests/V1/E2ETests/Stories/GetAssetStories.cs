@@ -1,3 +1,4 @@
+using System.Linq;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
 using TestStack.BDDfy;
@@ -50,6 +51,16 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenAPageSizeIsProvided(5))
                 .Then(t => _steps.ThenTheReturningResultsShouldBeOfThatSize(5))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceFiltersGivenAssetTypes()
+        {
+            var assetTypes = AssetFixture.Alphabet.TakeLast(2);
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenAssetTypesAreProvided(assetTypes))
+                .Then(t => _steps.ThenOnlyTheseAssetTypesShouldBeIncluded(assetTypes))
                 .BDDfy();
         }
     }

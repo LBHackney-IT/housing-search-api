@@ -9,6 +9,9 @@ namespace HousingSearchApi.V1.Boundary.Requests
         [FromQuery(Name = "searchText")]
         public string SearchText { get; set; }
 
+        [FromQuery(Name = "assetTypes")]
+        public string AssetTypes { get; set; }
+
         [FromQuery(Name = "pageSize")]
         public int PageSize { get; set; } = DefaultPageSize;
 
