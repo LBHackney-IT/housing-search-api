@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Gateways.Models.Assets;
 using HousingSearchApi.V1.Infrastructure;
 using Nest;
@@ -16,18 +19,28 @@ namespace HousingSearchApi.V1.Interfaces
 
         public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryableAsset> q)
         {
-            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
-
+            var filters = new List<Func<QueryContainerDescriptor<QueryableAsset>, QueryContainer>>();
             var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
 
-            var searchSurnames = q.QueryString(m =>
-                m.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
-                    .Fields(f => f.Field("assetAddress.addressLine1^3")
-                        .Field(p => p.AssetAddress.PostCode)
-                        .Field(p => p.AssetAddress.Uprn))
+            #region Filter definitions
+            QueryContainer FilterBySearchTextContainer(QueryContainerDescriptor<QueryableAsset> containerDescriptor) =>
+                containerDescriptor
+                    .QueryString(qs => qs.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
+                    .Fields(f => f.Field("*"))
                     .Type(TextQueryType.MostFields));
 
-            return searchSurnames;
+            QueryContainer FilterByTypeContainer(QueryContainerDescriptor<QueryableAsset> containerDescriptor) =>
+                containerDescriptor
+                    .QueryString(qs => qs.Query(string.Join(' ', request.AssetTypes.Split(",")))
+                    .Fields(f => f.Field(asset => asset.AssetType))
+                    .Type(TextQueryType.MostFields));
+            #endregion
+
+            filters.Add(FilterBySearchTextContainer);
+            if (!string.IsNullOrWhiteSpace(request.AssetTypes))
+                filters.Add(FilterByTypeContainer);
+
+            return q.Bool(bq => bq.Filter(filters.ToArray()));
         }
     }
 }

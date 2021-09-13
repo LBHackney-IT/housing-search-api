@@ -56,6 +56,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 {
                     var asset = fixture.Create<QueryableAsset>();
                     asset.AssetAddress.Uprn = value;
+                    asset.AssetType = value;
 
                     listOfAssets.Add(asset);
                 }
