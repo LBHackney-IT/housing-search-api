@@ -36,7 +36,6 @@ functions:
             origin: '*'
             headers:
               - Content-Type
-              - If-Match
               - X-Amz-Date
               - Authorization
               - X-Api-Key
