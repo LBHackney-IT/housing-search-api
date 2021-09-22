@@ -1,5 +1,5 @@
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Boundary.Response;
+using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Controllers;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Moq;
@@ -27,7 +27,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetPersonListShouldCallGetPersonListUseCase()
         {
             // given
-            var request = new HousingSearchRequest();
+            var request = new GetPersonListRequest();
             var response = new GetPersonListResponse();
             _mockGetPersonListUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
 

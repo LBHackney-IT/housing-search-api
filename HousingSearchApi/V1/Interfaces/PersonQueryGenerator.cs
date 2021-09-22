@@ -2,6 +2,8 @@ using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Gateways.Models.Persons;
 using HousingSearchApi.V1.Infrastructure;
 using Nest;
+using System;
+using System.Collections.Generic;
 
 namespace HousingSearchApi.V1.Interfaces
 {
@@ -16,17 +18,38 @@ namespace HousingSearchApi.V1.Interfaces
 
         public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
-            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
+            if (!(request is GetPersonListRequest personListRequest))
+            {
+                return null;
+            }
 
-            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
+            var queryContainer = new QueryContainer();
+            var filters = new List<Func<QueryContainerDescriptor<QueryablePerson>, QueryContainer>>();
 
-            var searchSurnames = q.QueryString(m =>
-                m.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
-                    .Fields(f => f.Field(p => p.Firstname)
-                        .Field(p => p.Surname))
-                    .Type(TextQueryType.MostFields));
+            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(personListRequest.SearchText);
 
-            return searchSurnames;
+            Func<QueryContainerDescriptor<QueryablePerson>, QueryContainer> filterBySearchTextContainer =
+              (containerDescriptor) => containerDescriptor.QueryString(q => q.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
+                  .Fields(f => f.Field("*"))
+                  .Type(TextQueryType.MostFields));
+
+            filters.Add(filterBySearchTextContainer);
+
+            if (personListRequest.PersonType.HasValue)
+            {
+                var types = personListRequest.PersonType.Value.GetPersonTypes();
+
+                Func<QueryContainerDescriptor<QueryablePerson>, QueryContainer> filterByTypeContainer =
+                    (containerDescriptor) => containerDescriptor.QueryString(q => q.Query(string.Join(' ', types))
+                        .Fields(f => f.Field("tenures.type"))
+                        .Type(TextQueryType.MostFields));
+
+                filters.Add(filterByTypeContainer);
+            }
+
+            queryContainer = q.Bool(bq => bq.Filter(filters.ToArray()));
+
+            return queryContainer;
         }
     }
 }

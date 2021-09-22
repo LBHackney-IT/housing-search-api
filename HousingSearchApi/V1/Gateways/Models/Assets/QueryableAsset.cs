@@ -7,15 +7,36 @@ namespace HousingSearchApi.V1.Gateways.Models.Assets
     {
         public Asset Create()
         {
-            var assetAddress = Domain.Asset.AssetAddress.Create(AssetAddress.Uprn, AssetAddress.AddressLine1,
-                AssetAddress.AddressLine2,
-                AssetAddress.AddressLine3, AssetAddress.AddressLine4, AssetAddress.PostCode, AssetAddress.PostPreamble);
+            var assetAddress = AssetAddress == null
+                ? new AssetAddress()
+                : Domain.Asset.AssetAddress.Create(
+                    AssetAddress.Uprn,
+                    AssetAddress.AddressLine1,
+                    AssetAddress.AddressLine2,
+                    AssetAddress.AddressLine3,
+                    AssetAddress.AddressLine4,
+                    AssetAddress.PostCode,
+                    AssetAddress.PostPreamble
+                );
 
-            var tenure = Domain.Asset.Tenure.Create(Tenure.Id, Tenure.PaymentReference, Tenure.StartOfTenureDate,
-                Tenure.EndOfTenureDate,
-                Tenure.TenuredAsset, Tenure.Type);
+            var tenure = Tenure == null
+                ? new Tenure()
+                : Domain.Asset.Tenure.Create(
+                    Tenure.Id,
+                    Tenure.PaymentReference,
+                    Tenure.StartOfTenureDate,
+                    Tenure.EndOfTenureDate,
+                    Tenure.Type
+                );
 
-            return Asset.Create(Id, AssetId, AssetType, IsAssetCautionaryAlerted, assetAddress, tenure);
+            return Asset.Create(
+                Id,
+                AssetId,
+                AssetType,
+                IsAssetCautionaryAlerted,
+                assetAddress,
+                tenure
+            );
         }
 
         [Text(Name = "id")]

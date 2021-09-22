@@ -1,7 +1,7 @@
 using Amazon.Lambda.Core;
 using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Boundary.Response;
+using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +29,7 @@ namespace HousingSearchApi.V1.Controllers
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
         [HttpGet, MapToApiVersion("1")]
         [LogCall(LogLevel.Information)]
-        public async Task<IActionResult> GetPersonList([FromQuery] HousingSearchRequest request)
+        public async Task<IActionResult> GetPersonList([FromQuery] GetPersonListRequest request)
         {
             try
             {

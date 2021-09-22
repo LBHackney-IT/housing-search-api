@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps.Base;
-using HousingSearchApi.V1.Boundary.Response;
+using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Steps
