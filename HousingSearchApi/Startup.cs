@@ -173,7 +173,8 @@ namespace HousingSearchApi
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
                 .AllowAnyHeader()
-                .AllowAnyMethod());
+                .AllowAnyMethod()
+                .WithExposedHeaders("x-correlation-id"));
 
             app.UseXRay("housing-search-api");
 
