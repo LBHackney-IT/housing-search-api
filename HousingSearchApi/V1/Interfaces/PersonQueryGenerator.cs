@@ -41,8 +41,8 @@ namespace HousingSearchApi.V1.Interfaces
 
             Func<QueryContainerDescriptor<QueryablePerson>, QueryContainer> filterBySearchTextContainerKeywords =
                 (containerDescriptor) => containerDescriptor.QueryString(q => q.Query(string.Join(" ", nonWildCardWords))
-                    .Fields(f => f.Field("firstname^2")
-                        .Field("surname^2"))
+                    .Fields(f => f.Field("firstname^3")
+                        .Field("surname^3"))
                     .Type(TextQueryType.MostFields));
 
             filters.Add(filterBySearchTextContainerKeywords);
@@ -59,7 +59,7 @@ namespace HousingSearchApi.V1.Interfaces
                 filters.Add(filterByTypeContainer);
             }
 
-            queryContainer = q.Bool(bq => bq.Filter(filters.ToArray()));
+            queryContainer = q.Bool(bq => bq.Must(filters.ToArray()));
 
             return queryContainer;
         }
