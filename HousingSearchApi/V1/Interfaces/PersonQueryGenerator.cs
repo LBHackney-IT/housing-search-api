@@ -59,7 +59,7 @@ namespace HousingSearchApi.V1.Interfaces
                 filters.Add(filterByTypeContainer);
             }
 
-            queryContainer = q.Bool(bq => bq.Must(filters.ToArray()));
+            queryContainer = q.DisMax(bq => bq.Queries(filters.ToArray()));
 
             return queryContainer;
         }
