@@ -42,7 +42,7 @@ namespace HousingSearchApi.V1.Interfaces
             Func<QueryContainerDescriptor<QueryablePerson>, QueryContainer> filterBySearchTextContainerKeywords =
                 (containerDescriptor) => containerDescriptor.QueryString(q => q.Query(string.Join(' ', nonWildCardWords))
                     .Fields(f => f.Field("firstname^2")
-                        .Field(p =>"surname^2"))
+                        .Field(p => "surname^2"))
                     .Type(TextQueryType.MostFields));
 
             filters.Add(filterBySearchTextContainerKeywords);
