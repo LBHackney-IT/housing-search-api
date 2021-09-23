@@ -26,6 +26,7 @@ namespace HousingSearchApi.V1.Interfaces
 
             var nonWildCardWords = request.SearchText.Split(" ").ToList();
             nonWildCardWords = nonWildCardWords.Select(x => "\"" + x + "\"").ToList();
+            nonWildCardWords.Add("\"" + request.SearchText + "\"");
 
             #region Filter definitions
             QueryContainer FilterBySearchTextContainer(QueryContainerDescriptor<QueryableAsset> containerDescriptor) =>
