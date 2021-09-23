@@ -30,7 +30,8 @@ namespace HousingSearchApi.V1.Interfaces
 
             Func<QueryContainerDescriptor<QueryablePerson>, QueryContainer> filterBySearchTextContainer =
               (containerDescriptor) => containerDescriptor.QueryString(q => q.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
-                  .Fields(f => f.Field("*"))
+                  .Fields(f => f.Field(p => p.Firstname)
+                      .Field(p => p.Surname))
                   .Type(TextQueryType.MostFields));
 
             filters.Add(filterBySearchTextContainer);

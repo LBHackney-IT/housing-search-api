@@ -26,7 +26,9 @@ namespace HousingSearchApi.V1.Interfaces
             QueryContainer FilterBySearchTextContainer(QueryContainerDescriptor<QueryableAsset> containerDescriptor) =>
                 containerDescriptor
                     .QueryString(qs => qs.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
-                    .Fields(f => f.Field("*"))
+                        .Fields(f => f.Field("assetAddress.addressLine1^3")
+                            .Field(p => p.AssetAddress.PostCode)
+                            .Field(p => p.AssetAddress.Uprn))
                     .Type(TextQueryType.MostFields));
 
             QueryContainer FilterByTypeContainer(QueryContainerDescriptor<QueryableAsset> containerDescriptor) =>
