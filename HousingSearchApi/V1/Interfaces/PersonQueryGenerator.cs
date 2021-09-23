@@ -4,6 +4,7 @@ using HousingSearchApi.V1.Infrastructure;
 using Nest;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HousingSearchApi.V1.Interfaces
 {
@@ -27,6 +28,8 @@ namespace HousingSearchApi.V1.Interfaces
             var filters = new List<Func<QueryContainerDescriptor<QueryablePerson>, QueryContainer>>();
 
             var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(personListRequest.SearchText);
+            var nonWildCardWords = personListRequest.SearchText.Split(" ").ToList();
+            nonWildCardWords = nonWildCardWords.Select(x => "\"" + x + "\"").ToList();
 
             Func<QueryContainerDescriptor<QueryablePerson>, QueryContainer> filterBySearchTextContainer =
               (containerDescriptor) => containerDescriptor.QueryString(q => q.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
@@ -35,6 +38,14 @@ namespace HousingSearchApi.V1.Interfaces
                   .Type(TextQueryType.MostFields));
 
             filters.Add(filterBySearchTextContainer);
+
+            Func<QueryContainerDescriptor<QueryablePerson>, QueryContainer> filterBySearchTextContainerKeywords =
+                (containerDescriptor) => containerDescriptor.QueryString(q => q.Query(string.Join(' ', nonWildCardWords))
+                    .Fields(f => f.Field("firstname^2")
+                        .Field(p =>"surname^2"))
+                    .Type(TextQueryType.MostFields));
+
+            filters.Add(filterBySearchTextContainerKeywords);
 
             if (personListRequest.PersonType.HasValue)
             {
