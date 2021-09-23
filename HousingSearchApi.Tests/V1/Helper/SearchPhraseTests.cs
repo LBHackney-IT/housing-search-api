@@ -54,8 +54,7 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             filterByText.Should().NotBeNull();
             filterByText.QueryString.Query.Should().BeEquivalentTo(wildCardedSearchText);
-            filterByText.QueryString.Fields.Should().HaveCount(1);
-            filterByText.QueryString.Fields.FirstOrDefault().Name.Should().Be("*");
+            filterByText.QueryString.Fields.Should().HaveCount(2);
             filterByText.QueryString.Type.Should().Be(TextQueryType.MostFields);
         }
 
@@ -88,8 +87,7 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             filterByText.Should().NotBeNull();
             filterByText.QueryString.Query.Should().BeEquivalentTo(nameToExpect);
-            filterByText.QueryString.Fields.Should().HaveCount(1);
-            filterByText.QueryString.Fields.FirstOrDefault().Name.Should().Be("*");
+            filterByText.QueryString.Fields.Should().HaveCount(2);
             filterByText.QueryString.Type.Should().Be(TextQueryType.MostFields);
 
             var filterByPersonType = searchFilter[1] as IQueryContainer;
