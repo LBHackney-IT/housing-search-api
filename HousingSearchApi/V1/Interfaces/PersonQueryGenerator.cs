@@ -28,6 +28,7 @@ namespace HousingSearchApi.V1.Interfaces
             var filters = new List<Func<QueryContainerDescriptor<QueryablePerson>, QueryContainer>>();
 
             var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(personListRequest.SearchText);
+
             var nonWildCardWords = personListRequest.SearchText.Split(" ").ToList();
             nonWildCardWords = nonWildCardWords.Select(x => "\"" + x + "\"").ToList();
 
