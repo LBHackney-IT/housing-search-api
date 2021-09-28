@@ -33,8 +33,8 @@ namespace HousingSearchApi.V1.Interfaces
                 containerDescriptor
                     .QueryString(qs => qs.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
                         .Fields(f => f.Field("assetAddress.addressLine1^2")
-                            .Field("assetAddress.postCode^2")
-                            .Field("assetAddress.uprn^2"))
+                            .Field("assetAddress.postCode")
+                            .Field("assetAddress.uprn"))
                     .Type(TextQueryType.MostFields));
 
             //QueryContainer FilterBySearchTextContainerExact(QueryContainerDescriptor<QueryableAsset> containerDescriptor) =>
@@ -57,7 +57,7 @@ namespace HousingSearchApi.V1.Interfaces
             if (!string.IsNullOrWhiteSpace(request.AssetTypes))
                 filters.Add(FilterByTypeContainer);
 
-            return q.Bool(bq => bq.Filter(filters.ToArray()));
+            return q.Bool(bq => bq.Must(filters.ToArray()));
         }
     }
 }

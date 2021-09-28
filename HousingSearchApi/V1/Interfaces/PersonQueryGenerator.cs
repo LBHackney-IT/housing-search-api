@@ -60,7 +60,7 @@ namespace HousingSearchApi.V1.Interfaces
                 filters.Add(filterByTypeContainer);
             }
 
-            queryContainer = q.Bool(bq => bq.Filter(filters.ToArray()));
+            queryContainer = q.Bool(bq => bq.Must(filters.ToArray()));
 
             return queryContainer;
         }
