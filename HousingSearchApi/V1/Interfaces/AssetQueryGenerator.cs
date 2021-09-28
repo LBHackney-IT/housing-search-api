@@ -37,13 +37,13 @@ namespace HousingSearchApi.V1.Interfaces
                             .Field("assetAddress.uprn^2"))
                     .Type(TextQueryType.MostFields));
 
-            QueryContainer FilterBySearchTextContainerExact(QueryContainerDescriptor<QueryableAsset> containerDescriptor) =>
-                containerDescriptor
-                    .QueryString(qs => qs.Query(string.Join(" ", nonWildCardWords))
-                        .Fields(f => f.Field("assetAddress.addressLine1^3")
-                            .Field("assetAddress.postCode^3")
-                            .Field("assetAddress.uprn^3"))
-                        .Type(TextQueryType.MostFields));
+            //QueryContainer FilterBySearchTextContainerExact(QueryContainerDescriptor<QueryableAsset> containerDescriptor) =>
+            //    containerDescriptor
+            //        .QueryString(qs => qs.Query(string.Join(" ", nonWildCardWords))
+            //            .Fields(f => f.Field("assetAddress.addressLine1^3")
+            //                .Field("assetAddress.postCode^3")
+            //                .Field("assetAddress.uprn^3"))
+            //            .Type(TextQueryType.MostFields));
 
             QueryContainer FilterByTypeContainer(QueryContainerDescriptor<QueryableAsset> containerDescriptor) =>
                 containerDescriptor
@@ -53,11 +53,11 @@ namespace HousingSearchApi.V1.Interfaces
             #endregion
 
             filters.Add(FilterBySearchTextContainer);
-            filters.Add(FilterBySearchTextContainerExact);
+            //filters.Add(FilterBySearchTextContainerExact);
             if (!string.IsNullOrWhiteSpace(request.AssetTypes))
                 filters.Add(FilterByTypeContainer);
 
-            return q.DisMax(bq => bq.Queries(filters.ToArray()));
+            return q.Bool(bq => bq.Filter(filters.ToArray()));
         }
     }
 }
