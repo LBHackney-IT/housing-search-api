@@ -40,14 +40,6 @@ namespace HousingSearchApi.V1.Interfaces
 
             filters.Add(filterBySearchTextContainer);
 
-            Func<QueryContainerDescriptor<QueryablePerson>, QueryContainer> filterBySearchTextContainerKeywords =
-                (containerDescriptor) => containerDescriptor.QueryString(q => q.Query(string.Join(" ", nonWildCardWords))
-                    .Fields(f => f.Field("firstname^3")
-                        .Field("surname^3"))
-                    .Type(TextQueryType.MostFields));
-
-            filters.Add(filterBySearchTextContainerKeywords);
-
             if (personListRequest.PersonType.HasValue)
             {
                 var types = personListRequest.PersonType.Value.GetPersonTypes();
@@ -60,7 +52,7 @@ namespace HousingSearchApi.V1.Interfaces
                 filters.Add(filterByTypeContainer);
             }
 
-            queryContainer = q.DisMax(bq => bq.Queries(filters.ToArray()));
+            queryContainer = q.Bool(bq => bq.Must(filters.ToArray()));
 
             return queryContainer;
         }
