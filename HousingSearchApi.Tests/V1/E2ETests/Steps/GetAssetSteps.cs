@@ -10,6 +10,7 @@ using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps.Base;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
+using NUnit.Framework;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 {
@@ -68,7 +69,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);
 
-            result.Results.Assets.Should().OnlyContain(a => allowedAssetTypes.Contains(a.AssetType));
+            result.Results.Assets.Should().OnlyContain(a => allowedAssetTypes.Contains(a.AssetType.ToString()));
         }
     }
 }

@@ -1,8 +1,9 @@
-using System.Linq;
+using Hackney.Shared.Asset;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
 using TestStack.BDDfy;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Stories
 {
@@ -17,14 +18,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         private readonly AssetFixture _assetsFixture;
         private readonly GetAssetSteps _steps;
 
-        public GetAssetStories(MockWebApplicationFactory<Startup> factory)
+        public GetAssetStories(MockWebApplicationFactory<Startup> factory, ITestOutputHelper output)
         {
             _factory = factory;
             var httpClient = factory.CreateClient();
             var elasticClient = factory.ElasticSearchClient;
 
             _steps = new GetAssetSteps(httpClient);
-            _assetsFixture = new AssetFixture(elasticClient, httpClient);
+            _assetsFixture = new AssetFixture(elasticClient, httpClient, output);
         }
 
         [Fact]
@@ -57,10 +58,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceFiltersGivenAssetTypes()
         {
-            var assetTypes = AssetFixture.Alphabet.TakeLast(2);
+            var pickedTypes = AssetFixture.PickStringsFromEnum<AssetType>(2);
+
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
-                .When(w => _steps.WhenAssetTypesAreProvided(assetTypes))
-                .Then(t => _steps.ThenOnlyTheseAssetTypesShouldBeIncluded(assetTypes))
+                .When(w => _steps.WhenAssetTypesAreProvided(pickedTypes))
+                .Then(t => _steps.ThenOnlyTheseAssetTypesShouldBeIncluded(pickedTypes))
                 .BDDfy();
         }
     }

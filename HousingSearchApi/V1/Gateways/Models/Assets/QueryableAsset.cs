@@ -1,5 +1,8 @@
-using HousingSearchApi.V1.Domain.Asset;
+using System;
 using Nest;
+using Asset = Hackney.Shared.Asset.Asset;
+using AssetAddress = Hackney.Shared.Asset.AssetAddress;
+using Tenure = Hackney.Shared.Asset.AssetTenure;
 
 namespace HousingSearchApi.V1.Gateways.Models.Assets
 {
@@ -9,25 +12,27 @@ namespace HousingSearchApi.V1.Gateways.Models.Assets
         {
             var assetAddress = AssetAddress == null
                 ? new AssetAddress()
-                : Domain.Asset.AssetAddress.Create(
-                    AssetAddress.Uprn,
-                    AssetAddress.AddressLine1,
-                    AssetAddress.AddressLine2,
-                    AssetAddress.AddressLine3,
-                    AssetAddress.AddressLine4,
-                    AssetAddress.PostCode,
-                    AssetAddress.PostPreamble
-                );
+                : new AssetAddress
+                {
+                    Uprn = AssetAddress.Uprn,
+                    AddressLine1 = AssetAddress.AddressLine1,
+                    AddressLine2 = AssetAddress.AddressLine2,
+                    AddressLine3 = AssetAddress.AddressLine3,
+                    AddressLine4 = AssetAddress.AddressLine4,
+                    PostCode = AssetAddress.PostCode,
+                    PostPreamble = AssetAddress.PostPreamble
+                };
 
             var tenure = Tenure == null
                 ? new Tenure()
-                : Domain.Asset.Tenure.Create(
-                    Tenure.Id,
-                    Tenure.PaymentReference,
-                    Tenure.StartOfTenureDate,
-                    Tenure.EndOfTenureDate,
-                    Tenure.Type
-                );
+                : new Tenure
+                {
+                    Id = Tenure.Id,
+                    PaymentReference = Tenure.PaymentReference,
+                    StartOfTenureDate = DateTime.Parse(Tenure.StartOfTenureDate),
+                    EndOfTenureDate = DateTime.Parse(Tenure.EndOfTenureDate),
+                    Type = Tenure.Type
+                };
 
             return Asset.Create(
                 Id,
