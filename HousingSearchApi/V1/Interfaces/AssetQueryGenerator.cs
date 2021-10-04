@@ -12,43 +12,31 @@ namespace HousingSearchApi.V1.Interfaces
     public class AssetQueryGenerator : IQueryGenerator<QueryableAsset>
     {
         private readonly IWildCardAppenderAndPrepender _wildCardAppenderAndPrepender;
+        private readonly IQueryBuilder<QueryableAsset> _queryBuilder;
 
-        public AssetQueryGenerator(IWildCardAppenderAndPrepender wildCardAppenderAndPrepender)
+        public AssetQueryGenerator(IQueryBuilder<QueryableAsset> queryBuilder, IWildCardAppenderAndPrepender wildCardAppenderAndPrepender)
         {
             _wildCardAppenderAndPrepender = wildCardAppenderAndPrepender;
+            _queryBuilder = queryBuilder;
         }
 
-        public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryableAsset> q)
+        public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryableAsset> containerDescriptor)
         {
-            var filters = new List<Func<QueryContainerDescriptor<QueryableAsset>, QueryContainer>>();
 
             var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
+            var searchQuery = $"({string.Join(" AND ", listOfWildCardedWords)}) " +
+                              string.Join(' ', listOfWildCardedWords);
+            var searchFields = new List<string> { "assetAddress.addressLine1^2", "assetAddress.postCode", "assetAddress.uprn" };
+            _queryBuilder.WithQueryAndFields(searchQuery, searchFields);
 
-            var nonWildCardWords = request.SearchText.Split(" ").ToList();
-            nonWildCardWords = nonWildCardWords.Select(x => "\"" + x + "\"").ToList();
-            nonWildCardWords.Add("\"" + request.SearchText + "\"");
-
-            #region Filter definitions
-            QueryContainer FilterBySearchTextContainer(QueryContainerDescriptor<QueryableAsset> containerDescriptor) =>
-                containerDescriptor
-                    .QueryString(qs => qs.Query($"({string.Join(" AND ", listOfWildCardedWords)}) " + string.Join(' ', listOfWildCardedWords))
-                        .Fields(f => f.Field("assetAddress.addressLine1^2")
-                            .Field("assetAddress.postCode")
-                            .Field("assetAddress.uprn"))
-                    .Type(TextQueryType.MostFields));
-
-            QueryContainer FilterByTypeContainer(QueryContainerDescriptor<QueryableAsset> containerDescriptor) =>
-                containerDescriptor
-                    .QueryString(qs => qs.Query(string.Join(' ', request.AssetTypes.Split(",")))
-                    .Fields(f => f.Field(asset => asset.AssetType))
-                    .Type(TextQueryType.MostFields));
-            #endregion
-
-            filters.Add(FilterBySearchTextContainer);
             if (!string.IsNullOrWhiteSpace(request.AssetTypes))
-                filters.Add(FilterByTypeContainer);
+            {
+                var filterQuery = string.Join(' ', request.AssetTypes.Split(","));
+                var filterFields = new List<string> { "assetType" };
+                _queryBuilder.WithQueryAndFields(filterQuery, filterFields);
+            }
 
-            return q.Bool(bq => bq.Must(filters.ToArray()));
+            return _queryBuilder.FilterAndRespectSearchScore(containerDescriptor);
         }
     }
 }

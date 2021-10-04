@@ -7,6 +7,6 @@ namespace HousingSearchApi.V1.Interfaces
 
     {
         QueryContainer Create(HousingSearchRequest request,
-            QueryContainerDescriptor<T> q);
+            QueryContainerDescriptor<T> containerDescriptor);
     }
 }
