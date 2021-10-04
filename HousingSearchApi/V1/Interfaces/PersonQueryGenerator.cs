@@ -78,12 +78,19 @@ namespace HousingSearchApi.V1.Interfaces
                               string.Join(' ', listOfWildCardedWords);
             var searchFields = new List<string> { "firstname", "surname" };
 
-            var filterQuery = string.Join(" ", personListRequest.PersonType.Value.GetPersonTypes());
-            var filterFields = new List<string> { "tenures.type" };
+            _queryBuilder
+                .WithQueryAndFields(searchQuery, searchFields);
+
+            if (personListRequest.PersonType.HasValue)
+            {
+                var filterQuery = string.Join(" ", personListRequest.PersonType.Value.GetPersonTypes());
+                var filterFields = new List<string> {"tenures.type"};
+
+                _queryBuilder
+                    .WithQueryAndFields(filterQuery, filterFields);
+            }
 
             return _queryBuilder
-                .WithQueryAndFields(searchQuery, searchFields)
-                .WithQueryAndFields(filterQuery, filterFields)
                 .FilterAndRespectSearchScore(containerDescriptor);
         }
     }
