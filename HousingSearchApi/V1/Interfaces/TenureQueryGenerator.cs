@@ -28,7 +28,7 @@ namespace HousingSearchApi.V1.Interfaces
             var searchFields = new List<string> { "tenuredAsset.fullAddress^3", "householdMembers", "householdMembers.fullName^3" };
 
             return _queryBuilder.WithQueryAndFields(searchQuery, searchFields)
-                .FilterAndRespectSearchScore(containerDescriptor);
+                .Search(containerDescriptor);
         }
     }
 }

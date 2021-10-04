@@ -13,6 +13,8 @@ namespace HousingSearchApi.V1.Interfaces
         IQueryBuilder<T> WithQueryAndFields(string queryString, List<string> fields);
 
         QueryContainer FilterAndRespectSearchScore(QueryContainerDescriptor<T> descriptor);
+
+        QueryContainer Search(QueryContainerDescriptor<T> containerDescriptor);
     }
 
     public class QueryBuilder<T> : IQueryBuilder<T> where T : class
@@ -52,6 +54,11 @@ namespace HousingSearchApi.V1.Interfaces
         public QueryContainer FilterAndRespectSearchScore(QueryContainerDescriptor<T> containerDescriptor)
         {
             return containerDescriptor.Bool(builder => builder.Must(_queries));
+        }
+
+        public QueryContainer Search(QueryContainerDescriptor<T> containerDescriptor)
+        {
+            return containerDescriptor.DisMax(builder => builder.Queries(_queries));
         }
     }
 
