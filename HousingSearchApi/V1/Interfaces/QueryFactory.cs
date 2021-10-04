@@ -9,17 +9,19 @@ namespace HousingSearchApi.V1.Interfaces
     public class QueryFactory : IQueryFactory
     {
         private readonly IWildCardAppenderAndPrepender _wildCardAppenderAndPrepender;
+        private readonly IQueryBuilder<QueryablePerson> _personQueryBuilder;
 
-        public QueryFactory(IWildCardAppenderAndPrepender wildCardAppenderAndPrepender)
+        public QueryFactory(IWildCardAppenderAndPrepender wildCardAppenderAndPrepender, IQueryBuilder<QueryablePerson> personQueryBuilder)
         {
             _wildCardAppenderAndPrepender = wildCardAppenderAndPrepender;
+            _personQueryBuilder = personQueryBuilder;
         }
 
         public IQueryGenerator<T> CreateQuery<T>(HousingSearchRequest request) where T : class
         {
             if (typeof(T) == typeof(QueryablePerson))
             {
-                return (IQueryGenerator<T>) new PersonQueryGenerator(_wildCardAppenderAndPrepender);
+                return (IQueryGenerator<T>) new PersonQueryGenerator(_personQueryBuilder, _wildCardAppenderAndPrepender);
             }
 
             if (typeof(T) == typeof(Gateways.Models.Tenures.QueryableTenure))

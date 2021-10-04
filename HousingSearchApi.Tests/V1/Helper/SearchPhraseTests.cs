@@ -16,7 +16,7 @@ namespace HousingSearchApi.Tests.V1.Helper
 
         public SearchPhraseTests()
         {
-            _sut = new PersonQueryGenerator(new WildCardAppenderAndPrepender());
+            _sut = new PersonQueryGenerator(new QueryBuilder<QueryablePerson>(), new WildCardAppenderAndPrepender());
         }
 
         [Theory]
