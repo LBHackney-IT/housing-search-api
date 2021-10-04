@@ -58,7 +58,7 @@ namespace HousingSearchApi.V1.Interfaces
 
         public QueryContainer Search(QueryContainerDescriptor<T> containerDescriptor)
         {
-            return containerDescriptor.DisMax(builder => builder.Queries(_queries));
+            return _queries.First().Invoke(containerDescriptor);
         }
     }
 
