@@ -84,7 +84,7 @@ namespace HousingSearchApi.V1.Interfaces
             if (personListRequest.PersonType.HasValue)
             {
                 var filterQuery = string.Join(" ", personListRequest.PersonType.Value.GetPersonTypes());
-                var filterFields = new List<string> {"tenures.type"};
+                var filterFields = new List<string> { "tenures.type" };
 
                 _queryBuilder
                     .WithQueryAndFields(filterQuery, filterFields);
