@@ -22,12 +22,10 @@ namespace HousingSearchApi.V1.Interfaces
         {
             if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
 
-            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
-            var searchQuery = $"({string.Join(" AND ", listOfWildCardedWords)}) " +
-                              string.Join(' ', listOfWildCardedWords);
             var searchFields = new List<string> { "paymentReference", "tenuredAsset.fullAddress^3", "householdMembers", "householdMembers.fullName^3" };
 
-            return _queryBuilder.WithQueryAndFields(searchQuery, searchFields)
+            return _queryBuilder.CreateWildstarSearchQuery(request.SearchText)
+                .SpecifyFieldsToBeSearched(searchFields)
                 .FilterAndRespectSearchScore(containerDescriptor);
         }
     }

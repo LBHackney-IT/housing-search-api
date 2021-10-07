@@ -10,7 +10,13 @@ namespace HousingSearchApi.V1.Interfaces
 {
     public interface IQueryBuilder<T> where T : class
     {
-        IQueryBuilder<T> WithQueryAndFields(string queryString, List<string> fields);
+        IQueryBuilder<T> CreateWildstarSearchQuery(string searchText);
+
+        IQueryBuilder<T> CreateFilterQuery(string commaSeparatedFilters);
+
+        IQueryBuilder<T> SpecifyFieldsToBeSearched(List<string> fields);
+
+        IQueryBuilder<T> SpecifyFieldsToBeFiltered(List<string> fields);
 
         QueryContainer FilterAndRespectSearchScore(QueryContainerDescriptor<T> descriptor);
 
@@ -19,19 +25,64 @@ namespace HousingSearchApi.V1.Interfaces
 
     public class QueryBuilder<T> : IQueryBuilder<T> where T : class
     {
+        private readonly IWildCardAppenderAndPrepender _wildCardAppenderAndPrepender;
         private readonly List<Func<QueryContainerDescriptor<T>, QueryContainer>> _queries;
+        private string _searchQuery;
+        private string _filterQuery;
 
-        public QueryBuilder()
+        public QueryBuilder(IWildCardAppenderAndPrepender wildCardAppenderAndPrepender)
         {
+            _wildCardAppenderAndPrepender = wildCardAppenderAndPrepender;
             _queries = new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
         }
 
-        public IQueryBuilder<T> WithQueryAndFields(string queryString, List<string> fields)
+        public IQueryBuilder<T> CreateWildstarSearchQuery(string searchText)
+        {
+            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(searchText);
+            _searchQuery = $"({string.Join(" AND ", listOfWildCardedWords)}) " +
+                              string.Join(' ', listOfWildCardedWords);
+
+            return this;
+        }
+
+        public IQueryBuilder<T> CreateFilterQuery(string commaSeparatedFilters)
+        {
+            _filterQuery = string.Join(' ', commaSeparatedFilters.Split(","));
+
+            return this;
+        }
+
+        public IQueryBuilder<T> SpecifyFieldsToBeSearched(List<string> fields)
         {
             Func<QueryContainerDescriptor<T>, QueryContainer> query =
                 (containerDescriptor) => containerDescriptor.QueryString(q =>
                 {
-                    var queryDescriptor = q.Query(queryString)
+                    var queryDescriptor = q.Query(_searchQuery)
+                        .Type(TextQueryType.MostFields)
+                        .Fields(f =>
+                        {
+                            foreach (var field in fields)
+                            {
+                                f = f.Field(field);
+                            }
+
+                            return f;
+                        });
+
+                    return queryDescriptor;
+                });
+
+            _queries.Add(query);
+
+            return this;
+        }
+
+        public IQueryBuilder<T> SpecifyFieldsToBeFiltered(List<string> fields)
+        {
+            Func<QueryContainerDescriptor<T>, QueryContainer> query =
+                (containerDescriptor) => containerDescriptor.QueryString(q =>
+                {
+                    var queryDescriptor = q.Query(_filterQuery)
                         .Type(TextQueryType.MostFields)
                         .Fields(f =>
                         {
@@ -79,26 +130,20 @@ namespace HousingSearchApi.V1.Interfaces
             {
                 return null;
             }
-
-            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(personListRequest.SearchText);
-            var searchQuery = $"({string.Join(" AND ", listOfWildCardedWords)}) " +
-                              string.Join(' ', listOfWildCardedWords);
             var searchFields = new List<string> { "firstname", "surname" };
 
-            _queryBuilder
-                .WithQueryAndFields(searchQuery, searchFields);
+            _queryBuilder.CreateWildstarSearchQuery(request.SearchText)
+                .SpecifyFieldsToBeSearched(searchFields);
 
-            if (personListRequest.PersonType.HasValue)
+            if (!string.IsNullOrWhiteSpace(request.AssetTypes))
             {
-                var filterQuery = string.Join(" ", personListRequest.PersonType.Value.GetPersonTypes());
                 var filterFields = new List<string> { "tenures.type" };
 
-                _queryBuilder
-                    .WithQueryAndFields(filterQuery, filterFields);
+                _queryBuilder.CreateFilterQuery(request.AssetTypes)
+                    .SpecifyFieldsToBeFiltered(filterFields);
             }
 
-            return _queryBuilder
-                .FilterAndRespectSearchScore(containerDescriptor);
+            return _queryBuilder.FilterAndRespectSearchScore(containerDescriptor);
         }
     }
 }

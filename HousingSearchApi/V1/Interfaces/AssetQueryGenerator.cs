@@ -22,18 +22,17 @@ namespace HousingSearchApi.V1.Interfaces
 
         public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryableAsset> containerDescriptor)
         {
-
-            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(request.SearchText);
-            var searchQuery = $"({string.Join(" AND ", listOfWildCardedWords)}) " +
-                              string.Join(' ', listOfWildCardedWords);
             var searchFields = new List<string> { "assetAddress.addressLine1^2", "assetAddress.postCode", "assetAddress.uprn" };
-            _queryBuilder.WithQueryAndFields(searchQuery, searchFields);
+
+            _queryBuilder.CreateWildstarSearchQuery(request.SearchText)
+                .SpecifyFieldsToBeSearched(searchFields);
 
             if (!string.IsNullOrWhiteSpace(request.AssetTypes))
             {
-                var filterQuery = string.Join(' ', request.AssetTypes.Split(","));
                 var filterFields = new List<string> { "assetType" };
-                _queryBuilder.WithQueryAndFields(filterQuery, filterFields);
+
+                _queryBuilder.CreateFilterQuery(request.AssetTypes).
+                    SpecifyFieldsToBeFiltered(filterFields);
             }
 
             return _queryBuilder.FilterAndRespectSearchScore(containerDescriptor);
