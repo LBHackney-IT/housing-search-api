@@ -11,7 +11,9 @@ namespace HousingSearchApi.V1.Domain.Tenure
 
         public static TenuredAsset Create(QueryableTenuredAsset tenuredAsset)
         {
-            return new TenuredAsset(tenuredAsset);
+            return tenuredAsset == null
+                ? null
+                : new TenuredAsset(tenuredAsset);
         }
 
         public TenuredAsset()
