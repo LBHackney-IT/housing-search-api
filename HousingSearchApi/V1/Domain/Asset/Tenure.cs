@@ -7,9 +7,6 @@ namespace HousingSearchApi.V1.Domain.Asset
         public static Tenure Create(string id, string paymentReference, string startOfTenureDate,
             string endOfTenureDate, string tenureType)
         {
-            if (string.IsNullOrWhiteSpace(id))
-                return null;
-
             return new Tenure(
                 id,
                 paymentReference,
