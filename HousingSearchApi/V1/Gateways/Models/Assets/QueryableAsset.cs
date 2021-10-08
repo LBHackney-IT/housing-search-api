@@ -20,7 +20,7 @@ namespace HousingSearchApi.V1.Gateways.Models.Assets
                 );
 
             var tenure = Tenure == null
-                ? new Tenure()
+                ? null
                 : Domain.Asset.Tenure.Create(
                     Tenure.Id,
                     Tenure.PaymentReference,
