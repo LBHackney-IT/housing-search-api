@@ -32,6 +32,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Hackney.Core.ElasticSearch;
+using Hackney.Core.ElasticSearch.Interfaces;
 
 namespace HousingSearchApi
 {
@@ -145,7 +147,7 @@ namespace HousingSearchApi
             services.ConfigureElasticSearch(Configuration);
             services.AddElasticSearchHealthCheck();
 
-            services.AddScoped<IWildCardAppenderAndPrepender, WildCardAppenderAndPrepender>();
+            services.AddScoped(typeof(IQueryBuilder<>), typeof(QueryBuilder<>));
             services.AddScoped<IQueryFactory, QueryFactory>();
             services.AddScoped<IIndexSelector, IndexSelector>();
 

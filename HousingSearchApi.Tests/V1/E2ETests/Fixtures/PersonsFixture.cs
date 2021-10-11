@@ -1,7 +1,6 @@
 using AutoFixture;
 using Elasticsearch.Net;
 using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Gateways.Models;
 using HousingSearchApi.V1.Gateways.Models.Persons;
 using HousingSearchApi.V1.Infrastructure;
 using Nest;

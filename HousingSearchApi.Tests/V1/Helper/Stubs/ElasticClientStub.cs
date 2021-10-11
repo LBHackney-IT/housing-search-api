@@ -10,6 +10,7 @@ using Nest.Specification.ClusterApi;
 using Nest.Specification.CrossClusterReplicationApi;
 using Nest.Specification.DanglingIndicesApi;
 using Nest.Specification.EnrichApi;
+using Nest.Specification.EqlApi;
 using Nest.Specification.GraphApi;
 using Nest.Specification.IndexLifecycleManagementApi;
 using Nest.Specification.IndicesApi;
@@ -918,6 +919,7 @@ namespace HousingSearchApi.Tests.V1.Helper.Stubs
         public CrossClusterReplicationNamespace CrossClusterReplication { get; }
         public DanglingIndicesNamespace DanglingIndices { get; }
         public EnrichNamespace Enrich { get; }
+        public EqlNamespace Eql { get; }
         public GraphNamespace Graph { get; }
         public IndexLifecycleManagementNamespace IndexLifecycleManagement { get; }
         public IndicesNamespace Indices { get; }
