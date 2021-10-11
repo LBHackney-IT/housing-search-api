@@ -23,5 +23,8 @@ namespace HousingSearchApi.V1.Boundary.Requests
 
         [FromQuery(Name = "isDesc")]
         public bool IsDesc { get; set; }
+
+        [FromQuery(Name = "propertyReference")]
+        public string PropertyReference { get; set; }
     }
 }
