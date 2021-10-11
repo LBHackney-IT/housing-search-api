@@ -25,7 +25,7 @@ namespace HousingSearchApi.V1.Interfaces
             if (!string.IsNullOrWhiteSpace(request.AssetTypes))
             {
                 _queryBuilder.CreateFilterQuery(request.AssetTypes)
-                    .SpecifyFieldsToBeFiltered(new List<string> { "assetType"});
+                    .SpecifyFieldsToBeFiltered(new List<string> { "assetType" });
             }
 
             return _queryBuilder.FilterAndRespectSearchScore(q);

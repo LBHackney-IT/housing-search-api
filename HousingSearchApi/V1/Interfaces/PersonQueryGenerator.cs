@@ -23,7 +23,7 @@ namespace HousingSearchApi.V1.Interfaces
                 return null;
             }
 
-            _queryBuilder.SpecifyFieldsToBeSearched(new List<string>{"firstname", "surname"})
+            _queryBuilder.SpecifyFieldsToBeSearched(new List<string> { "firstname", "surname" })
                 .CreateWildstarSearchQuery(personListRequest.SearchText);
 
             if (personListRequest.PersonType.HasValue)
