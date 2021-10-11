@@ -159,16 +159,16 @@ workflows:
     jobs:
       - check-code-formatting
       - build-and-test
-      - assume-role-development:
-          context: api-assume-role-housing-development-context
-          requires:
-            - build-and-test
-      - terraform-init-and-apply-to-development:
-          requires:
-            - assume-role-development
-      - deploy-to-development:
-          requires:
-            - terraform-init-and-apply-to-development
+      # - assume-role-development:
+          # context: api-assume-role-housing-development-context
+          # requires:
+            # - build-and-test
+      # - terraform-init-and-apply-to-development:
+          # requires:
+            # - assume-role-development
+      # - deploy-to-development:
+          # requires:
+            # - terraform-init-and-apply-to-development
   check-and-deploy-staging-and-production:
       jobs:
       - check-code-formatting
