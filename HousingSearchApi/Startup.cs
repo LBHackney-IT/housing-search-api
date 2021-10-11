@@ -148,6 +148,7 @@ namespace HousingSearchApi
             services.AddElasticSearchHealthCheck();
 
             services.AddScoped(typeof(IQueryBuilder<>), typeof(QueryBuilder<>));
+            services.AddScoped<IWildCardAppenderAndPrepender, WildCardAppenderAndPrepender>();
             services.AddScoped<IQueryFactory, QueryFactory>();
             services.AddScoped<IIndexSelector, IndexSelector>();
 
