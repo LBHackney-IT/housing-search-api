@@ -19,16 +19,16 @@ namespace HousingSearchApi.V1.Interfaces
 
         public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryableAsset> q)
         {
-            _queryBuilder.CreateWildstarSearchQuery(request.SearchText)
-                .SpecifyFieldsToBeSearched(new List<string> { "assetAddress.addressLine1^2", "assetAddress.postCode", "assetAddress.uprn" });
-
-            if (!string.IsNullOrWhiteSpace(request.AssetTypes))
-            {
-                _queryBuilder.CreateFilterQuery(request.AssetTypes)
-                    .SpecifyFieldsToBeFiltered(new List<string> { "assetType" });
-            }
-
-            return _queryBuilder.FilterAndRespectSearchScore(q);
+            return _queryBuilder
+                 .WithWildstarQuery(request.SearchText,
+                     new List<string> { "assetAddress.addressLine1^2", "assetAddress.postCode", "assetAddress.uprn" })
+                 .WithExactQuery(request.SearchText,
+                     new List<string>
+                     {
+                        "assetAddress.addressLine1.keyword", "assetAddress.postCode.keyword", "assetAddress.keyword"
+                     })
+                 .WithFilterQuery(request.AssetTypes, new List<string> { "assetType.keyword" })
+                 .Build(q);
         }
     }
 }

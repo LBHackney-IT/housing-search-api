@@ -15,7 +15,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
     {
         public List<QueryablePerson> Persons { get; private set; }
         private const string INDEX = "assets";
-        public static string[] Alphabet = { "aa", "bb", "cc", "dd", "ee", "vv", "ww", "xx", "yy", "zz" };
+        public static string[] Addresses =
+        {
+            "G 1 Something Street", "123 Something Street", "1 Something street", "100 Something street",
+            "21 Something street", "G 12 Something Street", "2123 Something Street", "200 Something street"
+        };
 
         public AssetFixture(IElasticClient elasticClient, HttpClient httpClient) : base(elasticClient, httpClient)
         {
@@ -50,25 +54,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             var fixture = new Fixture();
             var random = new Random();
 
-            foreach (var value in Alphabet)
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    var asset = fixture.Create<QueryableAsset>();
-                    asset.AssetAddress.Uprn = value;
-                    asset.AssetType = value;
-
-                    listOfAssets.Add(asset);
-                }
-            }
-
-            // Add loads more at random
-            for (int i = 0; i < 900; i++)
+            foreach (var value in Addresses)
             {
                 var asset = fixture.Create<QueryableAsset>();
-
-                var value = Alphabet[random.Next(0, Alphabet.Length)];
-                asset.AssetAddress.Uprn = value;
+                asset.AssetAddress.AddressLine1 = value;
+                asset.AssetType = value;
 
                 listOfAssets.Add(asset);
             }

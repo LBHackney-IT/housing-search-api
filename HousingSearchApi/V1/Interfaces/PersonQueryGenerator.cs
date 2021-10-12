@@ -3,6 +3,7 @@ using HousingSearchApi.V1.Gateways.Models.Persons;
 using HousingSearchApi.V1.Infrastructure;
 using Nest;
 using System.Collections.Generic;
+using System.Linq;
 using Hackney.Core.ElasticSearch.Interfaces;
 
 namespace HousingSearchApi.V1.Interfaces
@@ -23,16 +24,30 @@ namespace HousingSearchApi.V1.Interfaces
                 return null;
             }
 
-            _queryBuilder.SpecifyFieldsToBeSearched(new List<string> { "firstname", "surname" })
-                .CreateWildstarSearchQuery(personListRequest.SearchText);
+            _queryBuilder
+                .WithWildstarQuery(request.SearchText,
+                    new List<string> { "firstname", "surname" })
+                .WithExactQuery(request.SearchText,
+                    new List<string> { "firstname", "surname" }, new ExactSearchQuerystringProcessor());
 
             if (personListRequest.PersonType.HasValue)
             {
-                _queryBuilder.SpecifyFieldsToBeFiltered(personListRequest.PersonType.Value.GetPersonTypes())
-                    .CreateFilterQuery(personListRequest.SearchText);
+                _queryBuilder.WithFilterQuery(request.AssetTypes, personListRequest.PersonType.Value.GetPersonTypes());
             }
 
-            return _queryBuilder.FilterAndRespectSearchScore(q);
+            return _queryBuilder.Build(q);
         }
     }
+
+    public class ExactSearchQuerystringProcessor : IExactSearchQuerystringProcessor
+    {
+        public string Process(string searchText)
+        {
+            if (searchText.Split(" ").Length > 0)
+                return searchText.Replace(" ", " AND ");
+
+            return searchText;
+        }
+    }
+
 }

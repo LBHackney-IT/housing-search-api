@@ -31,7 +31,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenAPageSizeIsProvided(int pageSize)
         {
-            var route = new Uri($"api/v1/search/assets?searchText={AssetFixture.Alphabet.Last()}&pageSize={pageSize}",
+            var route = new Uri($"api/v1/search/assets?searchText={AssetFixture.Addresses.Last()}&pageSize={pageSize}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -39,7 +39,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task WhenAssetTypesAreProvided(IEnumerable<string> assetTypes)
         {
             var assetTypesString = string.Join(',', assetTypes);
-            var route = new Uri($"api/v1/search/assets?searchText={AssetFixture.Alphabet.Last()}&assetTypes={assetTypesString}&pageSize={5}",
+            var route = new Uri($"api/v1/search/assets?searchText={AssetFixture.Addresses.Last()}&assetTypes={assetTypesString}&pageSize={5}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+
+        public async Task WhenAnExactMatchExists(string address)
+        {
+            var route = new Uri($"api/v1/search/assets?searchText={address}&pageSize={5}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -69,6 +77,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.Should().OnlyContain(a => allowedAssetTypes.Contains(a.AssetType));
+        }
+
+        public async Task ThenThatAddressShouldBeTheFirstResult(string address)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Assets.First().AssetAddress.AddressLine1.Should().Be(address);
         }
     }
 }

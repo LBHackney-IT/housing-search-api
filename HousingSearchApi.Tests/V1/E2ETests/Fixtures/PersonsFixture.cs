@@ -115,12 +115,17 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             var specificPerson2 = fixture.Create<QueryablePerson>();
             specificPerson2.Firstname = firstName;
             specificPerson2.Surname = "Something";
-            listOfPersons.Add(specificPerson);
+            listOfPersons.Add(specificPerson2);
 
             var specificPerson3 = fixture.Create<QueryablePerson>();
             specificPerson3.Firstname = lastName;
             specificPerson3.Surname = "Last";
-            listOfPersons.Add(specificPerson);
+            listOfPersons.Add(specificPerson3);
+
+            var specificPerson4 = fixture.Create<QueryablePerson>();
+            specificPerson3.Firstname = firstName + firstName;
+            specificPerson3.Surname = lastName + lastName;
+            listOfPersons.Add(specificPerson4);
 
             var awaitable = ElasticSearchClient.IndexManyAsync(listOfPersons, INDEX).ConfigureAwait(true);
 
