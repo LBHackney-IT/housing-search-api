@@ -21,11 +21,11 @@ namespace HousingSearchApi.V1.Interfaces
         {
             return _queryBuilder
                  .WithWildstarQuery(request.SearchText,
-                     new List<string> { "assetAddress.addressLine1^2", "assetAddress.postCode", "assetAddress.uprn" })
+                     new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
                  .WithExactQuery(request.SearchText,
                      new List<string>
                      {
-                        "assetAddress.addressLine1.keyword"
+                        "assetAddress.addressLine1.keyword", "assetAddress.postCode", "assetAddress.uprn.keyword"
                      })
                  .WithFilterQuery(request.AssetTypes, new List<string> { "assetType.keyword" })
                  .Build(q);
