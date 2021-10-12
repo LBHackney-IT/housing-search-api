@@ -15,10 +15,19 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
     {
         public List<QueryablePerson> Persons { get; private set; }
         private const string INDEX = "assets";
-        public static string[] Addresses =
+        public static AddressStub[] Addresses =
         {
-            "G 1 Something Street", "123 Something Street", "1 Something street", "100 Something street",
-            "21 Something street", "G 12 Something Street", "2123 Something Street", "200 Something street"
+            new AddressStub{ FistLine = "G 1 Something Street", AssetType = "FirstAsset"},
+            new AddressStub{ FistLine = "G 11 Something Street", AssetType = "FirstAsset"},
+            new AddressStub{ FistLine = "123 Something Street", AssetType = "SecondAsset"},
+            new AddressStub{ FistLine = "1 Something street", AssetType = "FirstAsset"},
+            new AddressStub{ FistLine = "11 Something street", AssetType = "FirstAsset"},
+            new AddressStub{ FistLine = "1111 Something street", AssetType = "FirstAsset"},
+            new AddressStub{ FistLine = "100 Something street", AssetType = "ThirdAsset"},
+            new AddressStub{ FistLine = "21 Something street", AssetType = "FirstAsset"},
+            new AddressStub{ FistLine = "G 12 Something Street", AssetType = "SecondAsset"},
+            new AddressStub{ FistLine = "2123 Something Street", AssetType = "ThirdAsset"},
+            new AddressStub{ FistLine = "200 Something street", AssetType = "SecondAsset"}
         };
 
         public AssetFixture(IElasticClient elasticClient, HttpClient httpClient) : base(elasticClient, httpClient)
@@ -57,13 +66,19 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             foreach (var value in Addresses)
             {
                 var asset = fixture.Create<QueryableAsset>();
-                asset.AssetAddress.AddressLine1 = value;
-                asset.AssetType = value;
+                asset.AssetAddress.AddressLine1 = value.FistLine;
+                asset.AssetType = value.AssetType;
 
                 listOfAssets.Add(asset);
             }
 
             return listOfAssets;
         }
+    }
+
+    public class AddressStub
+    {
+        public string FistLine { get; set; }
+        public string AssetType { get; set; }
     }
 }

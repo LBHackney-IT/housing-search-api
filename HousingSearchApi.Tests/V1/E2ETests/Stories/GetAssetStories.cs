@@ -57,10 +57,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceFiltersGivenAssetTypes()
         {
-            var assetTypes = AssetFixture.Addresses.TakeLast(2);
+            var asset = "FirstAsset,SecondAsset";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
-                .When(w => _steps.WhenAssetTypesAreProvided(assetTypes))
-                .Then(t => _steps.ThenOnlyTheseAssetTypesShouldBeIncluded(assetTypes))
+                .When(w => _steps.WhenAssetTypesAreProvided(asset))
+                .Then(t => _steps.ThenOnlyTheseAssetTypesShouldBeIncluded(asset))
                 .BDDfy();
         }
 
