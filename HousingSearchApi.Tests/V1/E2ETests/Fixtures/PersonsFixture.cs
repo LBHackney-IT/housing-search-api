@@ -131,7 +131,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             while (!awaitable.GetAwaiter().IsCompleted) { }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(10000);
         }
     }
 }
