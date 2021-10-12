@@ -25,7 +25,7 @@ namespace HousingSearchApi.V1.Interfaces
                  .WithExactQuery(request.SearchText,
                      new List<string>
                      {
-                        "assetAddress.addressLine1.keyword", "assetAddress.postCode", "assetAddress.uprn.keyword"
+                        "assetAddress.addressLine1.keyword"
                      })
                  .WithFilterQuery(request.AssetTypes, new List<string> { "assetType.keyword" })
                  .Build(q);
