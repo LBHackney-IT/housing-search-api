@@ -4,6 +4,7 @@ using HousingSearchApi.V1.Infrastructure;
 using Nest;
 using System.Collections.Generic;
 using System.Linq;
+using Amazon.Runtime.Internal;
 using Hackney.Core.ElasticSearch.Interfaces;
 
 namespace HousingSearchApi.V1.Interfaces
@@ -32,7 +33,7 @@ namespace HousingSearchApi.V1.Interfaces
 
             if (personListRequest.PersonType.HasValue)
             {
-                _queryBuilder.WithFilterQuery(request.AssetTypes, personListRequest.PersonType.Value.GetPersonTypes());
+                _queryBuilder.WithFilterQuery(string.Join(",", personListRequest.PersonType.Value.GetPersonTypes()), new List<string> { "tenures.type" });
             }
 
             return _queryBuilder.Build(q);

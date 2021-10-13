@@ -156,12 +156,11 @@
       "normalizer": {
         "my_normalizer": {
           "type": "custom",
-          "char_filter": [
-
-          ],
           "filter": [
             "lowercase",
-            "asciifolding"
+            "asciifolding",
+            "trim",
+            "whitespace_remove"
           ]
         }
       }

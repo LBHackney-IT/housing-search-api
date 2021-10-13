@@ -69,8 +69,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         {
             var assetTypes = AssetFixture.Addresses.TakeLast(2);
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
-                .When(w => _steps.WhenAnExactMatchExists("1 Something street"))
-                .Then(t => _steps.ThenThatAddressShouldBeTheFirstResult("1 Something street"))
+                .When(w => _steps.WhenAnExactMatchExists("5 Buckland Court St Johns Estate"))
+                .Then(t => _steps.ThenThatAddressShouldBeTheFirstResult("5 Buckland Court St Johns Estate"))
                 .BDDfy();
         }
     }
