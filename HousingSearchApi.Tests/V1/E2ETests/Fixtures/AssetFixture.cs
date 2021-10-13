@@ -17,14 +17,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         private const string INDEX = "assets";
         public static AddressStub[] Addresses =
         {
-            new AddressStub{ FistLine = "59 Buckland Court  St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FistLine = "54 Buckland Court  St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234655"},
-            new AddressStub{ FistLine = "65 Buckland Court  St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234605"},
-            new AddressStub{ FistLine = "45 Buckland Court  St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FistLine = "Gge 45 Buckland Court  St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FistLine = "Gge 52 Buckland Court  St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FistLine = "Gge 51 Buckland Court  St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FistLine = "5 Buckland Court  St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 6TY", UPRN = "10008235183"},
+            new AddressStub{ FistLine = "59 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
+            new AddressStub{ FistLine = "54 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234655"},
+            new AddressStub{ FistLine = "65 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234605"},
+            new AddressStub{ FistLine = "45 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
+            new AddressStub{ FistLine = "Gge 45 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
+            new AddressStub{ FistLine = "Gge 52 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
+            new AddressStub{ FistLine = "Gge 51 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
+            new AddressStub{ FistLine = "5 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 6TY", UPRN = "10008235183"},
             new AddressStub{ FistLine = "Gge 15 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
             new AddressStub{ FistLine = "Gge 53 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
             new AddressStub{ FistLine = "Gge 25 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650"}
