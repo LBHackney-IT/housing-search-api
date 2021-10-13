@@ -26,7 +26,8 @@ namespace HousingSearchApi.V1.Gateways.Models.Assets
                     Tenure.PaymentReference,
                     Tenure.StartOfTenureDate,
                     Tenure.EndOfTenureDate,
-                    Tenure.Type
+                    Tenure.Type,
+                    Tenure.PropertyReference
                 );
 
             return Asset.Create(
