@@ -11,7 +11,8 @@ namespace HousingSearchApi.V1.Gateways.Models.Assets
                 PaymentReference,
                 StartOfTenureDate,
                 EndOfTenureDate,
-                Type
+                Type,
+                PropertyReference
             );
         }
 
@@ -21,5 +22,6 @@ namespace HousingSearchApi.V1.Gateways.Models.Assets
         public string StartOfTenureDate { get; set; }
         public string EndOfTenureDate { get; set; }
         public string Type { get; set; }
+        public string PropertyReference { get; set; }
     }
 }
