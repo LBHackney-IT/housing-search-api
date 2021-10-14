@@ -39,16 +39,4 @@ namespace HousingSearchApi.V1.Interfaces
             return _queryBuilder.Build(q);
         }
     }
-
-    public class ExactSearchQuerystringProcessor : IExactSearchQuerystringProcessor
-    {
-        public string Process(string searchText)
-        {
-            if (searchText.Split(" ").Length > 0)
-                return searchText.Replace(" ", " AND ");
-
-            return searchText;
-        }
-    }
-
 }

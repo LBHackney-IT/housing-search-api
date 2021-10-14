@@ -26,7 +26,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenRequestContainsSearchString()
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/assets?searchText=abc", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/assets?searchText=%20abc", UriKind.Relative)).ConfigureAwait(false);
         }
 
         public async Task WhenAPageSizeIsProvided(int pageSize)
