@@ -159,10 +159,6 @@ workflows:
     jobs:
       - check-code-formatting
       - build-and-test
-      - assume-role-development:
-          context: api-assume-role-housing-development-context
-          requires:
-            - build-and-test
   check-and-deploy-staging-and-production:
       jobs:
       - check-code-formatting
