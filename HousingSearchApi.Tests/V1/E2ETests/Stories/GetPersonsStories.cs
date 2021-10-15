@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
 using HousingSearchApi.V1.Domain;
@@ -89,17 +90,9 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         public void ServiceReturnsOnlyLeaseholderPersons()
         {
             this.Given(g => _personsFixture.GivenAPersonIndexExists())
-                .When(w => _steps.WhenARequestContainsSearchByLeaseholder())
-                .Then(t => _steps.ThenTheResultShouldContainOnlyType(PersonType.Leaseholder))
-                .BDDfy();
-        }
-
-        [Fact]
-        public void ServiceReturnsOnlyTenantPersons()
-        {
-            this.Given(g => _personsFixture.GivenAPersonIndexExists())
-                .When(w => _steps.WhenARequestContainsSearchByTenant())
-                .Then(t => _steps.ThenTheResultShouldContainOnlyType(PersonType.Tenant))
+                .Given(g => _personsFixture.GivenDifferentTypesOfTenureTypes("SomePersonName", "SomePersonLastName", new List<string> { "Tenant", "Leaseholder" }))
+                .When(w => _steps.WhenARequestContainsSearchByTenureTypes("SomePersonLastName", new List<string> { "Tenant" }))
+                .Then(t => _steps.ThenTheResultShouldContainOnlyTheSearchedTypes(new List<string> { "Tenant" }))
                 .BDDfy();
         }
     }

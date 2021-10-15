@@ -131,7 +131,34 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             while (!awaitable.GetAwaiter().IsCompleted) { }
 
-            Thread.Sleep(10000);
+            Thread.Sleep(5000);
+        }
+
+        public void GivenDifferentTypesOfTenureTypes(string firstName, string lastName, List<string> list)
+        {
+            var listOfPersons = new List<QueryablePerson>();
+
+            foreach (var tenureType in list)
+            {
+                listOfPersons.Add(new QueryablePerson
+                {
+                    Firstname = firstName,
+                    Surname = lastName,
+                    Tenures = new List<QueryablePersonTenure>
+                    {
+                        new QueryablePersonTenure
+                        {
+                            Type = tenureType
+                        }
+                    }
+                });
+            }
+
+            var awaitable = ElasticSearchClient.IndexManyAsync(listOfPersons, INDEX).ConfigureAwait(true);
+
+            while (!awaitable.GetAwaiter().IsCompleted) { }
+
+            Thread.Sleep(5000);
         }
     }
 }
