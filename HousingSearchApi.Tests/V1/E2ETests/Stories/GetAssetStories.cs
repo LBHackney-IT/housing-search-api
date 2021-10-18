@@ -57,7 +57,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceFiltersGivenAssetTypes()
         {
-            var asset = "FirstAsset,SecondAsset";
+            var asset = "NA";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenAssetTypesAreProvided(asset))
                 .Then(t => _steps.ThenOnlyTheseAssetTypesShouldBeIncluded(asset))

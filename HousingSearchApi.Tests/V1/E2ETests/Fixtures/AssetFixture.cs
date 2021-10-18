@@ -17,17 +17,17 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         private const string INDEX = "assets";
         public static AddressStub[] Addresses =
         {
-            new AddressStub{ FistLine = "59 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FistLine = "54 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234655"},
-            new AddressStub{ FistLine = "65 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234605"},
-            new AddressStub{ FistLine = "45 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FistLine = "Gge 45 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FistLine = "Gge 52 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FistLine = "Gge 51 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FistLine = "5 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 6TY", UPRN = "10008235183"},
-            new AddressStub{ FistLine = "Gge 15 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FistLine = "Gge 53 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FistLine = "Gge 25 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650"}
+            new AddressStub{ FirstLine = "59 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
+            new AddressStub{ FirstLine = "54 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234655"},
+            new AddressStub{ FirstLine = "65 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234605"},
+            new AddressStub{ FirstLine = "45 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
+            new AddressStub{ FirstLine = "Gge 45 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
+            new AddressStub{ FirstLine = "Gge 52 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
+            new AddressStub{ FirstLine = "Gge 51 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
+            new AddressStub{ FirstLine = "5 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 6TY", UPRN = "10008235183"},
+            new AddressStub{ FirstLine = "Gge 15 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
+            new AddressStub{ FirstLine = "Gge 53 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
+            new AddressStub{ FirstLine = "Gge 25 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650"}
         };
 
         public AssetFixture(IElasticClient elasticClient, HttpClient httpClient) : base(elasticClient, httpClient)
@@ -66,7 +66,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             foreach (var value in Addresses)
             {
                 var asset = fixture.Create<QueryableAsset>();
-                asset.AssetAddress.AddressLine1 = value.FistLine;
+                asset.AssetAddress.AddressLine1 = value.FirstLine;
                 asset.AssetType = value.AssetType;
                 asset.AssetAddress.PostCode = value.PostCode;
                 asset.AssetAddress.Uprn = value.UPRN;
@@ -80,7 +80,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
     public class AddressStub
     {
-        public string FistLine { get; set; }
+        public string FirstLine { get; set; }
         public string AssetType { get; set; }
         public string PostCode { get; set; }
         public string UPRN { get; set; }
