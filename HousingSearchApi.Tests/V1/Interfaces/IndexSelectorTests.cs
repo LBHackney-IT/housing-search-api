@@ -1,7 +1,6 @@
 using FluentAssertions;
 using HousingSearchApi.V1.Gateways.Models.Assets;
 using HousingSearchApi.V1.Gateways.Models.Persons;
-using HousingSearchApi.V1.Gateways.Models.Tenures;
 using HousingSearchApi.V1.Interfaces;
 using Xunit;
 

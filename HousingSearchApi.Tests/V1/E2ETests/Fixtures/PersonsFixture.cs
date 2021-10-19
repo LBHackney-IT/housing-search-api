@@ -1,7 +1,6 @@
 using AutoFixture;
 using Elasticsearch.Net;
 using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Gateways.Models;
 using HousingSearchApi.V1.Gateways.Models.Persons;
 using HousingSearchApi.V1.Infrastructure;
 using Nest;
@@ -116,18 +115,50 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             var specificPerson2 = fixture.Create<QueryablePerson>();
             specificPerson2.Firstname = firstName;
             specificPerson2.Surname = "Something";
-            listOfPersons.Add(specificPerson);
+            listOfPersons.Add(specificPerson2);
 
             var specificPerson3 = fixture.Create<QueryablePerson>();
             specificPerson3.Firstname = lastName;
             specificPerson3.Surname = "Last";
-            listOfPersons.Add(specificPerson);
+            listOfPersons.Add(specificPerson3);
+
+            var specificPerson4 = fixture.Create<QueryablePerson>();
+            specificPerson3.Firstname = firstName + firstName;
+            specificPerson3.Surname = lastName + lastName;
+            listOfPersons.Add(specificPerson4);
 
             var awaitable = ElasticSearchClient.IndexManyAsync(listOfPersons, INDEX).ConfigureAwait(true);
 
             while (!awaitable.GetAwaiter().IsCompleted) { }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
+        }
+
+        public void GivenDifferentTypesOfTenureTypes(string firstName, string lastName, List<string> list)
+        {
+            var listOfPersons = new List<QueryablePerson>();
+
+            foreach (var tenureType in list)
+            {
+                listOfPersons.Add(new QueryablePerson
+                {
+                    Firstname = firstName,
+                    Surname = lastName,
+                    Tenures = new List<QueryablePersonTenure>
+                    {
+                        new QueryablePersonTenure
+                        {
+                            Type = tenureType
+                        }
+                    }
+                });
+            }
+
+            var awaitable = ElasticSearchClient.IndexManyAsync(listOfPersons, INDEX).ConfigureAwait(true);
+
+            while (!awaitable.GetAwaiter().IsCompleted) { }
+
+            Thread.Sleep(5000);
         }
     }
 }
