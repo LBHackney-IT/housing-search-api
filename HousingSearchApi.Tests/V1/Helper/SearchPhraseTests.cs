@@ -1,11 +1,10 @@
 using FluentAssertions;
+using Hackney.Core.ElasticSearch;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Domain;
 using HousingSearchApi.V1.Gateways.Models.Persons;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.Interfaces;
 using Nest;
-using System.Linq;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Helper
@@ -16,7 +15,7 @@ namespace HousingSearchApi.Tests.V1.Helper
 
         public SearchPhraseTests()
         {
-            _sut = new PersonQueryGenerator(new WildCardAppenderAndPrepender());
+            _sut = new PersonQueryGenerator(new QueryBuilder<QueryablePerson>(new WildCardAppenderAndPrepender()));
         }
 
         [Theory]

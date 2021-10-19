@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -32,7 +33,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenSearchingByFirstAndLastName(string firstName, string lastName)
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/persons?searchText={firstName}%20{lastName}", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/persons?searchText=%20{firstName}%20{lastName}", UriKind.Relative)).ConfigureAwait(false);
         }
 
         public async Task WhenAPageSizeIsProvided(int pageSize)
@@ -155,7 +156,29 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
                 person.Should().NotBeNull();
                 person.Tenures.Should().NotBeNull();
 
-                person.Tenures.Any(t => t.Type.IsPersonTypeOf(expectedPersonType));
+                person.Tenures.All(t => t.Type.IsPersonTypeOf(expectedPersonType));
+            }
+        }
+
+        public async Task WhenARequestContainsSearchByTenureTypes(string somepersonlastname, List<string> tenureTypes)
+        {
+            var route = new Uri($"api/v1/search/persons?searchText={somepersonlastname}&personType={string.Join(" ", tenureTypes)}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+
+        public async Task ThenTheResultShouldContainOnlyTheSearchedTypes(List<string> list)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<GetPersonListResponse>>(resultBody, _jsonOptions);
+
+            foreach (var personResult in result.Results.Persons)
+            {
+                foreach (var tenure in personResult.Tenures)
+                {
+                    list.Any(x => x == tenure.Type).Should().BeTrue();
+                }
             }
         }
     }

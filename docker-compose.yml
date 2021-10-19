@@ -13,7 +13,7 @@ services:
     networks:
       - elastic
     depends_on:
-      #- kibana
+      - kibana
       - test-elasticsearch
       
   test-elasticsearch:
@@ -36,13 +36,17 @@ services:
       - elastic
 
   kibana:
-        image: docker.elastic.co/kibana/kibana:7.9.3
-        ports:
-            - "5601:5601"
-        networks:
-            - elastic
-        depends_on:
-            - test-elasticsearch
+    image: docker.elastic.co/kibana/kibana:7.9.3
+    container_name: kibana
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+    depends_on:
+      - test-elasticsearch
+    environment:
+      ELASTICSEARCH_HOSTS: http://test-elasticsearch:9200
+      SERVER_HOST: 0.0.0.0
 
 volumes:
     esdata-test:
