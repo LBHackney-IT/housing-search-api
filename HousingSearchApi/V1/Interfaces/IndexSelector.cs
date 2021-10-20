@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
-using HousingSearchApi.V1.Gateways.Models.Assets;
-using HousingSearchApi.V1.Gateways.Models.Persons;
+using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
+using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
+using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
 using Nest;
+using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 
 namespace HousingSearchApi.V1.Interfaces
 {
@@ -15,7 +17,7 @@ namespace HousingSearchApi.V1.Interfaces
             if (type == typeof(QueryablePerson))
                 return Indices.Index(new List<IndexName> { "persons" });
 
-            if (type == typeof(Gateways.Models.Tenures.QueryableTenure))
+            if (type == typeof(QueryableTenure))
                 return Indices.Index(new List<IndexName> { "tenures" });
 
             if (type == typeof(QueryableAsset))

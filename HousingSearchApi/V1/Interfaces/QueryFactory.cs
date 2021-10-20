@@ -1,9 +1,11 @@
 using System;
 using Hackney.Core.ElasticSearch.Interfaces;
+using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
+using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
+using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Gateways.Models.Assets;
-using HousingSearchApi.V1.Gateways.Models.Persons;
 using Microsoft.Extensions.DependencyInjection;
+using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 
 namespace HousingSearchApi.V1.Interfaces
 {
@@ -23,9 +25,9 @@ namespace HousingSearchApi.V1.Interfaces
                 return (IQueryGenerator<T>) new PersonQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryablePerson>>());
             }
 
-            if (typeof(T) == typeof(Gateways.Models.Tenures.QueryableTenure))
+            if (typeof(T) == typeof(QueryableTenure))
             {
-                return (IQueryGenerator<T>) new TenureQueryGenerator(_serviceProvider.GetService<IQueryBuilder<Gateways.Models.Tenures.QueryableTenure>>());
+                return (IQueryGenerator<T>) new TenureQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableTenure>>());
             }
 
             if (typeof(T) == typeof(QueryableAsset))
