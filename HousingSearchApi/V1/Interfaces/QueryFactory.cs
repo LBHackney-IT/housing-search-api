@@ -5,7 +5,6 @@ using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
 using HousingSearchApi.V1.Boundary.Requests;
 using Microsoft.Extensions.DependencyInjection;
-using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 
 namespace HousingSearchApi.V1.Interfaces
 {

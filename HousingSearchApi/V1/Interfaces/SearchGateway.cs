@@ -6,7 +6,6 @@ using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using System.Linq;
 using System.Threading.Tasks;
-using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 
 namespace HousingSearchApi.V1.Interfaces
 {
