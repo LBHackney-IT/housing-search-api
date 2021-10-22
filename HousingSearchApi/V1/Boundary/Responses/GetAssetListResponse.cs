@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using HousingSearchApi.V1.Domain.Asset;
+using Hackney.Shared.HousingSearch.Domain.Asset;
 
 namespace HousingSearchApi.V1.Boundary.Responses
 {

@@ -1,5 +1,5 @@
 using FluentAssertions;
-using HousingSearchApi.V1.Domain;
+using Hackney.Shared.HousingSearch.Domain;
 using HousingSearchApi.V1.Infrastructure;
 using System;
 using System.Collections.Generic;

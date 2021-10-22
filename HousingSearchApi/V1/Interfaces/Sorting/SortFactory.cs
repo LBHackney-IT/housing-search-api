@@ -1,5 +1,5 @@
+using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Gateways.Models.Persons;
 
 namespace HousingSearchApi.V1.Interfaces.Sorting
 {
