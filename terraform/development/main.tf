@@ -5,7 +5,7 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 locals {
-   parameter_store = "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter"
+  parameter_store = "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter"
 }
 
 terraform {
@@ -52,7 +52,16 @@ module "elasticsearch_db_development" {
 }
 
 resource "aws_ssm_parameter" "search_elasticsearch_domain" {
-  name = "/housing-search-api/development/elasticsearch-domain"
-  type = "String"
-  value = "https://vpc-housing-search-api-es-klp5oycl6thlxaub2mzu5zlj5u.eu-west-2.es.amazonaws.com"  
+  name  = "/housing-search-api/development/elasticsearch-domain"
+  type  = "String"
+  value = "https://vpc-housing-search-api-es-klp5oycl6thlxaub2mzu5zlj5u.eu-west-2.es.amazonaws.com"
+}
+
+module "housing_search_api_cloudwatch_dashboard" {
+  source                  = "github.com/LBHackney-IT/aws-hackney-common-terraform.git//modules/cloudwatch/dashboards/api-dashboard"
+  environment_name        = var.environment_name
+  api_name                = "housing-search-api"
+  include_sns_widget      = false
+  include_dynamodb_widget = false
+  no_sns_widget_dashboard = false
 }
