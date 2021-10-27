@@ -56,7 +56,7 @@ module "elasticsearch_db_production" {
 resource "aws_ssm_parameter" "search_elasticsearch_domain" {
   name  = "/housing-search-api/production/elasticsearch-domain"
   type  = "String"
-  value = "https://vpc-housing-search-api-es-cggwz5gia7iqw6kxw64ytgrmr4.eu-west-2.es.amazonaws.com"
+  value = module.elasticsearch_db_production.es_endpoint_url
 }
 
 module "housing_search_api_cloudwatch_dashboard" {
