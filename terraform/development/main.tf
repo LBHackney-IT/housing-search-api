@@ -44,7 +44,7 @@ module "elasticsearch_db_development" {
   es_version       = "7.8"
   encrypt_at_rest  = "true"
   instance_type    = "t3.small.elasticsearch"
-  instance_count   = "1"
+  instance_count   = "2"
   ebs_enabled      = "true"
   ebs_volume_size  = "10"
   region           = data.aws_region.current.name
