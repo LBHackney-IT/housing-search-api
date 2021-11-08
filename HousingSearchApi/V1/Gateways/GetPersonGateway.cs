@@ -18,6 +18,7 @@ namespace HousingSearchApi.V1.Gateways
             _esClient = esClient;
             _logger = logger;
         }
+
         [LogCall]
         public Task<List<Person>> Search(SearchParameters parameters)
         {

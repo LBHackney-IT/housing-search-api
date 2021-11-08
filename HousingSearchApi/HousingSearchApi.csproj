@@ -16,6 +16,10 @@
       <EmbeddedResource Remove="V1\Factories\**" />
       <None Remove="V1\Factories\**" />
     </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="V1\Infrastructure\Helpers\SearchElasticSearchHelper.cs" />
+      <Compile Remove="V1\Infrastructure\SearchQueryContainerOrchestrator.cs" />
+    </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="5.1.1" />
