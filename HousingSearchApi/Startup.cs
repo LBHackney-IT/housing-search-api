@@ -34,6 +34,7 @@ using System.Linq;
 using System.Reflection;
 using Hackney.Core.ElasticSearch;
 using Hackney.Core.ElasticSearch.Interfaces;
+using HousingSearchApi.V1.Gateways;
 
 namespace HousingSearchApi
 {
@@ -158,13 +159,15 @@ namespace HousingSearchApi
         private static void RegisterGateways(IServiceCollection services)
         {
             services.AddScoped<ISearchGateway, SearchGateway>();
+            services.AddScoped<IGetAccountGateway, GetAccountGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
         {
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
+            services.AddScoped<IGetAccountListUseCase, GetAccountListUseCase>();
             services.AddScoped<IGetTenureListUseCase, GetTenureListUseCase>();
-            services.AddScoped<IElasticSearchWrapper, ElasticElasticSearchWrapper>();
+            services.AddScoped<IElasticSearchWrapper, ElasticSearchWrapper>();
             services.AddScoped<IPagingHelper, PagingHelper>();
             services.AddScoped<ISortFactory, SortFactory>();
             services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();
