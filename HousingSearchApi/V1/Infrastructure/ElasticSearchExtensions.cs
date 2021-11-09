@@ -19,6 +19,7 @@ namespace HousingSearchApi.V1.Infrastructure
                 url = "http://localhost:9200";
 
             var pool = new SingleNodeConnectionPool(new Uri(url));
+
             var connectionSettings =
                 new ConnectionSettings(pool)
                     .PrettyJson().ThrowExceptions().DisableDirectStreaming();

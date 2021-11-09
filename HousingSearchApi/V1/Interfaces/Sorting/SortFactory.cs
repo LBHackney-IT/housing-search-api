@@ -1,5 +1,6 @@
-using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
+using Hackney.Shared.HousingSearch.Gateways.Models.Transactions;
 using HousingSearchApi.V1.Boundary.Requests;
+using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
 
 namespace HousingSearchApi.V1.Interfaces.Sorting
 {
@@ -19,6 +20,11 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
                     case false:
                         return (ISort<T>) new SurnameAsc();
                 }
+            }
+
+            if (typeof(T) == typeof(QueryableTransaction))
+            {
+                return (ISort<T>) new TransactionDateDesc();
             }
 
             return new DefaultSort<T>();

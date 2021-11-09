@@ -4,7 +4,7 @@ using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
 using HousingSearchApi.V1.Boundary.Requests;
 using Nest;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Interfaces.QueryGenerators
 {
     public class TenureQueryGenerator : IQueryGenerator<QueryableTenure>
     {

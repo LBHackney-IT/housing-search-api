@@ -1,11 +1,15 @@
 using Hackney.Core.Logging;
+using Hackney.Shared.HousingSearch.Domain.Transactions;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
-using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
+using Hackney.Shared.HousingSearch.Gateways.Models.Transactions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
+using HousingSearchApi.V1.Boundary.Responses.Transactions;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
 
 namespace HousingSearchApi.V1.Interfaces
 {
@@ -61,6 +65,26 @@ namespace HousingSearchApi.V1.Interfaces
             assetListResponse.SetTotal(searchResponse.Total);
 
             return assetListResponse;
+        }
+
+        public async Task<GetTransactionListResponse> GetListOfTransactions(GetTransactionSearchRequest request)
+        {
+            var searchRequest = new HousingSearchRequest
+            {
+                SearchText = request.SearchText, Page = request.Page, PageSize = request.PageSize
+            };
+
+            var searchResponse = await _elasticSearchWrapper.Search<QueryableTransaction>(searchRequest).ConfigureAwait(false);
+
+            var loadedCount = searchResponse.Documents.Count;
+            var transactionListResponse = new GetTransactionListResponse { Transactions = new List<Transaction>(loadedCount) };
+            transactionListResponse.Transactions.AddRange(searchResponse.Documents.Select(queryableTransaction =>
+                queryableTransaction.Create())
+            );
+
+            transactionListResponse.SetTotal(searchResponse.Total);
+
+            return transactionListResponse;
         }
     }
 }

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
-using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
+using Hackney.Shared.HousingSearch.Gateways.Models.Transactions;
 using Nest;
+using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
 
 namespace HousingSearchApi.V1.Interfaces
 {
@@ -21,6 +22,9 @@ namespace HousingSearchApi.V1.Interfaces
 
             if (type == typeof(QueryableAsset))
                 return Indices.Index(new List<IndexName> { "assets" });
+
+            if (type == typeof(QueryableTransaction))
+                return Indices.Index(new List<IndexName> { "transactions" });
 
             throw new NotImplementedException($"No index for type {typeof(T)}");
         }
