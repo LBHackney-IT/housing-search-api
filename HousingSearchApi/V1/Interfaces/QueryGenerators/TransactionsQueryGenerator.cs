@@ -12,7 +12,7 @@ namespace HousingSearchApi.V1.Interfaces.QueryGenerators
 
         public TransactionsQueryGenerator(IQueryBuilder<QueryableTransaction> queryBuilder)
         {
-            _queryBuilder = queryBuilder;   
+            _queryBuilder = queryBuilder;
         }
 
         public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryableTransaction> q)
@@ -39,7 +39,7 @@ namespace HousingSearchApi.V1.Interfaces.QueryGenerators
                         "bankAccountNumber",
                         "transactionDate",
                         "transactionAmount"
-                    })                   
+                    })
                 .Build(q);
         }
     }
