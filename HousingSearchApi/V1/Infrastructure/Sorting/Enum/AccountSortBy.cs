@@ -1,4 +1,4 @@
-namespace HousingSearchApi.V1.Infrastructure.Sorting.Enums
+namespace HousingSearchApi.V1.Infrastructure.Sorting.Enum
 {
     public enum EAccountSortBy
     {

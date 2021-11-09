@@ -1,10 +1,10 @@
-using System.Collections.Generic;
 using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Boundary.Response;
 using HousingSearchApi.V1.Domain;
 using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.UseCase.Interfaces;
+using System;
 using System.Threading.Tasks;
-using HousingSearchApi.V1.Boundary.Responses.Metadata;
 
 namespace HousingSearchApi.V1.UseCase
 {
@@ -17,7 +17,7 @@ namespace HousingSearchApi.V1.UseCase
             _getAccountGateway = getAccountGateway;
         }
 
-        public async Task<APIResponse<List<Account>>> ExecuteAsync(GetAccountListRequest getAccountListRequest)
+        public async Task<APIResponse<Account>> ExecuteAsync(GetAccountListRequest getAccountListRequest)
         {
             return await _getAccountGateway.SearchAsync(getAccountListRequest).ConfigureAwait(false);
         }
