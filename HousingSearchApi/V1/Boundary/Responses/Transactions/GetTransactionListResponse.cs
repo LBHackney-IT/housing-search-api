@@ -23,7 +23,5 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         {
             return _total;
         }
-
-
     }
 }
