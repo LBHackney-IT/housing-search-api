@@ -71,7 +71,9 @@ namespace HousingSearchApi.V1.Interfaces
         {
             var searchRequest = new HousingSearchRequest
             {
-                SearchText = request.SearchText, Page = request.Page, PageSize = request.PageSize
+                SearchText = request.SearchText,
+                Page = request.Page,
+                PageSize = request.PageSize
             };
 
             var searchResponse = await _elasticSearchWrapper.Search<QueryableTransaction>(searchRequest).ConfigureAwait(false);
