@@ -1,7 +1,7 @@
 using System.Linq;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Domain.QueryableModels;
-using HousingSearchApi.V1.Infrastructure.Sorting.Enum;
+using HousingSearchApi.V1.Infrastructure.Sorting.Enums;
 using HousingSearchApi.V1.Infrastructure.Sorting.Interfaces;
 using Nest;
 

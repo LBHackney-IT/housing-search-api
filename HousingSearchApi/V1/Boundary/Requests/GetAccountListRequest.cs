@@ -1,12 +1,7 @@
-using HousingSearchApi.V1.Infrastructure.Sorting.Enum;
 using Microsoft.AspNetCore.Mvc;
-using Nest;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using HousingSearchApi.V1.Infrastructure.Sorting.Enums;
 
 namespace HousingSearchApi.V1.Boundary.Requests
 {

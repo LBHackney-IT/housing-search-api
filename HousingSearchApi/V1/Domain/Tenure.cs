@@ -24,7 +24,7 @@ namespace HousingSearchApi.V1.Domain
         [NotNull]
         public string FullAddress { get; set; }
 
-        public IEnumerable<PrimaryTenant> PrimaryTenants { get; set; }
+        public IEnumerable<PrimaryTenants> PrimaryTenants { get; set; }
     }
 
 

@@ -1,6 +1,5 @@
 using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Boundary.Response;
 using HousingSearchApi.V1.Domain;
 using HousingSearchApi.V1.Domain.QueryableModels;
 using HousingSearchApi.V1.Infrastructure.Helpers.Interfaces;
@@ -8,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HousingSearchApi.V1.Boundary.Responses.Metadata;
 
 namespace HousingSearchApi.V1.Gateways
 {
@@ -23,7 +23,7 @@ namespace HousingSearchApi.V1.Gateways
         }
 
         [LogCall]
-        public async Task<APIResponse<Account>> SearchAsync(GetAccountListRequest getAccountListRequest)
+        public async Task<APIResponse<List<Account>>> SearchAsync(GetAccountListRequest getAccountListRequest)
         {
             var searchResponse = await _elasticClient.Search(getAccountListRequest).ConfigureAwait(false);
             List<Account> responses = searchResponse.Documents.Select(p =>
@@ -63,7 +63,7 @@ namespace HousingSearchApi.V1.Gateways
                     TargetType = p.TargetType
                 }).ToList();
 
-            return new APIResponse<Account>(responses) { Total = searchResponse.Total };
+            return new APIResponse<List<Account>>(responses) { Total = searchResponse.Total };
         }
     }
 }

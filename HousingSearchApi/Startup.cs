@@ -34,6 +34,12 @@ using System.Linq;
 using System.Reflection;
 using Hackney.Core.ElasticSearch;
 using Hackney.Core.ElasticSearch.Interfaces;
+using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Domain.QueryableModels;
+using HousingSearchApi.V1.Infrastructure.Helpers.Interfaces;
+using HousingSearchApi.V1.Infrastructure.Interfaces;
+using HousingSearchApi.V1.Infrastructure.Sorting.Interfaces;
+using IPagingHelper = HousingSearchApi.V1.Interfaces.IPagingHelper;
 
 namespace HousingSearchApi
 {
@@ -168,6 +174,17 @@ namespace HousingSearchApi
             services.AddScoped<IPagingHelper, PagingHelper>();
             services.AddScoped<ISortFactory, SortFactory>();
             services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();
+        }
+
+        private static void RegisterElasticRequirements(IServiceCollection services)
+        {
+            /*services.AddScoped<IElasticClient, ElasticClient>();
+            services.AddScoped<ISearchQueryContainerOrchestrator<QueryableAccount,GetAccountListRequest>, SearchQueryContainerOrchestrator<QueryableAccount, GetAccountListRequest>>();
+            services.AddScoped<IPagingHelper, PagingHelper>();
+            services.AddScoped<IListSortFactory<,>, ListSortFactory>();
+            services.AddScoped<ISearchElasticSearchHelper<,>, SearchElasticSearchHelper>();
+            services.AddScoped(typeof(IQueryBuilder<>), typeof(QueryBuilder<>));
+            services.AddScoped<IWildCardAppenderAndPrepender, WildCardAppenderAndPrepender>();*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

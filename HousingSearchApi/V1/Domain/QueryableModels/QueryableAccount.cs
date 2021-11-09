@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using HousingSearchApi.V1.Domain.Enums;
 using Nest;
 
 namespace HousingSearchApi.V1.Domain.QueryableModels

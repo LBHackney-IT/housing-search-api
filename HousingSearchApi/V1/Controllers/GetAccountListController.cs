@@ -8,6 +8,7 @@ using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HousingSearchApi.V1.Controllers
@@ -34,10 +35,7 @@ namespace HousingSearchApi.V1.Controllers
         {
             try
             {
-                var accountSearchResult = await _getAccountListUseCase.ExecuteAsync(request).ConfigureAwait(false);
-                var apiResponse = new APIResponse<Account>(accountSearchResult);
-                apiResponse.Total = accountSearchResult.Total();
-
+                var apiResponse = await _getAccountListUseCase.ExecuteAsync(request).ConfigureAwait(false);
                 return new OkObjectResult(apiResponse);
             }
             catch (Exception e)

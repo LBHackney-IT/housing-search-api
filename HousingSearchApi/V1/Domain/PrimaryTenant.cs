@@ -1,3 +1,4 @@
+using System;
 using HousingSearchApi.V1.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 
