@@ -182,15 +182,35 @@ jobs:
     steps:
       - terraform-apply:
           environment: "development"
-  terraform-init-and-apply-to-staging:
+  terraform-init-and-plan-staging:
     executor: docker-terraform
     steps:
-      - terraform-init-then-apply:
+      - terraform-init-then-plan:
           environment: "staging"
-  terraform-init-and-apply-to-production:
+  terraform-compliance-staging:
     executor: docker-terraform
     steps:
-      - terraform-init-then-apply:
+      - terraform-compliance:
+          environment: "staging"
+  terraform-apply-staging:
+    executor: docker-terraform
+    steps:
+      - terraform-apply:
+          environment: "staging"
+  terraform-init-and-plan-production:
+    executor: docker-terraform
+    steps:
+      - terraform-init-then-plan:
+          environment: "production"
+  terraform-compliance-production:
+    executor: docker-terraform
+    steps:
+      - terraform-compliance:
+          environment: "production"
+  terraform-apply-production:
+    executor: docker-terraform
+    steps:
+      - terraform-apply:
           environment: "production"
   deploy-to-development:
     executor: docker-dotnet
@@ -240,7 +260,7 @@ workflows:
               only: master
       - deploy-to-development:
           requires:
-            - terraform-init-and-apply-to-development
+            - terraform-apply-development
           filters:
             branches:
               only: master
@@ -258,15 +278,27 @@ workflows:
           filters:
              branches:
                only: release
-      - terraform-init-and-apply-to-staging:
+      - terraform-init-and-plan-staging:
           requires:
             - assume-role-staging
           filters:
             branches:
               only: release
+      - terraform-compliance-staging:
+          requires:
+            - terraform-init-and-plan-staging
+          filters:
+            branches:
+              only: release
+      - terraform-apply-staging:
+          requires:
+            - terraform-compliance-staging
+          filters:
+            branches:
+              only: master
       - deploy-to-staging:
           requires:
-            - terraform-init-and-apply-to-staging
+            - terraform-apply-staging
           filters:
             branches:
               only: release
@@ -281,16 +313,28 @@ workflows:
           filters:
              branches:
                only: release
-      - terraform-init-and-apply-to-production:
+      - terraform-init-and-plan-production:
           requires:
             - assume-role-production
+          filters:
+            branches:
+              only: release
+      - terraform-compliance-production:
+          requires:
+            - terraform-init-and-plan-production
+          filters:
+            branches:
+              only: release
+      - terraform-apply-production:
+          requires:
+            - terraform-compliance-production
           filters:
             branches:
               only: release
       - permit-production-release:
           type: approval
           requires:
-            - terraform-init-and-apply-to-production
+            - terraform-apply-production
           filters:
             branches:
               only: release
