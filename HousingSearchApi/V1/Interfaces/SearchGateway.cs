@@ -72,7 +72,7 @@ namespace HousingSearchApi.V1.Interfaces
             var accountListResponse = new GetAccountListResponse();
 
             accountListResponse.Accounts.AddRange(searchResponse.Documents.Select(queryableAccount =>
-                queryableAccount.Create())
+                queryableAccount.ToAccount())
             );
 
             accountListResponse.SetTotal(searchResponse.Total);
