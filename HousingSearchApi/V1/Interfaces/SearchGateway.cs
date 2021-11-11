@@ -78,7 +78,7 @@ namespace HousingSearchApi.V1.Interfaces
             var searchResponse = await _elasticSearchWrapper.Search<QueryableTransaction>(searchRequest).ConfigureAwait(false);
 
             var transactions = searchResponse.Documents.Select(queryableTransaction => queryableTransaction.Create());
-            
+
             return GetTransactionListResponse.Create(searchResponse.Total, transactions.ToResponse());
         }
     }

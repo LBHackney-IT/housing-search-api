@@ -41,7 +41,5 @@ namespace HousingSearchApi.Tests.V1.Factories
             var domain = sharedDomain.ToDomain();
             sharedDomain.Should().BeEquivalentTo(domain);
         }
-
-        
     }
 }
