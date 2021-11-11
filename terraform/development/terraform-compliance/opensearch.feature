@@ -18,8 +18,8 @@ Feature: OpenSearch is used to host the ElasticSearch clusters
     And it must contain instance_count
     And its value must be greater and equal than 2
 
-#  Scenario: Ensure instance type is small or medium
-#    Given I have aws_elasticsearch_domain defined
-#    Then it must contain cluster_config
-#    And it must contain instance_type
-#    And its value must be ^(t3.small.elasticsearch\|t3.medium.elasticsearch)$
+  Scenario: Ensure instance type is small or medium
+    Given I have aws_elasticsearch_domain defined
+    Then it must contain cluster_config
+    And it must contain instance_type
+    And its value must match the "^(t3\.small\.elasticsearch|t3\.medium\.elasticsearch)" regex
