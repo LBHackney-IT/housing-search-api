@@ -15,4 +15,5 @@ Feature: OpenSearch is used to host the ElasticSearch clusters
   Scenario: Ensure minimum instance count is 2
     Given I have aws_elasticsearch_domain defined
     Then it must contain cluster_config
-    And its instance_count property must be greater and equal to 2
+    And it must contain instance_count
+    And its value must be greater and equal to 2
