@@ -1,13 +1,22 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace HousingSearchApi.V1.Boundary.Responses.Transactions
 {
     public class Person
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
-        [Required]
-        public string FullName { get; set; }
+        public string FullName { get; }
+
+        private Person(Guid id, string fullName)
+        {
+            Id = id;
+            FullName = fullName;
+        }
+
+        public static Person Create(Guid id, string fullName)
+        {
+            return new Person(id, fullName);
+        }
     }
 }

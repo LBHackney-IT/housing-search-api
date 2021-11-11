@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Hackney.Shared.HousingSearch.Domain.Transactions;
 
 namespace HousingSearchApi.V1.Boundary.Responses.Transactions
 {
@@ -7,16 +6,17 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
     {
         private long _total;
 
-        public List<Transaction> Transactions { get; set; }
+        private readonly List<TransactionResponse> _transactions;
 
-        public GetTransactionListResponse()
-        {
-            Transactions = new List<Transaction>();
-        }
-
-        public void SetTotal(long total)
+        private GetTransactionListResponse(long total, List<TransactionResponse> transactions)
         {
             _total = total;
+            _transactions = new List<TransactionResponse>(transactions);
+        }
+
+        public static GetTransactionListResponse Create(long total, List<TransactionResponse> transactions)
+        {
+            return new GetTransactionListResponse(total, transactions);
         }
 
         public long Total()

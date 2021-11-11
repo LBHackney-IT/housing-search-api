@@ -10,7 +10,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// 2f378d65-38d3-4fb4-877b-afeee666209e
         /// </example>
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
         /// <summary>
         /// The guid of a tenancy/property
@@ -18,7 +18,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// 94b02545-0233-4640-98dd-b2900423c0a5
         /// </example>
-        public Guid TargetId { get; set; }
+        public Guid TargetId { get; }
 
         /// <summary>
         ///     The target of provided id by target_id
@@ -26,14 +26,14 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         ///     Asset
         /// </example>
-        public TargetType TargetType { get; set; }
+        public TargetType TargetType { get; }
         /// <summary>
         /// Week number for Rent and Period number for LeaseHolders
         /// </summary>
         /// <example>
         /// 2
         /// </example>
-        public short PeriodNo { get; set; }
+        public short PeriodNo { get; }
 
         /// <summary>
         /// Financial year of transaction
@@ -41,7 +41,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// 2022
         /// </example>
-        public short FinancialYear { get; set; }
+        public short FinancialYear { get; }
 
         /// <summary>
         /// Financial Month of transaction
@@ -49,7 +49,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// 1
         /// </example>
-        public short FinancialMonth { get; set; }
+        public short FinancialMonth { get; }
 
         /// <summary>
         /// Transaction Information
@@ -57,7 +57,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// DD
         /// </example>
-        public string TransactionSource { get; set; }
+        public string TransactionSource { get; }
 
         /// <summary>
         /// Type of transaction
@@ -65,7 +65,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// Rent
         /// </example>
-        public TransactionType TransactionType { get; set; }
+        public TransactionType TransactionType { get; }
 
         /// <summary>
         /// Date of transaction
@@ -73,7 +73,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// 2021-04-27T23:00:00.000Z
         /// </example>
-        public DateTime TransactionDate { get; set; }
+        public DateTime TransactionDate { get; }
 
         /// <summary>
         /// Amount of Transaction
@@ -81,7 +81,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// 56.78
         /// </example>
-        public decimal TransactionAmount { get; set; }
+        public decimal TransactionAmount { get; }
 
         /// <summary>
         /// Same as Rent Account Number
@@ -89,7 +89,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// 216704
         /// </example>
-        public string PaymentReference { get; set; }
+        public string PaymentReference { get; }
 
         /// <summary>
         /// Partially filled bank account number
@@ -97,7 +97,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// ******78
         /// </example>
-        public string BankAccountNumber { get; set; }
+        public string BankAccountNumber { get; }
 
         /// <summary>
         /// Is this account need to be in suspense
@@ -105,7 +105,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// true
         /// </example>
-        public bool IsSuspense { get; set; }
+        public bool IsSuspense { get; }
 
         /// <summary>
         /// Information after this recond ceases to be suspense
@@ -117,7 +117,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         ///     "Note": "Some notes about this recond"
         /// }
         /// </example>
-        public SuspenseResolutionInfo SuspenseResolutionInfo { get; set; }
+        public SuspenseResolutionInfo SuspenseResolutionInfo { get; }
 
         /// <summary>
         /// Total paid amount
@@ -125,7 +125,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// 56.78
         /// </example>
-        public decimal PaidAmount { get; set; }
+        public decimal PaidAmount { get; }
 
         /// <summary>
         /// Total charged amount
@@ -133,7 +133,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// 87.53
         /// </example>
-        public decimal ChargedAmount { get; set; }
+        public decimal ChargedAmount { get; }
 
         /// <summary>
         /// Total balance amount
@@ -141,7 +141,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// 1025.00
         /// </example>
-        public decimal BalanceAmount { get; set; }
+        public decimal BalanceAmount { get; }
 
         /// <summary>
         /// Housing Benefit Contribution
@@ -149,7 +149,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// 25.56
         /// </example>
-        public decimal HousingBenefitAmount { get; set; }
+        public decimal HousingBenefitAmount { get; }
 
         /// <summary>
         /// Address of property
@@ -157,7 +157,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// Apartment 22, 18 G road, SW11
         /// </example>
-        public string Address { get; set; }
+        public string Address { get; }
 
         /// <summary>
         /// Person, who paid for the transaction
@@ -168,7 +168,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         ///     "FullName": "Kian Hayward"
         /// }
         /// </example>
-        public Person Person { get; set; }
+        public Person Person { get; }
 
         /// <summary>
         /// ToDO: No information about this field
@@ -176,6 +176,42 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// <example>
         /// HSGSUN
         /// </example>
-        public string Fund { get; set; }
+        public string Fund { get; }
+
+        private TransactionResponse(Guid id, Guid targetId, TargetType targetType, short periodNo, short financialYear, short financialMonth, string transactionSource, TransactionType transactionType,
+            DateTime transactionDate, decimal transactionAmount, string paymentReference, string bankAccountNumber, bool isSuspense, SuspenseResolutionInfo suspenseResolutionInfo,
+            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Person person, string fund)
+        {
+            Id = id;
+            TargetId = targetId;
+            TargetType = targetType;
+            PeriodNo = periodNo;
+            FinancialYear = financialYear;
+            FinancialMonth = financialMonth;
+            TransactionSource = transactionSource;
+            TransactionType = transactionType;
+            TransactionDate = transactionDate;
+            TransactionAmount = transactionAmount;
+            PaymentReference = paymentReference;
+            BankAccountNumber = bankAccountNumber;
+            IsSuspense = isSuspense;
+            SuspenseResolutionInfo = suspenseResolutionInfo;
+            PaidAmount = paidAmount;
+            ChargedAmount = chargedAmount;
+            BalanceAmount = balanceAmount;
+            HousingBenefitAmount = housingBenefitAmount;
+            Address = address;
+            Person = person;
+            Fund = fund;
+        }
+
+       public static TransactionResponse Create(Guid id, Guid targetId, TargetType targetType, short periodNo, short financialYear, short financialMonth, string transactionSource, TransactionType transactionType,
+            DateTime transactionDate, decimal transactionAmount, string paymentReference, string bankAccountNumber, bool isSuspense, SuspenseResolutionInfo suspenseResolutionInfo,
+            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Person person, string fund)
+        {
+            return new TransactionResponse(id, targetId, targetType, periodNo, financialYear, financialMonth, transactionSource, transactionType, transactionDate, transactionAmount,
+                paymentReference, bankAccountNumber, isSuspense, suspenseResolutionInfo, paidAmount, chargedAmount, balanceAmount,
+                housingBenefitAmount, address, person, fund);
+        }
     }
 }
