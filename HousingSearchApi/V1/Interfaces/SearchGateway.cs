@@ -31,7 +31,7 @@ namespace HousingSearchApi.V1.Interfaces
                 queryablePerson.Create())
             );
 
-            personListResponse.SetTotal(searchResponse.Total);
+            personListResponse.SetTotal(searchResponse.Total < 0 ? 0 : searchResponse.Total);
 
             return personListResponse;
         }
@@ -46,7 +46,7 @@ namespace HousingSearchApi.V1.Interfaces
                 queryableTenure.Create())
             );
 
-            tenureListResponse.SetTotal(searchResponse.Total);
+            tenureListResponse.SetTotal(searchResponse.Total < 0 ? 0 : searchResponse.Total);
 
             return tenureListResponse;
         }
@@ -61,7 +61,7 @@ namespace HousingSearchApi.V1.Interfaces
                 queryableAsset.Create())
             );
 
-            assetListResponse.SetTotal(searchResponse.Total);
+            assetListResponse.SetTotal(searchResponse.Total < 0 ? 0 : searchResponse.Total);
 
             return assetListResponse;
         }
@@ -75,7 +75,7 @@ namespace HousingSearchApi.V1.Interfaces
                 queryableAccount.ToAccount())
             );
 
-            accountListResponse.SetTotal(searchResponse.Total);
+            accountListResponse.SetTotal(searchResponse.Total < 0 ? 0 : searchResponse.Total);
 
             return accountListResponse;
         }

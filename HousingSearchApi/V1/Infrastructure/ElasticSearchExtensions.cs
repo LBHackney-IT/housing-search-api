@@ -16,7 +16,7 @@ namespace HousingSearchApi.V1.Infrastructure
 
             var url = configuration.GetValue<string>("ELASTICSEARCH_DOMAIN_URL");
             if (string.IsNullOrEmpty(url))
-                url = "http://localhost:9200";
+                url = "http://192.168.1.101:9200";
 
             var pool = new SingleNodeConnectionPool(new Uri(url));
             var connectionSettings =
