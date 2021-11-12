@@ -7,7 +7,7 @@ namespace HousingSearchApi.V1.Boundary.Requests
         private const int DefaultPageSize = 12;
 
         [FromQuery(Name = "searchText")]
-        public string SearchText { get; set; } 
+        public string SearchText { get; set; }
 
         [FromQuery(Name = "pageSize")]
         public int PageSize { get; set; } = DefaultPageSize;
@@ -19,6 +19,6 @@ namespace HousingSearchApi.V1.Boundary.Requests
         public string SortBy { get; set; }
 
         [FromQuery(Name = "isDesc")]
-        public bool IsDesc { get; set; } 
+        public bool IsDesc { get; set; }
     }
 }

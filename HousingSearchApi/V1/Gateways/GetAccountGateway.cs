@@ -11,12 +11,12 @@ using Microsoft.Extensions.Logging;
 
 namespace HousingSearchApi.V1.Gateways
 {
-    public class GetAccountGateway: IGetAccountGateway
+    public class GetAccountGateway : IGetAccountGateway
     {
         private readonly ISearchGateway _searchGateway;
         private readonly ILogger<GetAccountGateway> _logger;
 
-        public GetAccountGateway(ISearchGateway searchGateway,ILogger<GetAccountGateway> logger)
+        public GetAccountGateway(ISearchGateway searchGateway, ILogger<GetAccountGateway> logger)
         {
             _searchGateway = searchGateway;
             _logger = logger;
@@ -26,7 +26,7 @@ namespace HousingSearchApi.V1.Gateways
         public async Task<GetAccountListResponse> Search(HousingSearchRequest parameters)
         {
             _logger.LogInformation("Housing search api for getting account list called.");
-            return  await _searchGateway.GetListOfAccounts(parameters).ConfigureAwait(false);
+            return await _searchGateway.GetListOfAccounts(parameters).ConfigureAwait(false);
         }
     }
 }

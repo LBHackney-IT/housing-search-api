@@ -15,7 +15,7 @@ namespace HousingSearchApi.V1.Interfaces
         {
             _queryBuilder = queryBuilder;
         }
-        
+
         public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryableAccount> q)
         {
             if (request == null)
