@@ -6,11 +6,13 @@ using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Transactions;
 using HousingSearchApi.V1.Factories;
+using HousingSearchApi.V1.Gateways.Interfaces;
+using HousingSearchApi.V1.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
 using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Gateways
 {
     public class SearchGateway : ISearchGateway
     {

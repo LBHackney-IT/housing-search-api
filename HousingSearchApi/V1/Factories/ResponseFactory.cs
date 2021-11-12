@@ -9,11 +9,28 @@ namespace HousingSearchApi.V1.Factories
     {
         public static TransactionResponse ToResponse(this Transaction domain)
         {
-            return domain == null ? null : TransactionResponse.Create(domain.Id, domain.TargetId, domain.TargetType.ToDomain(),
-                domain.PeriodNo, domain.FinancialYear, domain.FinancialMonth, domain.TransactionSource, domain.TransactionType.ToDomain(),
-                domain.TransactionDate, domain.TransactionAmount, domain.PaymentReference, domain.BankAccountNumber, domain.IsSuspense,
-                domain.SuspenseResolutionInfo.ToDomain(), domain.PaidAmount, domain.ChargedAmount, domain.BalanceAmount, domain.HousingBenefitAmount,
-                domain.Address, domain.Person.ToDomain(), domain.Fund);
+            return domain == null ? null : TransactionResponse.Create(
+                domain.Id,
+                domain.TargetId,
+                domain.TargetType,
+                domain.PeriodNo,
+                domain.FinancialYear,
+                domain.FinancialMonth,
+                domain.TransactionSource,
+                domain.TransactionType,
+                domain.TransactionDate,
+                domain.TransactionAmount,
+                domain.PaymentReference,
+                domain.BankAccountNumber,
+                domain.IsSuspense,
+                domain.SuspenseResolutionInfo.ToDomain(),
+                domain.PaidAmount,
+                domain.ChargedAmount,
+                domain.BalanceAmount,
+                domain.HousingBenefitAmount,
+                domain.Address,
+                domain.Person.ToDomain(),
+                domain.Fund);
         }
 
         public static List<TransactionResponse> ToResponse(this IEnumerable<Transaction> domainList)

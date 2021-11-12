@@ -1,7 +1,7 @@
 using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses.Transactions;
-using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Gateways.Interfaces;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using System.Threading.Tasks;
 

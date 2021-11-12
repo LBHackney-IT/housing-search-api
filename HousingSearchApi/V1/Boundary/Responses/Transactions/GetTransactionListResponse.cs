@@ -4,24 +4,18 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
 {
     public class GetTransactionListResponse
     {
-        private long _total;
+        public long Total { get; }
+        public List<TransactionResponse> Transactions { get; }
 
-        private readonly List<TransactionResponse> _transactions;
-
-        private GetTransactionListResponse(long total, List<TransactionResponse> transactions)
+        private GetTransactionListResponse(long total, IEnumerable<TransactionResponse> transactions)
         {
-            _total = total;
-            _transactions = new List<TransactionResponse>(transactions);
+            Total = total;
+            Transactions = new List<TransactionResponse>(transactions);
         }
 
-        public static GetTransactionListResponse Create(long total, List<TransactionResponse> transactions)
+        public static GetTransactionListResponse Create(long total, IEnumerable<TransactionResponse> transactions)
         {
             return new GetTransactionListResponse(total, transactions);
-        }
-
-        public long Total()
-        {
-            return _total;
         }
     }
 }

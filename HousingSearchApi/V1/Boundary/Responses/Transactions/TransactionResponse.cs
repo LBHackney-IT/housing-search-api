@@ -1,3 +1,4 @@
+using Hackney.Shared.HousingSearch.Domain.Transactions;
 using System;
 
 namespace HousingSearchApi.V1.Boundary.Responses.Transactions

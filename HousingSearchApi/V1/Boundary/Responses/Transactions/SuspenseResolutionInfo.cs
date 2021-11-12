@@ -5,20 +5,12 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
     public class SuspenseResolutionInfo
     {
         public DateTime? ResolutionDate { get; }
-
-        public bool IsResolve
-        {
-            get
-            {
-                if ((IsConfirmed && IsApproved))
-                    return true;
-                return false;
-            }
-        }
-
         public bool IsConfirmed { get; }
         public bool IsApproved { get; }
         public string Note { get; }
+
+        public bool IsResolve
+            => IsConfirmed && IsApproved;
 
         private SuspenseResolutionInfo(DateTime? resolutionDate, bool isConfirmed, bool isApproved, string note)
         {

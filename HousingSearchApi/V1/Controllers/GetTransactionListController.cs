@@ -44,7 +44,7 @@ namespace HousingSearchApi.V1.Controllers
                 var transactionSearchResult = await _getTransactionListUseCase.ExecuteAsync(request).ConfigureAwait(false);
                 var apiResponse = new APIResponse<GetTransactionListResponse>(transactionSearchResult)
                 {
-                    Total = transactionSearchResult.Total()
+                    Total = transactionSearchResult.Total
                 };
 
                 return Ok(apiResponse);

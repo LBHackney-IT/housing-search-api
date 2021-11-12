@@ -34,6 +34,8 @@ using System.Linq;
 using System.Reflection;
 using Hackney.Core.ElasticSearch;
 using Hackney.Core.ElasticSearch.Interfaces;
+using HousingSearchApi.V1.Gateways.Interfaces;
+using HousingSearchApi.V1.Gateways;
 
 namespace HousingSearchApi
 {

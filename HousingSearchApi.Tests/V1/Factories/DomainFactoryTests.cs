@@ -11,22 +11,6 @@ namespace HousingSearchApi.Tests.V1.Factories
         private readonly Fixture _fixture = new Fixture();
 
         [Fact]
-        public void CanMapASharedDomainTargetTypeObjectToADomainObject()
-        {
-            var sharedDomain = _fixture.Create<TargetType>();
-            var domain = sharedDomain.ToDomain();
-            sharedDomain.Should().BeEquivalentTo(domain);
-        }
-
-        [Fact]
-        public void CanMapASharedDomainTransactionTypeObjectToADomainObject()
-        {
-            var sharedDomain = _fixture.Create<TransactionType>();
-            var domain = sharedDomain.ToDomain();
-            sharedDomain.Should().BeEquivalentTo(domain);
-        }
-
-        [Fact]
         public void CanMapASharedDomainSuspenseResolutionInfoObjectToADomainObject()
         {
             var sharedDomain = _fixture.Create<SuspenseResolutionInfo>();
