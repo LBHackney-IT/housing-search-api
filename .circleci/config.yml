@@ -295,7 +295,7 @@ workflows:
             - terraform-compliance-staging
           filters:
             branches:
-              only: master
+              only: release
       - deploy-to-staging:
           requires:
             - terraform-apply-staging
