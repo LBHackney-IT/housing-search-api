@@ -71,7 +71,7 @@ namespace HousingSearchApi.V1.Gateways
             var searchResponse = await _elasticSearchWrapper.Search<QueryableAccount>(query).ConfigureAwait(false);
             var accountListResponse = GetAccountListResponse.Create(searchResponse.Documents.Select(queryableAccount =>
                 queryableAccount.ToAccount())?.ToList());
-            
+
             accountListResponse.SetTotal(searchResponse.Total < 0 ? 0 : searchResponse.Total);
 
             return accountListResponse;
