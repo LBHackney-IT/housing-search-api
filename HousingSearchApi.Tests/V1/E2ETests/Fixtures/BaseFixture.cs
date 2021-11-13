@@ -20,7 +20,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         protected void WaitForESInstance()
         {
-            EnsureEnvVarConfigured("ELASTICSEARCH_DOMAIN_URL", "http://192.168.1.101:9200");
+            EnsureEnvVarConfigured("ELASTICSEARCH_DOMAIN_URL", "http://localhost:9200");
 
             Exception ex = null;
             var timeout = DateTime.UtcNow.AddSeconds(20); // 10 second timeout to make sure the ES instance has started and is ready to use.

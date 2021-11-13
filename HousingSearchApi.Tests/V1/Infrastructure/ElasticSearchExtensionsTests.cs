@@ -14,7 +14,7 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
     {
         private readonly Mock<IConfiguration> _mockConfiguration;
         private const string ConfigKey = "ELASTICSEARCH_DOMAIN_URL";
-        private const string EsNodeUrl = "http://192.168.1.101:9200";
+        private const string EsNodeUrl = "http://localhost:9200";
 
         public ElasticSearchExtensionsTests()
         {
@@ -62,7 +62,7 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
             var esClient = serviceProvider.GetService<IElasticClient>();
             esClient.Should().NotBeNull();
             esClient.ConnectionSettings.ConnectionPool.Nodes.Count.Should().Be(1);
-            var expectedUrl = string.IsNullOrEmpty(url) ? "http://192.168.1.101:9200" : url;
+            var expectedUrl = string.IsNullOrEmpty(url) ? "http://localhost:9200" : url;
             esClient.ConnectionSettings.ConnectionPool.Nodes.First().Uri.Should().BeEquivalentTo(new Uri(expectedUrl));
         }
     }
