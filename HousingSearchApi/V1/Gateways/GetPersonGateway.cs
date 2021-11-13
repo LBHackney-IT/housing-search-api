@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Nest;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HousingSearchApi.V1.Gateways.interfaces;
 
 namespace HousingSearchApi.V1.Gateways
 {

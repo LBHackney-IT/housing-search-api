@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using Hackney.Core.ElasticSearch.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
 using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Interfaces.factories;
 using Nest;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Infrastructure.Factories
 {
     public class AccountQueryGenerator : IQueryGenerator<QueryableAccount>
     {

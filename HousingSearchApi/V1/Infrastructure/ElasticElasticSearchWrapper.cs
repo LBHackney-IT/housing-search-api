@@ -5,8 +5,10 @@ using Nest;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Interfaces.factories;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Infrastructure
 {
     public class ElasticSearchWrapper : IElasticSearchWrapper
     {

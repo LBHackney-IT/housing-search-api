@@ -5,14 +5,19 @@ namespace HousingSearchApi.V1.Boundary.Responses
 {
     public class GetAccountListResponse
     {
+        public static GetAccountListResponse Create(List<Account> accounts)
+        {
+            return new GetAccountListResponse(accounts);
+        }
+
+        private GetAccountListResponse(List<Account> accounts)
+        {
+            Accounts = accounts;
+        }
+
         private long _total;
 
-        public List<Account> Accounts { get; set; }
-
-        public GetAccountListResponse()
-        {
-            Accounts = new List<Account>();
-        }
+        public List<Account> Accounts { get; }
 
         public void SetTotal(long total)
         {

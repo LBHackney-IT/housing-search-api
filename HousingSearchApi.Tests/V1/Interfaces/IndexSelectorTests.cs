@@ -2,7 +2,7 @@ using FluentAssertions;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
-using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Infrastructure;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Interfaces

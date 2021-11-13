@@ -1,6 +1,6 @@
 using HousingSearchApi.V1.Boundary.Requests;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Interfaces.factories
 {
     public interface IQueryFactory
     {

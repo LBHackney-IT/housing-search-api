@@ -1,11 +1,11 @@
 using FluentAssertions;
-using HousingSearchApi.V1.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Nest;
 using System;
 using System.Linq;
+using HousingSearchApi.V1.Infrastructure.extensions;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Infrastructure

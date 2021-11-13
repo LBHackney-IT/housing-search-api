@@ -35,6 +35,11 @@ using System.Reflection;
 using Hackney.Core.ElasticSearch;
 using Hackney.Core.ElasticSearch.Interfaces;
 using HousingSearchApi.V1.Gateways;
+using HousingSearchApi.V1.Gateways.interfaces;
+using HousingSearchApi.V1.Infrastructure.extensions;
+using HousingSearchApi.V1.Infrastructure.Factories;
+using HousingSearchApi.V1.Infrastructure.Sorting;
+using HousingSearchApi.V1.Interfaces.factories;
 
 namespace HousingSearchApi
 {

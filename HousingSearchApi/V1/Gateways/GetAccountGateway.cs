@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hackney.Core.Logging;
-using Hackney.Shared.HousingSearch.Domain.Accounts;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
-using HousingSearchApi.V1.Gateways.Domain;
-using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Gateways.interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace HousingSearchApi.V1.Gateways

@@ -5,12 +5,12 @@ using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using System.Linq;
 using System.Threading.Tasks;
-using Hackney.Shared.HousingSearch.Domain.Accounts;
-using Hackney.Shared.HousingSearch.Domain.Asset;
 using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
+using HousingSearchApi.V1.Gateways.interfaces;
+using HousingSearchApi.V1.Interfaces;
 using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Gateways
 {
     public class SearchGateway : ISearchGateway
     {
@@ -69,12 +69,9 @@ namespace HousingSearchApi.V1.Interfaces
         public async Task<GetAccountListResponse> GetListOfAccounts(HousingSearchRequest query)
         {
             var searchResponse = await _elasticSearchWrapper.Search<QueryableAccount>(query).ConfigureAwait(false);
-            var accountListResponse = new GetAccountListResponse();
-
-            accountListResponse.Accounts.AddRange(searchResponse.Documents.Select(queryableAccount =>
-                queryableAccount.ToAccount())
-            );
-
+            var accountListResponse = GetAccountListResponse.Create(searchResponse.Documents.Select(queryableAccount =>
+                queryableAccount.ToAccount())?.ToList());
+            
             accountListResponse.SetTotal(searchResponse.Total < 0 ? 0 : searchResponse.Total);
 
             return accountListResponse;
