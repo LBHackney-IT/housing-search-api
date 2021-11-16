@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
 using FluentAssertions;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps.Base;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
+using System;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 {
@@ -36,6 +34,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
+
         public async Task WhenAssetTypesAreProvided(string assetType)
         {
             var route = new Uri($"api/v1/search/assets?searchText={AssetFixture.Addresses.Last()}&assetTypes={assetType}&pageSize={5}",
@@ -50,16 +49,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
-        }
-
-        public void ThenTheLastRequestShouldBeBadRequestResult()
-        {
-            _lastResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        }
-
-        public void ThenTheLastRequestShouldBe200()
-        {
-            _lastResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
         public async Task ThenTheReturningResultsShouldBeOfThatSize(int pageSize)
@@ -78,7 +67,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var assets = allowedAssetType.Split(",");
 
             result.Results.Assets.All(x => x.AssetType == assets[0] || x.AssetType == assets[1]);
-
         }
 
         public async Task ThenThatAddressShouldBeTheFirstResult(string address)

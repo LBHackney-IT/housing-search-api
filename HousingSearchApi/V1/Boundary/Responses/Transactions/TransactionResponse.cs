@@ -115,7 +115,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// {
         ///     "ResolutionDate": "2021-04-28T23:00:00.000Z",
         ///     "IsResolve" : true,
-        ///     "Note": "Some notes about this recond"
+        ///     "Note": "Some notes about this record"
         /// }
         /// </example>
         public SuspenseResolutionInfo SuspenseResolutionInfo { get; }

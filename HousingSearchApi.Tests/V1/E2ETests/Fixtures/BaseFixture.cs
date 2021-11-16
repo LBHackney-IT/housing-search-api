@@ -58,6 +58,5 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 _elasticSearchAddress = default;
             }
         }
-
     }
 }

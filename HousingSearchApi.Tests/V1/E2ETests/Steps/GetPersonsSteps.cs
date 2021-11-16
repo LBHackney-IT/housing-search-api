@@ -76,21 +76,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
 
-        public async Task ThenTheLastRequestShouldBeBadRequestResult()
-        {
-            _lastResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            resultBody.Should().NotBeNull();
-            resultBody.Should().Contain("'Search Text' must not be empty.");
-        }
-
-        public void ThenTheLastRequestShouldBe200()
-        {
-            _lastResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
-
         public async Task ThenTheReturningResultsShouldBeOfThatSize(int pageSize)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
