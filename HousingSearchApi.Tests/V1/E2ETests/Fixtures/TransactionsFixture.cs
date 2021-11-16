@@ -56,7 +56,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         {
             var listOfTransactions = new List<QueryableTransaction>(transactionsCount);
             var random = new Random();
-            
+
             for (var i = 0; i < transactionsCount; i++)
             {
                 var personIndex = random.Next(PersonsCount);
