@@ -4,7 +4,7 @@ using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Interfaces.factories;
+using HousingSearchApi.V1.Interfaces.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 

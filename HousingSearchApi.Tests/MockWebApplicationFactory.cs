@@ -1,4 +1,4 @@
-using HousingSearchApi.V1.Infrastructure.extensions;
+using HousingSearchApi.V1.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;

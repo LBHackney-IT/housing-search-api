@@ -3,8 +3,8 @@ using Nest;
 using System.Collections.Generic;
 using Hackney.Core.ElasticSearch.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
-using HousingSearchApi.V1.infrastructure;
-using HousingSearchApi.V1.Interfaces.factories;
+using HousingSearchApi.V1.Infrastructure;
+using HousingSearchApi.V1.Interfaces.Factories;
 
 namespace HousingSearchApi.V1.Infrastructure.Factories
 {

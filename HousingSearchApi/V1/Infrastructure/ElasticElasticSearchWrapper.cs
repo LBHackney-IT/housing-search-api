@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using HousingSearchApi.V1.Interfaces;
-using HousingSearchApi.V1.Interfaces.factories;
+using HousingSearchApi.V1.Interfaces.Factories;
 
 namespace HousingSearchApi.V1.Infrastructure
 {

@@ -21,7 +21,7 @@ namespace HousingSearchApi.V1.Boundary.Responses
 
         public void SetTotal(long total)
         {
-            _total = total;
+            _total = total < 0 ? 0 : total;
         }
 
         public long Total()
