@@ -6,6 +6,7 @@ using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using HousingSearchApi.V1.Infrastructure;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -40,6 +41,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task ThenThatTextShouldBeInTheResult(string searchText)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            if (_lastResponse.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new Exception(resultBody);
+            }
+
+            _lastResponse.StatusCode.Should().Be(HttpStatusCode.OK);
             var parsedResponse = JsonSerializer.Deserialize<APIResponse<TransactionListDTO>>(resultBody, _jsonOptions);
 
             parsedResponse.Should().NotBeNull();
