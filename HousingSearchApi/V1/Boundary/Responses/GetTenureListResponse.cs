@@ -1,3 +1,4 @@
+using Hackney.Shared.HousingSearch.Domain.Tenure;
 using System.Collections.Generic;
 
 namespace HousingSearchApi.V1.Boundary.Responses
@@ -6,11 +7,11 @@ namespace HousingSearchApi.V1.Boundary.Responses
     {
         private long _total;
 
-        public List<Domain.Tenure.Tenure> Tenures { get; set; }
+        public List<Tenure> Tenures { get; set; }
 
         public GetTenureListResponse()
         {
-            Tenures = new List<Domain.Tenure.Tenure>();
+            Tenures = new List<Tenure>();
         }
 
         public void SetTotal(long total)

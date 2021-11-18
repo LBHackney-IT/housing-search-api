@@ -1,4 +1,4 @@
-using HousingSearchApi.V1.Domain;
+using Hackney.Shared.HousingSearch.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HousingSearchApi.V1.Boundary.Requests

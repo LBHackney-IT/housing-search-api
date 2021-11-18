@@ -66,3 +66,4 @@ module "housing_search_api_cloudwatch_dashboard" {
   include_dynamodb_widget = false
   no_sns_widget_dashboard = false
 }
+

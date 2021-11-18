@@ -1,4 +1,4 @@
-using HousingSearchApi.V1.Gateways.Models.Persons;
+using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using Nest;
 
 namespace HousingSearchApi.V1.Interfaces.Sorting

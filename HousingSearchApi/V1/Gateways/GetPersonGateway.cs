@@ -1,10 +1,10 @@
 using Hackney.Core.Logging;
-using HousingSearchApi.V1.Domain;
+using Hackney.Shared.HousingSearch.Domain.Person;
+using HousingSearchApi.V1.Gateways.Domain;
 using Microsoft.Extensions.Logging;
 using Nest;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using HousingSearchApi.V1.Domain.Person;
 
 namespace HousingSearchApi.V1.Gateways
 {
