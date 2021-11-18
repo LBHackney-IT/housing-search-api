@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
-using HousingSearchApi.V1.Domain;
 using TestStack.BDDfy;
 using Xunit;
 

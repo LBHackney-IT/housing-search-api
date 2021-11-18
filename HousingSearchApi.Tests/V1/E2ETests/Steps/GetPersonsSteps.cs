@@ -6,11 +6,11 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Hackney.Shared.HousingSearch.Domain;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps.Base;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
-using HousingSearchApi.V1.Domain;
 using HousingSearchApi.V1.Infrastructure;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Steps

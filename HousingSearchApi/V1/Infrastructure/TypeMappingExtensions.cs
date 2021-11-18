@@ -1,4 +1,4 @@
-using HousingSearchApi.V1.Domain;
+using Hackney.Shared.HousingSearch.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;

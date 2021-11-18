@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Hackney.Core.ElasticSearch.Interfaces;
+using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Gateways.Models.Tenures;
 using Nest;
 
 namespace HousingSearchApi.V1.Interfaces

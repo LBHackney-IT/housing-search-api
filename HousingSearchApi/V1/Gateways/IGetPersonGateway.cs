@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Domain.Person;
+using Hackney.Shared.HousingSearch.Domain.Person;
+using HousingSearchApi.V1.Gateways.Domain;
 
 namespace HousingSearchApi.V1.Gateways
 {

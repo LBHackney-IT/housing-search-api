@@ -1,7 +1,7 @@
 using AutoFixture;
 using Elasticsearch.Net;
-using HousingSearchApi.V1.Domain;
-using HousingSearchApi.V1.Gateways.Models.Persons;
+using Hackney.Shared.HousingSearch.Domain;
+using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using HousingSearchApi.V1.Infrastructure;
 using Nest;
 using System;
