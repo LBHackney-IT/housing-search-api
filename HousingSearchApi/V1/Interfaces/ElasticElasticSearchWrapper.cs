@@ -67,29 +67,24 @@ namespace HousingSearchApi.V1.Interfaces
 
             if (request == null)
                 return new SearchResponse<T>();
+            
+            var elements = _lastHit != null ? new string[] { _lastHit.Id } : new string[] { string.Empty };
+            var lastSortedItem = _lastHit != null ? elements.Cast<object>().ToArray(): null;
 
-            var lastSortedItem = Array.Empty<object>();
-
-            if (_lastHit != null)
-            {
-                var elements = new String[] { _lastHit.Id };
-                lastSortedItem = elements.Cast<object>().ToArray();
-            }
-           
-            ISearchResponse<T> result = null;
+            ISearchResponse<T> result = null ;
 
             try
             {
-                if (_lastHit == null)
+                if (_lastHit == null && request.Page == 1)
                 {
                     result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
                       .Query(q => BaseQuery<T>(request).Create(request, q))
                       .Size(request.PageSize)
-                      .TrackTotalHits()
                       .Sort(_iSortFactory.Create<T>(request).GetSortDescriptor)
+                      .TrackTotalHits()
                       ).ConfigureAwait(false);
                 }
-                else
+                else if(_lastHit != null)
                 {
                     result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
                       .Query(q => BaseQuery<T>(request).Create(request, q))
@@ -100,12 +95,7 @@ namespace HousingSearchApi.V1.Interfaces
                       ).ConfigureAwait(false);
                 }
 
-                if (result.Documents.Count == request.PageSize)
-                {
-                    _lastHit = result.Hits.Last();
-                }
-                else 
-                    _lastHit = null;
+                _lastHit = result?.Documents.Count == request.PageSize ? result.Hits.Last() : null;
 
                 _logger.LogDebug("ElasticSearch Search Sets ended");
 

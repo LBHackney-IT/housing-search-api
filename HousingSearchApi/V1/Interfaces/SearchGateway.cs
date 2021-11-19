@@ -69,6 +69,7 @@ namespace HousingSearchApi.V1.Interfaces
             var searchResponse = await _elasticSearchWrapper.SearchSets<QueryableAsset>(query).ConfigureAwait(false);
             var assetListResponse = new GetAssetListResponse();
 
+            if (searchResponse == null) return assetListResponse;
             assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
                 queryableAsset.Create())
             );
