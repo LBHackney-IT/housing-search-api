@@ -17,6 +17,8 @@ namespace HousingSearchApi.V1.Interfaces
         private readonly ILogger<ElasticElasticSearchWrapper> _logger;
         private readonly IIndexSelector _indexSelector;
 
+        private static IHit<object> _lastHit;
+
         public ElasticElasticSearchWrapper(IElasticClient esClient, IQueryFactory queryFactory,
             IPagingHelper pagingHelper, ISortFactory iSortFactory, ILogger<ElasticElasticSearchWrapper> logger, IIndexSelector indexSelector)
         {
@@ -56,6 +58,66 @@ namespace HousingSearchApi.V1.Interfaces
                 _logger.LogError(e, "ElasticSearch Search threw an exception");
                 throw;
             }
+        }
+
+        public async Task<ISearchResponse<T>> SearchSets<T>(HousingSearchRequest request) where T : class
+        {
+            var esNodes = string.Join(';', _esClient.ConnectionSettings.ConnectionPool.Nodes.Select(x => x.Uri));
+            _logger.LogDebug($"ElasticSearch Search Sets begins {esNodes}");
+
+            if (request == null)
+                return new SearchResponse<T>();
+
+            var lastSortedItem = Array.Empty<object>();
+
+            if (_lastHit != null)
+            {
+                var elements = new String[] { _lastHit.Id };
+                lastSortedItem = elements.Cast<object>().ToArray();
+            }
+           
+            ISearchResponse<T> result = null;
+
+            try
+            {
+                if (_lastHit == null)
+                {
+                    result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
+                      .Query(q => BaseQuery<T>(request).Create(request, q))
+                      .Size(request.PageSize)
+                      .TrackTotalHits()
+                      .Sort(_iSortFactory.Create<T>(request).GetSortDescriptor)
+                      ).ConfigureAwait(false);
+                }
+                else
+                {
+                    result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
+                      .Query(q => BaseQuery<T>(request).Create(request, q))
+                      .Size(request.PageSize)
+                      .TrackTotalHits()
+                      .SearchAfter(lastSortedItem)
+                      .Sort(_iSortFactory.Create<T>(request).GetSortDescriptor)
+                      ).ConfigureAwait(false);
+                }
+
+                if (result.Documents.Count == request.PageSize)
+                {
+                    _lastHit = result.Hits.Last();
+                }
+                else 
+                    _lastHit = null;
+
+                _logger.LogDebug("ElasticSearch Search Sets ended");
+
+                return result;
+            }
+            catch (Exception e)
+            {
+
+                _logger.LogError(e, "ElasticSearch Search Sets threw an exception");
+                throw;
+            }
+            
         }
 
         private IQueryGenerator<T> BaseQuery<T>(HousingSearchRequest request) where T : class

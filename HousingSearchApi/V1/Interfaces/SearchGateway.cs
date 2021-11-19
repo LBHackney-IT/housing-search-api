@@ -59,6 +59,21 @@ namespace HousingSearchApi.V1.Interfaces
             );
 
             assetListResponse.SetTotal(searchResponse.Total);
+            
+            return assetListResponse;
+        }
+
+        [LogCall]
+        public async Task<GetAssetListResponse> GetListOfAssetsSets(HousingSearchRequest query)
+        {
+            var searchResponse = await _elasticSearchWrapper.SearchSets<QueryableAsset>(query).ConfigureAwait(false);
+            var assetListResponse = new GetAssetListResponse();
+
+            assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
+                queryableAsset.Create())
+            );
+
+            assetListResponse.SetTotal(searchResponse.Total);
 
             return assetListResponse;
         }

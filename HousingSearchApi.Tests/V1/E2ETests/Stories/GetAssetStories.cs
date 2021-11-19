@@ -65,6 +65,16 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         }
 
         [Fact]
+        public void ServiceFiltersGivenAssetTypesWithSearchTextStarStar()
+        {
+            var asset = "Dwelling";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenSearchTextProvidedAsStarStarAndAssetTypeProvided(asset))
+                .Then(t => _steps.ThenOnlyTheseAssetTypesShouldBeIncluded(asset))
+                .BDDfy();
+        }
+
+        [Fact]
         public void ServiceReturnsExactMatchFirstIfExists()
         {
             var assetTypes = AssetFixture.Addresses.TakeLast(2);

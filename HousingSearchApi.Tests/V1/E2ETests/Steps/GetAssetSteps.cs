@@ -29,6 +29,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/assets?searchText=%20abc", UriKind.Relative)).ConfigureAwait(false);
         }
 
+
         public async Task WhenAPageSizeIsProvided(int pageSize)
         {
             var route = new Uri($"api/v1/search/assets?searchText={AssetFixture.Addresses.Last().FirstLine}&pageSize={pageSize}",
@@ -43,7 +44,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
+        public async Task WhenSearchTextProvidedAsStarStarAndAssetTypeProvided(string assetType)
+        {
+            var route = new Uri($"api/v1/search/assets/all?searchText=**&assetTypes={assetType}&pageSize={5}",
+                UriKind.Relative);
 
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
         public async Task WhenAnExactMatchExists(string address)
         {
             var route = new Uri($"api/v1/search/assets?searchText={address}&pageSize={5}",
