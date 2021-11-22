@@ -17,16 +17,19 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             _queryBuilder = queryBuilder;
         }
 
-        public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryableAccount> q)
+
+        public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryableAccount> q)
         {
-            if (request == null)
+            GetAccountListRequest accountListRequest = request as GetAccountListRequest;
+            if (accountListRequest == null)
                 throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
 
-            if (!string.IsNullOrEmpty(request.SearchText))
+
+            if (!string.IsNullOrEmpty(accountListRequest.SearchText))
                 _queryBuilder
-                    .WithWildstarQuery(request.SearchText,
+                    .WithWildstarQuery(accountListRequest.SearchText,
                         new List<string> { "paymentReference", "tenure.fullAddress", "tenure.primaryTenants.fullName" })
-                    .WithExactQuery(request.SearchText,
+                    .WithExactQuery(accountListRequest.SearchText,
                         new List<string> { "paymentReference", "tenure.fullAddress", "tenure.primaryTenants.fullName" });
 
             return _queryBuilder.Build(q);

@@ -19,7 +19,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldNotSortAsDefault()
         {
             // Arrange + Act
-            var result = _sut.Create<QueryablePerson>(new HousingSearchRequest());
+            var result = _sut.Create<QueryablePerson, GetPersonListRequest>(new GetPersonListRequest());
 
             // Assert
             result.Should().BeOfType(typeof(DefaultSort<QueryablePerson>));
@@ -29,7 +29,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnSurnameAscWhenRequestSurnameAndAsc()
         {
             // Arrange + Act
-            var result = _sut.Create<QueryablePerson>(new HousingSearchRequest { SortBy = "surname", IsDesc = false });
+            var result = _sut.Create<QueryablePerson, GetPersonListRequest>(new GetPersonListRequest { SortBy = "surname", IsDesc = false });
 
             // Assert
             result.Should().BeOfType(typeof(SurnameAsc));
@@ -39,7 +39,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnSurnameDescWhenRequestSurnameAndDesc()
         {
             // Arrange + Act
-            var result = _sut.Create<QueryablePerson>(new HousingSearchRequest { SortBy = "surname", IsDesc = true });
+            var result = _sut.Create<QueryablePerson, GetPersonListRequest>(new GetPersonListRequest { SortBy = "surname", IsDesc = true });
 
             // Assert
             result.Should().BeOfType(typeof(SurnameDesc));

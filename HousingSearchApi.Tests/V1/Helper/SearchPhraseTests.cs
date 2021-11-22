@@ -24,7 +24,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnNullIfRequestTypeIsUnknown(string searchText)
         {
             // Arrange + Act
-            var result = _sut.Create(new HousingSearchRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
+            var result = _sut.Create<GetPersonListRequest>(new GetPersonListRequest{ SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert
             result.Should().BeNull();

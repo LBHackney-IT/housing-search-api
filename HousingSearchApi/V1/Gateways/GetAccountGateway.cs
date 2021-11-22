@@ -19,7 +19,7 @@ namespace HousingSearchApi.V1.Gateways
         }
 
         [LogCall]
-        public async Task<GetAccountListResponse> Search(HousingSearchRequest parameters)
+        public async Task<GetAccountListResponse> Search(GetAccountListRequest parameters)
         {
             _logger.LogInformation("Housing search api for getting account list called.");
             return await _searchGateway.GetListOfAccounts(parameters).ConfigureAwait(false);

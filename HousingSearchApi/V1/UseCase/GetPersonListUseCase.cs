@@ -16,7 +16,7 @@ namespace HousingSearchApi.V1.UseCase
             _searchGateway = searchGateway;
         }
         [LogCall]
-        public async Task<GetPersonListResponse> ExecuteAsync(HousingSearchRequest housingSearchRequest)
+        public async Task<GetPersonListResponse> ExecuteAsync(GetPersonListRequest housingSearchRequest)
         {
             return await _searchGateway.GetListOfPersons(housingSearchRequest).ConfigureAwait(false);
         }

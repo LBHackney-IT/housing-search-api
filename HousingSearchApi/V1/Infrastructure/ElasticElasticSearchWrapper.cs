@@ -30,7 +30,7 @@ namespace HousingSearchApi.V1.Infrastructure
             _indexSelector = indexSelector;
         }
 
-        public async Task<ISearchResponse<T>> Search<T>(HousingSearchRequest request) where T : class
+        public async Task<ISearchResponse<T>> Search<T, TRequest>(TRequest request) where T : class where TRequest : class
         {
             try
             {
@@ -40,12 +40,14 @@ namespace HousingSearchApi.V1.Infrastructure
                 if (request == null)
                     return new SearchResponse<T>();
 
-                var pageOffset = _pagingHelper.GetPageOffset(request.PageSize, request.Page);
+                HousingSearchRequest searchRequest = (HousingSearchRequest) (object) request;
+
+                var pageOffset = _pagingHelper.GetPageOffset(searchRequest.PageSize, searchRequest.Page);
 
                 var result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
-                    .Query(q => BaseQuery<T>(request).Create(request, q))
-                    .Sort(_iSortFactory.Create<T>(request).GetSortDescriptor)
-                    .Size(request.PageSize)
+                    .Query(q => BaseQuery<T>().Create(request, q))
+                    .Sort(_iSortFactory.Create<T, TRequest>(request).GetSortDescriptor)
+                    .Size(searchRequest.PageSize)
                     .Skip(pageOffset)
                     .TrackTotalHits()).ConfigureAwait(false);
 
@@ -60,9 +62,9 @@ namespace HousingSearchApi.V1.Infrastructure
             }
         }
 
-        private IQueryGenerator<T> BaseQuery<T>(HousingSearchRequest request) where T : class
+        private IQueryGenerator<T> BaseQuery<T>() where T : class
         {
-            return _queryFactory.CreateQuery<T>(request);
+            return _queryFactory.CreateQuery<T>();
         }
     }
 }

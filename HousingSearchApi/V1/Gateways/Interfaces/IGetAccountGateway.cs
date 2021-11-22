@@ -6,6 +6,6 @@ namespace HousingSearchApi.V1.Gateways.Interfaces
 {
     public interface IGetAccountGateway
     {
-        Task<GetAccountListResponse> Search(HousingSearchRequest parameters);
+        Task<GetAccountListResponse> Search(GetAccountListRequest parameters);
     }
 }

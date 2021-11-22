@@ -2,15 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HousingSearchApi.V1.Boundary.Requests
 {
-    public class HousingSearchRequest
+    public abstract class HousingSearchRequest
     {
         private const int DefaultPageSize = 12;
 
         [FromQuery(Name = "searchText")]
         public string SearchText { get; set; }
-
-        [FromQuery(Name = "assetTypes")]
-        public string AssetTypes { get; set; }
 
         [FromQuery(Name = "pageSize")]
         public int PageSize { get; set; } = DefaultPageSize;
@@ -24,7 +21,5 @@ namespace HousingSearchApi.V1.Boundary.Requests
         [FromQuery(Name = "isDesc")]
         public bool IsDesc { get; set; }
 
-        [FromQuery(Name = "propertyReference")]
-        public string PropertyReference { get; set; }
     }
 }

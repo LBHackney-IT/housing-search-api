@@ -18,7 +18,7 @@ namespace HousingSearchApi.Tests.V1.Interfaces
         public void GivenARequestShouldReturnDefaultSortForUnknownType()
         {
             // Arrange + act
-            var result = _sut.Create<SomeUnknownType>(new HousingSearchRequest());
+            var result = _sut.Create<SomeUnknownType, GetPersonListRequest>(new GetPersonListRequest());
 
             // Assert
             result.Should().BeOfType<DefaultSort<SomeUnknownType>>();

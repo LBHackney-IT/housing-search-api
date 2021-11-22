@@ -29,7 +29,7 @@ namespace HousingSearchApi.V1.Controllers
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
         [HttpGet, MapToApiVersion("1")]
         [LogCall(LogLevel.Information)]
-        public async Task<IActionResult> GetTenureList([FromQuery] HousingSearchRequest request)
+        public async Task<IActionResult> GetTenureList([FromQuery] GetTenureListRequest request)
         {
             try
             {
