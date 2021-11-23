@@ -59,7 +59,7 @@ namespace HousingSearchApi.V1.Interfaces
             );
 
             assetListResponse.SetTotal(searchResponse.Total);
-            
+
             return assetListResponse;
         }
 

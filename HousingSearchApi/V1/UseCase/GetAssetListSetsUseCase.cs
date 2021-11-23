@@ -18,7 +18,7 @@ namespace HousingSearchApi.V1.UseCase
             _searchGateway = searchGateway;
         }
 
-        public async Task<GetAssetListResponse> ExecuteAsync(HousingSearchRequest  housingSearchRequest)
+        public async Task<GetAssetListResponse> ExecuteAsync(HousingSearchRequest housingSearchRequest)
         {
             return await _searchGateway.GetListOfAssetsSets(housingSearchRequest).ConfigureAwait(false);
         }

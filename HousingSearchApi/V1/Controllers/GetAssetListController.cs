@@ -59,7 +59,7 @@ namespace HousingSearchApi.V1.Controllers
             try
             {
                 var assetsSearchResult = await _getAssetListSetsUseCase.ExecuteAsync(request).ConfigureAwait(false);
-                var apiResponse = new APIResponse<GetAssetListResponse>(assetsSearchResult) {Total = assetsSearchResult.Total()};
+                var apiResponse = new APIResponse<GetAssetListResponse>(assetsSearchResult) { Total = assetsSearchResult.Total() };
 
                 return new OkObjectResult(apiResponse);
             }

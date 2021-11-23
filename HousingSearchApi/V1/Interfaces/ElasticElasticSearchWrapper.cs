@@ -67,11 +67,11 @@ namespace HousingSearchApi.V1.Interfaces
 
             if (request == null)
                 return new SearchResponse<T>();
-            
-            var elements = _lastHit != null ? new string[] { _lastHit.Id } : new string[] { string.Empty };
-            var lastSortedItem = _lastHit != null ? elements.Cast<object>().ToArray(): null;
 
-            ISearchResponse<T> result = null ;
+            var elements = _lastHit != null ? new string[] { _lastHit.Id } : new string[] { string.Empty };
+            var lastSortedItem = _lastHit != null ? elements.Cast<object>().ToArray() : null;
+
+            ISearchResponse<T> result = null;
 
             try
             {
@@ -84,7 +84,7 @@ namespace HousingSearchApi.V1.Interfaces
                       .TrackTotalHits()
                       ).ConfigureAwait(false);
                 }
-                else if(_lastHit != null)
+                else if (_lastHit != null)
                 {
                     result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
                       .Query(q => BaseQuery<T>(request).Create(request, q))
@@ -107,7 +107,7 @@ namespace HousingSearchApi.V1.Interfaces
                 _logger.LogError(e, "ElasticSearch Search Sets threw an exception");
                 throw;
             }
-            
+
         }
 
         private IQueryGenerator<T> BaseQuery<T>(HousingSearchRequest request) where T : class
