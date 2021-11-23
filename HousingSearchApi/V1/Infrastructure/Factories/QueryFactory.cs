@@ -1,12 +1,14 @@
 using System;
 using Hackney.Core.ElasticSearch.Interfaces;
+using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
-using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
 using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Interfaces.Factories;
 using Microsoft.Extensions.DependencyInjection;
+using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Infrastructure.Factories
 {
     public class QueryFactory : IQueryFactory
     {
@@ -33,7 +35,10 @@ namespace HousingSearchApi.V1.Interfaces
             {
                 return (IQueryGenerator<T>) new AssetQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableAsset>>());
             }
-
+            if (typeof(T) == typeof(QueryableAccount))
+            {
+                return (IQueryGenerator<T>) new AccountQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableAccount>>());
+            }
 
             throw new System.NotImplementedException($"Query type {typeof(T)} is not implemented");
         }

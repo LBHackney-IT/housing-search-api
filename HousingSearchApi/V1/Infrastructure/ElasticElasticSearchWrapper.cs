@@ -5,20 +5,22 @@ using Nest;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Interfaces.Factories;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Infrastructure
 {
-    public class ElasticElasticSearchWrapper : IElasticSearchWrapper
+    public class ElasticSearchWrapper : IElasticSearchWrapper
     {
         private readonly IElasticClient _esClient;
         private readonly IQueryFactory _queryFactory;
         private readonly IPagingHelper _pagingHelper;
         private readonly ISortFactory _iSortFactory;
-        private readonly ILogger<ElasticElasticSearchWrapper> _logger;
+        private readonly ILogger<ElasticSearchWrapper> _logger;
         private readonly IIndexSelector _indexSelector;
 
-        public ElasticElasticSearchWrapper(IElasticClient esClient, IQueryFactory queryFactory,
-            IPagingHelper pagingHelper, ISortFactory iSortFactory, ILogger<ElasticElasticSearchWrapper> logger, IIndexSelector indexSelector)
+        public ElasticSearchWrapper(IElasticClient esClient, IQueryFactory queryFactory,
+            IPagingHelper pagingHelper, ISortFactory iSortFactory, ILogger<ElasticSearchWrapper> logger, IIndexSelector indexSelector)
         {
             _esClient = esClient;
             _queryFactory = queryFactory;

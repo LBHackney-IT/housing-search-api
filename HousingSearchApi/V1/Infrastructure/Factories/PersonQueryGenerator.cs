@@ -1,13 +1,12 @@
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Infrastructure;
 using Nest;
 using System.Collections.Generic;
-using System.Linq;
-using Amazon.Runtime.Internal;
 using Hackney.Core.ElasticSearch.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
+using HousingSearchApi.V1.Infrastructure;
+using HousingSearchApi.V1.Interfaces.Factories;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Infrastructure.Factories
 {
     public class PersonQueryGenerator : IQueryGenerator<QueryablePerson>
     {

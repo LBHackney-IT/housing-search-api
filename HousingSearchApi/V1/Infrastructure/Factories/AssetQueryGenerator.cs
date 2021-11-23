@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Hackney.Core.ElasticSearch.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Interfaces.Factories;
 using Nest;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Infrastructure.Factories
 {
     public class AssetQueryGenerator : IQueryGenerator<QueryableAsset>
     {
