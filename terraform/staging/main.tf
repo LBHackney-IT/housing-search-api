@@ -22,7 +22,7 @@ terraform {
 
 data "aws_vpc" "staging_vpc" {
   tags = {
-    Name = "housing-dev"
+    Name = "vpc-housing-staging"
   }
 }
 
