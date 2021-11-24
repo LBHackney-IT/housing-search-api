@@ -22,7 +22,6 @@ namespace HousingSearchApi.V1.Infrastructure.Extensions
             var connectionSettings =
                 new ConnectionSettings(pool)
                     .PrettyJson()
-                    .BasicAuthentication("elastic", "KLO@1361")
                     .ThrowExceptions()
                     .DisableDirectStreaming();
             var esClient = new ElasticClient(connectionSettings);
