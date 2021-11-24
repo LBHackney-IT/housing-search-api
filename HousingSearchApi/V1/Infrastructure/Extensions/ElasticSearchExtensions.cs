@@ -21,7 +21,10 @@ namespace HousingSearchApi.V1.Infrastructure.Extensions
             var pool = new SingleNodeConnectionPool(new Uri(url));
             var connectionSettings =
                 new ConnectionSettings(pool)
-                    .PrettyJson().ThrowExceptions().DisableDirectStreaming();
+                    .PrettyJson()
+                    .BasicAuthentication("elastic", "KLO@1361")
+                    .ThrowExceptions()
+                    .DisableDirectStreaming();
             var esClient = new ElasticClient(connectionSettings);
 
             services.TryAddSingleton<IElasticClient>(esClient);
