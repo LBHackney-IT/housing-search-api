@@ -17,7 +17,7 @@ namespace HousingSearchApi.V1.UseCase
         }
 
         [LogCall]
-        public async Task<GetAssetListResponse> ExecuteAsync(HousingSearchRequest housingSearchRequest)
+        public async Task<GetAssetListResponse> ExecuteAsync(GetAssetListRequest housingSearchRequest)
         {
             return await _searchGateway.GetListOfAssets(housingSearchRequest).ConfigureAwait(false);
         }

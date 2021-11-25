@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Hackney.Core.ElasticSearch.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
@@ -16,12 +17,15 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             _queryBuilder = queryBuilder;
         }
 
-        public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryableTenure> q)
+        public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryableTenure> q)
         {
-            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
+            if (!(request is GetTenureListRequest tenureListRequest))
+                throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
+
+            if (string.IsNullOrWhiteSpace(tenureListRequest.SearchText)) return null;
 
             return _queryBuilder
-                .WithWildstarQuery(request.SearchText, new List<string>
+                .WithWildstarQuery(tenureListRequest.SearchText, new List<string>
                 {
                     "paymentReference",
                     "tenuredAsset.fullAddress^3",

@@ -6,9 +6,9 @@ namespace HousingSearchApi.V1.Gateways.Interfaces
 {
     public interface ISearchGateway
     {
-        Task<GetPersonListResponse> GetListOfPersons(HousingSearchRequest query);
-        Task<GetTenureListResponse> GetListOfTenures(HousingSearchRequest query);
-        Task<GetAssetListResponse> GetListOfAssets(HousingSearchRequest query);
-        Task<GetAccountListResponse> GetListOfAccounts(HousingSearchRequest query);
+        Task<GetPersonListResponse> GetListOfPersons(GetPersonListRequest query);
+        Task<GetTenureListResponse> GetListOfTenures(GetTenureListRequest query);
+        Task<GetAssetListResponse> GetListOfAssets(GetAssetListRequest query);
+        Task<GetAccountListResponse> GetListOfAccounts(GetAccountListRequest query);
     }
 }

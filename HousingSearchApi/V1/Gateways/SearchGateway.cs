@@ -22,9 +22,9 @@ namespace HousingSearchApi.V1.Gateways
         }
 
         [LogCall]
-        public async Task<GetPersonListResponse> GetListOfPersons(HousingSearchRequest query)
+        public async Task<GetPersonListResponse> GetListOfPersons(GetPersonListRequest query)
         {
-            var searchResponse = await _elasticSearchWrapper.Search<QueryablePerson>(query).ConfigureAwait(false);
+            var searchResponse = await _elasticSearchWrapper.Search<QueryablePerson, GetPersonListRequest>(query).ConfigureAwait(false);
             var personListResponse = new GetPersonListResponse();
 
             personListResponse.Persons.AddRange(searchResponse.Documents.Select(queryablePerson =>
@@ -37,9 +37,9 @@ namespace HousingSearchApi.V1.Gateways
         }
 
         [LogCall]
-        public async Task<GetTenureListResponse> GetListOfTenures(HousingSearchRequest query)
+        public async Task<GetTenureListResponse> GetListOfTenures(GetTenureListRequest query)
         {
-            var searchResponse = await _elasticSearchWrapper.Search<QueryableTenure>(query).ConfigureAwait(false);
+            var searchResponse = await _elasticSearchWrapper.Search<QueryableTenure, GetTenureListRequest>(query).ConfigureAwait(false);
             var tenureListResponse = new GetTenureListResponse();
 
             tenureListResponse.Tenures.AddRange(searchResponse.Documents.Select(queryableTenure =>
@@ -52,9 +52,9 @@ namespace HousingSearchApi.V1.Gateways
         }
 
         [LogCall]
-        public async Task<GetAssetListResponse> GetListOfAssets(HousingSearchRequest query)
+        public async Task<GetAssetListResponse> GetListOfAssets(GetAssetListRequest query)
         {
-            var searchResponse = await _elasticSearchWrapper.Search<QueryableAsset>(query).ConfigureAwait(false);
+            var searchResponse = await _elasticSearchWrapper.Search<QueryableAsset, GetAssetListRequest>(query).ConfigureAwait(false);
             var assetListResponse = new GetAssetListResponse();
 
             assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
@@ -66,9 +66,9 @@ namespace HousingSearchApi.V1.Gateways
             return assetListResponse;
         }
 
-        public async Task<GetAccountListResponse> GetListOfAccounts(HousingSearchRequest query)
+        public async Task<GetAccountListResponse> GetListOfAccounts(GetAccountListRequest query)
         {
-            var searchResponse = await _elasticSearchWrapper.Search<QueryableAccount>(query).ConfigureAwait(false);
+            var searchResponse = await _elasticSearchWrapper.Search<QueryableAccount, GetAccountListRequest>(query).ConfigureAwait(false);
             var accountListResponse = GetAccountListResponse.Create(searchResponse.Documents.Select(queryableAccount =>
                 queryableAccount.ToAccount())?.ToList());
 

@@ -15,7 +15,7 @@ namespace HousingSearchApi.V1.UseCase
             _getAccountGateway = getAccountGateway;
         }
 
-        public async Task<GetAccountListResponse> ExecuteAsync(HousingSearchRequest getAccountListRequest)
+        public async Task<GetAccountListResponse> ExecuteAsync(GetAccountListRequest getAccountListRequest)
         {
             return await _getAccountGateway.Search(getAccountListRequest).ConfigureAwait(false);
         }
