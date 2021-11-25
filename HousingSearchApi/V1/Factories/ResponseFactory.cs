@@ -29,7 +29,7 @@ namespace HousingSearchApi.V1.Factories
                 domain.BalanceAmount,
                 domain.HousingBenefitAmount,
                 domain.Address,
-                domain.Person.ToDomain(),
+                domain.Sender.ToDomain(),
                 domain.Fund);
         }
 

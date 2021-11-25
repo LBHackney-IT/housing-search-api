@@ -1,3 +1,4 @@
+using System;
 using Hackney.Core.Logging;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
@@ -79,7 +80,12 @@ namespace HousingSearchApi.V1.Gateways
 
             var searchResponse = await _elasticSearchWrapper.Search<QueryableTransaction>(searchRequest).ConfigureAwait(false);
 
-            var transactions = searchResponse.Documents.Select(queryableTransaction => queryableTransaction.Create());
+            if (!searchResponse.IsValid)
+            {
+                throw new Exception($"Cannot load transactions list. Error: {searchResponse.ServerError}");
+            }
+
+            var transactions = searchResponse.Documents.Select(queryableTransaction => queryableTransaction.ToTransaction());
 
             return GetTransactionListResponse.Create(searchResponse.Total, transactions.ToResponse());
         }

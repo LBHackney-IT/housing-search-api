@@ -12,7 +12,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         {
             if (total < 0)
             {
-                throw new ArgumentException("Transactions count should be greater that 0.", nameof(total));
+                throw new ArgumentException("Transactions count should be greater than or equals to 0.", nameof(total));
             }
 
             Total = total;

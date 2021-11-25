@@ -62,7 +62,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 var personIndex = random.Next(PersonsCount);
 
                 var transaction = _fixture.Create<QueryableTransaction>();
-                transaction.Person = Persons[personIndex];
+                transaction.Sender = Persons[personIndex];
 
                 listOfTransactions.Add(transaction);
             }

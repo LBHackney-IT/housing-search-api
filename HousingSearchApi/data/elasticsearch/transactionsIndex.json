@@ -2,6 +2,9 @@
   "aliases": {},
   "mappings": {
     "properties": {
+      "id": {
+        "type": "text"
+      },
       "targetId": {
         "type": "text"
       },
@@ -133,7 +136,7 @@
           }
         }
       },
-      "person": {
+      "sender": {
         "properties": {
           "id": {
             "type": "text"

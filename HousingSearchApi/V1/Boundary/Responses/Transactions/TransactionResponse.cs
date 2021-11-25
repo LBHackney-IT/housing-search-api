@@ -161,7 +161,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         public string Address { get; }
 
         /// <summary>
-        /// Person, who paid for the transaction
+        /// Sender, who paid for the transaction
         /// </summary>
         /// <example>
         /// {
@@ -169,7 +169,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         ///     "FullName": "Kian Hayward"
         /// }
         /// </example>
-        public Person Person { get; }
+        public Person Sender { get; }
 
         /// <summary>
         /// ToDO: No information about this field
@@ -181,7 +181,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
 
         private TransactionResponse(Guid id, Guid targetId, TargetType targetType, short periodNo, short financialYear, short financialMonth, string transactionSource, TransactionType transactionType,
             DateTime transactionDate, decimal transactionAmount, string paymentReference, string bankAccountNumber, bool isSuspense, SuspenseResolutionInfo suspenseResolutionInfo,
-            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Person person, string fund)
+            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Person sender, string fund)
         {
             Id = id;
             TargetId = targetId;
@@ -202,7 +202,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
             BalanceAmount = balanceAmount;
             HousingBenefitAmount = housingBenefitAmount;
             Address = address;
-            Person = person;
+            Sender = sender;
             Fund = fund;
         }
 
