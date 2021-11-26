@@ -33,7 +33,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         new List<string> { "paymentReference", "tenure.fullAddress", "tenure.primaryTenants.fullName" })
                     .WithExactQuery(accountListRequest.SearchText,
                         new List<string> { "paymentReference", "tenure.fullAddress", "tenure.primaryTenants.fullName" });
-            if(accountListRequest.TargetId!=Guid.Empty)
+            if (accountListRequest.TargetId != Guid.Empty)
                 _queryBuilder
                     .WithWildstarQuery(accountListRequest.TargetId.ToString(),
                         new List<string> { "targetId" })
