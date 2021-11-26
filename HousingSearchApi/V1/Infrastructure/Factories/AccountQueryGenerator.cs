@@ -24,6 +24,8 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             if (accountListRequest == null)
                 throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
 
+            if (accountListRequest.TargetId == Guid.Empty && accountListRequest.SearchText.Trim().Length == 0)
+                throw new Exception("Input string is not a correct format.");
 
             if (!string.IsNullOrEmpty(accountListRequest.SearchText))
                 _queryBuilder
@@ -31,6 +33,12 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         new List<string> { "paymentReference", "tenure.fullAddress", "tenure.primaryTenants.fullName" })
                     .WithExactQuery(accountListRequest.SearchText,
                         new List<string> { "paymentReference", "tenure.fullAddress", "tenure.primaryTenants.fullName" });
+            if(accountListRequest.TargetId!=Guid.Empty)
+                _queryBuilder
+                    .WithWildstarQuery(accountListRequest.TargetId.ToString(),
+                        new List<string> { "targetId" })
+                    .WithExactQuery(accountListRequest.TargetId.ToString(),
+                        new List<string> { "targetId" });
 
             return _queryBuilder.Build(q);
         }
