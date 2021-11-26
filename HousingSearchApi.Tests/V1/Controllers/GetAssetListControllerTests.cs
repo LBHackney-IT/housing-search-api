@@ -28,7 +28,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetAssetListShouldCallGetAssetListUseCase()
         {
             // given
-            var request = new HousingSearchRequest();
+            var request = new GetAssetListRequest();
             var response = new GetAssetListResponse();
             _mockGetAssetListUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
 
@@ -42,12 +42,12 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetAssetListSetsShouldCallGetAssetListSetsUseCase()
         {
             // given
-            var request = new HousingSearchRequest();
-            var response = new GetAssetListResponse();
+            var request = new GetAllAssetListRequest();
+            var response = new GetAllAssetListResponse();
             _mockGetAssetListSetsUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
 
             // when
-            await _classUnderTest.GetAssetListAll(request).ConfigureAwait(false);
+            await _classUnderTest.GetAllAssetList(request).ConfigureAwait(false);
 
             // then
             _mockGetAssetListSetsUseCase.Verify(x => x.ExecuteAsync(request), Times.Once);

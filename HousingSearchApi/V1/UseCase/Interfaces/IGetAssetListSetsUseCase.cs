@@ -6,6 +6,6 @@ namespace HousingSearchApi.V1.UseCase.Interfaces
 {
     public interface IGetAssetListSetsUseCase
     {
-        Task<GetAssetListResponse> ExecuteAsync(HousingSearchRequest housingSearchRequest);
+        Task<GetAllAssetListResponse> ExecuteAsync(GetAllAssetListRequest query);
     }
 }

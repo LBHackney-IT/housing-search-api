@@ -1,5 +1,6 @@
 using Amazon.Lambda.Core;
 using Hackney.Core.Logging;
+using Hackney.Shared.HousingSearch.Domain.Accounts;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
@@ -13,29 +14,28 @@ namespace HousingSearchApi.V1.Controllers
 {
     [ApiVersion("1")]
     [Produces("application/json")]
-    [Route("api/v1/search/tenures")]
+    [Route("api/v1/search/accounts")]
     [ApiController]
-    public class GetTenureListController : BaseController
+    public class GetAccountListController : BaseController
     {
-        private readonly IGetTenureListUseCase _getTenureListUseCase;
+        private readonly IGetAccountListUseCase _getAccountListUseCase;
 
-        public GetTenureListController(IGetTenureListUseCase getTenureListUseCase)
+        public GetAccountListController(IGetAccountListUseCase getAccountListUseCase)
         {
-            _getTenureListUseCase = getTenureListUseCase;
+            _getAccountListUseCase = getAccountListUseCase;
         }
 
-        [ProducesResponseType(typeof(APIResponse<GetTenureListResponse>), 200)]
+        [ProducesResponseType(typeof(APIResponse<Account>), 200)]
         [ProducesResponseType(typeof(APIResponse<NotFoundException>), 404)]
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
         [HttpGet, MapToApiVersion("1")]
         [LogCall(LogLevel.Information)]
-        public async Task<IActionResult> GetTenureList([FromQuery] GetTenureListRequest request)
+        public async Task<IActionResult> GetAccountList([FromQuery] GetAccountListRequest request)
         {
             try
             {
-                var tenuresSearchResult = await _getTenureListUseCase.ExecuteAsync(request).ConfigureAwait(false);
-                var apiResponse = new APIResponse<GetTenureListResponse>(tenuresSearchResult);
-                apiResponse.Total = tenuresSearchResult.Total();
+                var accountSearchResult = await _getAccountListUseCase.ExecuteAsync(request).ConfigureAwait(false);
+                var apiResponse = new APIResponse<GetAccountListResponse>(accountSearchResult) { Total = accountSearchResult.Total() };
 
                 return new OkObjectResult(apiResponse);
             }

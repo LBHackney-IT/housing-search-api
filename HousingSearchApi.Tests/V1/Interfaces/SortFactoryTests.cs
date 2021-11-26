@@ -1,6 +1,6 @@
 using FluentAssertions;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Interfaces.Sorting;
+using HousingSearchApi.V1.Infrastructure.Sorting;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Interfaces
@@ -18,7 +18,7 @@ namespace HousingSearchApi.Tests.V1.Interfaces
         public void GivenARequestShouldReturnDefaultSortForUnknownType()
         {
             // Arrange + act
-            var result = _sut.Create<SomeUnknownType>(new HousingSearchRequest());
+            var result = _sut.Create<SomeUnknownType, GetPersonListRequest>(new GetPersonListRequest());
 
             // Assert
             result.Should().BeOfType<DefaultSort<SomeUnknownType>>();

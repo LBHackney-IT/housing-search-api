@@ -1,13 +1,16 @@
 using Hackney.Core.Logging;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
-using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using System.Linq;
 using System.Threading.Tasks;
+using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
+using HousingSearchApi.V1.Gateways.Interfaces;
+using HousingSearchApi.V1.Interfaces;
+using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Gateways
 {
     public class SearchGateway : ISearchGateway
     {
@@ -19,9 +22,9 @@ namespace HousingSearchApi.V1.Interfaces
         }
 
         [LogCall]
-        public async Task<GetPersonListResponse> GetListOfPersons(HousingSearchRequest query)
+        public async Task<GetPersonListResponse> GetListOfPersons(GetPersonListRequest query)
         {
-            var searchResponse = await _elasticSearchWrapper.Search<QueryablePerson>(query).ConfigureAwait(false);
+            var searchResponse = await _elasticSearchWrapper.Search<QueryablePerson, GetPersonListRequest>(query).ConfigureAwait(false);
             var personListResponse = new GetPersonListResponse();
 
             personListResponse.Persons.AddRange(searchResponse.Documents.Select(queryablePerson =>
@@ -34,9 +37,9 @@ namespace HousingSearchApi.V1.Interfaces
         }
 
         [LogCall]
-        public async Task<GetTenureListResponse> GetListOfTenures(HousingSearchRequest query)
+        public async Task<GetTenureListResponse> GetListOfTenures(GetTenureListRequest query)
         {
-            var searchResponse = await _elasticSearchWrapper.Search<QueryableTenure>(query).ConfigureAwait(false);
+            var searchResponse = await _elasticSearchWrapper.Search<QueryableTenure, GetTenureListRequest>(query).ConfigureAwait(false);
             var tenureListResponse = new GetTenureListResponse();
 
             tenureListResponse.Tenures.AddRange(searchResponse.Documents.Select(queryableTenure =>
@@ -49,9 +52,9 @@ namespace HousingSearchApi.V1.Interfaces
         }
 
         [LogCall]
-        public async Task<GetAssetListResponse> GetListOfAssets(HousingSearchRequest query)
+        public async Task<GetAssetListResponse> GetListOfAssets(GetAssetListRequest query)
         {
-            var searchResponse = await _elasticSearchWrapper.Search<QueryableAsset>(query).ConfigureAwait(false);
+            var searchResponse = await _elasticSearchWrapper.Search<QueryableAsset, GetAssetListRequest>(query).ConfigureAwait(false);
             var assetListResponse = new GetAssetListResponse();
 
             assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
@@ -64,10 +67,10 @@ namespace HousingSearchApi.V1.Interfaces
         }
 
         [LogCall]
-        public async Task<GetAssetListResponse> GetListOfAssetsSets(HousingSearchRequest query)
+        public async Task<GetAllAssetListResponse> GetListOfAssetsSets(GetAllAssetListRequest query)
         {
-            var searchResponse = await _elasticSearchWrapper.SearchSets<QueryableAsset>(query).ConfigureAwait(false);
-            var assetListResponse = new GetAssetListResponse();
+            var searchResponse = await _elasticSearchWrapper.SearchSets<QueryableAsset, GetAllAssetListRequest>(query).ConfigureAwait(false);
+            var assetListResponse = new GetAllAssetListResponse();
 
             if (searchResponse == null) return assetListResponse;
             assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
@@ -75,8 +78,23 @@ namespace HousingSearchApi.V1.Interfaces
             );
 
             assetListResponse.SetTotal(searchResponse.Total);
+            if (searchResponse.Documents.Count > 0)
+            {
+                assetListResponse.SetLastHitId(searchResponse.Hits.Last().Id);
+            }
 
             return assetListResponse;
+        }
+
+        public async Task<GetAccountListResponse> GetListOfAccounts(GetAccountListRequest query)
+        {
+            var searchResponse = await _elasticSearchWrapper.Search<QueryableAccount, GetAccountListRequest>(query).ConfigureAwait(false);
+            var accountListResponse = GetAccountListResponse.Create(searchResponse.Documents.Select(queryableAccount =>
+                queryableAccount.ToAccount())?.ToList());
+
+            accountListResponse.SetTotal(searchResponse.Total);
+
+            return accountListResponse;
         }
     }
 }

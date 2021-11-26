@@ -1,9 +1,9 @@
+using System;
 using FluentAssertions;
 using Hackney.Core.ElasticSearch;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Infrastructure;
-using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Infrastructure.Factories;
 using Nest;
 using Xunit;
 
@@ -25,10 +25,11 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnNullIfRequestTypeIsUnknown(string searchText)
         {
             // Arrange + Act
-            var result = _sut.Create(new HousingSearchRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
+            QueryContainer Func() => _sut.Create<HousingSearchRequest>(new GetAccountListRequest { SearchText = searchText }, new QueryContainerDescriptor<QueryablePerson>());
 
             // Assert
-            result.Should().BeNull();
+            Exception ex = Assert.Throws<ArgumentNullException>((Func<QueryContainer>) Func);
+
         }
     }
 }

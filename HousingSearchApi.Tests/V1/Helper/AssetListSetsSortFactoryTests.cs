@@ -2,10 +2,7 @@ using FluentAssertions;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Interfaces.Sorting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using HousingSearchApi.V1.Infrastructure.Sorting;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Helper
@@ -22,7 +19,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldNotSortAsDefault()
         {
             // Arrange + Act
-            var result = _sut.Create<QueryableAsset>(new HousingSearchRequest());
+            var result = _sut.Create<QueryableAsset, GetAssetListRequest>(new GetAssetListRequest());
 
             // Assert
             result.Should().BeOfType(typeof(DefaultSort<QueryableAsset>));
@@ -32,7 +29,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnAssetIdAscWhenRequestAssetIdAndAsc()
         {
             // Arrange + Act
-            var result = _sut.Create<QueryableAsset>(new HousingSearchRequest { SortBy = "assetId", IsDesc = false });
+            var result = _sut.Create<QueryableAsset, GetAssetListRequest>(new GetAssetListRequest { SortBy = "assetId", IsDesc = false });
 
             // Assert
             result.Should().BeOfType(typeof(AssetIdAsc));
@@ -42,7 +39,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldReturnAssetIdDescWhenRequestAssetIdAndDesc()
         {
             // Arrange + Act
-            var result = _sut.Create<QueryableAsset>(new HousingSearchRequest { SortBy = "assetId", IsDesc = true });
+            var result = _sut.Create<QueryableAsset, GetAssetListRequest>(new GetAssetListRequest { SortBy = "assetId", IsDesc = true });
 
             // Assert
             result.Should().BeOfType(typeof(AssetIdDesc));

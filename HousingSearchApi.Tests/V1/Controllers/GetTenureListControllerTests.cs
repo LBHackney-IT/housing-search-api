@@ -27,7 +27,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetTenureListShouldCallGetTenureListUseCase()
         {
             // given
-            var request = new HousingSearchRequest();
+            var request = new GetTenureListRequest();
             var response = new GetTenureListResponse();
             _mockGetTenureListUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
 

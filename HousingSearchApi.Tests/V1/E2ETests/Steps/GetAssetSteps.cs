@@ -15,6 +15,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 {
     public class GetAssetSteps : BaseSteps
     {
+        private string _lastHitId;
         public GetAssetSteps(HttpClient httpClient) : base(httpClient)
         {
         }
@@ -44,9 +45,16 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
-        public async Task WhenSearchTextProvidedAsStarStarAndAssetTypeProvided(string assetType)
+        public async Task WhenSearchTextProvidedAsStarStarAndAssetTypeProvidedAndLastHitIdNotProvided(string assetType)
         {
             var route = new Uri($"api/v1/search/assets/all?searchText=**&assetTypes={assetType}&pageSize={5}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+        public async Task WhenSearchTextProvidedAsStarStarAndAssetTypeProvidedAndLastHitIdProvided(string assetType)
+        {
+            var route = new Uri($"api/v1/search/assets/all?searchText=**&assetTypes={assetType}&pageSize={5}&lastHitId={_lastHitId}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -85,6 +93,24 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var assets = allowedAssetType.Split(",");
 
             result.Results.Assets.All(x => x.AssetType == assets[0] || x.AssetType == assets[1]);
+
+        }
+        public async Task ThenOnlyAllAssetsResponseTheseAssetTypesShouldBeIncluded(string allowedAssetType)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+
+            var assets = allowedAssetType.Split(",");
+
+            result.Results.Assets.All(x => x.AssetType == assets[0] || x.AssetType == assets[1]);
+
+        }
+        public async Task ThenOnlyLastHitIdShouldBeIncluded()
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+
+            _lastHitId = result?.LastHitId;
 
         }
 

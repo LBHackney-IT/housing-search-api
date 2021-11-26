@@ -1,7 +1,8 @@
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
+using HousingSearchApi.V1.Interfaces.Sorting;
 using Nest;
 
-namespace HousingSearchApi.V1.Interfaces.Sorting
+namespace HousingSearchApi.V1.Infrastructure.Sorting
 {
     public class SurnameDesc : ISort<QueryablePerson>
     {

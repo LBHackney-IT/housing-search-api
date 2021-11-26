@@ -4,8 +4,8 @@ using HousingSearchApi.V1.Boundary.Responses;
 
 namespace HousingSearchApi.V1.UseCase.Interfaces
 {
-    public interface IGetTenureListUseCase
+    public interface IGetAccountListUseCase
     {
-        Task<GetTenureListResponse> ExecuteAsync(GetTenureListRequest getPersonListRequest);
+        Task<GetAccountListResponse> ExecuteAsync(GetAccountListRequest getAccountListRequest);
     }
 }

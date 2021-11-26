@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HousingSearchApi.V1.Gateways.Interfaces;
 
 namespace HousingSearchApi.V1.UseCase
 {
@@ -18,9 +19,9 @@ namespace HousingSearchApi.V1.UseCase
             _searchGateway = searchGateway;
         }
 
-        public async Task<GetAssetListResponse> ExecuteAsync(HousingSearchRequest housingSearchRequest)
+        public async Task<GetAllAssetListResponse> ExecuteAsync(GetAllAssetListRequest query)
         {
-            return await _searchGateway.GetListOfAssetsSets(housingSearchRequest).ConfigureAwait(false);
+            return await _searchGateway.GetListOfAssetsSets(query).ConfigureAwait(false);
         }
     }
 }
