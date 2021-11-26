@@ -18,7 +18,6 @@ namespace HousingSearchApi.V1.Infrastructure
         private readonly ISortFactory _iSortFactory;
         private readonly ILogger<ElasticSearchWrapper> _logger;
         private readonly IIndexSelector _indexSelector;
-        //private static IHit<object> _lastHit;
 
         public ElasticSearchWrapper(IElasticClient esClient, IQueryFactory queryFactory,
             IPagingHelper pagingHelper, ISortFactory iSortFactory, ILogger<ElasticSearchWrapper> logger, IIndexSelector indexSelector)
