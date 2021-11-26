@@ -1,7 +1,7 @@
 using System;
 using Hackney.Core.ElasticSearch.Interfaces;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Infrastructure
 {
     public class ExactSearchQuerystringProcessor : IExactSearchQuerystringProcessor
     {

@@ -1,19 +1,20 @@
 using Hackney.Shared.HousingSearch.Gateways.Models.Transactions;
 using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Interfaces.Sorting;
 using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
 
-namespace HousingSearchApi.V1.Interfaces.Sorting
+namespace HousingSearchApi.V1.Infrastructure.Sorting
 {
     public class SortFactory : ISortFactory
     {
-        public ISort<T> Create<T>(HousingSearchRequest request) where T : class
+        public ISort<T> Create<T, TRequest>(TRequest request) where T : class where TRequest : class
         {
             if (typeof(T) == typeof(QueryablePerson))
             {
-                if (string.IsNullOrEmpty(request.SortBy))
+                if (string.IsNullOrEmpty(((HousingSearchRequest) (object) request).SortBy))
                     return new DefaultSort<T>();
 
-                switch (request.IsDesc)
+                switch (((HousingSearchRequest) (object) request).IsDesc)
                 {
                     case true:
                         return (ISort<T>) new SurnameDesc();

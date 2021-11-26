@@ -5,20 +5,22 @@ using Nest;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Interfaces.Factories;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Infrastructure
 {
-    public class ElasticElasticSearchWrapper : IElasticSearchWrapper
+    public class ElasticSearchWrapper : IElasticSearchWrapper
     {
         private readonly IElasticClient _esClient;
         private readonly IQueryFactory _queryFactory;
         private readonly IPagingHelper _pagingHelper;
         private readonly ISortFactory _iSortFactory;
-        private readonly ILogger<ElasticElasticSearchWrapper> _logger;
+        private readonly ILogger<ElasticSearchWrapper> _logger;
         private readonly IIndexSelector _indexSelector;
 
-        public ElasticElasticSearchWrapper(IElasticClient esClient, IQueryFactory queryFactory,
-            IPagingHelper pagingHelper, ISortFactory iSortFactory, ILogger<ElasticElasticSearchWrapper> logger, IIndexSelector indexSelector)
+        public ElasticSearchWrapper(IElasticClient esClient, IQueryFactory queryFactory,
+            IPagingHelper pagingHelper, ISortFactory iSortFactory, ILogger<ElasticSearchWrapper> logger, IIndexSelector indexSelector)
         {
             _esClient = esClient;
             _queryFactory = queryFactory;
@@ -28,7 +30,7 @@ namespace HousingSearchApi.V1.Interfaces
             _indexSelector = indexSelector;
         }
 
-        public async Task<ISearchResponse<T>> Search<T>(HousingSearchRequest request) where T : class
+        public async Task<ISearchResponse<T>> Search<T, TRequest>(TRequest request) where T : class where TRequest : class
         {
             try
             {
@@ -38,12 +40,14 @@ namespace HousingSearchApi.V1.Interfaces
                 if (request == null)
                     return new SearchResponse<T>();
 
-                var pageOffset = _pagingHelper.GetPageOffset(request.PageSize, request.Page);
+                HousingSearchRequest searchRequest = (HousingSearchRequest) (object) request;
+
+                var pageOffset = _pagingHelper.GetPageOffset(searchRequest.PageSize, searchRequest.Page);
 
                 var result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
-                    .Query(q => BaseQuery<T>(request).Create(request, q))
-                    .Sort(_iSortFactory.Create<T>(request).GetSortDescriptor)
-                    .Size(request.PageSize)
+                    .Query(q => BaseQuery<T>().Create(request, q))
+                    .Sort(_iSortFactory.Create<T, TRequest>(request).GetSortDescriptor)
+                    .Size(searchRequest.PageSize)
                     .Skip(pageOffset)
                     .TrackTotalHits()).ConfigureAwait(false);
 
@@ -58,9 +62,9 @@ namespace HousingSearchApi.V1.Interfaces
             }
         }
 
-        private IQueryGenerator<T> BaseQuery<T>(HousingSearchRequest request) where T : class
+        private IQueryGenerator<T> BaseQuery<T>() where T : class
         {
-            return _queryFactory.CreateQuery<T>(request);
+            return _queryFactory.CreateQuery<T>();
         }
     }
 }

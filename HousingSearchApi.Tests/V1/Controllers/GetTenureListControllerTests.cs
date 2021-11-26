@@ -27,7 +27,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetAssetListShouldCallGetAssetListUseCase()
         {
             // given
-            var request = new HousingSearchRequest();
+            var request = new GetAssetListRequest();
             var response = new GetAssetListResponse();
             _mockGetAssetListUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
 

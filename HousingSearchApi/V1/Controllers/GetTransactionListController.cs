@@ -37,7 +37,7 @@ namespace HousingSearchApi.V1.Controllers
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
         [HttpGet, MapToApiVersion("1")]
         [LogCall(LogLevel.Information)]
-        public async Task<IActionResult> GetTransactionList([FromQuery] GetTransactionSearchRequest request)
+        public async Task<IActionResult> GetTransactionList([FromQuery] GetTransactionListRequest request)
         {
             try
             {

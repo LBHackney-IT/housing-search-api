@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
 using Hackney.Core.ElasticSearch.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Transactions;
 using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Interfaces.Factories;
 using Nest;
 
-namespace HousingSearchApi.V1.Interfaces.QueryGenerators
+namespace HousingSearchApi.V1.Infrastructure.Factories
 {
     public class TransactionsQueryGenerator : IQueryGenerator<QueryableTransaction>
     {
@@ -15,12 +17,15 @@ namespace HousingSearchApi.V1.Interfaces.QueryGenerators
             _queryBuilder = queryBuilder;
         }
 
-        public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryableTransaction> q)
+        public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryableTransaction> q)
         {
-            if (string.IsNullOrWhiteSpace(request.SearchText)) return null;
+            if (!(request is GetTransactionListRequest transactionSearchRequest))
+                throw new ArgumentNullException(nameof(request));
+
+            if (string.IsNullOrWhiteSpace(transactionSearchRequest.SearchText)) return null;
 
             return _queryBuilder
-                .WithWildstarQuery(request.SearchText,
+                .WithWildstarQuery(transactionSearchRequest.SearchText,
                     new List<string>
                     {
                         "sender.fullName",
@@ -30,7 +35,7 @@ namespace HousingSearchApi.V1.Interfaces.QueryGenerators
                         "transactionDate",
                         "transactionAmount"
                     })
-                .WithExactQuery(request.SearchText,
+                .WithExactQuery(transactionSearchRequest.SearchText,
                     new List<string>
                     {
                         "sender.fullName",

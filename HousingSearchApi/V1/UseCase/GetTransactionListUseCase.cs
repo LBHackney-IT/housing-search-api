@@ -17,9 +17,9 @@ namespace HousingSearchApi.V1.UseCase
         }
 
         [LogCall]
-        public async Task<GetTransactionListResponse> ExecuteAsync(GetTransactionSearchRequest getTransactionSearchRequest)
+        public async Task<GetTransactionListResponse> ExecuteAsync(GetTransactionListRequest getTransactionListRequest)
         {
-            return await _searchGateway.GetListOfTransactions(getTransactionSearchRequest).ConfigureAwait(false);
+            return await _searchGateway.GetListOfTransactions(getTransactionListRequest).ConfigureAwait(false);
         }
     }
 }

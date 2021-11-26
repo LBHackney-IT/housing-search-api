@@ -31,7 +31,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetTransactionListReturnsOk()
         {
             const int transactionsCount = 10;
-            var request = new GetTransactionSearchRequest();
+            var request = new GetTransactionListRequest();
             var response = GetTransactionListResponse.Create(transactionsCount, new List<TransactionResponse>());
 
             _mockGetTransactionListUseCase
@@ -56,7 +56,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         [Fact]
         public async Task GetTransactionListThrowsIfUseCaseReturnsNull()
         {
-            var request = new GetTransactionSearchRequest();
+            var request = new GetTransactionListRequest();
 
             _mockGetTransactionListUseCase
                 .Setup(x => x.ExecuteAsync(request))

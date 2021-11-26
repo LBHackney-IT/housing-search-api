@@ -1,11 +1,12 @@
-using System.Collections.Generic;
 using Hackney.Core.ElasticSearch.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Infrastructure;
+using HousingSearchApi.V1.Interfaces.Factories;
 using Nest;
+using System;
+using System.Collections.Generic;
 
-namespace HousingSearchApi.V1.Interfaces.QueryGenerators
+namespace HousingSearchApi.V1.Infrastructure.Factories
 {
     public class PersonQueryGenerator : IQueryGenerator<QueryablePerson>
     {
@@ -16,17 +17,20 @@ namespace HousingSearchApi.V1.Interfaces.QueryGenerators
             _queryBuilder = queryBuilder;
         }
 
-        public QueryContainer Create(HousingSearchRequest request, QueryContainerDescriptor<QueryablePerson> q)
+
+
+        public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
+
             if (!(request is GetPersonListRequest personListRequest))
             {
-                return null;
+                throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
             }
 
             _queryBuilder
-                .WithWildstarQuery(request.SearchText,
+                .WithWildstarQuery(personListRequest.SearchText,
                     new List<string> { "firstname", "surname" })
-                .WithExactQuery(request.SearchText,
+                .WithExactQuery(personListRequest.SearchText,
                     new List<string> { "firstname", "surname" }, new ExactSearchQuerystringProcessor());
 
             if (personListRequest.PersonType.HasValue)

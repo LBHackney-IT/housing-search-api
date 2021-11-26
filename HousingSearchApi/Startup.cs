@@ -36,6 +36,10 @@ using Hackney.Core.ElasticSearch;
 using Hackney.Core.ElasticSearch.Interfaces;
 using HousingSearchApi.V1.Gateways.Interfaces;
 using HousingSearchApi.V1.Gateways;
+using HousingSearchApi.V1.Infrastructure.Extensions;
+using HousingSearchApi.V1.Infrastructure.Factories;
+using HousingSearchApi.V1.Infrastructure.Sorting;
+using HousingSearchApi.V1.Interfaces.Factories;
 
 namespace HousingSearchApi
 {
@@ -160,13 +164,15 @@ namespace HousingSearchApi
         private static void RegisterGateways(IServiceCollection services)
         {
             services.AddScoped<ISearchGateway, SearchGateway>();
+            services.AddScoped<IGetAccountGateway, GetAccountGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
         {
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
+            services.AddScoped<IGetAccountListUseCase, GetAccountListUseCase>();
             services.AddScoped<IGetTenureListUseCase, GetTenureListUseCase>();
-            services.AddScoped<IElasticSearchWrapper, ElasticElasticSearchWrapper>();
+            services.AddScoped<IElasticSearchWrapper, ElasticSearchWrapper>();
             services.AddScoped<IPagingHelper, PagingHelper>();
             services.AddScoped<ISortFactory, SortFactory>();
             services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();

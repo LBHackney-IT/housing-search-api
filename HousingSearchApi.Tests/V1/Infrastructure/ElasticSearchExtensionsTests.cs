@@ -1,11 +1,11 @@
 using FluentAssertions;
-using HousingSearchApi.V1.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Nest;
 using System;
 using System.Linq;
+using HousingSearchApi.V1.Infrastructure.Extensions;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Infrastructure
@@ -14,7 +14,7 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
     {
         private readonly Mock<IConfiguration> _mockConfiguration;
         private const string ConfigKey = "ELASTICSEARCH_DOMAIN_URL";
-        private const string EsNodeUrl = "http://somedomain:9200";
+        private const string EsNodeUrl = "http://localhost:9200";
 
         public ElasticSearchExtensionsTests()
         {

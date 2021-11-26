@@ -1,14 +1,17 @@
 using System;
 using Hackney.Core.ElasticSearch.Interfaces;
+using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
 using Hackney.Shared.HousingSearch.Gateways.Models.Transactions;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Interfaces.QueryGenerators;
+using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
+using HousingSearchApi.V1.Interfaces.Factories;
 using Microsoft.Extensions.DependencyInjection;
+using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
 
-namespace HousingSearchApi.V1.Interfaces
+namespace HousingSearchApi.V1.Infrastructure.Factories
 {
     public class QueryFactory : IQueryFactory
     {
@@ -19,7 +22,7 @@ namespace HousingSearchApi.V1.Interfaces
             _serviceProvider = serviceProvider;
         }
 
-        public IQueryGenerator<T> CreateQuery<T>(HousingSearchRequest request) where T : class
+        public IQueryGenerator<T> CreateQuery<T>() where T : class
         {
             if (typeof(T) == typeof(QueryablePerson))
             {
@@ -34,6 +37,10 @@ namespace HousingSearchApi.V1.Interfaces
             if (typeof(T) == typeof(QueryableAsset))
             {
                 return (IQueryGenerator<T>) new AssetQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableAsset>>());
+            }
+            if (typeof(T) == typeof(QueryableAccount))
+            {
+                return (IQueryGenerator<T>) new AccountQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableAccount>>());
             }
 
             if (typeof(T) == typeof(QueryableTransaction))

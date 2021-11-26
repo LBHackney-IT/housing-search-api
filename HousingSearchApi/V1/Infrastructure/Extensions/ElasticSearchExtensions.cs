@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Nest;
 using System;
 
-namespace HousingSearchApi.V1.Infrastructure
+namespace HousingSearchApi.V1.Infrastructure.Extensions
 {
     public static class ElasticSearchExtensions
     {
@@ -22,7 +22,9 @@ namespace HousingSearchApi.V1.Infrastructure
 
             var connectionSettings =
                 new ConnectionSettings(pool)
-                    .PrettyJson().ThrowExceptions().DisableDirectStreaming();
+                    .PrettyJson()
+                    .ThrowExceptions()
+                    .DisableDirectStreaming();
             var esClient = new ElasticClient(connectionSettings);
 
             services.TryAddSingleton<IElasticClient>(esClient);

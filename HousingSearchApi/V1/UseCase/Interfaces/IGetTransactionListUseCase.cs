@@ -6,6 +6,6 @@ namespace HousingSearchApi.V1.UseCase.Interfaces
 {
     public interface IGetTransactionListUseCase
     {
-        Task<GetTransactionListResponse> ExecuteAsync(GetTransactionSearchRequest getTransactionSearchRequest);
+        Task<GetTransactionListResponse> ExecuteAsync(GetTransactionListRequest getTransactionListRequest);
     }
 }
