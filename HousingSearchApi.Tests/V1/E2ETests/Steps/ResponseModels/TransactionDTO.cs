@@ -22,7 +22,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps.ResponseModels
 
         public DateTime TransactionDate { get; set; }
 
-        public PersonDTO Person { get; set; }
+        public PersonDTO Sender { get; set; }
 
         public decimal TransactionAmount { get; set; }
 

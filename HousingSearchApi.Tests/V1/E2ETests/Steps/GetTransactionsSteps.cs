@@ -57,7 +57,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var transactions = parsedResponse.Results.Transactions;
 
             transactions.All(t =>
-                t.Person.FullName.SafeContains(searchText) ||
+                t.Sender == null || t.Sender.FullName.SafeContains(searchText) ||
                 t.TransactionType.ToString().SafeContains(searchText) ||
                 t.PaymentReference.SafeContains(searchText) ||
                 t.BankAccountNumber.SafeContains(searchText) ||
