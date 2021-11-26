@@ -23,7 +23,7 @@ namespace HousingSearchApi.V1.Interfaces.QueryGenerators
                 .WithWildstarQuery(request.SearchText,
                     new List<string>
                     {
-                        "person.fullName",
+                        "sender.fullName",
                         "transactionType",
                         "paymentReference",
                         "bankAccountNumber",
@@ -33,7 +33,7 @@ namespace HousingSearchApi.V1.Interfaces.QueryGenerators
                 .WithExactQuery(request.SearchText,
                     new List<string>
                     {
-                        "person.fullName",
+                        "sender.fullName",
                         "transactionType",
                         "paymentReference",
                         "bankAccountNumber",
