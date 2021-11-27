@@ -1,8 +1,8 @@
 using SuspenseResolutionInfoResponse = HousingSearchApi.V1.Boundary.Responses.Transactions.SuspenseResolutionInfo;
 using SuspenseResolutionInfoDomain = Hackney.Shared.HousingSearch.Domain.Transactions.SuspenseResolutionInfo;
 
-using PersonResponse = HousingSearchApi.V1.Boundary.Responses.Transactions.Person;
-using PersonDomain = Hackney.Shared.HousingSearch.Domain.Transactions.Person;
+using SenderResponse = HousingSearchApi.V1.Boundary.Responses.Transactions.Sender;
+using SenderDomain = Hackney.Shared.HousingSearch.Domain.Transactions.Sender;
 
 namespace HousingSearchApi.V1.Factories
 {
@@ -13,9 +13,9 @@ namespace HousingSearchApi.V1.Factories
             return SuspenseResolutionInfoResponse.Create(sharedDomain.ResolutionDate, sharedDomain.IsConfirmed, sharedDomain.IsApproved, sharedDomain.Note);
         }
 
-        public static PersonResponse ToDomain(this PersonDomain sharedDomain)
+        public static SenderResponse ToDomain(this SenderDomain sharedDomain)
         {
-            return PersonResponse.Create(sharedDomain.Id, sharedDomain.FullName);
+            return SenderResponse.Create(sharedDomain.Id, sharedDomain.FullName);
         }
     }
 }

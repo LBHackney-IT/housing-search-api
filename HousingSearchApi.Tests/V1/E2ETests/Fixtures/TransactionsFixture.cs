@@ -14,20 +14,20 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
     public class TransactionsFixture : BaseFixture
     {
         private const string IndexName = "transactions";
-        private const int PersonsCount = 5;
+        private const int SendersCount = 5;
 
         private static readonly Fixture _fixture = new Fixture();
 
-        public static List<QueryablePerson> Persons { get; } = CreatePersonsData(PersonsCount);
+        public static List<QueryableSender> Senders { get; } = CreateSendersData(SendersCount);
 
         public TransactionsFixture(IElasticClient elasticClient, HttpClient httpHttpClient) : base(elasticClient, httpHttpClient)
         {
             WaitForESInstance();
         }
 
-        private static List<QueryablePerson> CreatePersonsData(int personsCount)
+        private static List<QueryableSender> CreateSendersData(int personsCount)
         {
-            return _fixture.CreateMany<QueryablePerson>(personsCount).ToList();
+            return _fixture.CreateMany<QueryableSender>(personsCount).ToList();
         }
 
         public void GivenAnAssetIndexExists()
@@ -59,10 +59,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             for (var i = 0; i < transactionsCount; i++)
             {
-                var personIndex = random.Next(PersonsCount);
+                var personIndex = random.Next(SendersCount);
 
                 var transaction = _fixture.Create<QueryableTransaction>();
-                transaction.Sender = Persons[personIndex];
+                transaction.Sender = Senders[personIndex];
 
                 listOfTransactions.Add(transaction);
             }
