@@ -24,9 +24,6 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             if (accountListRequest == null)
                 throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
 
-            if (accountListRequest.TargetId == Guid.Empty && accountListRequest.SearchText.Trim().Length == 0)
-                throw new Exception("Input search string shouldn't be empty.");
-
             if (!string.IsNullOrEmpty(accountListRequest.SearchText))
                 _queryBuilder
                     .WithWildstarQuery(accountListRequest.SearchText,
