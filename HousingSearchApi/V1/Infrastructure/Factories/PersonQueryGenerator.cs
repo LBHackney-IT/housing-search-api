@@ -1,11 +1,10 @@
-using System;
-using HousingSearchApi.V1.Boundary.Requests;
-using Nest;
-using System.Collections.Generic;
 using Hackney.Core.ElasticSearch.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
-using HousingSearchApi.V1.Infrastructure;
+using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Interfaces.Factories;
+using Nest;
+using System;
+using System.Collections.Generic;
 
 namespace HousingSearchApi.V1.Infrastructure.Factories
 {

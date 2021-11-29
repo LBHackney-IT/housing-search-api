@@ -10,12 +10,6 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
     </PropertyGroup>
-    <ItemGroup>
-      <Compile Remove="V1\Factories\**" />
-      <Content Remove="V1\Factories\**" />
-      <EmbeddedResource Remove="V1\Factories\**" />
-      <None Remove="V1\Factories\**" />
-    </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="5.1.1" />
@@ -31,7 +25,7 @@
     <PackageReference Include="Hackney.Core.Logging" Version="1.30.0" />
     <PackageReference Include="Hackney.Core.Middleware" Version="1.30.0" />
     <PackageReference Include="Hackney.Core.Validation" Version="1.30.0" />
-    <PackageReference Include="Hackney.Shared.HousingSearch" Version="0.10.0" />
+    <PackageReference Include="Hackney.Shared.HousingSearch" Version="0.14.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.1.1" />

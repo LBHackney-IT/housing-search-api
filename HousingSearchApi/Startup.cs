@@ -34,8 +34,8 @@ using System.Linq;
 using System.Reflection;
 using Hackney.Core.ElasticSearch;
 using Hackney.Core.ElasticSearch.Interfaces;
-using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Gateways.Interfaces;
+using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Infrastructure.Extensions;
 using HousingSearchApi.V1.Infrastructure.Factories;
 using HousingSearchApi.V1.Infrastructure.Sorting;
@@ -177,6 +177,7 @@ namespace HousingSearchApi
             services.AddScoped<ISortFactory, SortFactory>();
             services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();
             services.AddScoped<IGetAssetListSetsUseCase, GetAssetListSetsUseCase>();
+            services.AddScoped<IGetTransactionListUseCase, GetTransactionListUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

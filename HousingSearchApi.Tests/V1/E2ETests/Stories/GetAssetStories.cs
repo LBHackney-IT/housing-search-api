@@ -32,7 +32,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         {
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenRequestDoesNotContainSearchString())
-                .Then(t => _steps.ThenTheLastRequestShouldBeBadRequestResult())
+                .Then(t => _steps.ThenTheLastRequestShouldBeBadRequestResult(default))
                 .BDDfy();
         }
 
