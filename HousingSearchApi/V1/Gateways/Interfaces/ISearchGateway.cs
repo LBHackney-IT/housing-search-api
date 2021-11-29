@@ -10,6 +10,7 @@ namespace HousingSearchApi.V1.Gateways.Interfaces
         Task<GetPersonListResponse> GetListOfPersons(GetPersonListRequest query);
         Task<GetTenureListResponse> GetListOfTenures(GetTenureListRequest query);
         Task<GetAssetListResponse> GetListOfAssets(GetAssetListRequest query);
+        Task<GetAllAssetListResponse> GetListOfAssetsSets(GetAllAssetListRequest query);
         Task<GetAccountListResponse> GetListOfAccounts(GetAccountListRequest query);
         Task<GetTransactionListResponse> GetListOfTransactions(GetTransactionListRequest request);
     }

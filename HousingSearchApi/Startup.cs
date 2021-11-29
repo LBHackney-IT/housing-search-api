@@ -176,6 +176,7 @@ namespace HousingSearchApi
             services.AddScoped<IPagingHelper, PagingHelper>();
             services.AddScoped<ISortFactory, SortFactory>();
             services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();
+            services.AddScoped<IGetAssetListSetsUseCase, GetAssetListSetsUseCase>();
             services.AddScoped<IGetTransactionListUseCase, GetTransactionListUseCase>();
         }
 

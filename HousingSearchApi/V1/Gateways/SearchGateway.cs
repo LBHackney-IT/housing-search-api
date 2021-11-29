@@ -70,6 +70,26 @@ namespace HousingSearchApi.V1.Gateways
             return assetListResponse;
         }
 
+        [LogCall]
+        public async Task<GetAllAssetListResponse> GetListOfAssetsSets(GetAllAssetListRequest query)
+        {
+            var searchResponse = await _elasticSearchWrapper.SearchSets<QueryableAsset, GetAllAssetListRequest>(query).ConfigureAwait(false);
+            var assetListResponse = new GetAllAssetListResponse();
+
+            if (searchResponse == null) return assetListResponse;
+            assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
+                queryableAsset.Create())
+            );
+
+            assetListResponse.SetTotal(searchResponse.Total);
+            if (searchResponse.Documents.Count > 0)
+            {
+                assetListResponse.SetLastHitId(searchResponse.Hits.Last().Id);
+            }
+
+            return assetListResponse;
+        }
+
         public async Task<GetAccountListResponse> GetListOfAccounts(GetAccountListRequest query)
         {
             var searchResponse = await _elasticSearchWrapper.Search<QueryableAccount, GetAccountListRequest>(query).ConfigureAwait(false);

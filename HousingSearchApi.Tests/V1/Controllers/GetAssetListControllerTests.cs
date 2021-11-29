@@ -9,21 +9,23 @@ using Xunit;
 namespace HousingSearchApi.Tests.V1.Controllers
 {
     [Collection("LogCall collection")]
-    public class GetTenureListControllerTests
+    public class GetAssetListControllerTests
     {
         private readonly Mock<IGetAssetListUseCase> _mockGetAssetListUseCase;
+        private readonly Mock<IGetAssetListSetsUseCase> _mockGetAssetListSetsUseCase;
         private readonly GetAssetListController _classUnderTest;
 
-        public GetTenureListControllerTests()
+        public GetAssetListControllerTests()
         {
             new LogCallAspectFixture().RunBeforeTests();
 
             _mockGetAssetListUseCase = new Mock<IGetAssetListUseCase>();
-            _classUnderTest = new GetAssetListController(_mockGetAssetListUseCase.Object);
+            _mockGetAssetListSetsUseCase = new Mock<IGetAssetListSetsUseCase>();
+            _classUnderTest = new GetAssetListController(_mockGetAssetListUseCase.Object, _mockGetAssetListSetsUseCase.Object);
         }
 
         [Fact]
-        public async Task GetTenureListShouldCallGetTenureListUseCase()
+        public async Task GetAssetListShouldCallGetAssetListUseCase()
         {
             // given
             var request = new GetAssetListRequest();
@@ -35,6 +37,20 @@ namespace HousingSearchApi.Tests.V1.Controllers
 
             // then
             _mockGetAssetListUseCase.Verify(x => x.ExecuteAsync(request), Times.Once);
+        }
+        [Fact]
+        public async Task GetAssetListSetsShouldCallGetAssetListSetsUseCase()
+        {
+            // given
+            var request = new GetAllAssetListRequest();
+            var response = new GetAllAssetListResponse();
+            _mockGetAssetListSetsUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
+
+            // when
+            await _classUnderTest.GetAllAssetList(request).ConfigureAwait(false);
+
+            // then
+            _mockGetAssetListSetsUseCase.Verify(x => x.ExecuteAsync(request), Times.Once);
         }
     }
 }
