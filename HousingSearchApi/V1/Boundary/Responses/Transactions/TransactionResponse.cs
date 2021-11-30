@@ -169,7 +169,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         ///     "FullName": "Kian Hayward"
         /// }
         /// </example>
-        public Person Sender { get; }
+        public Sender Sender { get; }
 
         /// <summary>
         /// ToDO: No information about this field
@@ -181,7 +181,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
 
         private TransactionResponse(Guid id, Guid targetId, TargetType targetType, short periodNo, short financialYear, short financialMonth, string transactionSource, TransactionType transactionType,
             DateTime transactionDate, decimal transactionAmount, string paymentReference, string bankAccountNumber, bool isSuspense, SuspenseResolutionInfo suspenseResolutionInfo,
-            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Person sender, string fund)
+            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Sender sender, string fund)
         {
             Id = id;
             TargetId = targetId;
@@ -208,7 +208,7 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
 
         public static TransactionResponse Create(Guid id, Guid targetId, TargetType targetType, short periodNo, short financialYear, short financialMonth, string transactionSource, TransactionType transactionType,
             DateTime transactionDate, decimal transactionAmount, string paymentReference, string bankAccountNumber, bool isSuspense, SuspenseResolutionInfo suspenseResolutionInfo,
-            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Person person, string fund)
+            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Sender person, string fund)
         {
             return new TransactionResponse(id, targetId, targetType, periodNo, financialYear, financialMonth, transactionSource, transactionType, transactionDate, transactionAmount,
                 paymentReference, bankAccountNumber, isSuspense, suspenseResolutionInfo, paidAmount, chargedAmount, balanceAmount,

@@ -57,8 +57,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         public void ServiceReturnsOkWithMatchesByFullName()
         {
             this.Given(_ => _transactionsFixture.GivenAnAssetIndexExists())
-                .When(_ => _transactionsSteps.WhenRequestContainsSearchText(TransactionsFixture.Persons.First().FullName))
-                .Then(_ => _transactionsSteps.ThenThatTextShouldBeInTheResult(TransactionsFixture.Persons.First().FullName))
+                .When(_ => _transactionsSteps.WhenRequestContainsSearchText(TransactionsFixture.Senders.First().FullName))
+                .Then(_ => _transactionsSteps.ThenThatTextShouldBeInTheResult(TransactionsFixture.Senders.First().FullName))
                 .BDDfy();
         }
     }

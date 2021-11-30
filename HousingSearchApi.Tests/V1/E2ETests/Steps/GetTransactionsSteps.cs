@@ -32,7 +32,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenAPageSizeIsProvided(int pageSize)
         {
-            var route = new Uri($"{BaseTransactionsRoute}?searchText={TransactionsFixture.Persons.First().FullName}&pageSize={pageSize}",
+            var route = new Uri($"{BaseTransactionsRoute}?searchText={TransactionsFixture.Senders.First().FullName}&pageSize={pageSize}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);

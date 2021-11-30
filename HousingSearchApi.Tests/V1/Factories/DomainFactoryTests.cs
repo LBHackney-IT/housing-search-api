@@ -21,7 +21,7 @@ namespace HousingSearchApi.Tests.V1.Factories
         [Fact]
         public void CanMapASharedDomainPersonTypeObjectToADomainObject()
         {
-            var sharedDomain = _fixture.Create<Person>();
+            var sharedDomain = _fixture.Create<Sender>();
             var domain = sharedDomain.ToDomain();
             sharedDomain.Should().BeEquivalentTo(domain);
         }
