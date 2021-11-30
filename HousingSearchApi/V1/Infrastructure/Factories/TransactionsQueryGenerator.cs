@@ -31,9 +31,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         "sender.fullName",
                         "transactionType",
                         "paymentReference",
-                        "bankAccountNumber",
-                        "transactionDate",
-                        "transactionAmount"
+                        "bankAccountNumber"
                     })
                 .WithExactQuery(transactionSearchRequest.SearchText,
                     new List<string>
@@ -41,9 +39,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         "sender.fullName",
                         "transactionType",
                         "paymentReference",
-                        "bankAccountNumber",
-                        "transactionDate",
-                        "transactionAmount"
+                        "bankAccountNumber"
                     })
                 .Build(q);
         }
