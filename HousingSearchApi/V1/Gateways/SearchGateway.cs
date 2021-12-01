@@ -112,10 +112,11 @@ namespace HousingSearchApi.V1.Gateways
 
             var searchResponse = await _elasticSearchWrapper.Search<QueryableTransaction, GetTransactionListRequest>(searchRequest).ConfigureAwait(false);
 
-            if (!searchResponse.IsValid)
-            {
-                throw new Exception($"Cannot load transactions list. Error: {searchResponse.ServerError}");
-            }
+            if (searchResponse == null) throw new Exception("Cannot get response from ElasticSearch instance");
+
+            if (!searchResponse.IsValid) throw new Exception($"Cannot load transactions list. Error: {searchResponse.ServerError}");
+
+            if (searchResponse.Documents == null) throw new Exception($"ElasticSearch instance returns no documents. Error: {searchResponse.ServerError}");
 
             var transactions = searchResponse.Documents.Select(queryableTransaction => queryableTransaction.ToTransaction());
 
