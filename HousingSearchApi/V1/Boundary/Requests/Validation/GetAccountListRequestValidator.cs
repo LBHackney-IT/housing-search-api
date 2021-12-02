@@ -1,3 +1,4 @@
+using System;
 using FluentValidation;
 using Hackney.Core.Validation;
 
@@ -7,37 +8,20 @@ namespace HousingSearchApi.V1.Boundary.Requests.Validation
     {
         public GetAccountListRequestValidator()
         {
-            RuleFor(x => x.SearchText).NotNull()
-                .DependentRules(() =>
-                {
-                    RuleFor(x => x.TargetId).Null();
-                    RuleFor(x => x.TargetId).Empty();
-                })
-                .NotEmpty()
-                .DependentRules(() =>
-                {
-                    RuleFor(x => x.TargetId).Null();
-                    RuleFor(x => x.TargetId).Empty();
-                })
-                .MaximumLength(2)
+            RuleFor(x => x.SearchText).NotEmpty()
+                .When(w => w.TargetId == Guid.Empty)
+                .NotNull()
+                .When(w => w.TargetId == Guid.Empty)
+                .MinimumLength(2).When(x => !string.IsNullOrEmpty(x.SearchText))
                 .NotXssString();
 
-            RuleFor(x => x.TargetId).NotNull()
-                .DependentRules(() =>
-                {
-                    RuleFor(x => x.SearchText).Null();
-                    RuleFor(x => x.SearchText).Empty();
-                })
-                .NotEmpty()
-                .DependentRules(() =>
-                {
-                    RuleFor(x => x.SearchText).Null();
-                    RuleFor(x => x.SearchText).Empty();
-                })
-                .NotXssString();
+            RuleFor(x => x.TargetId).NotEmpty()
+                .When(w => string.IsNullOrEmpty(w.SearchText));
 
             RuleFor(x => x.PageSize).GreaterThan(0);
             RuleFor(x => x.SortBy).NotXssString();
+
+            RuleFor(x => x.Page).GreaterThan(-1);
         }
     }
 }

@@ -13,9 +13,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 {
     public class AssetFixture : BaseFixture
     {
-        public List<QueryablePerson> Persons { get; private set; }
-        private const string INDEX = "assets";
-        public static AddressStub[] Addresses =
+        public AddressStub[] Addresses =
         {
             new AddressStub{ FirstLine = "59 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
             new AddressStub{ FirstLine = "54 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234655"},
@@ -32,6 +30,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public AssetFixture(IElasticClient elasticClient, HttpClient httpClient) : base(elasticClient, httpClient)
         {
+            INDEX = "assets";
             WaitForESInstance();
         }
 

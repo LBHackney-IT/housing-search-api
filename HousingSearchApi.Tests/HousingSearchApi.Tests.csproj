@@ -71,7 +71,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="V1\Boundary\Responses\" />
     <Folder Include="V1\Helper\Indices\" />
   </ItemGroup>
 

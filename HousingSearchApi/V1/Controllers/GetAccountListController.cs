@@ -8,7 +8,9 @@ using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2.Model;
 
 namespace HousingSearchApi.V1.Controllers
 {
@@ -28,21 +30,25 @@ namespace HousingSearchApi.V1.Controllers
         [ProducesResponseType(typeof(APIResponse<Account>), 200)]
         [ProducesResponseType(typeof(APIResponse<NotFoundException>), 404)]
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
+        [ProducesResponseType(typeof(APIResponse<InternalServerErrorException>), 500)]
         [HttpGet, MapToApiVersion("1")]
         [LogCall(LogLevel.Information)]
         public async Task<IActionResult> GetAccountList([FromQuery] GetAccountListRequest request)
         {
             try
             {
+                if (request == null)
+                    return BadRequest("Input parameter is null!");
+
                 var accountSearchResult = await _getAccountListUseCase.ExecuteAsync(request).ConfigureAwait(false);
                 var apiResponse = new APIResponse<GetAccountListResponse>(accountSearchResult) { Total = accountSearchResult.Total() };
 
-                return new OkObjectResult(apiResponse);
+                return Ok(apiResponse);
             }
             catch (Exception e)
             {
                 LambdaLogger.Log(e.Message + e.StackTrace);
-                return new BadRequestObjectResult(e.Message);
+                return StatusCode((int) HttpStatusCode.InternalServerError, e.Message);
             }
         }
     }

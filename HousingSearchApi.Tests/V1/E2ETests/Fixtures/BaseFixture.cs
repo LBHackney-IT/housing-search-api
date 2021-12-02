@@ -7,6 +7,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 {
     public class BaseFixture
     {
+        protected string INDEX;
         protected IElasticClient ElasticSearchClient;
         public HttpClient HttpClient { get; set; }
 

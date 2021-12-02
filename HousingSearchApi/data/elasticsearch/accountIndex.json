@@ -1,0 +1,156 @@
+{
+	"accounts": {
+		"aliases": {},
+		"mappings": {
+			"properties": {
+				"accountBalance": {
+					"type": "float"
+				},
+				"accountStatus": {
+					"type": "long"
+				},
+				"accountType": {
+					"type": "long"
+				},
+				"agreementType": {
+					"type": "text",
+					"fields": {
+						"keyword": {
+							"type": "keyword",
+							"ignore_above": 256
+						}
+					}
+				},
+				"consolidatedBalance": {
+					"type": "float"
+				},
+				"createdAt": {
+					"type": "date"
+				},
+				"createdBy": {
+					"type": "text",
+					"fields": {
+						"keyword": {
+							"type": "keyword",
+							"ignore_above": 256
+						}
+					}
+				},
+				"endDate": {
+					"type": "date"
+				},
+				"id": {
+					"type": "text",
+					"fields": {
+						"keyword": {
+							"type": "keyword",
+							"ignore_above": 256
+						}
+					}
+				},
+				"lastUpdatedAt": {
+					"type": "date"
+				},
+				"lastUpdatedBy": {
+					"type": "text",
+					"fields": {
+						"keyword": {
+							"type": "keyword",
+							"ignore_above": 256
+						}
+					}
+				},
+				"parentAccountId": {
+					"type": "text",
+					"fields": {
+						"keyword": {
+							"type": "keyword",
+							"ignore_above": 256
+						}
+					}
+				},
+				"paymentReference": {
+					"type": "text",
+					"fields": {
+						"keyword": {
+							"type": "keyword",
+							"ignore_above": 256
+						}
+					}
+				},
+				"rentGroupType": {
+					"type": "long"
+				},
+				"startDate": {
+					"type": "date"
+				},
+				"targetId": {
+					"type": "text",
+					"fields": {
+						"keyword": {
+							"type": "keyword",
+							"ignore_above": 256
+						}
+					}
+				},
+				"targetType": {
+					"type": "long"
+				},
+				"tenure": {
+					"properties": {
+						"fullAddress": {
+							"type": "text",
+							"fields": {
+								"keyword": {
+									"type": "keyword",
+									"ignore_above": 256
+								}
+							}
+						},
+						"primaryTenants": {
+							"properties": {
+								"fullName": {
+									"type": "text",
+									"fields": {
+										"keyword": {
+											"type": "keyword",
+											"ignore_above": 256
+										}
+									}
+								},
+								"id": {
+									"type": "text",
+									"fields": {
+										"keyword": {
+											"type": "keyword",
+											"ignore_above": 256
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"settings": {
+			"index": {
+				"routing": {
+					"allocation": {
+						"include": {
+							"_tier_preference": "data_content"
+						}
+					}
+				},
+				"number_of_shards": "1",
+				"provided_name": "accounts",
+				"creation_date": "1637686192278",
+				"number_of_replicas": "1",
+				"uuid": "sNTbn9V2TtWu-wg0kHrxYg",
+				"version": {
+					"created": "7150299"
+				}
+			}
+		}
+	}
+}
