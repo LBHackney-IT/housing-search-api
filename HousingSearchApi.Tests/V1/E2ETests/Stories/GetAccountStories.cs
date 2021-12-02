@@ -69,7 +69,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceReturnsExactMatchFirstIfExists()
         {
-            var accounts= AccountFixture.AccountSearchStubs.TakeLast(2);
+            var accounts = AccountFixture.AccountSearchStubs.TakeLast(2);
             this.Given(g => _accountsFixture.GivenAnAccountIndexExists())
                 .When(w => _steps.WhenAnExactMatchExists(accounts.First().FullAddress))
                 .Then(t => _steps.ThenThatAddressShouldBeTheFirstResult(accounts.First().FullAddress))
