@@ -56,15 +56,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .BDDfy();
         }
 
-        /*[Fact]
-        public void ServiceFiltersGivenAssetTypes()
+        [Fact]
+        public void ServiceFiltersGivenTargetIds()
         {
-            var account = Guid.Empty;
+            var account = AccountFixture.AccountSearchStubs.Last().TargetId;
             this.Given(g => _accountsFixture.GivenAnAccountIndexExists())
                 .When(w => _steps.WhenTargetIdsAreProvided(account))
                 .Then(t => _steps.ThenOnlyTheseAccountTargetIdsShouldBeIncluded(account))
                 .BDDfy();
-        }*/
+        }
 
         [Fact]
         public void ServiceReturnsExactMatchFirstIfExists()

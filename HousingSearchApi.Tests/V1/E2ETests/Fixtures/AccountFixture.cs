@@ -18,7 +18,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             new AccountSearchStub
             {
                 FullAddress = new Fixture().Create<string>(),
-                PaymentReference = new Fixture().Create<string>(),
+                PaymentReference = "12345",
                 TargetId = Guid.NewGuid(),
                 PrimaryTenants = new List<PrimaryTenants>
                 {
@@ -31,7 +31,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             new AccountSearchStub
             {
                 FullAddress = new Fixture().Create<string>(),
-                PaymentReference = new Fixture().Create<string>(),
+                PaymentReference = "12345",
                 TargetId = Guid.NewGuid(),
                 PrimaryTenants = new List<PrimaryTenants>
                 {
@@ -44,7 +44,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             new AccountSearchStub
             {
                 FullAddress = new Fixture().Create<string>(),
-                PaymentReference = new Fixture().Create<string>(),
+                PaymentReference = "12345",
                 TargetId = Guid.NewGuid(),
                 PrimaryTenants = new List<PrimaryTenants>
                 {
@@ -57,7 +57,85 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             new AccountSearchStub
             {
                 FullAddress = new Fixture().Create<string>(),
-                PaymentReference = new Fixture().Create<string>(),
+                PaymentReference = "12345",
+                TargetId = Guid.NewGuid(),
+                PrimaryTenants = new List<PrimaryTenants>
+                {
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
+                }
+            },
+            new AccountSearchStub
+            {
+                FullAddress = new Fixture().Create<string>(),
+                PaymentReference = "12345",
+                TargetId = Guid.NewGuid(),
+                PrimaryTenants = new List<PrimaryTenants>
+                {
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
+                }
+            },
+            new AccountSearchStub
+            {
+                FullAddress = new Fixture().Create<string>(),
+                PaymentReference = "12345",
+                TargetId = Guid.NewGuid(),
+                PrimaryTenants = new List<PrimaryTenants>
+                {
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
+                }
+            },
+            new AccountSearchStub
+            {
+                FullAddress = new Fixture().Create<string>(),
+                PaymentReference = "12345",
+                TargetId = Guid.NewGuid(),
+                PrimaryTenants = new List<PrimaryTenants>
+                {
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
+                }
+            },
+            new AccountSearchStub
+            {
+                FullAddress = new Fixture().Create<string>(),
+                PaymentReference = "12345",
+                TargetId = Guid.NewGuid(),
+                PrimaryTenants = new List<PrimaryTenants>
+                {
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
+                }
+            },
+            new AccountSearchStub
+            {
+                FullAddress = new Fixture().Create<string>(),
+                PaymentReference = "12345",
+                TargetId = Guid.NewGuid(),
+                PrimaryTenants = new List<PrimaryTenants>
+                {
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
+                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
+                }
+            },
+            new AccountSearchStub
+            {
+                FullAddress = new Fixture().Create<string>(),
+                PaymentReference = "12345",
                 TargetId = Guid.NewGuid(),
                 PrimaryTenants = new List<PrimaryTenants>
                 {

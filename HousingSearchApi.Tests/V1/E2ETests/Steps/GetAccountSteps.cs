@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps.Base;
+using HousingSearchApi.Tests.V1.E2ETests.Steps.ResponseModels;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 
@@ -31,7 +32,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenAPageSizeIsProvided(int pageSize)
         {
-            var route = new Uri($"api/v1/search/accounts?searchText={AccountFixture.AccountSearchStubs.Last().FullAddress}&pageSize={pageSize}", UriKind.Relative);
+            var route = new Uri($"api/v1/search/accounts?searchText={AccountFixture.AccountSearchStubs.Last().PaymentReference}&pageSize={pageSize}", UriKind.Relative);
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
 
@@ -60,25 +61,25 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task ThenTheReturningResultsShouldBeOfThatSize(int pageSize)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var result = JsonSerializer.Deserialize<APIResponse<GetAccountListResponse>>(resultBody, _jsonOptions);
+            var result = JsonSerializer.Deserialize<APIResponse<AccountListDTO>>(resultBody, _jsonOptions);
 
-            result.Results.Accounts.Count.Should().Be(pageSize);
+            result?.Results.Accounts.Count.Should().Be(pageSize);
         }
 
-        public async Task ThenOnlyTheseAccountTargetIdsShouldBeIncluded(List<Guid> allowedTargetId)
+        public async Task ThenOnlyTheseAccountTargetIdsShouldBeIncluded(Guid allowedTargetId)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var result = JsonSerializer.Deserialize<APIResponse<GetAccountListResponse>>(resultBody, _jsonOptions);
+            var result = JsonSerializer.Deserialize<APIResponse<AccountListDTO>>(resultBody, _jsonOptions);
 
-            result.Results.Accounts.ForEach(x => allowedTargetId.Should().Contain(x.TargetId));
+            result?.Results.Accounts.ForEach(x => x.TargetId.Should().Be(allowedTargetId));
         }
 
         public async Task ThenThatAddressShouldBeTheFirstResult(string address)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var result = JsonSerializer.Deserialize<APIResponse<GetAccountListResponse>>(resultBody, _jsonOptions);
+            var result = JsonSerializer.Deserialize<APIResponse<AccountListDTO>>(resultBody, _jsonOptions);
 
-            result.Results.Accounts.First().Tenure.FullAddress.Should().Be(address);
+            result?.Results.Accounts.First().Tenure.FullAddress.Should().Be(address);
         }
     }
 }
