@@ -20,8 +20,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 
         public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryableAccount> q)
         {
-            GetAccountListRequest accountListRequest = request as GetAccountListRequest;
-            if (accountListRequest == null)
+            if (!(request is GetAccountListRequest accountListRequest))
                 throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
 
             if (!string.IsNullOrEmpty(accountListRequest.SearchText))
