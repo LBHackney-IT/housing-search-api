@@ -38,6 +38,7 @@ using HousingSearchApi.V1.Gateways.Interfaces;
 using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Infrastructure.Extensions;
 using HousingSearchApi.V1.Infrastructure.Factories;
+using HousingSearchApi.V1.Infrastructure.Filtering;
 using HousingSearchApi.V1.Infrastructure.Sorting;
 using HousingSearchApi.V1.Interfaces.Factories;
 using HousingSearchApi.V1.Interfaces.Filtering;
