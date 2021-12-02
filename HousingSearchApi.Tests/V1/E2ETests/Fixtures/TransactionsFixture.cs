@@ -36,7 +36,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             if (ElasticSearchClient.Indices.Exists(Indices.Index(IndexName)).Exists)
             {
-                return;
+                ElasticSearchClient.Indices.DeleteAsync(IndexName);
             }
 
             // ToDo: add transactionsIndex to the folder

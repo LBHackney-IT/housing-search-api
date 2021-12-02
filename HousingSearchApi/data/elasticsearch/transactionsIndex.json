@@ -31,7 +31,13 @@
         "type": "text"
       },
       "transactionType": {
-        "type": "text"
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        }
       },
       "transactionDate": {
         "type": "keyword",
@@ -52,7 +58,7 @@
         }
       },
       "paymentReference": {
-        "type": "keyword",
+        "type": "text",
         "normalizer": "my_normalizer",
         "fields": {
           "keyword": {
@@ -62,8 +68,7 @@
         }
       },
       "bankAccountNumber": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
+        "type": "text",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -139,10 +144,16 @@
       "sender": {
         "properties": {
           "id": {
+            "fields": {
+              "keyword": {
+                "ignore_above": 256,
+                "type": "keyword"
+              }
+            },
             "type": "text"
           },
           "fullName": {
-            "type": "keyword",
+            "type": "text",
             "fields": {
               "keyword": {
                 "type": "keyword",
