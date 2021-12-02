@@ -5,6 +5,7 @@ using Nest;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Elasticsearch.Net;
 using HousingSearchApi.V1.Interfaces;
 using HousingSearchApi.V1.Interfaces.Factories;
 using HousingSearchApi.V1.Interfaces.Filtering;
@@ -59,6 +60,11 @@ namespace HousingSearchApi.V1.Infrastructure
                 _logger.LogDebug("ElasticSearch Search ended");
 
                 return result;
+            }
+            catch (ElasticsearchClientException e)
+            {
+                _logger.LogError(e, "ElasticSearch Search threw an ElasticSearchClientException. DebugInfo: " + e.DebugInformation);
+                throw;
             }
             catch (Exception e)
             {
