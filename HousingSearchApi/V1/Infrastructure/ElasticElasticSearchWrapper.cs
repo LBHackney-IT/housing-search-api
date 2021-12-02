@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HousingSearchApi.V1.Interfaces;
 using HousingSearchApi.V1.Interfaces.Factories;
+using HousingSearchApi.V1.Interfaces.Filtering;
 
 namespace HousingSearchApi.V1.Infrastructure
 {
@@ -16,16 +17,19 @@ namespace HousingSearchApi.V1.Infrastructure
         private readonly IQueryFactory _queryFactory;
         private readonly IPagingHelper _pagingHelper;
         private readonly ISortFactory _iSortFactory;
+        private readonly IFilterFactory _iFilterFactory;
         private readonly ILogger<ElasticSearchWrapper> _logger;
         private readonly IIndexSelector _indexSelector;
 
         public ElasticSearchWrapper(IElasticClient esClient, IQueryFactory queryFactory,
-            IPagingHelper pagingHelper, ISortFactory iSortFactory, ILogger<ElasticSearchWrapper> logger, IIndexSelector indexSelector)
+            IPagingHelper pagingHelper, ISortFactory iSortFactory, ILogger<ElasticSearchWrapper> logger, IIndexSelector indexSelector,
+            IFilterFactory iFilterFactory)
         {
             _esClient = esClient;
             _queryFactory = queryFactory;
             _pagingHelper = pagingHelper;
             _iSortFactory = iSortFactory;
+            _iFilterFactory = iFilterFactory;
             _logger = logger;
             _indexSelector = indexSelector;
         }
@@ -46,6 +50,7 @@ namespace HousingSearchApi.V1.Infrastructure
 
                 var result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
                     .Query(q => BaseQuery<T>().Create(request, q))
+                    .PostFilter(q => _iFilterFactory.Filter(request, q))
                     .Sort(_iSortFactory.Create<T, TRequest>(request).GetSortDescriptor)
                     .Size(searchRequest.PageSize)
                     .Skip(pageOffset)

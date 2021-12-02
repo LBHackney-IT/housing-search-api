@@ -107,7 +107,9 @@ namespace HousingSearchApi.V1.Gateways
             {
                 SearchText = request.SearchText,
                 Page = request.Page,
-                PageSize = request.PageSize
+                PageSize = request.PageSize,
+                StartDate = request.StartDate,
+                EndDate = request.EndDate
             };
 
             var searchResponse = await _elasticSearchWrapper.Search<QueryableTransaction, GetTransactionListRequest>(searchRequest).ConfigureAwait(false);
