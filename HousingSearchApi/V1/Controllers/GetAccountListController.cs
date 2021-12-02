@@ -28,7 +28,6 @@ namespace HousingSearchApi.V1.Controllers
         }
 
         [ProducesResponseType(typeof(APIResponse<Account>), 200)]
-        [ProducesResponseType(typeof(APIResponse<NotFoundException>), 404)]
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
         [ProducesResponseType(typeof(APIResponse<InternalServerErrorException>), 500)]
         [HttpGet, MapToApiVersion("1")]
