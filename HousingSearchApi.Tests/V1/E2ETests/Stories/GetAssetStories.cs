@@ -32,7 +32,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         {
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenRequestDoesNotContainSearchString())
-                .Then(t => _steps.ThenTheLastRequestShouldBeBadRequestResult())
+                .Then(t => _steps.ThenTheLastRequestShouldBeBadRequestResult(default))
                 .BDDfy();
         }
 
@@ -61,6 +61,27 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenAssetTypesAreProvided(asset))
                 .Then(t => _steps.ThenOnlyTheseAssetTypesShouldBeIncluded(asset))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceFiltersGivenAssetTypesWithSearchTextStarStar()
+        {
+            var asset = "Dwelling";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenSearchTextProvidedAsStarStarAndAssetTypeProvidedAndLastHitIdNotProvided(asset))
+                .Then(d => _steps.ThenOnlyLastHitIdShouldBeIncluded())
+                .Then(t => _steps.ThenOnlyAllAssetsResponseTheseAssetTypesShouldBeIncluded(asset))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceFiltersGivenAssetTypesWithSearchTextStarStarAndGivenLastHitId()
+        {
+            var asset = "Dwelling";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenSearchTextProvidedAsStarStarAndAssetTypeProvidedAndLastHitIdProvided(asset))
+                .Then(t => _steps.ThenOnlyAllAssetsResponseTheseAssetTypesShouldBeIncluded(asset))
                 .BDDfy();
         }
 
