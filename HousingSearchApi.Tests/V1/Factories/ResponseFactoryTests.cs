@@ -35,7 +35,12 @@ namespace HousingSearchApi.Tests.V1.Factories
             var list = _fixture.CreateMany<Transaction>(10);
             var responseNotes = list.ToResponse();
 
-            responseNotes.Should().BeEquivalentTo(list);
+            responseNotes.Should().BeEquivalentTo(list,
+                options => options
+                    .Excluding(t => t.CreatedBy)
+                    .Excluding(t => t.LastUpdatedBy)
+                    .Excluding(t => t.CreatedAt)
+                    .Excluding(t => t.LastUpdatedAt));
         }
 
         [Fact]

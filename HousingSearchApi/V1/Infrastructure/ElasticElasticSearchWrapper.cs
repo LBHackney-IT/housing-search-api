@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Elasticsearch.Net;
 using HousingSearchApi.V1.Interfaces;
 using HousingSearchApi.V1.Interfaces.Factories;
+using HousingSearchApi.V1.Interfaces.Filtering;
 
 namespace HousingSearchApi.V1.Infrastructure
 {
@@ -16,17 +17,20 @@ namespace HousingSearchApi.V1.Infrastructure
         private readonly IElasticClient _esClient;
         private readonly IQueryFactory _queryFactory;
         private readonly IPagingHelper _pagingHelper;
-        private readonly ISortFactory _iSortFactory;
+        private readonly ISortFactory _sortFactory;
+        private readonly IFilterFactory _filterFactory;
         private readonly ILogger<ElasticSearchWrapper> _logger;
         private readonly IIndexSelector _indexSelector;
 
         public ElasticSearchWrapper(IElasticClient esClient, IQueryFactory queryFactory,
-            IPagingHelper pagingHelper, ISortFactory iSortFactory, ILogger<ElasticSearchWrapper> logger, IIndexSelector indexSelector)
+            IPagingHelper pagingHelper, ISortFactory sortFactory, ILogger<ElasticSearchWrapper> logger, IIndexSelector indexSelector,
+            IFilterFactory filterFactory)
         {
             _esClient = esClient;
             _queryFactory = queryFactory;
             _pagingHelper = pagingHelper;
-            _iSortFactory = iSortFactory;
+            _sortFactory = sortFactory;
+            _filterFactory = filterFactory;
             _logger = logger;
             _indexSelector = indexSelector;
         }
@@ -47,7 +51,8 @@ namespace HousingSearchApi.V1.Infrastructure
 
                 var result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
                     .Query(q => BaseQuery<T>().Create(request, q))
-                    .Sort(_iSortFactory.Create<T, TRequest>(request).GetSortDescriptor)
+                    .PostFilter(q => _filterFactory.Filter(request, q))
+                    .Sort(_sortFactory.Create<T, TRequest>(request).GetSortDescriptor)
                     .Size(searchRequest.PageSize)
                     .Skip(pageOffset)
                     .TrackTotalHits()).ConfigureAwait(false);
@@ -89,7 +94,7 @@ namespace HousingSearchApi.V1.Infrastructure
                     result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
                       .Query(q => BaseQuery<T>().Create(request, q))
                       .Size(searchRequest.PageSize)
-                      .Sort(_iSortFactory.Create<T, TRequest>(request).GetSortDescriptor)
+                      .Sort(_sortFactory.Create<T, TRequest>(request).GetSortDescriptor)
                       .TrackTotalHits()
                       ).ConfigureAwait(false);
                 }
@@ -100,7 +105,7 @@ namespace HousingSearchApi.V1.Infrastructure
                       .Size(searchRequest.PageSize)
                       .TrackTotalHits()
                       .SearchAfter(lastSortedItem)
-                      .Sort(_iSortFactory.Create<T, TRequest>(request).GetSortDescriptor)
+                      .Sort(_sortFactory.Create<T, TRequest>(request).GetSortDescriptor)
                       ).ConfigureAwait(false);
                 }
 
