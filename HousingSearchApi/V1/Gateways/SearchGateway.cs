@@ -103,7 +103,6 @@ namespace HousingSearchApi.V1.Gateways
 
         public async Task<GetTransactionListResponse> GetListOfTransactions(GetTransactionListRequest request)
         {
-
             var searchResponse = await _elasticSearchWrapper.Search<QueryableTransaction, GetTransactionListRequest>(request).ConfigureAwait(false);
 
             if (searchResponse == null) throw new Exception("Cannot get response from ElasticSearch instance");
