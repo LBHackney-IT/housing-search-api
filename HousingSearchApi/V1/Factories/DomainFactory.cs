@@ -10,12 +10,12 @@ namespace HousingSearchApi.V1.Factories
     {
         public static SuspenseResolutionInfoResponse ToDomain(this SuspenseResolutionInfoDomain sharedDomain)
         {
-            return SuspenseResolutionInfoResponse.Create(sharedDomain.ResolutionDate, sharedDomain.IsConfirmed, sharedDomain.IsApproved, sharedDomain.Note);
+            return sharedDomain != null ? SuspenseResolutionInfoResponse.Create(sharedDomain.ResolutionDate, sharedDomain.IsConfirmed, sharedDomain.IsApproved, sharedDomain.Note) : null;
         }
 
         public static SenderResponse ToDomain(this SenderDomain sharedDomain)
         {
-            return SenderResponse.Create(sharedDomain.Id, sharedDomain.FullName);
+            return sharedDomain != null ? SenderResponse.Create(sharedDomain.Id, sharedDomain.FullName) : null;
         }
     }
 }

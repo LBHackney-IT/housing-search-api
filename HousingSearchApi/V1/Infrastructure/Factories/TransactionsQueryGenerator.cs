@@ -22,26 +22,28 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             if (!(request is GetTransactionListRequest transactionSearchRequest))
                 throw new ArgumentNullException(nameof(request));
 
-            if (string.IsNullOrWhiteSpace(transactionSearchRequest.SearchText)) return null;
 
-            return _queryBuilder
-                .WithWildstarQuery(transactionSearchRequest.SearchText,
-                    new List<string>
-                    {
-                        "sender.fullName",
-                        "transactionType",
-                        "paymentReference",
-                        "bankAccountNumber"
-                    })
-                .WithExactQuery(transactionSearchRequest.SearchText,
-                    new List<string>
-                    {
-                        "sender.fullName",
-                        "transactionType",
-                        "paymentReference",
-                        "bankAccountNumber"
-                    })
-                .Build(q);
+            if (!string.IsNullOrEmpty(transactionSearchRequest.SearchText))
+                _queryBuilder
+                    .WithWildstarQuery(transactionSearchRequest.SearchText,
+                        new List<string>
+                        {
+                            "sender.fullName", "transactionType", "paymentReference", "bankAccountNumber"
+                        })
+                    .WithExactQuery(transactionSearchRequest.SearchText,
+                        new List<string>
+                        {
+                            "sender.fullName", "transactionType", "paymentReference", "bankAccountNumber"
+                        });
+            else if (transactionSearchRequest.TargetId != Guid.Empty)
+                _queryBuilder
+                    .WithExactQuery(transactionSearchRequest.TargetId.ToString(),
+                        new List<string>
+                        {
+                            "targetId"
+                        });
+
+            return _queryBuilder.Build(q);
         }
     }
 }
