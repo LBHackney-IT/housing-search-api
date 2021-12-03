@@ -32,9 +32,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenAPageSizeIsProvided(int pageSize)
         {
-            var route = new Uri($"{BaseTransactionsRoute}?searchText={TransactionsFixture.Senders.First().FullName}&pageSize={pageSize}",
+            var route = new Uri($"{BaseTransactionsRoute}?searchText={TransactionsFixture.TransactionSearchStub.First().Sender.FullName}&pageSize={pageSize}",
                 UriKind.Relative);
 
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+
+        public async Task WhenTargetIdsAreProvided(Guid targetId)
+        {
+            var route = new Uri($"{BaseTransactionsRoute}?targetId={targetId}&pageSize={5}", UriKind.Relative);
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
 
@@ -74,6 +80,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             parsedResponse.Results.Transactions.Should().NotBeNull();
 
             parsedResponse.Results.Transactions.Count.Should().BeLessOrEqualTo(pageSize);
+        }
+
+        public async Task ThenOnlyTheseAccountTargetIdsShouldBeIncluded(Guid allowedTargetId)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<TransactionListDTO>>(resultBody, _jsonOptions);
+
+            result?.Results.Transactions.ForEach(x => x.TargetId.Should().Be(allowedTargetId));
         }
     }
 }

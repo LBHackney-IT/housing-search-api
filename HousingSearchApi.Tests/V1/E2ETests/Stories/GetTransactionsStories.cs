@@ -29,16 +29,16 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
 
         public void ServiceReturnsBadResult()
         {
-            this.Given(_ => _transactionsFixture.GivenAnAssetIndexExists())
+            this.Given(_ => _transactionsFixture.GivenATransactionIndexExists())
                 .When(_ => _transactionsSteps.WhenRequestDoesNotContainSearchString())
-                .Then(_ => _transactionsSteps.ThenTheLastRequestShouldBe200())
+                .Then(_ => _transactionsSteps.ThenTheLastRequestShouldBeBadRequestResult(default))
                 .BDDfy();
         }
 
         [Fact]
         public void ServiceReturnsOkWithData()
         {
-            this.Given(_ => _transactionsFixture.GivenAnAssetIndexExists())
+            this.Given(_ => _transactionsFixture.GivenATransactionIndexExists())
                 .When(_ => _transactionsSteps.WhenRequestContainsSearchText("some wrong search string"))
                 .Then(_ => _transactionsSteps.ThenTheLastRequestShouldBe200())
                 .BDDfy();
@@ -47,7 +47,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceReturnsOkWithExactPageSize()
         {
-            this.Given(_ => _transactionsFixture.GivenAnAssetIndexExists())
+            this.Given(_ => _transactionsFixture.GivenATransactionIndexExists())
                 .When(_ => _transactionsSteps.WhenAPageSizeIsProvided(10))
                 .Then(_ => _transactionsSteps.ThenTheReturningResultsShouldBeOfThatSize(10))
                 .BDDfy();
@@ -56,9 +56,19 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceReturnsOkWithMatchesByFullName()
         {
-            this.Given(_ => _transactionsFixture.GivenAnAssetIndexExists())
-                .When(_ => _transactionsSteps.WhenRequestContainsSearchText(TransactionsFixture.Senders.First().FullName))
-                .Then(_ => _transactionsSteps.ThenThatTextShouldBeInTheResult(TransactionsFixture.Senders.First().FullName))
+            this.Given(_ => _transactionsFixture.GivenATransactionIndexExists())
+                .When(_ => _transactionsSteps.WhenRequestContainsSearchText(TransactionsFixture.TransactionSearchStub.First().Sender.FullName))
+                .Then(_ => _transactionsSteps.ThenThatTextShouldBeInTheResult(TransactionsFixture.TransactionSearchStub.First().Sender.FullName))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceFiltersGivenTargetIds()
+        {
+            var transaction = TransactionsFixture.TransactionSearchStub.Last().TargetId;
+            this.Given(g => _transactionsFixture.GivenATransactionIndexExists())
+                .When(w => _transactionsSteps.WhenTargetIdsAreProvided(transaction))
+                .Then(t => _transactionsSteps.ThenOnlyTheseAccountTargetIdsShouldBeIncluded(transaction))
                 .BDDfy();
         }
     }

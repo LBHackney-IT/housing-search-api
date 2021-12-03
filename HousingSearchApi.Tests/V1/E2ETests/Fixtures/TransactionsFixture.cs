@@ -18,19 +18,19 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         private static readonly Fixture _fixture = new Fixture();
 
-        public static List<QueryableSender> Senders { get; } = CreateSendersData(SendersCount);
+        public static List<TransactionSearchStub> TransactionSearchStub { get; } = CreateTransactionSearchStubs(SendersCount);
 
         public TransactionsFixture(IElasticClient elasticClient, HttpClient httpHttpClient) : base(elasticClient, httpHttpClient)
         {
             WaitForESInstance();
         }
 
-        private static List<QueryableSender> CreateSendersData(int personsCount)
+        private static List<TransactionSearchStub> CreateTransactionSearchStubs(int personsCount)
         {
-            return _fixture.CreateMany<QueryableSender>(personsCount).ToList();
+            return _fixture.CreateMany<TransactionSearchStub>(personsCount).ToList();
         }
 
-        public void GivenAnAssetIndexExists()
+        public void GivenATransactionIndexExists()
         {
             ElasticSearchClient.Indices.Delete(IndexName);
 
@@ -40,8 +40,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             }
 
             // ToDo: add transactionsIndex to the folder
-            var assetSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/transactionsIndex.json").Result;
-            ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(IndexName, assetSettingsDoc)
+            var transactionSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/transactionsIndex.json").Result;
+            ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(IndexName, transactionSettingsDoc)
                 .ConfigureAwait(true);
 
             var transactions = CreateTransactionsData(20);
@@ -62,12 +62,19 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 var personIndex = random.Next(SendersCount);
 
                 var transaction = _fixture.Create<QueryableTransaction>();
-                transaction.Sender = Senders[personIndex];
+                transaction.Sender = TransactionSearchStub[personIndex].Sender;
+                transaction.TargetId = TransactionSearchStub[personIndex].TargetId;
 
                 listOfTransactions.Add(transaction);
             }
 
             return listOfTransactions;
         }
+    }
+
+    public class TransactionSearchStub
+    {
+        public QueryableSender Sender { get; set; }
+        public Guid TargetId { get; set; }
     }
 }
