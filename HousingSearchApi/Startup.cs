@@ -38,8 +38,10 @@ using HousingSearchApi.V1.Gateways.Interfaces;
 using HousingSearchApi.V1.Gateways;
 using HousingSearchApi.V1.Infrastructure.Extensions;
 using HousingSearchApi.V1.Infrastructure.Factories;
+using HousingSearchApi.V1.Infrastructure.Filtering;
 using HousingSearchApi.V1.Infrastructure.Sorting;
 using HousingSearchApi.V1.Interfaces.Factories;
+using HousingSearchApi.V1.Interfaces.Filtering;
 
 namespace HousingSearchApi
 {
@@ -175,6 +177,7 @@ namespace HousingSearchApi
             services.AddScoped<IElasticSearchWrapper, ElasticSearchWrapper>();
             services.AddScoped<IPagingHelper, PagingHelper>();
             services.AddScoped<ISortFactory, SortFactory>();
+            services.AddScoped<IFilterFactory, FilterFactory>();
             services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();
             services.AddScoped<IGetAssetListSetsUseCase, GetAssetListSetsUseCase>();
             services.AddScoped<IGetTransactionListUseCase, GetTransactionListUseCase>();
