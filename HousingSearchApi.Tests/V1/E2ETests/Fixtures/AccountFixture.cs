@@ -8,144 +8,22 @@ using AutoFixture;
 using Elasticsearch.Net;
 using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
 using Nest;
+using TestStack.BDDfy;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 {
     public class AccountFixture : BaseFixture
     {
-        public static AccountSearchStub[] AccountSearchStubs =
+        private const int Count = 10;
+        private static readonly Fixture _fixture = new Fixture();
+        public static List<AccountSearchStub> AccountSearchStubs { get; } = GetAccountSearchStubs(Count);
+
+        private static List<AccountSearchStub> GetAccountSearchStubs(int count)
         {
-            new AccountSearchStub
-            {
-                FullAddress = new Fixture().Create<string>(),
-                PaymentReference = "12345",
-                TargetId = Guid.NewGuid(),
-                PrimaryTenants = new List<PrimaryTenants>
-                {
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
-                }
-            },
-            new AccountSearchStub
-            {
-                FullAddress = new Fixture().Create<string>(),
-                PaymentReference = "12345",
-                TargetId = Guid.NewGuid(),
-                PrimaryTenants = new List<PrimaryTenants>
-                {
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
-                }
-            },
-            new AccountSearchStub
-            {
-                FullAddress = new Fixture().Create<string>(),
-                PaymentReference = "12345",
-                TargetId = Guid.NewGuid(),
-                PrimaryTenants = new List<PrimaryTenants>
-                {
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
-                }
-            },
-            new AccountSearchStub
-            {
-                FullAddress = new Fixture().Create<string>(),
-                PaymentReference = "12345",
-                TargetId = Guid.NewGuid(),
-                PrimaryTenants = new List<PrimaryTenants>
-                {
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
-                }
-            },
-            new AccountSearchStub
-            {
-                FullAddress = new Fixture().Create<string>(),
-                PaymentReference = "12345",
-                TargetId = Guid.NewGuid(),
-                PrimaryTenants = new List<PrimaryTenants>
-                {
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
-                }
-            },
-            new AccountSearchStub
-            {
-                FullAddress = new Fixture().Create<string>(),
-                PaymentReference = "12345",
-                TargetId = Guid.NewGuid(),
-                PrimaryTenants = new List<PrimaryTenants>
-                {
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
-                }
-            },
-            new AccountSearchStub
-            {
-                FullAddress = new Fixture().Create<string>(),
-                PaymentReference = "12345",
-                TargetId = Guid.NewGuid(),
-                PrimaryTenants = new List<PrimaryTenants>
-                {
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
-                }
-            },
-            new AccountSearchStub
-            {
-                FullAddress = new Fixture().Create<string>(),
-                PaymentReference = "12345",
-                TargetId = Guid.NewGuid(),
-                PrimaryTenants = new List<PrimaryTenants>
-                {
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
-                }
-            },
-            new AccountSearchStub
-            {
-                FullAddress = new Fixture().Create<string>(),
-                PaymentReference = "12345",
-                TargetId = Guid.NewGuid(),
-                PrimaryTenants = new List<PrimaryTenants>
-                {
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
-                }
-            },
-            new AccountSearchStub
-            {
-                FullAddress = new Fixture().Create<string>(),
-                PaymentReference = "12345",
-                TargetId = Guid.NewGuid(),
-                PrimaryTenants = new List<PrimaryTenants>
-                {
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()},
-                    new PrimaryTenants() {Id = Guid.NewGuid(), FullName = new Fixture().Create<string>()}
-                }
-            }
-        };
+            return _fixture.Build<AccountSearchStub>()
+                .With(p => p.PaymentReference, "12345")
+                .CreateMany(count).ToList();
+        }
 
         public AccountFixture(IElasticClient elasticClient, HttpClient httpClient) : base(elasticClient, httpClient)
         {
