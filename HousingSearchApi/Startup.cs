@@ -164,7 +164,6 @@ namespace HousingSearchApi
         private static void RegisterGateways(IServiceCollection services)
         {
             services.AddScoped<ISearchGateway, SearchGateway>();
-            services.AddScoped<IGetAccountGateway, GetAccountGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)

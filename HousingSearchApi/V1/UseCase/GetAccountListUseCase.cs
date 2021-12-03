@@ -8,16 +8,16 @@ namespace HousingSearchApi.V1.UseCase
 {
     public class GetAccountListUseCase : IGetAccountListUseCase
     {
-        private readonly IGetAccountGateway _getAccountGateway;
+        private readonly ISearchGateway _gateway;
 
-        public GetAccountListUseCase(IGetAccountGateway getAccountGateway)
+        public GetAccountListUseCase(ISearchGateway gateway)
         {
-            _getAccountGateway = getAccountGateway;
+            _gateway = gateway;
         }
 
         public async Task<GetAccountListResponse> ExecuteAsync(GetAccountListRequest getAccountListRequest)
         {
-            return await _getAccountGateway.Search(getAccountListRequest).ConfigureAwait(false);
+            return await _gateway.GetListOfAccounts(getAccountListRequest).ConfigureAwait(false);
         }
     }
 }
