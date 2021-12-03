@@ -21,7 +21,7 @@ namespace HousingSearchApi.Tests.V1.Boundary.Requests
         {
             GetTransactionListRequest request = _fixture.Create<GetTransactionListRequest>();
             var entityType = request.GetType();
-            entityType.GetProperties().Length.Should().Be(6);
+            entityType.GetProperties().Length.Should().Be(8);
 
             Assert.IsType<bool>(request.IsDesc);
             Assert.IsType<int>(request.Page);
