@@ -53,11 +53,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        public void ThenTheLastRequestShouldBe200()
-        {
-            _lastResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
-
         public async Task ThenTheReturningResultsShouldBeOfThatSize(int pageSize)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
