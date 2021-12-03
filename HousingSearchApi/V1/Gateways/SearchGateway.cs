@@ -1,13 +1,17 @@
 using Hackney.Core.Logging;
+using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
-using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
+using Hackney.Shared.HousingSearch.Gateways.Models.Transactions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
-using System.Linq;
-using System.Threading.Tasks;
-using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
+using HousingSearchApi.V1.Boundary.Responses.Transactions;
+using HousingSearchApi.V1.Factories;
 using HousingSearchApi.V1.Gateways.Interfaces;
 using HousingSearchApi.V1.Interfaces;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
 using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 
 namespace HousingSearchApi.V1.Gateways
@@ -66,6 +70,26 @@ namespace HousingSearchApi.V1.Gateways
             return assetListResponse;
         }
 
+        [LogCall]
+        public async Task<GetAllAssetListResponse> GetListOfAssetsSets(GetAllAssetListRequest query)
+        {
+            var searchResponse = await _elasticSearchWrapper.SearchSets<QueryableAsset, GetAllAssetListRequest>(query).ConfigureAwait(false);
+            var assetListResponse = new GetAllAssetListResponse();
+
+            if (searchResponse == null) return assetListResponse;
+            assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
+                queryableAsset.Create())
+            );
+
+            assetListResponse.SetTotal(searchResponse.Total);
+            if (searchResponse.Documents.Count > 0)
+            {
+                assetListResponse.SetLastHitId(searchResponse.Hits.Last().Id);
+            }
+
+            return assetListResponse;
+        }
+
         public async Task<GetAccountListResponse> GetListOfAccounts(GetAccountListRequest query)
         {
             var searchResponse = await _elasticSearchWrapper.Search<QueryableAccount, GetAccountListRequest>(query).ConfigureAwait(false);
@@ -75,6 +99,28 @@ namespace HousingSearchApi.V1.Gateways
             accountListResponse.SetTotal(searchResponse.Total);
 
             return accountListResponse;
+        }
+
+        public async Task<GetTransactionListResponse> GetListOfTransactions(GetTransactionListRequest request)
+        {
+            var searchRequest = new GetTransactionListRequest
+            {
+                SearchText = request.SearchText,
+                Page = request.Page,
+                PageSize = request.PageSize
+            };
+
+            var searchResponse = await _elasticSearchWrapper.Search<QueryableTransaction, GetTransactionListRequest>(searchRequest).ConfigureAwait(false);
+
+            if (searchResponse == null) throw new Exception("Cannot get response from ElasticSearch instance");
+
+            if (!searchResponse.IsValid) throw new Exception($"Cannot load transactions list. Error: {searchResponse.ServerError}");
+
+            if (searchResponse.Documents == null) throw new Exception($"ElasticSearch instance returns no documents. Error: {searchResponse.ServerError}");
+
+            var transactions = searchResponse.Documents.Select(queryableTransaction => queryableTransaction.ToTransaction());
+
+            return GetTransactionListResponse.Create(searchResponse.Total, transactions.ToResponse());
         }
     }
 }

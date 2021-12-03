@@ -1,0 +1,191 @@
+{
+  "aliases": {},
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "text"
+      },
+      "targetId": {
+        "type": "text"
+      },
+      "targetType": {
+        "type": "keyword",
+        "normalizer": "my_normalizer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "periodNo": {
+        "type": "short"
+      },
+      "financialYear": {
+        "type": "short"
+      },
+      "financialMonth": {
+        "type": "short"
+      },
+      "transactionSource": {
+        "type": "text"
+      },
+      "transactionType": {
+        "type": "text"
+      },
+      "transactionDate": {
+        "type": "keyword",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "transactionAmount": {
+        "type": "keyword",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "paymentReference": {
+        "type": "keyword",
+        "normalizer": "my_normalizer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "bankAccountNumber": {
+        "type": "keyword",
+        "normalizer": "my_normalizer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "isSuspense": {
+        "type": "boolean",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "paidAmount": {
+        "type": "float",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "chargedAmount": {
+        "type": "float",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "balanceAmount": {
+        "type": "float",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "housingBenefitAmount": {
+        "type": "float",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "address": {
+        "type": "keyword",
+        "normalizer": "my_normalizer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "fund": {
+        "type": "keyword",
+        "normalizer": "my_normalizer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "sender": {
+        "properties": {
+          "id": {
+            "type": "text"
+          },
+          "fullName": {
+            "type": "keyword",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "suspenseResolutionInfo": {
+        "properties": {
+          "note": {
+            "type": "text"
+          },
+          "isConfirmed": {
+            "type": "boolean"
+          },
+          "isApproved": {
+            "type": "boolean"
+          },
+          "resolutionDate": {
+            "type": "date"
+          }
+        }
+      }
+    }
+  },
+  "settings": {
+    "analysis": {
+      "normalizer": {
+        "my_normalizer": {
+          "type": "custom",
+          "char_filter": [],
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        }
+      }
+    },
+    "index": {
+      "number_of_shards": "1",
+      "number_of_replicas": "1"
+    }
+  }
+}
