@@ -36,7 +36,11 @@ namespace HousingSearchApi.Tests.V1.Factories
             var responseNotes = list.ToResponse();
 
             responseNotes.Should().BeEquivalentTo(list,
-                options => options.Excluding(t => t.CreatedBy).Excluding(t => t.LastUpdatedBy));
+                options => options
+                    .Excluding(t => t.CreatedBy)
+                    .Excluding(t => t.LastUpdatedBy)
+                    .Excluding(t => t.CreatedAt)
+                    .Excluding(t => t.LastUpdatedAt));
         }
 
         [Fact]

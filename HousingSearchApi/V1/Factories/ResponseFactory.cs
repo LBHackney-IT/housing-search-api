@@ -30,9 +30,7 @@ namespace HousingSearchApi.V1.Factories
                 domain.HousingBenefitAmount,
                 domain.Address,
                 domain.Sender.ToDomain(),
-                domain.Fund,
-                domain.CreatedAt,
-                domain.LastUpdatedAt);
+                domain.Fund);
         }
 
         public static List<TransactionResponse> ToResponse(this IEnumerable<Transaction> domainList)

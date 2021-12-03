@@ -179,26 +179,9 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// </example>
         public string Fund { get; }
 
-        /// <summary>
-        /// Date when this transactions was saved to our system
-        /// </summary>
-        /// <example>
-        /// 2021-11-10T08:17:06.450Z
-        /// </example>
-        public DateTime CreatedAt { get; set; }
-
-        /// <summary>
-        /// Date when this transactions was saved to our system
-        /// </summary>
-        /// <example>
-        /// 2021-11-10T08:17:06.450Z
-        /// </example>
-        public DateTime? LastUpdatedAt { get; set; }
-
         private TransactionResponse(Guid id, Guid targetId, TargetType targetType, short periodNo, short financialYear, short financialMonth, string transactionSource, TransactionType transactionType,
             DateTime transactionDate, decimal transactionAmount, string paymentReference, string bankAccountNumber, bool isSuspense, SuspenseResolutionInfo suspenseResolutionInfo,
-            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Sender sender, string fund,
-            DateTime createdAt, DateTime? lastUpdatedAt)
+            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Sender sender, string fund)
         {
             Id = id;
             TargetId = targetId;
@@ -221,18 +204,15 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
             Address = address;
             Sender = sender;
             Fund = fund;
-            LastUpdatedAt = lastUpdatedAt;
-            CreatedAt = createdAt;
         }
 
         public static TransactionResponse Create(Guid id, Guid targetId, TargetType targetType, short periodNo, short financialYear, short financialMonth, string transactionSource, TransactionType transactionType,
             DateTime transactionDate, decimal transactionAmount, string paymentReference, string bankAccountNumber, bool isSuspense, SuspenseResolutionInfo suspenseResolutionInfo,
-            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Sender person, string fund,
-            DateTime createdAt, DateTime? lastUpdatedAt)
+            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Sender person, string fund)
         {
             return new TransactionResponse(id, targetId, targetType, periodNo, financialYear, financialMonth, transactionSource, transactionType, transactionDate, transactionAmount,
                 paymentReference, bankAccountNumber, isSuspense, suspenseResolutionInfo, paidAmount, chargedAmount, balanceAmount,
-                housingBenefitAmount, address, person, fund, createdAt, lastUpdatedAt);
+                housingBenefitAmount, address, person, fund);
         }
     }
 }
