@@ -1,9 +1,7 @@
-using Nest;
-
 namespace HousingSearchApi.V1.Interfaces.Filtering
 {
     public interface IFilterFactory
     {
-        QueryContainer Filter<T, TRequest>(TRequest request, QueryContainerDescriptor<T> q) where T : class where TRequest : class;
+        IFilter<T> Create<T, TRequest>(TRequest request) where T : class where TRequest : class;
     }
 }
