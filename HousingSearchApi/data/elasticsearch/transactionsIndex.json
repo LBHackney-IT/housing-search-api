@@ -3,14 +3,25 @@
   "mappings": {
     "properties": {
       "id": {
-        "type": "text"
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
       },
       "targetId": {
-        "type": "text"
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
       },
       "targetType": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
+        "type": "text",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -19,41 +30,40 @@
         }
       },
       "periodNo": {
-        "type": "short"
+        "type": "long"
       },
       "financialYear": {
-        "type": "short"
+        "type": "long"
       },
       "financialMonth": {
-        "type": "short"
+        "type": "long"
       },
       "transactionSource": {
-        "type": "text"
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
       },
       "transactionType": {
-        "type": "text"
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
       },
       "transactionDate": {
-        "type": "keyword",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "type": "date"
       },
       "transactionAmount": {
-        "type": "keyword",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "type": "float"
       },
       "paymentReference": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
+        "type": "text",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -62,8 +72,7 @@
         }
       },
       "bankAccountNumber": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
+        "type": "text",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -81,44 +90,19 @@
         }
       },
       "paidAmount": {
-        "type": "float",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "type": "float"
       },
       "chargedAmount": {
-        "type": "float",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "type": "float"
       },
       "balanceAmount": {
-        "type": "float",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "type": "float"
       },
       "housingBenefitAmount": {
-        "type": "float",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "type": "float"
       },
       "address": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
+        "type": "text",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -127,8 +111,7 @@
         }
       },
       "fund": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
+        "type": "text",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -139,10 +122,16 @@
       "sender": {
         "properties": {
           "id": {
-            "type": "text"
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
           },
           "fullName": {
-            "type": "keyword",
+            "type": "text",
             "fields": {
               "keyword": {
                 "type": "keyword",
@@ -155,7 +144,13 @@
       "suspenseResolutionInfo": {
         "properties": {
           "note": {
-            "type": "text"
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
           },
           "isConfirmed": {
             "type": "boolean"
