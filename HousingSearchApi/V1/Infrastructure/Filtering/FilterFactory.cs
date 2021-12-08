@@ -9,7 +9,7 @@ namespace HousingSearchApi.V1.Infrastructure.Filtering
         {
             if (typeof(T) == typeof(QueryableTransaction))
             {
-                return (IFilter<T>) new TransactionDateRange();
+                return (IFilter<T>) new TransactionsFilter();
             }
 
             return new DefaultFilter<T>();

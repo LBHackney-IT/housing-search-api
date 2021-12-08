@@ -5,7 +5,7 @@ using System;
 
 namespace HousingSearchApi.V1.Interfaces.Filtering
 {
-    public class TransactionDateRange : IFilter<QueryableTransaction>
+    public class TransactionsFilter : IFilter<QueryableTransaction>
     {
         /// <summary>
         /// Method to perform filtering from start to end dates
@@ -13,7 +13,7 @@ namespace HousingSearchApi.V1.Interfaces.Filtering
         public QueryContainerDescriptor<QueryableTransaction> GetDescriptor<TRequest>(QueryContainerDescriptor<QueryableTransaction> descriptor, TRequest request)
         {
             if (!(request is GetTransactionListRequest transactionSearchRequest))
-                throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
+                throw new ArgumentNullException(nameof(request));
 
             if (transactionSearchRequest.StartDate.HasValue ||
                 transactionSearchRequest.EndDate.HasValue)
