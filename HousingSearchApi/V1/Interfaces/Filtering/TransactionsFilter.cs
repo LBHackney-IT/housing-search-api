@@ -13,7 +13,9 @@ namespace HousingSearchApi.V1.Interfaces.Filtering
         public QueryContainerDescriptor<QueryableTransaction> GetDescriptor<TRequest>(QueryContainerDescriptor<QueryableTransaction> descriptor, TRequest request)
         {
             if (!(request is GetTransactionListRequest transactionSearchRequest))
+            {
                 throw new ArgumentNullException(nameof(request));
+            }
 
             if (transactionSearchRequest.StartDate.HasValue ||
                 transactionSearchRequest.EndDate.HasValue)

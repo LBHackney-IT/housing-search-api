@@ -6,7 +6,7 @@ using Nest;
 using System;
 using Xunit;
 
-namespace HousingSearchApi.Tests.V1.Infrastructure.Filtering
+namespace HousingSearchApi.Tests.V1.Interfaces.Filtering
 {
     public class TransactionsFilterTests
     {
@@ -23,7 +23,6 @@ namespace HousingSearchApi.Tests.V1.Infrastructure.Filtering
         {
             var request = new GetTenureListRequest();
             Action act = () => _transactionDateRange.GetDescriptor(_queryContainerDescriptor, request);
-            
             act.Should().Throw<ArgumentNullException>().WithMessage($"Value cannot be null. (Parameter '{nameof(request)}')");
         }
 
