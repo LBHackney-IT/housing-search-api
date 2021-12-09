@@ -23,13 +23,13 @@ namespace HousingSearchApi.V1.Factories
                 domain.PaymentReference,
                 domain.BankAccountNumber,
                 domain.IsSuspense,
-                domain.SuspenseResolutionInfo.ToDomain(),
+                domain.SuspenseResolutionInfo?.ToDomain(),
                 domain.PaidAmount,
                 domain.ChargedAmount,
                 domain.BalanceAmount,
                 domain.HousingBenefitAmount,
                 domain.Address,
-                domain.Sender.ToDomain(),
+                domain.Sender?.ToDomain(),
                 domain.Fund);
         }
 
