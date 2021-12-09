@@ -12,6 +12,9 @@ executors:
   docker-terraform:
     docker:
       - image: "hashicorp/terraform:light"
+  docker-terraform-new:
+    docker:
+      - image: hashicorp/terraform:1.0.11
   docker-dotnet:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
@@ -168,17 +171,17 @@ jobs:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_PRODUCTION
   terraform-init-and-plan-development:
-    executor: docker-terraform
+    executor: docker-terraform-new
     steps:
       - terraform-init-then-plan:
           environment: "development"
   terraform-compliance-development:
-    executor: docker-terraform
+    executor: docker-terraform-new
     steps:
       - terraform-compliance:
           environment: "development"
   terraform-apply-development:
-    executor: docker-terraform
+    executor: docker-terraform-new
     steps:
       - terraform-apply:
           environment: "development"
