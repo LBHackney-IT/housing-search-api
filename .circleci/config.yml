@@ -261,6 +261,7 @@ workflows:
             branches:
               only: master
       - deploy-to-development:
+          context: api-nuget-token-context
           requires:
             - terraform-apply-development
           filters:
@@ -301,6 +302,7 @@ workflows:
             branches:
               only: release
       - deploy-to-staging:
+          context: api-nuget-token-context
           requires:
             - terraform-apply-staging
           filters:
@@ -343,6 +345,7 @@ workflows:
             branches:
               only: release
       - deploy-to-production:
+          context: api-nuget-token-context
           requires:
             - permit-production-release
           filters:
