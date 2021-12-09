@@ -1,3 +1,4 @@
+using System.Linq;
 using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
@@ -15,10 +16,27 @@ namespace HousingSearchApi.V1.UseCase
         {
             _searchGateway = searchGateway;
         }
+
         [LogCall]
         public async Task<GetPersonListResponse> ExecuteAsync(GetPersonListRequest housingSearchRequest)
         {
-            return await _searchGateway.GetListOfPersons(housingSearchRequest).ConfigureAwait(false);
+            var personListResponse = await _searchGateway.GetListOfPersons(housingSearchRequest).ConfigureAwait(false);
+            var persons = personListResponse.Persons;
+            var accounts = await
+                _searchGateway.GetAccountListByTenureIdsAsync(
+                    persons.SelectMany(p => p.Tenures.Select(t => t.Id)).ToList()).ConfigureAwait(false);
+
+            var populatedPersons = persons
+                .SelectMany(p => p.Tenures)
+                .Join(accounts, t => t.Id, a => a.TargetId.ToString(), (tenure, account) => new {Tenure = tenure , Account = account })
+                .ToList();
+
+            populatedPersons.ForEach(keyValue =>
+            {
+                keyValue.Tenure.TotalBalance = keyValue.Account.ConsolidatedBalance;
+            });
+
+            return personListResponse;
         }
     }
 }
