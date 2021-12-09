@@ -11,9 +11,6 @@ executors:
       - image: circleci/python:3.7
   docker-terraform:
     docker:
-      - image: "hashicorp/terraform:light"
-  docker-terraform-new:
-    docker:
       - image: hashicorp/terraform:1.0.11
   docker-dotnet:
     docker:
@@ -171,17 +168,17 @@ jobs:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_PRODUCTION
   terraform-init-and-plan-development:
-    executor: docker-terraform-new
+    executor: docker-terraform
     steps:
       - terraform-init-then-plan:
           environment: "development"
   terraform-compliance-development:
-    executor: docker-terraform-new
+    executor: docker-terraform
     steps:
       - terraform-compliance:
           environment: "development"
   terraform-apply-development:
-    executor: docker-terraform-new
+    executor: docker-terraform
     steps:
       - terraform-apply:
           environment: "development"
