@@ -119,7 +119,6 @@ namespace HousingSearchApi.V1.Infrastructure
                 _logger.LogError(e, "ElasticSearch Search Sets threw an exception");
                 throw;
             }
-
         }
 
         private IQueryGenerator<T> BaseQuery<T>() where T : class
