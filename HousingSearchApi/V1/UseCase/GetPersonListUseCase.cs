@@ -5,6 +5,7 @@ using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using System.Threading.Tasks;
 using HousingSearchApi.V1.Gateways.Interfaces;
+using System;
 
 namespace HousingSearchApi.V1.UseCase
 {
@@ -20,6 +21,10 @@ namespace HousingSearchApi.V1.UseCase
         [LogCall]
         public async Task<GetPersonListResponse> ExecuteAsync(GetPersonListRequest housingSearchRequest)
         {
+            if (housingSearchRequest == null)
+            {
+                throw new ArgumentNullException(nameof(housingSearchRequest));
+            }
             var personListResponse = await _searchGateway.GetListOfPersons(housingSearchRequest).ConfigureAwait(false);
             var persons = personListResponse.Persons;
             var accounts = await
