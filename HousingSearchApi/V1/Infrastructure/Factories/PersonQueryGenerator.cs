@@ -17,8 +17,6 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             _queryBuilder = queryBuilder;
         }
 
-
-
         public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryablePerson> q)
         {
 

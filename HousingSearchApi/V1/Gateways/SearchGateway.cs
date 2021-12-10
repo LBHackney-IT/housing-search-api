@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Hackney.Shared.HousingSearch.Domain.Accounts;
+using HousingSearchApi.V1.Infrastructure;
 using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
 using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 
@@ -104,10 +105,11 @@ namespace HousingSearchApi.V1.Gateways
             return accountListResponse;
         }
 
-        public async Task<List<Account>> GetAccountListByTenureIdsAsync(List<string> tenureIds)
+        public async Task<List<Account>> GetAccountListByTenureIdsAsync(IEnumerable<string> tenureIds)
         {
-            // ToDo
-            return (await GetListOfAccounts(new GetAccountListRequest()).ConfigureAwait(false)).Accounts;
+            var searchResponse = await _elasticSearchWrapper.Search<QueryableAccount, GetAccountListByTenureIds>(new GetAccountListByTenureIds(tenureIds)).ConfigureAwait(false);
+
+            return searchResponse.Documents.Select(queryableAccount => queryableAccount.ToAccount()).ToList();
         }
 
         [LogCall]

@@ -23,8 +23,7 @@ namespace HousingSearchApi.V1.UseCase
             var personListResponse = await _searchGateway.GetListOfPersons(housingSearchRequest).ConfigureAwait(false);
             var persons = personListResponse.Persons;
             var accounts = await
-                _searchGateway.GetAccountListByTenureIdsAsync(
-                    persons.SelectMany(p => p.Tenures.Select(t => t.Id)).ToList()).ConfigureAwait(false);
+                _searchGateway.GetAccountListByTenureIdsAsync(persons.SelectMany(p => p.Tenures.Select(t => t.Id))).ConfigureAwait(false);
 
             var populatedPersons = persons
                 .SelectMany(p => p.Tenures)
