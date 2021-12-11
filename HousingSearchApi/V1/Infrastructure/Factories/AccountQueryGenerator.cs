@@ -20,20 +20,20 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
         public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryableAccount> q)
         {
             switch (request)
-            {
-                case GetAccountListRequest accountListRequest:
                 {
-                    if (!string.IsNullOrEmpty(accountListRequest.SearchText))
+                    case GetAccountListRequest accountListRequest:
                     {
-                        _queryBuilder
-                            .WithWildstarQuery(accountListRequest.SearchText,
-                                new List<string> {"paymentReference", "tenure.fullAddress", "tenure.primaryTenants.fullName"})
-                            .WithExactQuery(accountListRequest.SearchText,
-                                new List<string> {"paymentReference", "tenure.fullAddress", "tenure.primaryTenants.fullName"});
-                    }
+                        if (!string.IsNullOrEmpty(accountListRequest.SearchText))
+                        {
+                            _queryBuilder
+                                .WithWildstarQuery(accountListRequest.SearchText,
+                                    new List<string> { "paymentReference", "tenure.fullAddress", "tenure.primaryTenants.fullName" })
+                                .WithExactQuery(accountListRequest.SearchText,
+                                    new List<string> { "paymentReference", "tenure.fullAddress", "tenure.primaryTenants.fullName" });
+                        }
 
-                    break;
-                }
+                        break;
+                    }
                 case GetAccountListByTenureIds tenureIds:
                     _queryBuilder.WithFilterQuery(string.Join(",", tenureIds.TenureIds), new List<string> { "targetId" });
                     break;
