@@ -1,4 +1,3 @@
-using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
 using Hackney.Shared.HousingSearch.Gateways.Models.Transactions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Interfaces.Filtering;
@@ -25,12 +24,6 @@ namespace HousingSearchApi.V1.Infrastructure.Filtering
                         .GreaterThanOrEquals(transactionSearchRequest.StartDate)
                         .LessThanOrEquals(transactionSearchRequest.EndDate));
                 }
-            }
-
-            if (request is GetAccountListByTenureIds accountListModel &&
-                q is QueryContainerDescriptor<QueryableAccount> accountsDescriptor)
-            {
-                return null;
             }
 
             return null;
