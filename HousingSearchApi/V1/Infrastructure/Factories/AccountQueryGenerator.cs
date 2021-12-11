@@ -20,8 +20,8 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
         public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryableAccount> q)
         {
             switch (request)
-                {
-                    case GetAccountListRequest accountListRequest:
+            {
+                case GetAccountListRequest accountListRequest:
                     {
                         if (!string.IsNullOrEmpty(accountListRequest.SearchText))
                         {

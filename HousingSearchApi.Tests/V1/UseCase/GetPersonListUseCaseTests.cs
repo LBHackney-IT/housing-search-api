@@ -31,7 +31,7 @@ namespace HousingSearchApi.Tests.V1.UseCase
             var accounts = new List<Account>();
             _searchGateway.Setup(x => x.GetListOfPersons(It.IsAny<GetPersonListRequest>())).ReturnsAsync(personListResponse);
             _searchGateway.Setup(x => x.GetAccountListByTenureIdsAsync(It.IsAny<List<string>>())).ReturnsAsync(accounts);
-            var personListResponseResult =  await _getPersonListUseCase.ExecuteAsync(housingSearchRequest).ConfigureAwait(false);
+            var personListResponseResult = await _getPersonListUseCase.ExecuteAsync(housingSearchRequest).ConfigureAwait(false);
             personListResponseResult.Should().NotBeNull();
         }
 

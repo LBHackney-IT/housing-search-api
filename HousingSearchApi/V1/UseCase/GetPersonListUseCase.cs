@@ -38,7 +38,7 @@ namespace HousingSearchApi.V1.UseCase
 
             var populatedPersons = persons
                 .SelectMany(p => p.Tenures)
-                .Join(accounts, t => t.Id, a => a.TargetId.ToString(), (tenure, account) => new {Tenure = tenure , Account = account })
+                .Join(accounts, t => t.Id, a => a.TargetId.ToString(), (tenure, account) => new { Tenure = tenure, Account = account })
                 .ToList();
 
             populatedPersons.ForEach(keyValue =>
