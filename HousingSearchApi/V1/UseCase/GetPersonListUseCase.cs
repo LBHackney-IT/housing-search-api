@@ -26,6 +26,12 @@ namespace HousingSearchApi.V1.UseCase
                 throw new ArgumentNullException(nameof(housingSearchRequest));
             }
             var personListResponse = await _searchGateway.GetListOfPersons(housingSearchRequest).ConfigureAwait(false);
+
+            if (personListResponse.Persons.Count == 0)
+            {
+                return personListResponse;
+            }
+
             var persons = personListResponse.Persons;
             var accounts = await
                 _searchGateway.GetAccountListByTenureIdsAsync(persons.SelectMany(p => p.Tenures.Select(t => t.Id))).ConfigureAwait(false);

@@ -1,6 +1,5 @@
-using System.Threading.Tasks;
-using HousingSearchApi.V1.Boundary.Requests;
 using Nest;
+using System.Threading.Tasks;
 
 namespace HousingSearchApi.V1.Interfaces
 {
