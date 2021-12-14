@@ -20,11 +20,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         public GetAssetStories(MockWebApplicationFactory<Startup> factory)
         {
             _factory = factory;
-            var httpClient = factory.CreateClient();
             var elasticClient = factory.ElasticSearchClient;
 
-            _steps = new GetAssetSteps(httpClient);
-            _assetsFixture = new AssetFixture(elasticClient, httpClient);
+            _steps = new GetAssetSteps(factory.Client);
+            _assetsFixture = new AssetFixture(elasticClient, factory.Client);
         }
 
         [Fact]

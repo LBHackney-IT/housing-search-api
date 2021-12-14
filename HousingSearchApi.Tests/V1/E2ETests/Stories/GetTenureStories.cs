@@ -19,11 +19,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         public GetTenureStories(MockWebApplicationFactory<Startup> factory)
         {
             _factory = factory;
-            var httpClient = factory.CreateClient();
             var elasticClient = factory.ElasticSearchClient;
 
-            _steps = new GetTenureSteps(httpClient);
-            _tenureFixture = new TenureFixture(elasticClient, httpClient);
+            _steps = new GetTenureSteps(factory.Client);
+            _tenureFixture = new TenureFixture(elasticClient, factory.Client);
         }
 
         [Fact]

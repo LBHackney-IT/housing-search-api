@@ -42,6 +42,7 @@ using HousingSearchApi.V1.Infrastructure.Filtering;
 using HousingSearchApi.V1.Infrastructure.Sorting;
 using HousingSearchApi.V1.Interfaces.Factories;
 using HousingSearchApi.V1.Interfaces.Filtering;
+using Hackney.Core.Authorization;
 
 namespace HousingSearchApi
 {
@@ -194,6 +195,7 @@ namespace HousingSearchApi
 
             app.UseXRay("housing-search-api");
 
+            app.UseGoogleGroupAuthorization();
             app.UseCorrelationId();
             app.UseLoggingScope();
             app.UseCustomExceptionHandler(logger);

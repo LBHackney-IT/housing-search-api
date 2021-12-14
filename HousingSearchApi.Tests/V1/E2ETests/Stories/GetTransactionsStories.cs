@@ -18,11 +18,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
 
         public GetTransactionsStories(MockWebApplicationFactory<Startup> factory)
         {
-            var httpClient = factory.CreateClient();
             var elasticClient = factory.ElasticSearchClient;
 
-            _transactionsSteps = new GetTransactionsSteps(httpClient);
-            _transactionsFixture = new TransactionsFixture(elasticClient, httpClient);
+            _transactionsSteps = new GetTransactionsSteps(factory.Client);
+            _transactionsFixture = new TransactionsFixture(elasticClient, factory.Client);
         }
 
         [Fact]

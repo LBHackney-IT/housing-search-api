@@ -12,15 +12,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
     [Collection("ElasticSearch collection")]
     public class HealthCheckTests : IDisposable
     {
-        private readonly MockWebApplicationFactory<Startup> _factory;
         private readonly HealthCheckSteps _steps;
 
         public HealthCheckTests(MockWebApplicationFactory<Startup> factory)
         {
-            _factory = factory;
-            var client = _factory.CreateClient();
 
-            _steps = new HealthCheckSteps(client);
+            _steps = new HealthCheckSteps(factory.Client);
         }
 
         public void Dispose()

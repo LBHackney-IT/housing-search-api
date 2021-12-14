@@ -20,11 +20,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         public GetPersonsStories(MockWebApplicationFactory<Startup> factory)
         {
             _factory = factory;
-            var httpClient = factory.CreateClient();
             var elasticClient = factory.ElasticSearchClient;
 
-            _steps = new GetPersonsSteps(httpClient);
-            _personsFixture = new PersonsFixture(elasticClient, httpClient);
+            _steps = new GetPersonsSteps(factory.Client);
+            _personsFixture = new PersonsFixture(elasticClient, factory.Client);
         }
 
         [Fact]
