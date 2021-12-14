@@ -179,9 +179,17 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
         /// </example>
         public string Fund { get; }
 
+        /// <summary>
+        ///     Provided by the banking system and includes the bank branch and credit card number
+        /// </summary>
+        /// <example>
+        ///     1234-9875-6548-1235
+        /// </example>
+        public string SortCode { get; set; }
+
         private TransactionResponse(Guid id, Guid targetId, TargetType targetType, short periodNo, short financialYear, short financialMonth, string transactionSource, TransactionType transactionType,
             DateTime transactionDate, decimal transactionAmount, string paymentReference, string bankAccountNumber, bool isSuspense, SuspenseResolutionInfo suspenseResolutionInfo,
-            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Sender sender, string fund)
+            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Sender sender, string fund, string sortCode)
         {
             Id = id;
             TargetId = targetId;
@@ -204,15 +212,16 @@ namespace HousingSearchApi.V1.Boundary.Responses.Transactions
             Address = address;
             Sender = sender;
             Fund = fund;
+            SortCode = sortCode;
         }
 
         public static TransactionResponse Create(Guid id, Guid targetId, TargetType targetType, short periodNo, short financialYear, short financialMonth, string transactionSource, TransactionType transactionType,
             DateTime transactionDate, decimal transactionAmount, string paymentReference, string bankAccountNumber, bool isSuspense, SuspenseResolutionInfo suspenseResolutionInfo,
-            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Sender person, string fund)
+            decimal paidAmount, decimal chargedAmount, decimal balanceAmount, decimal housingBenefitAmount, string address, Sender person, string fund, string sortCode)
         {
             return new TransactionResponse(id, targetId, targetType, periodNo, financialYear, financialMonth, transactionSource, transactionType, transactionDate, transactionAmount,
                 paymentReference, bankAccountNumber, isSuspense, suspenseResolutionInfo, paidAmount, chargedAmount, balanceAmount,
-                housingBenefitAmount, address, person, fund);
+                housingBenefitAmount, address, person, fund, sortCode);
         }
     }
 }
