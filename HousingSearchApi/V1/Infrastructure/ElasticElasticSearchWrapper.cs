@@ -51,7 +51,7 @@ namespace HousingSearchApi.V1.Infrastructure
 
                 var result = await _esClient.SearchAsync<T>(x => x.Index(_indexSelector.Create<T>())
                     .Query(q => BaseQuery<T>().Create(request, q))
-                    .PostFilter(q => _filterFactory.Filter(request, q))
+                    .PostFilter(q => _filterFactory.Create<T, TRequest>(request).GetDescriptor(q, request))
                     .Sort(_sortFactory.Create<T, TRequest>(request).GetSortDescriptor)
                     .Size(searchRequest.PageSize)
                     .Skip(pageOffset)

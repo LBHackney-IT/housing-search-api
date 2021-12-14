@@ -23,14 +23,15 @@ namespace HousingSearchApi.V1.Factories
                 domain.PaymentReference,
                 domain.BankAccountNumber,
                 domain.IsSuspense,
-                domain.SuspenseResolutionInfo.ToDomain(),
+                domain.SuspenseResolutionInfo?.ToDomain(),
                 domain.PaidAmount,
                 domain.ChargedAmount,
                 domain.BalanceAmount,
                 domain.HousingBenefitAmount,
                 domain.Address,
-                domain.Sender.ToDomain(),
-                domain.Fund);
+                domain.Sender?.ToDomain(),
+                domain.Fund,
+                domain.SortCode);
         }
 
         public static List<TransactionResponse> ToResponse(this IEnumerable<Transaction> domainList)
