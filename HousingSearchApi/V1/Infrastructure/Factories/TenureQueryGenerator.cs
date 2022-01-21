@@ -22,7 +22,8 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             switch (request)
             {
                 case GetTenureListRequest tenureListRequest:
-                    if (string.IsNullOrWhiteSpace(tenureListRequest.SearchText)){
+                    if (string.IsNullOrWhiteSpace(tenureListRequest.SearchText))
+                    {
                         return null;
                     }
 
