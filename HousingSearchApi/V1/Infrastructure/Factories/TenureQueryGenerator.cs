@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Hackney.Core.ElasticSearch.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Interfaces.Factories;
 using Nest;
+using System;
+using System.Collections.Generic;
 
 namespace HousingSearchApi.V1.Infrastructure.Factories
 {
@@ -37,29 +36,14 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                    }).Build(q);
 
                 case GetTenureListByPrnListRequest tenureListRequestByPrnList:
-                    if((tenureListRequestByPrnList.PrnList.Count == 0
-                        || tenureListRequestByPrnList.PrnList.Any(t => string.IsNullOrWhiteSpace(t))))
-                    {
-                        return null;
-                    }
-
-                    foreach (var prn in tenureListRequestByPrnList.PrnList)
-                    {
-                        _queryBuilder
-                       .WithWildstarQuery(prn, new List<string>
-                       {
-                            "paymentReference",
-                            "tenuredAsset.fullAddress^3",
-                            "householdMembers",
-                            "householdMembers.fullName^3"
-                       });
-
-                    }
-
-                    return _queryBuilder.Build(q);
+                    return q.Terms(c => c
+                        .Name("named_query")
+                        .Field("paymentReference")
+                        .Boost(1.1)
+                        .Terms(tenureListRequestByPrnList.PrnList));
 
                 default:
-                    throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
+                    throw new ArgumentNullException(nameof(request));
             }
         }
     }
