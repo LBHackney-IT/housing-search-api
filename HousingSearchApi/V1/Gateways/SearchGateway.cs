@@ -56,9 +56,9 @@ namespace HousingSearchApi.V1.Gateways
         }
 
         [LogCall]
-        public async Task<GetTenureListResponse> GetListOfTenures(GetTenureListRequestByPrnList query)
+        public async Task<GetTenureListResponse> GetListOfTenures(GetTenureListByPrnListRequest query)
         {
-            var searchResponse = await _elasticSearchWrapper.Search<QueryableTenure, GetTenureListRequestByPrnList>(query).ConfigureAwait(false);
+            var searchResponse = await _elasticSearchWrapper.Search<QueryableTenure, GetTenureListByPrnListRequest>(query).ConfigureAwait(false);
             var tenureListResponse = new GetTenureListResponse();
 
             tenureListResponse.Tenures.AddRange(searchResponse.Documents.Select(queryableTenure =>
