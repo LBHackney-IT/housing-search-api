@@ -67,7 +67,7 @@ namespace HousingSearchApi.V1.Controllers
             catch (Exception e)
             {
                 LambdaLogger.Log(e.Message + e.StackTrace);
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return StatusCode((int) HttpStatusCode.InternalServerError, e.Message);
             }
         }
     }
