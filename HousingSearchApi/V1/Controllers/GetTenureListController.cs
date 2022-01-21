@@ -7,6 +7,7 @@ using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace HousingSearchApi.V1.Controllers
@@ -66,7 +67,7 @@ namespace HousingSearchApi.V1.Controllers
             catch (Exception e)
             {
                 LambdaLogger.Log(e.Message + e.StackTrace);
-                return new BadRequestObjectResult(e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
     }
