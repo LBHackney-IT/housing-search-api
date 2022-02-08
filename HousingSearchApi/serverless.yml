@@ -104,7 +104,7 @@ resources:
                   Resource: "*"
 custom:
   associateWaf:
-    name: HousingSearchApiWafAcl
+    name: Platform_APIs_Web_ACL
     version: V2
   vpc:
     development:
