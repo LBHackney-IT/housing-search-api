@@ -14,9 +14,9 @@ namespace HousingSearchApi.Tests.V1.Boundary.Requests.Validation
             _sut = new HousingSearchRequestValidator();
         }
 
-        private static HousingSearchRequest CreateValidRequest()
+        private static GetPersonListRequest CreateValidRequest()
         {
-            return new HousingSearchRequest()
+            return new GetPersonListRequest()
             {
                 SearchText = "Some search text"
             };

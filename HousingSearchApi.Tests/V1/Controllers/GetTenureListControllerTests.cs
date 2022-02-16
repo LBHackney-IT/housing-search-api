@@ -9,33 +9,33 @@ using Xunit;
 namespace HousingSearchApi.Tests.V1.Controllers
 {
     [Collection("LogCall collection")]
-    public class GetAssetListControllerTests
+    public class GetTenureListControllerTests
     {
-        private readonly Mock<IGetAssetListUseCase> _mockGetAssetListUseCase;
-        private readonly GetAssetListController _classUnderTest;
+        private readonly Mock<IGetTenureListUseCase> _mockGetTenureListUseCase;
+        private readonly GetTenureListController _classUnderTest;
 
 
-        public GetAssetListControllerTests()
+        public GetTenureListControllerTests()
         {
             new LogCallAspectFixture().RunBeforeTests();
 
-            _mockGetAssetListUseCase = new Mock<IGetAssetListUseCase>();
-            _classUnderTest = new GetAssetListController(_mockGetAssetListUseCase.Object);
+            _mockGetTenureListUseCase = new Mock<IGetTenureListUseCase>();
+            _classUnderTest = new GetTenureListController(_mockGetTenureListUseCase.Object);
         }
 
         [Fact]
-        public async Task GetAssetListShouldCallGetAssetListUseCase()
+        public async Task GetTenureListShouldCallGetTenureListUseCase()
         {
             // given
-            var request = new HousingSearchRequest();
-            var response = new GetAssetListResponse();
-            _mockGetAssetListUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
+            var request = new GetTenureListRequest();
+            var response = new GetTenureListResponse();
+            _mockGetTenureListUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
 
             // when
-            await _classUnderTest.GetAssetList(request).ConfigureAwait(false);
+            await _classUnderTest.GetTenureList(request).ConfigureAwait(false);
 
             // then
-            _mockGetAssetListUseCase.Verify(x => x.ExecuteAsync(request), Times.Once);
+            _mockGetTenureListUseCase.Verify(x => x.ExecuteAsync(request), Times.Once);
         }
     }
 }

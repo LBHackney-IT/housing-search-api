@@ -1,6 +1,7 @@
 using Hackney.Core.Logging;
 using Hackney.Shared.HousingSearch.Domain.Person;
 using HousingSearchApi.V1.Gateways.Domain;
+using HousingSearchApi.V1.Gateways.Interfaces;
 using Microsoft.Extensions.Logging;
 using Nest;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace HousingSearchApi.V1.Gateways
             _esClient = esClient;
             _logger = logger;
         }
+
         [LogCall]
         public Task<List<Person>> Search(SearchParameters parameters)
         {
