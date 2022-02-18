@@ -15,7 +15,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 {
     public class PersonsFixture : BaseFixture
     {
-        public List<QueryablePerson> Persons { get; private set; }
         private const string INDEX = "persons";
         public static string[] Alphabet = { "aa", "bb", "cc", "dd", "ee", "vv", "ww", "xx", "yy", "zz" };
 

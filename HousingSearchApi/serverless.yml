@@ -10,6 +10,10 @@ provider:
   stage: ${opt:stage}
   region: eu-west-2
 
+plugins:
+  - serverless-associate-waf
+  - '@serverless/safeguards-plugin'
+
 package:
   artifact: ./bin/release/netcoreapp3.1/housing-search-api.zip
 
@@ -100,6 +104,13 @@ resources:
                     - "lambda:InvokeFunction"
                   Resource: "*"
 custom:
+  safeguards:
+    - title: Require authorizer
+      safeguard: require-authorizer
+      path: ./policies
+  associateWaf:
+    name: Platform_APIs_Web_ACL
+    version: V2
   vpc:
     development:
       securityGroupIds:

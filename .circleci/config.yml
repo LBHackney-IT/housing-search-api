@@ -11,7 +11,7 @@ executors:
       - image: circleci/python:3.7
   docker-terraform:
     docker:
-      - image: "hashicorp/terraform:light"
+      - image: hashicorp/terraform:1.0.11
   docker-dotnet:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
@@ -128,6 +128,8 @@ commands:
           name: Deploy lambda
           command: |
             cd ./HousingSearchApi/
+            npm i serverless-associate-waf
+            npm i @serverless/safeguards-plugin --save-dev
             sls deploy --stage <<parameters.stage>> --conceal
 
 jobs:
@@ -231,8 +233,10 @@ jobs:
 workflows:
   check-and-deploy-development:
     jobs:
-      - check-code-formatting
-      - build-and-test
+      - check-code-formatting:
+          context: api-nuget-token-context
+      - build-and-test:
+          context: api-nuget-token-context
       - assume-role-development:
           context: api-assume-role-housing-development-context
           requires:
@@ -259,6 +263,7 @@ workflows:
             branches:
               only: master
       - deploy-to-development:
+          context: api-nuget-token-context
           requires:
             - terraform-apply-development
           filters:
@@ -266,8 +271,10 @@ workflows:
               only: master
   check-and-deploy-staging-and-production:
       jobs:
-      - check-code-formatting
+      - check-code-formatting:
+          context: api-nuget-token-context
       - build-and-test:
+          context: api-nuget-token-context
           filters:
             branches:
               only: release
@@ -297,6 +304,7 @@ workflows:
             branches:
               only: release
       - deploy-to-staging:
+          context: api-nuget-token-context
           requires:
             - terraform-apply-staging
           filters:
@@ -339,6 +347,7 @@ workflows:
             branches:
               only: release
       - deploy-to-production:
+          context: api-nuget-token-context
           requires:
             - permit-production-release
           filters:

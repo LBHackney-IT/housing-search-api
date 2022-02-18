@@ -8,7 +8,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
 {
     [Story(
         AsA = "Service",
-        IWant = "The Person Search Endpoint to return results",
+        IWant = "The Sender Search Endpoint to return results",
         SoThat = "it is possible to search for persons")]
     [Collection("ElasticSearch collection")]
     public class GetPersonsStories
@@ -32,7 +32,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         {
             this.Given(g => _personsFixture.GivenAPersonIndexExists())
                 .When(w => _steps.WhenRequestDoesNotContainSearchString())
-                .Then(t => _steps.ThenTheLastRequestShouldBeBadRequestResult())
+                .Then(t => _steps.ThenTheLastRequestShouldBeBadRequestResult("'Search Text' must not be empty."))
                 .BDDfy();
         }
 

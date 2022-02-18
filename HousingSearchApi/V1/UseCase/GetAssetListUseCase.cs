@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
-using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Gateways.Interfaces;
 using HousingSearchApi.V1.UseCase.Interfaces;
 
 namespace HousingSearchApi.V1.UseCase
@@ -17,7 +17,7 @@ namespace HousingSearchApi.V1.UseCase
         }
 
         [LogCall]
-        public async Task<GetAssetListResponse> ExecuteAsync(HousingSearchRequest housingSearchRequest)
+        public async Task<GetAssetListResponse> ExecuteAsync(GetAssetListRequest housingSearchRequest)
         {
             return await _searchGateway.GetListOfAssets(housingSearchRequest).ConfigureAwait(false);
         }

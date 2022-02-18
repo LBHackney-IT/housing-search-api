@@ -12,22 +12,18 @@
   <ItemGroup>
     <Compile Remove="TestResults\**" />
     <Compile Remove="V1\Domain\**" />
-    <Compile Remove="V1\Factories\**" />
     <Compile Remove="V1\Gateways\**" />
     <Compile Remove="V1\UseCase\**" />
     <Content Remove="TestResults\**" />
     <Content Remove="V1\Domain\**" />
-    <Content Remove="V1\Factories\**" />
     <Content Remove="V1\Gateways\**" />
     <Content Remove="V1\UseCase\**" />
     <EmbeddedResource Remove="TestResults\**" />
     <EmbeddedResource Remove="V1\Domain\**" />
-    <EmbeddedResource Remove="V1\Factories\**" />
     <EmbeddedResource Remove="V1\Gateways\**" />
     <EmbeddedResource Remove="V1\UseCase\**" />
     <None Remove="TestResults\**" />
     <None Remove="V1\Domain\**" />
-    <None Remove="V1\Factories\**" />
     <None Remove="V1\Gateways\**" />
     <None Remove="V1\UseCase\**" />
   </ItemGroup>
@@ -49,7 +45,7 @@
     <PackageReference Include="Docker.DotNet" Version="3.125.4" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="Hackney.Core.ElasticSearch" Version="1.45.0" />
-    <PackageReference Include="Hackney.Shared.HousingSearch" Version="0.6.0" />
+    <PackageReference Include="Hackney.Shared.HousingSearch" Version="0.22.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
