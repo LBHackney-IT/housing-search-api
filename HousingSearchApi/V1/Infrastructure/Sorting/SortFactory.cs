@@ -26,17 +26,19 @@ namespace HousingSearchApi.V1.Infrastructure.Sorting
             }
             if (typeof(T) == typeof(QueryableAsset))
             {
-                if (string.IsNullOrEmpty(((HousingSearchRequest) (object) request).SortBy))
-                    return new DefaultSort<T>();
+                var defaultSort = new CustomSort<QueryableAsset>("assetType", "Dwelling");
+                var housingSearchRequest = (HousingSearchRequest) (object) request;
 
-                switch (((HousingSearchRequest) (object) request).IsDesc)
+                if (!string.IsNullOrEmpty(housingSearchRequest.SortBy))
                 {
-                    case true:
-                        return (ISort<T>) new AssetIdDesc();
-                    case false:
-                        return (ISort<T>) new AssetIdAsc();
+                    return housingSearchRequest.IsDesc
+                        ? (ISort<T>) new AssetIdDesc(defaultSort)
+                        : (ISort<T>) new AssetIdAsc();
                 }
+
+                return (ISort<T>) defaultSort;
             }
+
 
             if (typeof(T) == typeof(QueryableTransaction))
             {

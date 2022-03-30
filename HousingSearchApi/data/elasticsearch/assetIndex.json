@@ -29,6 +29,12 @@
             "type": "keyword",
             "ignore_above": 256
           }
+        },
+        "inline": "if(params.order.containsKey(doc['assetType.keyword'].value)) { return params.order[doc['assetType.keyword'].value];} return 100000;",
+        "params": {
+          "order": {
+            "dwelling": 0
+          }
         }
       },
       "assetAddress": {
