@@ -22,7 +22,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             var result = _sut.Create<QueryableAsset, GetAssetListRequest>(new GetAssetListRequest());
 
             // Assert
-            result.Should().BeOfType(typeof(DefaultSort<QueryableAsset>));
+            result.Should().BeOfType(typeof(CustomSort<QueryableAsset>));
         }
 
         [Fact]
