@@ -53,7 +53,7 @@
             }
           },
           "addressLine1": {
-            "type": "keyword",
+            "type": "text",
             "normalizer": "my_normalizer",
             "fields": {
               "keyword": {
