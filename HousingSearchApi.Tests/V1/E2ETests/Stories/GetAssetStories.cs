@@ -90,8 +90,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         {
             var assetTypes = AssetFixture.Addresses.TakeLast(2);
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
-                .When(w => _steps.WhenAnExactMatchExists("5 Buckland Court St Johns Estate"))
-                .Then(t => _steps.ThenThatAddressShouldBeTheFirstResult("5 Buckland Court St Johns Estate"))
+                .When(w => _steps.WhenAnExactMatchExists("59 Buckland Court St Johns Estate"))
+                .Then(t => _steps.ThenThatAddressShouldBeTheFirstResult("59 Buckland Court St Johns Estate"))
                 .BDDfy();
         }
     }
