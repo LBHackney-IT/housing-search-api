@@ -31,9 +31,9 @@ namespace HousingSearchApi.V1.Infrastructure.Sorting
 
                 if (!string.IsNullOrEmpty(housingSearchRequest.SortBy))
                 {
-                      return housingSearchRequest.IsDesc
-                        ? (ISort<T>) new AssetIdDesc(customSort)
-                        : (ISort<T>) new AssetIdAsc();
+                    return housingSearchRequest.IsDesc
+                      ? (ISort<T>) new AssetIdDesc(customSort)
+                      : (ISort<T>) new AssetIdAsc();
                 }
 
                 return (ISort<T>) customSort;
