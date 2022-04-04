@@ -1,4 +1,4 @@
-service: housing-search-api
+service: housing-search-api-test
 provider:
   name: aws
   runtime: dotnetcore3.1

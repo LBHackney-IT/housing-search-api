@@ -241,34 +241,34 @@ workflows:
           context: api-assume-role-housing-development-context
           requires:
             - build-and-test
-          filters:
-            branches:
-              only: master
-      - terraform-init-and-plan-development:
-          requires:
-            - assume-role-development
-          filters:
-            branches:
-              only: master
-      - terraform-compliance-development:
-          requires:
-            - terraform-init-and-plan-development
-          filters:
-            branches:
-              only: master
-      - terraform-apply-development:
-          requires:
-            - terraform-compliance-development
-          filters:
-            branches:
-              only: master
+          #filters:
+          #  branches:
+          #    only: master
+      #- terraform-init-and-plan-development:
+      #    requires:
+      #      - assume-role-development
+      #    #filters:
+      #    #  branches:
+      #    #    only: master
+      #- terraform-compliance-development:
+      #    requires:
+      #      - terraform-init-and-plan-development
+      #    #filters:
+      #    #  branches:
+      #    #    only: master
+      #- terraform-apply-development:
+      #    requires:
+      #      - terraform-compliance-development
+      #    #filters:
+      #    #  branches:
+      #    #    only: master
       - deploy-to-development:
           context: api-nuget-token-context
           requires:
-            - terraform-apply-development
-          filters:
-            branches:
-              only: master
+            - assume-role-development
+          #filters:
+          #  branches:
+          #    only: master
   check-and-deploy-staging-and-production:
       jobs:
       - check-code-formatting:
