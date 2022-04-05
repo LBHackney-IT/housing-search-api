@@ -236,7 +236,9 @@ workflows:
       - check-code-formatting:
           context: api-nuget-token-context
       - build-and-test:
-          context: api-nuget-token-context
+          context: 
+            - api-nuget-token-context
+            - SonarCloud
       - assume-role-development:
           context: api-assume-role-housing-development-context
           requires:
@@ -274,7 +276,9 @@ workflows:
       - check-code-formatting:
           context: api-nuget-token-context
       - build-and-test:
-          context: api-nuget-token-context
+          context: 
+            - api-nuget-token-context
+            - SonarCloud
           filters:
             branches:
               only: release
