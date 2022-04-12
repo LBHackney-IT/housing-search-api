@@ -25,7 +25,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 
             var wildcardFields = new List<string> { "assetAddress.postCode", "assetAddress.uprn" };
 
-            if (assetListRequest.ExactMatch) wildcardFields.Add("assetAddress.addressLine1");
+            if (!assetListRequest.ExactMatch) wildcardFields.Add("assetAddress.addressLine1");
 
             return _queryBuilder
                 .WithWildstarQuery(assetListRequest.SearchText,
