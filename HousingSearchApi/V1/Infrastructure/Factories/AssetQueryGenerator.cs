@@ -23,9 +23,13 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             if (assetListRequest == null)
                 throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
 
+            var wildcardFields = new List<string> { "assetAddress.postCode", "assetAddress.uprn" };
+
+            if (assetListRequest.ExactMatch) wildcardFields.Add("assetAddress.addressLine1");
+
             return _queryBuilder
                 .WithWildstarQuery(assetListRequest.SearchText,
-                    new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
+                    wildcardFields)
                 .WithExactQuery(assetListRequest.SearchText,
                     new List<string>
                     {

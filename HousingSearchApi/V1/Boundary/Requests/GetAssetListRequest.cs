@@ -6,5 +6,8 @@ namespace HousingSearchApi.V1.Boundary.Requests
     {
         [FromQuery(Name = "assetTypes")]
         public string AssetTypes { get; set; }
+
+        [FromQuery(Name = "exactMatch")]
+        public bool ExactMatch { get; set; } = false;
     }
 }
