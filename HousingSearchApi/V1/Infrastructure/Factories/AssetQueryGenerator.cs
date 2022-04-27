@@ -25,15 +25,15 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 
             return _queryBuilder
                 .WithWildstarQuery(assetListRequest.SearchText,
-                    new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
+                    new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" }, TextQueryType.BestFields)
                 .WithExactQuery(assetListRequest.SearchText,
                     new List<string>
                     {
                         "assetAddress.addressLine1",
                         "assetAddress.uprn",
                         "assetAddress.postCode"
-                    })
-                .WithFilterQuery(assetListRequest.AssetTypes, new List<string> { "assetType" })
+                    }, null, TextQueryType.BestFields)
+                .WithFilterQuery(assetListRequest.AssetTypes, new List<string> { "assetType" }, TextQueryType.BestFields)
                 .Build(q);
         }
     }
