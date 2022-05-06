@@ -23,18 +23,28 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             if (assetListRequest == null)
                 throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
 
-            return _queryBuilder
-                .WithWildstarQuery(assetListRequest.SearchText,
-                    new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
-                .WithExactQuery(assetListRequest.SearchText,
-                    new List<string>
-                    {
-                        "assetAddress.addressLine1",
-                        "assetAddress.uprn",
-                        "assetAddress.postCode"
-                    })
-                .WithFilterQuery(assetListRequest.AssetTypes, new List<string> { "assetType" })
-                .Build(q);
+            if (assetListRequest.SearchText != null && assetListRequest.SearchText.Length > 0)
+            {
+                return _queryBuilder
+                    .WithWildstarQuery(assetListRequest.SearchText,
+                        new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
+                    .WithExactQuery(assetListRequest.SearchText,
+                        new List<string>
+                        {
+                            "assetAddress.addressLine1",
+                            "assetAddress.uprn",
+                            "assetAddress.postCode"
+                        })
+                    .WithFilterQuery(assetListRequest.AssetTypes, new List<string> { "assetType" })
+                    .Build(q);
+            }
+            else
+            {
+                return _queryBuilder
+                    .WithFilterQuery(assetListRequest.AssetTypes, new List<string> { "assetType" })
+                    .WithFilterQuery(assetListRequest.NumberOfBedrooms, new List<string> { "numberOfBedrooms" })
+                    .Build(q);
+            }
         }
     }
 }

@@ -65,3 +65,6 @@ tmp/
 .ionide
 
 testresults/
+/.dockerignore
+/docker-compose.dcproj
+/docker-compose.override.yml
