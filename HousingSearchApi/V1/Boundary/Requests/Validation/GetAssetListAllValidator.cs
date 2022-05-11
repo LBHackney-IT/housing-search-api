@@ -3,13 +3,11 @@ using Hackney.Core.Validation;
 
 namespace HousingSearchApi.V1.Boundary.Requests.Validation
 {
-    public class GetAssetListRequestValidator : AbstractValidator<GetAssetListRequest>
+    public class GetAssetListAllValidator : AbstractValidator<GetAllAssetListRequest>
     {
-        public GetAssetListRequestValidator()
+        public GetAssetListAllValidator()
         {
-            RuleFor(x => x.SearchText).NotNull()
-                                      .NotEmpty()
-                                      .MinimumLength(2)
+            RuleFor(x => x.SearchText).MinimumLength(2)
                                       .NotXssString();
             RuleFor(x => x.PageSize).GreaterThan(0);
             RuleFor(x => x.SortBy).NotXssString();
