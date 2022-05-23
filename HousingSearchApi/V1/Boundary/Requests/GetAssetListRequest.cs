@@ -7,7 +7,7 @@ namespace HousingSearchApi.V1.Boundary.Requests
         [FromQuery(Name = "assetTypes")]
         public string AssetTypes { get; set; }
 
-        [FromQuery(Name = "numberOfBedrooms ")]
+        [FromQuery(Name = "numberOfBedrooms")]
         public string NumberOfBedrooms { get; set; }
     }
 }
