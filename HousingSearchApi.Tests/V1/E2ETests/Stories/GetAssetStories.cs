@@ -122,6 +122,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .When(w => _steps.WhenGroundFloorIsProvided(asset))
                 .Then(t => _steps.ThenGroundFloorShouldBeInResult(asset))
                 .BDDfy();
-        }       
+        }
     }
 }

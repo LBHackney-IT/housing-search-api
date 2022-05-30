@@ -9,7 +9,7 @@ namespace HousingSearchApi.V1.Boundary.Requests
 
         [FromQuery(Name = "assetStatus")]
         public string AssetStatus { get; set; }
-        
+
         [FromQuery(Name = "numberOfBedSpaces")]
         public string NumberOfBedSpaces { get; set; }
 

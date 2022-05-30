@@ -65,7 +65,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
-        
+
         public async Task WhenNoOfBedSpacesIsProvided(int numberOfBedSpaces)
         {
             var route = new Uri($"api/v1/search/assets/all?numberOfBedSpaces={numberOfBedSpaces}&pageSize={1}",
@@ -80,7 +80,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
-        }        
+        }
 
         public async Task WhenAnExactMatchExists(string address)
         {
@@ -150,7 +150,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);
 
-            result.Results.Assets.All(x => x.NumberOfBedSpaces== numberOfBedSpaces);
+            result.Results.Assets.All(x => x.NumberOfBedSpaces == numberOfBedSpaces);
         }
         public async Task ThenGroundFloorShouldBeInResult(bool isGroundFloor)
         {

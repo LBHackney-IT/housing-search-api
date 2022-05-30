@@ -79,7 +79,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "parentAssetId" })
                         .Build(q);
                 }
-            }            
+            }
         }
     }
 }
