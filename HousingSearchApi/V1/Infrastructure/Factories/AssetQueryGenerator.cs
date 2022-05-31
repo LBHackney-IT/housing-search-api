@@ -45,6 +45,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             {
                 if (assetListRequest.SearchText != null && assetListRequest.SearchText.Length > 0)
                 {
+                    //For when we need to use searchText and filters together
                     GetAllAssetListRequest assetListAllRequest = request as GetAllAssetListRequest;
                     return _queryBuilder
                         .WithWildstarQuery(assetListAllRequest.SearchText,
