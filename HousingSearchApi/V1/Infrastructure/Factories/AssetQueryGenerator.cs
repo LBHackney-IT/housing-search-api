@@ -45,7 +45,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             {
                 if (assetListRequest.SearchText != null && assetListRequest.SearchText.Length > 0)
                 {
-                    GetAllAssetListRequest assetListAllRequest = request as GetAllAssetListRequest;                    
+                    GetAllAssetListRequest assetListAllRequest = request as GetAllAssetListRequest;
                     return _queryBuilder
                         .WithWildstarQuery(assetListAllRequest.SearchText,
                             new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
