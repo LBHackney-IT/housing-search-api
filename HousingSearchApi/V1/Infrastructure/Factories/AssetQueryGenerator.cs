@@ -45,17 +45,31 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             {
                 if (assetListRequest.SearchText != null && assetListRequest.SearchText.Length > 0)
                 {
+                    GetAllAssetListRequest assetListAllRequest = request as GetAllAssetListRequest;                    
                     return _queryBuilder
-                        .WithWildstarQuery(assetListRequest.SearchText,
+                        .WithWildstarQuery(assetListAllRequest.SearchText,
                             new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
-                        .WithExactQuery(assetListRequest.SearchText,
+                        .WithExactQuery(assetListAllRequest.SearchText,
                             new List<string>
                             {
                             "assetAddress.addressLine1",
                             "assetAddress.uprn",
                             "assetAddress.postCode"
                             })
-                        .WithFilterQuery(assetListRequest.AssetTypes, new List<string> { "assetType" })
+                        .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
+                        .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetStatus" })
+                        .WithFilterQuery(assetListAllRequest.NumberOfBedrooms, new List<string>
+                            {
+                            "assetCharacteristics.numberOfBedrooms"
+                            })
+                        .WithFilterQuery(assetListAllRequest.NumberOfBedSpaces, new List<string> { "numberOfBedSpaces" })
+                        .WithFilterQuery(assetListAllRequest.NumberOfCots, new List<string> { "numberOfCots" })
+                        .WithFilterQuery(assetListAllRequest.GroundFloor, new List<string> { "groundFloor" })
+                        .WithFilterQuery(assetListAllRequest.PrivateBathroom, new List<string> { "privateBathroom" })
+                        .WithFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "privateKitchen" })
+                        .WithFilterQuery(assetListAllRequest.StepFree, new List<string> { "stepFree" })
+                        .WithFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "isTemporaryAccomodation" })
+                        .WithFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "parentAssetId" })
                         .Build(q);
                 }
                 else
