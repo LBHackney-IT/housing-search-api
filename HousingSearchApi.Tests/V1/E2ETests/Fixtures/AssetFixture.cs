@@ -77,12 +77,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 asset.AssetAddress.PostCode = value.PostCode;
                 asset.AssetAddress.Uprn = value.UPRN;
                 asset.AssetStatus = value.AssetStatus;
-                asset.NumberOfBedSpaces = value.NoOfBedSpaces;
-                asset.NumberOfCots = value.NoOfCots;
-                asset.GroundFloor = value.GroundFloor;
-                asset.PrivateBathroom = value.PrivateBathroom;
-                asset.PrivateKitchen = value.PrivateKitchen;
-                asset.StepFree = value.StepFree;
+                asset.AssetCharacteristics.NumberOfBedSpaces = value.NoOfBedSpaces;
+                asset.AssetCharacteristics.NumberOfCots = value.NoOfCots;
+                asset.AssetCharacteristics.GroundFloor = value.GroundFloor;
+                asset.AssetCharacteristics.PrivateBathroom = value.PrivateBathroom;
+                asset.AssetCharacteristics.PrivateKitchen = value.PrivateKitchen;
+                asset.AssetCharacteristics.StepFree = value.StepFree;
                 listOfAssets.Add(asset);
             }
 
