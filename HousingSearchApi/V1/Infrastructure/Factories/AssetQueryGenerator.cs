@@ -84,12 +84,12 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                             {
                             "assetCharacteristics.numberOfBedrooms"
                             })
-                        .WithFilterQuery(assetListAllRequest.NumberOfBedSpaces, new List<string> { "numberOfBedSpaces" })
-                        .WithFilterQuery(assetListAllRequest.NumberOfCots, new List<string> { "numberOfCots" })
-                        .WithFilterQuery(assetListAllRequest.GroundFloor, new List<string> { "groundFloor" })
-                        .WithFilterQuery(assetListAllRequest.PrivateBathroom, new List<string> { "privateBathroom" })
-                        .WithFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "privateKitchen" })
-                        .WithFilterQuery(assetListAllRequest.StepFree, new List<string> { "stepFree" })
+                        .WithFilterQuery(assetListAllRequest.NumberOfBedSpaces, new List<string> { "assetCharacteristics.numberOfBedSpaces" })
+                        .WithFilterQuery(assetListAllRequest.NumberOfCots, new List<string> { "assetCharacteristics.numberOfCots" })
+                        .WithFilterQuery(assetListAllRequest.GroundFloor, new List<string> { "assetCharacteristics.groundFloor" })
+                        .WithFilterQuery(assetListAllRequest.PrivateBathroom, new List<string> { "assetCharacteristics.privateBathroom" })
+                        .WithFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "assetCharacteristics.privateKitchen" })
+                        .WithFilterQuery(assetListAllRequest.StepFree, new List<string> { "assetCharacteristics.stepFree" })
                         .WithFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "isTemporaryAccomodation" })
                         .WithFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "parentAssetId" })
                         .Build(q);
