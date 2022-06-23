@@ -1,6 +1,25 @@
 version: "3.2"
 
 services:
+  housing-search-api:
+    image: housing-search-api
+    build:
+      context: .
+      dockerfile: HousingSearchApi/Dockerfile
+      args:
+      - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
+    environment:
+      SERVERHOST: http://localhost
+      ELASTICSEARCH_DOMAIN_URL: http://test-elasticsearch:9200
+
+    ports:
+      - 3000:3000
+    networks:
+      - elastic
+    depends_on:
+      - kibana
+      - test-elasticsearch
+      
   housing-search-api-test:
     image: housing-search-api-test
     build:
@@ -8,6 +27,7 @@ services:
       dockerfile: HousingSearchApi.Tests/Dockerfile
       args:
       - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
+      - SONAR_TOKEN=${SONAR_TOKEN}
     environment:
       - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
     networks:

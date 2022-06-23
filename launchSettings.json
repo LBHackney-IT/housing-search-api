@@ -1,0 +1,17 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "housing-search-api",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/api/v1/healthcheck/ping",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "housing-search-api": "StartDebugging",
+        "housing-search-api-test": "DoNotStart",
+        "kibana": "StartWithoutDebugging",
+        "test-elasticsearch": "StartWithoutDebugging"
+      }
+    }
+  }
+}
