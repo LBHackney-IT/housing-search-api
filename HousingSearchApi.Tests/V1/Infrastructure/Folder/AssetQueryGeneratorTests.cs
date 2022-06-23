@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace HousingSearchApi.Tests.V1.Infrastructure.Folder
+namespace HousingSearchApi.Tests.V1.Infrastructure.Factories
 {
     public class AssetQueryGeneratorTests
     {
