@@ -6,7 +6,7 @@ using Nest;
 
 namespace HousingSearchApi.V1.Infrastructure.Core
 {
-    public class FilterQueryBuilder<T> : IFilterQueryBuilder<T> where T : class 
+    public class FilterQueryBuilder<T> : IFilterQueryBuilder<T> where T : class
     {
         private readonly IWildCardAppenderAndPrepender _wildCardAppenderAndPrepender;
         private Func<QueryContainerDescriptor<T>, QueryContainer> _wildstarQuery;
@@ -15,7 +15,7 @@ namespace HousingSearchApi.V1.Infrastructure.Core
         private List<Func<QueryContainerDescriptor<T>, QueryContainer>> _multipleFilterQueries =
             new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
 
-        
+
         public FilterQueryBuilder(IWildCardAppenderAndPrepender wildCardAppenderAndPrepender)
         {
             _wildCardAppenderAndPrepender = wildCardAppenderAndPrepender;
@@ -56,12 +56,12 @@ namespace HousingSearchApi.V1.Infrastructure.Core
 
             return this;
         }
-       
+
         public IFilterQueryBuilder<T> WithMultipleFilterQuery(string commaSeparatedFilters, List<string> fields)
         {
             if (commaSeparatedFilters != null)
             {
-                
+
                 foreach (var filterWord in commaSeparatedFilters.Split(","))
                 {
                     _multipleFilterQueries.Add(CreateQuery(filterWord, fields));
