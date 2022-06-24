@@ -10,6 +10,7 @@ using HousingSearchApi.V1.Interfaces.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
+using HousingSearchApi.V1.Interfaces;
 
 namespace HousingSearchApi.V1.Infrastructure.Factories
 {
@@ -36,7 +37,8 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 
             if (typeof(T) == typeof(QueryableAsset))
             {
-                return (IQueryGenerator<T>) new AssetQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableAsset>>());
+                return (IQueryGenerator<T>) new AssetQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableAsset>>(),
+                    _serviceProvider.GetService<IFilterQueryBuilder<QueryableAsset>>());
             }
             if (typeof(T) == typeof(QueryableAccount))
             {
