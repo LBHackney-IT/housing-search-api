@@ -52,5 +52,44 @@ namespace HousingSearchApi.Tests.V1.Controllers
             // then
             _mockGetAssetListSetsUseCase.Verify(x => x.ExecuteAsync(request), Times.Once);
         }
+
+        [Fact]
+        public async Task GetAssetListSetsShouldFilterOnMultplesUseCase()
+        {
+            // given
+            var request = new GetAllAssetListRequest()
+            {
+                NumberOfBedSpaces = "2",
+                NumberOfCots = "2"
+            };
+            var response = new GetAllAssetListResponse();
+            _mockGetAssetListSetsUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
+
+            // when
+            await _classUnderTest.GetAllAssetList(request).ConfigureAwait(false);
+
+            // then
+            _mockGetAssetListSetsUseCase.Verify(x => x.ExecuteAsync(request), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAssetListSetsShouldFilterOnMultplesWithSearchTextUseCase()
+        {
+            // given
+            var request = new GetAllAssetListRequest()
+            {
+                NumberOfBedSpaces = "2",
+                NumberOfCots = "2",
+                SearchText = "test"
+            };
+            var response = new GetAllAssetListResponse();
+            _mockGetAssetListSetsUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
+
+            // when
+            await _classUnderTest.GetAllAssetList(request).ConfigureAwait(false);
+
+            // then
+            _mockGetAssetListSetsUseCase.Verify(x => x.ExecuteAsync(request), Times.Once);
+        }
     }
 }
