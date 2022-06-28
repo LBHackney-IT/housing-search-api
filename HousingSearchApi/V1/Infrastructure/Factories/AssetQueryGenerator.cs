@@ -33,7 +33,8 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                 //This is so assets search endpoint works as before
                 return _queryBuilder
                     .WithWildstarQuery(assetListRequest.SearchText,
-                        new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
+                        new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" },
+                         assetListRequest.MatchType)
                     .WithExactQuery(assetListRequest.SearchText,
                         new List<string>
                         {
