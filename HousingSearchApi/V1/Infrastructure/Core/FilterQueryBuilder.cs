@@ -21,7 +21,7 @@ namespace HousingSearchApi.V1.Infrastructure.Core
             _wildCardAppenderAndPrepender = wildCardAppenderAndPrepender;
         }
 
-        public IQueryBuilder<T> WithWildstarQuery(string searchText, List<string> fields)
+        public IQueryBuilder<T> WithWildstarQuery(string searchText, List<string> fields, TextQueryType textQueryType = TextQueryType.MostFields)
         {
             var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(searchText);
             var queryString = $"({string.Join(" AND ", listOfWildCardedWords)}) " +
@@ -32,7 +32,7 @@ namespace HousingSearchApi.V1.Infrastructure.Core
             return this;
         }
 
-        public IQueryBuilder<T> WithFilterQuery(string commaSeparatedFilters, List<string> fields)
+        public IQueryBuilder<T> WithFilterQuery(string commaSeparatedFilters, List<string> fields, TextQueryType textQueryType = TextQueryType.MostFields)
         {
             if (commaSeparatedFilters != null)
             {
@@ -47,7 +47,7 @@ namespace HousingSearchApi.V1.Infrastructure.Core
         }
 
         public IQueryBuilder<T> WithExactQuery(string searchText, List<string> fields,
-            IExactSearchQuerystringProcessor processor = null)
+            IExactSearchQuerystringProcessor processor = null, TextQueryType textQueryType = TextQueryType.MostFields)
         {
             if (processor != null)
                 searchText = processor.Process(searchText);
