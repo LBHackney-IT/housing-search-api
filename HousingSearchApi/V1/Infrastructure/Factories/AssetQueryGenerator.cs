@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Hackney.Core.ElasticSearch.Interfaces;
+using HousingSearchApi.V1.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Interfaces.Factories;
@@ -11,10 +12,12 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
     public class AssetQueryGenerator : IQueryGenerator<QueryableAsset>
     {
         private readonly IQueryBuilder<QueryableAsset> _queryBuilder;
-
-        public AssetQueryGenerator(IQueryBuilder<QueryableAsset> queryBuilder)
+        private readonly IFilterQueryBuilder<QueryableAsset> _queryFilterBuilder;
+        public AssetQueryGenerator(IQueryBuilder<QueryableAsset> queryBuilder,
+            IFilterQueryBuilder<QueryableAsset> queryFilterBuilder)
         {
             _queryBuilder = queryBuilder;
+            _queryFilterBuilder = queryFilterBuilder;
         }
 
         public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryableAsset> q)
@@ -47,7 +50,19 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                 {
                     //For when we need to use searchText and filters together
                     GetAllAssetListRequest assetListAllRequest = request as GetAllAssetListRequest;
-                    return _queryBuilder
+                    return _queryFilterBuilder
+                        .WithMultipleFilterQuery(assetListAllRequest.NumberOfBedrooms, new List<string>
+                            {
+                            "assetCharacteristics.numberOfBedrooms"
+                            })
+                        .WithMultipleFilterQuery(assetListAllRequest.NumberOfBedSpaces, new List<string> { "assetCharacteristics.numberOfBedSpaces" })
+                        .WithMultipleFilterQuery(assetListAllRequest.NumberOfCots, new List<string> { "assetCharacteristics.numberOfCots" })
+                        .WithMultipleFilterQuery(assetListAllRequest.GroundFloor, new List<string> { "assetCharacteristics.groundFloor" })
+                        .WithMultipleFilterQuery(assetListAllRequest.PrivateBathroom, new List<string> { "assetCharacteristics.privateBathroom" })
+                        .WithMultipleFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "assetCharacteristics.privateKitchen" })
+                        .WithMultipleFilterQuery(assetListAllRequest.StepFree, new List<string> { "assetCharacteristics.stepFree" })
+                        .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "isTemporaryAccomodation" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "parentAssetId" })
                         .WithWildstarQuery(assetListAllRequest.SearchText,
                             new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
                         .WithExactQuery(assetListAllRequest.SearchText,
@@ -59,39 +74,28 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                             })
                         .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
                         .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetStatus" })
-                        .WithFilterQuery(assetListAllRequest.NumberOfBedrooms, new List<string>
-                            {
-                            "assetCharacteristics.numberOfBedrooms"
-                            })
-                        .WithFilterQuery(assetListAllRequest.NumberOfBedSpaces, new List<string> { "numberOfBedSpaces" })
-                        .WithFilterQuery(assetListAllRequest.NumberOfCots, new List<string> { "numberOfCots" })
-                        .WithFilterQuery(assetListAllRequest.GroundFloor, new List<string> { "groundFloor" })
-                        .WithFilterQuery(assetListAllRequest.PrivateBathroom, new List<string> { "privateBathroom" })
-                        .WithFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "privateKitchen" })
-                        .WithFilterQuery(assetListAllRequest.StepFree, new List<string> { "stepFree" })
-                        .WithFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "isTemporaryAccomodation" })
-                        .WithFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "parentAssetId" })
+
                         .Build(q);
                 }
                 else
                 {
                     //Only the all enpoint should exclude need for SearchText
                     GetAllAssetListRequest assetListAllRequest = request as GetAllAssetListRequest;
-                    return _queryBuilder
-                        .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
-                        .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetStatus" })
-                        .WithFilterQuery(assetListAllRequest.NumberOfBedrooms, new List<string>
+                    return _queryFilterBuilder
+                        .WithMultipleFilterQuery(assetListAllRequest.NumberOfBedrooms, new List<string>
                             {
                             "assetCharacteristics.numberOfBedrooms"
                             })
-                        .WithFilterQuery(assetListAllRequest.NumberOfBedSpaces, new List<string> { "assetCharacteristics.numberOfBedSpaces" })
-                        .WithFilterQuery(assetListAllRequest.NumberOfCots, new List<string> { "assetCharacteristics.numberOfCots" })
-                        .WithFilterQuery(assetListAllRequest.GroundFloor, new List<string> { "assetCharacteristics.groundFloor" })
-                        .WithFilterQuery(assetListAllRequest.PrivateBathroom, new List<string> { "assetCharacteristics.privateBathroom" })
-                        .WithFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "assetCharacteristics.privateKitchen" })
-                        .WithFilterQuery(assetListAllRequest.StepFree, new List<string> { "assetCharacteristics.stepFree" })
-                        .WithFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "isTemporaryAccomodation" })
-                        .WithFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "parentAssetId" })
+                        .WithMultipleFilterQuery(assetListAllRequest.NumberOfBedSpaces, new List<string> { "assetCharacteristics.numberOfBedSpaces" })
+                        .WithMultipleFilterQuery(assetListAllRequest.NumberOfCots, new List<string> { "assetCharacteristics.numberOfCots" })
+                        .WithMultipleFilterQuery(assetListAllRequest.GroundFloor, new List<string> { "assetCharacteristics.groundFloor" })
+                        .WithMultipleFilterQuery(assetListAllRequest.PrivateBathroom, new List<string> { "assetCharacteristics.privateBathroom" })
+                        .WithMultipleFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "assetCharacteristics.privateKitchen" })
+                        .WithMultipleFilterQuery(assetListAllRequest.StepFree, new List<string> { "assetCharacteristics.stepFree" })
+                        .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "isTemporaryAccomodation" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "parentAssetId" })
+                        .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
+                        .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetStatus" })
                         .Build(q);
                 }
             }

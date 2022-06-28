@@ -28,6 +28,9 @@
     <None Remove="V1\UseCase\**" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="V1\Interfaces\Filtering\AssetFilterTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="..\HousingSearchApi\data\elasticsearch\personIndex.json" Link="V1\Helper\Indices\personIndex.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
