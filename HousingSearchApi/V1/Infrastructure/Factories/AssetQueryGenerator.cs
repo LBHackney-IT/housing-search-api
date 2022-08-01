@@ -62,8 +62,8 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.PrivateBathroom, new List<string> { "assetCharacteristics.privateBathroom" })
                         .WithMultipleFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "assetCharacteristics.privateKitchen" })
                         .WithMultipleFilterQuery(assetListAllRequest.StepFree, new List<string> { "assetCharacteristics.stepFree" })
-                        .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "isTemporaryAccomodation" })
-                        .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "parentAssetId" })
+                        .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "AssetManagement.isTemporaryAccomodation" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "parentAssetIds" })
                         .WithWildstarQuery(assetListAllRequest.SearchText,
                             new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
                         .WithExactQuery(assetListAllRequest.SearchText,
