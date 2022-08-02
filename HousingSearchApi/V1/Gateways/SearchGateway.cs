@@ -80,7 +80,7 @@ namespace HousingSearchApi.V1.Gateways
             assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
                 queryableAsset.CreateAll())
             );
-            
+
             assetListResponse.SetTotal(searchResponse.Total);
             if (searchResponse.Documents.Count > 0)
             {
