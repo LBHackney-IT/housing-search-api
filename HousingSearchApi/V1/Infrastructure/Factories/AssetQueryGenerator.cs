@@ -33,8 +33,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                 //This is so assets search endpoint works as before
                 return _queryBuilder
                     .WithWildstarQuery(assetListRequest.SearchText,
-                        new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" },
-                         assetListRequest.MatchType)
+                        new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
                     .WithExactQuery(assetListRequest.SearchText,
                         new List<string>
                         {
@@ -62,8 +61,8 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.PrivateBathroom, new List<string> { "assetCharacteristics.privateBathroom" })
                         .WithMultipleFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "assetCharacteristics.privateKitchen" })
                         .WithMultipleFilterQuery(assetListAllRequest.StepFree, new List<string> { "assetCharacteristics.stepFree" })
-                        .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "isTemporaryAccomodation" })
-                        .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "parentAssetId" })
+                        .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "assetManagement.isTemporaryAccomodation" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
                         .WithWildstarQuery(assetListAllRequest.SearchText,
                             new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
                         .WithExactQuery(assetListAllRequest.SearchText,
@@ -93,8 +92,8 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.PrivateBathroom, new List<string> { "assetCharacteristics.privateBathroom" })
                         .WithMultipleFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "assetCharacteristics.privateKitchen" })
                         .WithMultipleFilterQuery(assetListAllRequest.StepFree, new List<string> { "assetCharacteristics.stepFree" })
-                        .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "isTemporaryAccomodation" })
-                        .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "parentAssetId" })
+                        .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "assetManagement.isTemporaryAccomodation" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
                         .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
                         .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetStatus" })
                         .Build(q);

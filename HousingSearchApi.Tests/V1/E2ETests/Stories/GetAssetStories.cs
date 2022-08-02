@@ -120,7 +120,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var asset = true;
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenGroundFloorIsProvided(asset))
-                .Then(t => _steps.ThenGroundFloorShouldBeInResult(asset))
+                .Then(t => _steps.ThenStepFreeShouldBeInResult(asset))
                 .BDDfy();
         }
     }

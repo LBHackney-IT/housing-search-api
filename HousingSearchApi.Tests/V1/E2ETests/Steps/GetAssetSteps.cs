@@ -152,12 +152,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             result.Results.Assets.All(x => x.AssetCharacteristics.NumberOfBedSpaces == numberOfBedSpaces);
         }
-        public async Task ThenGroundFloorShouldBeInResult(bool isGroundFloor)
+        public async Task ThenStepFreeShouldBeInResult(bool isGroundFloor)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);
 
-            result.Results.Assets.All(x => x.AssetCharacteristics.GroundFloor == isGroundFloor);
+            result.Results.Assets.All(x => x.AssetCharacteristics.IsStepFree == isGroundFloor);
         }
     }
 }
