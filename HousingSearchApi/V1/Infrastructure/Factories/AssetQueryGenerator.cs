@@ -73,7 +73,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                             "assetAddress.postCode"
                             })
                         .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
-                        .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetStatus" })
+                        .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetManagement.propertyOccupiedStatus" })
 
                         .Build(q);
                 }
@@ -95,7 +95,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "assetManagement.isTemporaryAccomodation" })
                         .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
                         .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
-                        .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetStatus" })
+                        .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetManagement.propertyOccupiedStatus" })
                         .Build(q);
                 }
             }
