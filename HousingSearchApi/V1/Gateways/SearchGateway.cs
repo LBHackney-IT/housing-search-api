@@ -78,9 +78,9 @@ namespace HousingSearchApi.V1.Gateways
 
             if (searchResponse == null) return assetListResponse;
             assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
-                queryableAsset.Create())
+                queryableAsset.CreateAll())
             );
-
+            
             assetListResponse.SetTotal(searchResponse.Total);
             if (searchResponse.Documents.Count > 0)
             {
