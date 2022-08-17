@@ -101,7 +101,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         public void ServiceDoesNotReturnHousingOfficers(string firstName, string lastName)
         {
             this.Given(g => _personsFixture.GivenAPersonIndexExists())
-                .Given(g => _personsFixture.GivenThereExistPersonsWithDifferentPersonTypes(firstName, lastName, new List<PersonType> { PersonType.HousingOfficer,  PersonType.Tenant, PersonType.Leaseholder, PersonType.HousingOfficer}))
+                .Given(g => _personsFixture.GivenThereExistPersonsWithDifferentPersonTypes(firstName, lastName, new List<PersonType> { PersonType.HousingOfficer, PersonType.Tenant, PersonType.Leaseholder, PersonType.HousingOfficer }))
                 .When(w => _steps.WhenSearchingByFirstAndLastName(firstName, lastName))
                 .Then(t => _steps.ThenTheResultShouldNotContainHousingOfficers())
                 .BDDfy();
