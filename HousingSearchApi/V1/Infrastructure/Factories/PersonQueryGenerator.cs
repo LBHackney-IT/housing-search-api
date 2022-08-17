@@ -1,4 +1,5 @@
 using Hackney.Core.ElasticSearch.Interfaces;
+using Hackney.Shared.HousingSearch.Domain;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Interfaces.Factories;
@@ -29,7 +30,8 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                 .WithWildstarQuery(personListRequest.SearchText,
                     new List<string> { "firstname", "surname" })
                 .WithExactQuery(personListRequest.SearchText,
-                    new List<string> { "firstname", "surname" }, new ExactSearchQuerystringProcessor());
+                    new List<string> { "firstname", "surname" }, new ExactSearchQuerystringProcessor())
+                .WithFilterQuery($"NOT {PersonType.HousingOfficer}", new List<string> { "personTypes" });
 
             if (personListRequest.PersonType.HasValue)
             {
