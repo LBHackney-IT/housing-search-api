@@ -74,9 +74,9 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
 
-        public async Task WhenGroundFloorIsProvided(bool isGroundFloor)
+        public async Task WhenFloorNoIsProvided(int floorNo)
         {
-            var route = new Uri($"api/v1/search/assets/all?groundFloor={isGroundFloor}&pageSize={1}",
+            var route = new Uri($"api/v1/search/assets/all?groundFloor={floorNo}&pageSize={1}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -152,12 +152,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             result.Results.Assets.All(x => x.AssetCharacteristics.NumberOfBedSpaces == numberOfBedSpaces);
         }
-        public async Task ThenStepFreeShouldBeInResult(bool isGroundFloor)
+        public async Task ThenFloorNoShouldBeInResult(int floorNo)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);
 
-            result.Results.Assets.All(x => x.AssetCharacteristics.IsStepFree == isGroundFloor);
+            result.Results.Assets.All(x => x.AssetLocation.FloorNo == floorNo);
         }
     }
 }
