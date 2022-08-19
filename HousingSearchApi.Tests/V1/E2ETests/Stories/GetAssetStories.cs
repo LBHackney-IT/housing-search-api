@@ -115,7 +115,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         }
 
         [Fact]
-        public void ServiceFiltersGivenIsGroundFloorWithoutSearchText()
+        public void ServiceFiltersGivenFloorNoWithoutSearchText()
         {
             var floorNo = 1;
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
