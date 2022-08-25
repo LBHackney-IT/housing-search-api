@@ -107,20 +107,20 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceFiltersGivenNumberOfBedSpacesWithoutSearchText()
         {
-            var asset = 2;
+            var bedspaces = 2;
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
-                .When(w => _steps.WhenNoOfBedSpacesIsProvided(asset))
-                .Then(t => _steps.ThenNumberOfBedSpacesShouldBeInResult(asset))
+                .When(w => _steps.WhenNoOfBedSpacesIsProvided(bedspaces))
+                .Then(t => _steps.ThenNumberOfBedSpacesShouldBeInResult(bedspaces))
                 .BDDfy();
         }
 
         [Fact]
-        public void ServiceFiltersGivenIsGroundFloorWithoutSearchText()
+        public void ServiceFiltersGivenFloorNoWithoutSearchText()
         {
-            var asset = true;
+            var floorNo = 1;
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
-                .When(w => _steps.WhenGroundFloorIsProvided(asset))
-                .Then(t => _steps.ThenStepFreeShouldBeInResult(asset))
+                .When(w => _steps.WhenFloorNoIsProvided(floorNo))
+                .Then(t => _steps.ThenFloorNoShouldBeInResult(floorNo))
                 .BDDfy();
         }
     }

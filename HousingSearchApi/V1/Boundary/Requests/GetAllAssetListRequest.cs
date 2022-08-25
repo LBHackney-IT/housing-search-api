@@ -16,8 +16,8 @@ namespace HousingSearchApi.V1.Boundary.Requests
         [FromQuery(Name = "numberOfCots")]
         public string NumberOfCots { get; set; }
 
-        [FromQuery(Name = "groundFloor")]
-        public string GroundFloor { get; set; }
+        [FromQuery(Name = "floorNo")]
+        public string FloorNo { get; set; }
 
         [FromQuery(Name = "privateBathroom")]
         public string PrivateBathroom { get; set; }
