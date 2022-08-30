@@ -57,8 +57,8 @@ namespace HousingSearchApi.V1.Infrastructure
                     .Skip(pageOffset)
                     .TrackTotalHits()).ConfigureAwait(false);
 
-                string searchJSON = System.Text.Encoding.UTF8.GetString(result.ApiCall.RequestBodyInBytes);
 #if DEBUG
+                string searchJSON = System.Text.Encoding.UTF8.GetString(result.ApiCall.RequestBodyInBytes);
                 _logger.LogDebug(searchJSON);
 #endif
 
@@ -102,6 +102,11 @@ namespace HousingSearchApi.V1.Infrastructure
                       .Sort(_sortFactory.Create<T, TRequest>(request).GetSortDescriptor)
                       .TrackTotalHits()
                       ).ConfigureAwait(false);
+
+#if DEBUG
+                    string searchJSON = System.Text.Encoding.UTF8.GetString(result.ApiCall.RequestBodyInBytes);
+                    _logger.LogDebug(searchJSON);
+#endif
                 }
                 else if (!string.IsNullOrEmpty(searchRequest.LastHitId))
                 {
@@ -112,6 +117,11 @@ namespace HousingSearchApi.V1.Infrastructure
                       .SearchAfter(lastSortedItem)
                       .Sort(_sortFactory.Create<T, TRequest>(request).GetSortDescriptor)
                       ).ConfigureAwait(false);
+
+#if DEBUG
+                    string searchJSON = System.Text.Encoding.UTF8.GetString(result.ApiCall.RequestBodyInBytes);
+                    _logger.LogDebug(searchJSON);
+#endif
                 }
 
                 _logger.LogDebug("ElasticSearch Search Sets ended");
