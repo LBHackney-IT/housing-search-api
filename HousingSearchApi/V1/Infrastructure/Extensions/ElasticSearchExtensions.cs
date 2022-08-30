@@ -24,7 +24,12 @@ namespace HousingSearchApi.V1.Infrastructure.Extensions
                 new ConnectionSettings(pool)
                     .PrettyJson()
                     .ThrowExceptions()
-                    .DisableDirectStreaming();
+                    .DisableDirectStreaming()
+#if DEBUG
+                    .EnableDebugMode()
+                    .ServerCertificateValidationCallback((o, cert, chain, sslErrors) => true)
+#endif
+                    ;
             var esClient = new ElasticClient(connectionSettings);
 
             services.TryAddSingleton<IElasticClient>(esClient);

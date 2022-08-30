@@ -57,6 +57,11 @@ namespace HousingSearchApi.V1.Infrastructure
                     .Skip(pageOffset)
                     .TrackTotalHits()).ConfigureAwait(false);
 
+                string searchJSON = System.Text.Encoding.UTF8.GetString(result.ApiCall.RequestBodyInBytes);
+#if DEBUG
+                _logger.LogDebug(searchJSON);
+#endif
+
                 _logger.LogDebug("ElasticSearch Search ended");
 
                 return result;
