@@ -74,7 +74,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
 
-        public async Task WhenFloorNoIsProvided(int floorNo)
+        public async Task WhenFloorNoIsProvided(string floorNo)
         {
             var route = new Uri($"api/v1/search/assets/all?floorNo={floorNo}&pageSize={1}",
                 UriKind.Relative);
@@ -152,7 +152,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             result.Results.Assets.All(x => x.AssetCharacteristics.NumberOfBedSpaces == numberOfBedSpaces);
         }
-        public async Task ThenFloorNoShouldBeInResult(int floorNo)
+        public async Task ThenFloorNoShouldBeInResult(string floorNo)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);

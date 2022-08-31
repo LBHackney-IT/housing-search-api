@@ -117,7 +117,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceFiltersGivenFloorNoWithoutSearchText()
         {
-            var floorNo = 1;
+            var floorNo = "1";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenFloorNoIsProvided(floorNo))
                 .Then(t => _steps.ThenFloorNoShouldBeInResult(floorNo))
