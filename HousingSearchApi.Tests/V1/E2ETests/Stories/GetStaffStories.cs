@@ -59,7 +59,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var emailAddress = "firstname3.lastname3@test.com";
 
             this.Given(g => _staffsFixture.GivenAnStaffIndexExists())
-                .Given(g => _staffsFixture.GivenThereExistPersonsWithSimilarEmailAddress(emailAddress))
+                .Given(g => _staffsFixture.GivenThereExistStaffsWithSimilarEmailAddress(emailAddress))
                 .When(w => _steps.WhenSearchingByEmailAddress(emailAddress))
                 .Then(t => _steps.ThenTheFirstResultShouldBeAnExactMatchOfEmailAddress(emailAddress))
                 .BDDfy();

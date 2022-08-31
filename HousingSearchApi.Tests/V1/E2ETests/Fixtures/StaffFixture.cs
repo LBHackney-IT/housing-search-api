@@ -50,7 +50,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             }
         }
 
-        public void GivenThereExistPersonsWithSimilarEmailAddress(string emailAddress)
+        public void GivenThereExistStaffsWithSimilarEmailAddress(string emailAddress)
         {
             var fixture = new Fixture();
             var listOfStaffs = new List<QueryableStaff>();
