@@ -1,6 +1,7 @@
 using Hackney.Core.Logging;
 using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
+using Hackney.Shared.HousingSearch.Gateways.Models.Staffs;
 using Hackney.Shared.HousingSearch.Gateways.Models.Transactions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
@@ -90,6 +91,21 @@ namespace HousingSearchApi.V1.Gateways
             return assetListResponse;
         }
 
+        [LogCall]
+        public async Task<GetStaffListResponse> GetListOfStaffs(GetStaffListRequest query)
+        {
+            var searchResponse = await _elasticSearchWrapper.Search<QueryableStaff, GetStaffListRequest>(query).ConfigureAwait(false);
+            var staffListResponse = new GetStaffListResponse();
+
+            staffListResponse.Staffs.AddRange(searchResponse.Documents.Select(queryableStaff =>
+               queryableStaff.Create())
+           );
+
+            staffListResponse.SetTotal(searchResponse.Total);
+
+            return staffListResponse;
+        }
+
         public async Task<GetAccountListResponse> GetListOfAccounts(GetAccountListRequest query)
         {
             var searchResponse = await _elasticSearchWrapper.Search<QueryableAccount, GetAccountListRequest>(query).ConfigureAwait(false);
@@ -124,5 +140,7 @@ namespace HousingSearchApi.V1.Gateways
 
             return GetTransactionListResponse.Create(searchResponse.Total, transactions.ToResponse());
         }
+
+
     }
 }

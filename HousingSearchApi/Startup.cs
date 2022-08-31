@@ -183,6 +183,7 @@ namespace HousingSearchApi
             services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();
             services.AddScoped<IGetAssetListSetsUseCase, GetAssetListSetsUseCase>();
             services.AddScoped<IGetTransactionListUseCase, GetTransactionListUseCase>();
+            services.AddScoped<IGetStaffListUseCase, GetStaffListUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
