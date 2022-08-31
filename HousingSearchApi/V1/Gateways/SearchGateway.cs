@@ -97,7 +97,7 @@ namespace HousingSearchApi.V1.Gateways
             var searchResponse = await _elasticSearchWrapper.Search<QueryableStaff, GetStaffListRequest>(query).ConfigureAwait(false);
             var staffListResponse = new GetStaffListResponse();
 
-            staffListResponse.Staffs.AddRange(searchResponse.Documents.Select(queryableStaff =>
+            staffListResponse.Staff.AddRange(searchResponse.Documents.Select(queryableStaff =>
                queryableStaff.Create())
            );
 

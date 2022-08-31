@@ -35,7 +35,7 @@ namespace HousingSearchApi.V1.Infrastructure
                 return Indices.Index(new List<IndexName> { "transactions" });
 
             if (type == typeof(QueryableStaff))
-                return Indices.Index(new List<IndexName> { "staffs" });
+                return Indices.Index(new List<IndexName> { "staff" });
 
             throw new NotImplementedException($"No index for type {typeof(T)}");
         }

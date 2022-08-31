@@ -12,7 +12,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 {
     public class StaffFixture : BaseFixture
     {
-        private const string INDEX = "staffs";
+        private const string INDEX = "staff";
 
         public static StaffStub[] Staffs =
         {
@@ -38,8 +38,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(INDEX, staffSettingsDoc)
                     .ConfigureAwait(true);
 
-                var staffs = CreateStaffData();
-                var awaitable = ElasticSearchClient.IndexManyAsync(staffs, INDEX).ConfigureAwait(true);
+                var staff = CreateStaffData();
+                var awaitable = ElasticSearchClient.IndexManyAsync(staff, INDEX).ConfigureAwait(true);
 
                 while (!awaitable.GetAwaiter().IsCompleted)
                 {

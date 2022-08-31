@@ -13,7 +13,7 @@ namespace HousingSearchApi.V1.Controllers
 {
     [ApiVersion("1")]
     [Produces("application/json")]
-    [Route("api/v1/search/staffs")]
+    [Route("api/v1/search/staff")]
     [ApiController]
     public class GetStaffListController : BaseController
     {

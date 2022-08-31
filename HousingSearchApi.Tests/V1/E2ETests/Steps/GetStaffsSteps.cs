@@ -18,22 +18,22 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         }
         public async Task WhenRequestDoesNotContainSearchString()
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/staffs", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/staff", UriKind.Relative)).ConfigureAwait(false);
         }
 
         public async Task WhenRequestContainsSearchString()
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/staffs?searchText=abc", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/staff?searchText=abc", UriKind.Relative)).ConfigureAwait(false);
         }
 
         public async Task WhenSearchingByEmailAddress(string emailaddress)
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/staffs?searchText=%20{emailaddress}", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/staff?searchText=%20{emailaddress}", UriKind.Relative)).ConfigureAwait(false);
         }
 
         public async Task WhenAPageSizeIsProvided(int pageSize)
         {
-            var route = new Uri($"api/v1/search/staffs?searchText={StaffFixture.Staffs.Last().EmailAddress}&pageSize={pageSize}",
+            var route = new Uri($"api/v1/search/staff?searchText={StaffFixture.Staffs.Last().EmailAddress}&pageSize={pageSize}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -44,7 +44,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetStaffListResponse>>(resultBody, _jsonOptions);
 
-            result.Results.Staffs.Count.Should().Be(pageSize);
+            result.Results.Staff.Count.Should().Be(pageSize);
         }
 
         public async Task ThenTheFirstResultShouldBeAnExactMatchOfEmailAddress(string emailAddress)
@@ -52,7 +52,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetStaffListResponse>>(resultBody, _jsonOptions);
 
-            result.Results.Staffs.First().EmailAddress.Should().Be(emailAddress);
+            result.Results.Staff.First().EmailAddress.Should().Be(emailAddress);
         }
 
 

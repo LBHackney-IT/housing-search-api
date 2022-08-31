@@ -7,11 +7,11 @@ namespace HousingSearchApi.V1.Boundary.Responses
     {
         private long _total;
 
-        public List<Staff> Staffs { get; set; }
+        public List<Staff> Staff { get; set; }
 
         public GetStaffListResponse()
         {
-            Staffs = new List<Staff>();
+            Staff = new List<Staff>();
         }
 
         public void SetTotal(long total)
