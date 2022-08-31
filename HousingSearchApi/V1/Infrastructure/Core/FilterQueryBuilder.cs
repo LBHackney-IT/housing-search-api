@@ -97,7 +97,7 @@ namespace HousingSearchApi.V1.Infrastructure.Core
 
         public QueryContainer Build(QueryContainerDescriptor<T> containerDescriptor)
         {
-            var queryContainer = containerDescriptor.Bool(x => x.Must(_wildstarQuery, _exactQuery));
+            var queryContainer = containerDescriptor.Bool(x => x.Should(_wildstarQuery, _exactQuery));
 
             if (_multipleFilterQueries != null)
             {
