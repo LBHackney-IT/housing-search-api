@@ -10,6 +10,8 @@ using HousingSearchApi.V1.Interfaces.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
+using HousingSearchApi.V1.Interfaces;
+using Hackney.Shared.HousingSearch.Gateways.Models.Staffs;
 
 namespace HousingSearchApi.V1.Infrastructure.Factories
 {
@@ -36,7 +38,8 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 
             if (typeof(T) == typeof(QueryableAsset))
             {
-                return (IQueryGenerator<T>) new AssetQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableAsset>>());
+                return (IQueryGenerator<T>) new AssetQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableAsset>>(),
+                    _serviceProvider.GetService<IFilterQueryBuilder<QueryableAsset>>());
             }
             if (typeof(T) == typeof(QueryableAccount))
             {
@@ -46,6 +49,10 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             if (typeof(T) == typeof(QueryableTransaction))
             {
                 return (IQueryGenerator<T>) new TransactionsQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableTransaction>>());
+            }
+            if (typeof(T) == typeof(QueryableStaff))
+            {
+                return (IQueryGenerator<T>) new StaffQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableStaff>>());
             }
 
             throw new System.NotImplementedException($"Query type {typeof(T)} is not implemented");

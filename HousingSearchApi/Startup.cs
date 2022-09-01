@@ -42,6 +42,7 @@ using HousingSearchApi.V1.Infrastructure.Filtering;
 using HousingSearchApi.V1.Infrastructure.Sorting;
 using HousingSearchApi.V1.Interfaces.Factories;
 using HousingSearchApi.V1.Interfaces.Filtering;
+using HousingSearchApi.V1.Infrastructure.Core;
 
 namespace HousingSearchApi
 {
@@ -156,6 +157,7 @@ namespace HousingSearchApi
             services.AddElasticSearchHealthCheck();
 
             services.AddScoped(typeof(IQueryBuilder<>), typeof(QueryBuilder<>));
+            services.AddScoped(typeof(IFilterQueryBuilder<>), typeof(FilterQueryBuilder<>));
             services.AddScoped<IWildCardAppenderAndPrepender, WildCardAppenderAndPrepender>();
             services.AddScoped<IQueryFactory, QueryFactory>();
             services.AddScoped<IIndexSelector, IndexSelector>();
@@ -181,6 +183,7 @@ namespace HousingSearchApi
             services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();
             services.AddScoped<IGetAssetListSetsUseCase, GetAssetListSetsUseCase>();
             services.AddScoped<IGetTransactionListUseCase, GetTransactionListUseCase>();
+            services.AddScoped<IGetStaffListUseCase, GetStaffListUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

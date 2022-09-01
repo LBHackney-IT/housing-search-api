@@ -88,10 +88,39 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceReturnsExactMatchFirstIfExists()
         {
-            var assetTypes = AssetFixture.Addresses.TakeLast(2);
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenAnExactMatchExists("5 Buckland Court St Johns Estate"))
                 .Then(t => _steps.ThenThatAddressShouldBeTheFirstResult("5 Buckland Court St Johns Estate"))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceFiltersGivenAssetStatusWithoutSearchText()
+        {
+            var asset = "Reserved";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenAnAssetStatusIsProvided(asset))
+                .Then(t => _steps.ThenOnlyAllAssetsResponseTheseAssetStatusesShouldBeIncluded(asset))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceFiltersGivenNumberOfBedSpacesWithoutSearchText()
+        {
+            var bedspaces = 2;
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenNoOfBedSpacesIsProvided(bedspaces))
+                .Then(t => _steps.ThenNumberOfBedSpacesShouldBeInResult(bedspaces))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceFiltersGivenFloorNoWithoutSearchText()
+        {
+            var floorNo = "1";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenFloorNoIsProvided(floorNo))
+                .Then(t => _steps.ThenFloorNoShouldBeInResult(floorNo))
                 .BDDfy();
         }
     }

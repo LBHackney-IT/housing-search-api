@@ -28,6 +28,9 @@
     <None Remove="V1\UseCase\**" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="V1\Interfaces\Filtering\AssetFilterTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="..\HousingSearchApi\data\elasticsearch\personIndex.json" Link="V1\Helper\Indices\personIndex.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -44,8 +47,8 @@
     </PackageReference>
     <PackageReference Include="Docker.DotNet" Version="3.125.4" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
-    <PackageReference Include="Hackney.Core.ElasticSearch" Version="1.45.0" />
-    <PackageReference Include="Hackney.Shared.HousingSearch" Version="0.22.0" />
+    <PackageReference Include="Hackney.Core.ElasticSearch" Version="1.72.0" />
+    <PackageReference Include="Hackney.Shared.HousingSearch" Version="0.40.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
