@@ -22,7 +22,7 @@
           }
         }
       },
-      "emailAddress": {
+      "email": {
         "type": "text",
         "fields": {
           "keyword": {

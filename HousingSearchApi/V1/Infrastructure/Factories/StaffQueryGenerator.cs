@@ -27,9 +27,9 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 
             _queryBuilder
                 .WithWildstarQuery(staffListRequest.SearchText,
-                    new List<string> { "emailAddress" })
+                    new List<string> { "email" })
                 .WithExactQuery(staffListRequest.SearchText,
-                    new List<string> { "emailAddress" }, new ExactSearchQuerystringProcessor());
+                    new List<string> { "email" }, new ExactSearchQuerystringProcessor());
 
             return _queryBuilder.Build(q);
         }
