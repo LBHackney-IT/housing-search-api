@@ -29,7 +29,7 @@ namespace HousingSearchApi.Tests.V1.Factories
 
         [Fact]
         public void GenratesCorrectQueryWhenUsingSimpleQuery()
-        { 
+        {
             (Nest.QueryContainerDescriptor<QueryableAsset>, string, List<string>) paramsCalled = (null, "", null);
 
             // Arrange
@@ -50,7 +50,6 @@ namespace HousingSearchApi.Tests.V1.Factories
             // Assert
             Assert.Equal(request.SearchText, paramsCalled.Item2);
             _queryBuilderMock.Verify(x => x.BuildSimpleQuery(It.IsAny<Nest.QueryContainerDescriptor<QueryableAsset>>(), It.IsAny<string>(), It.IsAny<List<string>>()), Times.Once);
-            
         }
     }
 }
