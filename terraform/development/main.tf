@@ -41,7 +41,7 @@ module "elasticsearch_db_development" {
   domain_name      = "housing-search-api-es"
   subnet_ids       = [tolist(data.aws_subnet_ids.development.ids)[0]]
   project_name     = "housing-search-api"
-  es_version       = "7.8"
+  es_version       = "8.4"
   encrypt_at_rest  = "true"
   instance_type    = "t3.small.elasticsearch"
   instance_count   = "2"
