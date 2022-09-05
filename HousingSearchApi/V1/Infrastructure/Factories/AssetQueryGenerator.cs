@@ -28,13 +28,17 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             if (assetListRequest == null)
                 throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
 
+            if (assetListRequest.IsSimpleQuery)
+            {
+                return _queryBuilder.BuildSimpleQuery(q, assetListRequest.SearchText, new List<string> { "assetAddress.addressLine1.textAddress", "assetAddress.postCode" });
+            }
+
             if (request.GetType() == typeof(GetAssetListRequest))
             {
                 //This is so assets search endpoint works as before
                 return _queryBuilder
                     .WithWildstarQuery(assetListRequest.SearchText,
-                        new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" },
-                         assetListRequest.MatchType)
+                        new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
                     .WithExactQuery(assetListRequest.SearchText,
                         new List<string>
                         {
@@ -65,8 +69,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "assetManagement.isTemporaryAccomodation" })
                         .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
                         .WithWildstarQuery(assetListAllRequest.SearchText,
-                            new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" },
-                         assetListRequest.MatchType)
+                            new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
                         .WithExactQuery(assetListAllRequest.SearchText,
                             new List<string>
                             {
