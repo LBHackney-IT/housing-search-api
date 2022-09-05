@@ -7,7 +7,7 @@ namespace HousingSearchApi.Tests.V1.Interfaces
 {
     public class SortFactoryTests
     {
-        private SortFactory _sut;
+        private readonly SortFactory _sut;
 
         public SortFactoryTests()
         {

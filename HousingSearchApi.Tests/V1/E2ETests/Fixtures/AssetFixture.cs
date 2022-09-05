@@ -17,12 +17,18 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         private const string INDEX = "assets";
         public static AddressStub[] Addresses =
         {
-            new AddressStub{ FirstLine = "59 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FirstLine = "54 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234655"},
-            new AddressStub{ FirstLine = "65 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234605"},
-            new AddressStub{ FirstLine = "45 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FirstLine = "Gge 45 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FirstLine = "Gge 52 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
+            new AddressStub{ FirstLine = "59 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234650",
+                AssetStatus = "Reserved", NoOfBedSpaces = 2, NoOfCots = 1, HasStairs = true, PrivateBathroom = true, PrivateKitchen = true, StepFree = true },
+            new AddressStub{ FirstLine = "54 Buckland Court St Johns Estate", AssetType = "Estate", PostCode = "N1 5EP", UPRN = "10008234655",
+                AssetStatus = "Archived", NoOfBedSpaces = 3, NoOfCots = 0, HasStairs = false, PrivateBathroom = true, PrivateKitchen = true, StepFree = false },
+            new AddressStub{ FirstLine = "65 Buckland Court St Johns Estate", AssetType = "TerracedBlock", PostCode = "N1 5EP", UPRN = "10008234605",
+                AssetStatus = "In council use", NoOfBedSpaces = 4, NoOfCots = 2, HasStairs = true, PrivateBathroom = false, PrivateKitchen = false, StepFree = true },
+            new AddressStub{ FirstLine = "45 Buckland Court St Johns Estate", AssetType = "HighRiseBlock", PostCode = "N1 5EP", UPRN = "10008234650",
+                AssetStatus = "Occupied", NoOfBedSpaces = 5, NoOfCots = 1, HasStairs = false, PrivateBathroom = true, PrivateKitchen = false, StepFree = true },
+            new AddressStub{ FirstLine = "Gge 45 Buckland Court St Johns Estate", AssetType = "Block", PostCode = "N1 5EP", UPRN = "10008234650",
+                AssetStatus = "Vacant", NoOfBedSpaces = 1, NoOfCots = 0, HasStairs = true, PrivateBathroom = false, PrivateKitchen = true, StepFree = false },
+            new AddressStub{ FirstLine = "Gge 52 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234650",
+                AssetStatus = "Void", NoOfBedSpaces = 2, NoOfCots = 0, HasStairs = false, PrivateBathroom = false, PrivateKitchen = true, StepFree = true },
             new AddressStub{ FirstLine = "Gge 51 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
             new AddressStub{ FirstLine = "5 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 6TY", UPRN = "10008235183"},
             new AddressStub{ FirstLine = "Gge 15 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
@@ -70,7 +76,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 asset.AssetType = value.AssetType;
                 asset.AssetAddress.PostCode = value.PostCode;
                 asset.AssetAddress.Uprn = value.UPRN;
-
+                asset.AssetStatus = value.AssetStatus;
+                asset.AssetCharacteristics.NumberOfBedSpaces = value.NoOfBedSpaces;
+                asset.AssetCharacteristics.NumberOfCots = value.NoOfCots;
+                asset.AssetCharacteristics.HasStairs = value.HasStairs;
+                asset.AssetCharacteristics.HasPrivateBathroom = value.PrivateBathroom;
+                asset.AssetCharacteristics.HasPrivateKitchen = value.PrivateKitchen;
+                asset.AssetCharacteristics.IsStepFree = value.StepFree;
                 listOfAssets.Add(asset);
             }
 
@@ -84,5 +96,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public string AssetType { get; set; }
         public string PostCode { get; set; }
         public string UPRN { get; set; }
+        public string AssetStatus { get; set; }
+        public int NoOfBedSpaces { get; set; }
+        public int NoOfCots { get; set; }
+        public bool HasStairs { get; set; }
+        public bool PrivateBathroom { get; set; }
+        public bool PrivateKitchen { get; set; }
+        public bool StepFree { get; set; }
     }
 }

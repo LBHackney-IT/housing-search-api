@@ -58,6 +58,30 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
+        public async Task WhenAnAssetStatusIsProvided(string assetStatus)
+        {
+            var route = new Uri($"api/v1/search/assets/all?assetStatus={assetStatus}&pageSize={1}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+
+        public async Task WhenNoOfBedSpacesIsProvided(int numberOfBedSpaces)
+        {
+            var route = new Uri($"api/v1/search/assets/all?numberOfBedSpaces={numberOfBedSpaces}&pageSize={1}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+
+        public async Task WhenFloorNoIsProvided(string floorNo)
+        {
+            var route = new Uri($"api/v1/search/assets/all?floorNo={floorNo}&pageSize={1}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+
         public async Task WhenAnExactMatchExists(string address)
         {
             var route = new Uri($"api/v1/search/assets?searchText={address}&pageSize={5}",
@@ -108,6 +132,32 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.First().AssetAddress.AddressLine1.Should().Be(address);
+        }
+
+        public async Task ThenOnlyAllAssetsResponseTheseAssetStatusesShouldBeIncluded(string allowedAssetStatus)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+
+            var assets = allowedAssetStatus.Split(",");
+
+            result.Results.Assets.All(x => x.AssetStatus == assets[0] || x.AssetStatus == assets[1]);
+
+        }
+
+        public async Task ThenNumberOfBedSpacesShouldBeInResult(int numberOfBedSpaces)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Assets.All(x => x.AssetCharacteristics.NumberOfBedSpaces == numberOfBedSpaces);
+        }
+        public async Task ThenFloorNoShouldBeInResult(string floorNo)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Assets.All(x => x.AssetLocation.FloorNo == floorNo);
         }
     }
 }

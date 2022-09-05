@@ -166,5 +166,20 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
                 }
             }
         }
+
+        public async Task ThenTheResultShouldNotContainHousingOfficers()
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<GetPersonListResponse>>(resultBody, _jsonOptions);
+
+            var allPersonTypes = new List<String>();
+
+            foreach (var personResult in result.Results.Persons)
+            {
+                allPersonTypes.AddRange(personResult.PersonTypes);
+            }
+
+            allPersonTypes.Should().NotContain(PersonType.HousingOfficer.ToString());
+        }
     }
 }

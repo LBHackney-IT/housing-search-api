@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Hackney.Shared.HousingSearch.Domain;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
 using TestStack.BDDfy;
@@ -92,6 +93,17 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Given(g => _personsFixture.GivenDifferentTypesOfTenureTypes("SomePersonName", "SomePersonLastName", new List<string> { "Tenant", "Leaseholder" }))
                 .When(w => _steps.WhenARequestContainsSearchByTenureTypes("SomePersonLastName", new List<string> { "Tenant" }))
                 .Then(t => _steps.ThenTheResultShouldContainOnlyTheSearchedTypes(new List<string> { "Tenant" }))
+                .BDDfy();
+        }
+
+        [Theory]
+        [InlineData("SomePersonName", "SomePersonLastName")]
+        public void ServiceDoesNotReturnHousingOfficers(string firstName, string lastName)
+        {
+            this.Given(g => _personsFixture.GivenAPersonIndexExists())
+                .Given(g => _personsFixture.GivenThereExistPersonsWithDifferentPersonTypes(firstName, lastName, new List<PersonType> { PersonType.HousingOfficer, PersonType.Tenant, PersonType.Leaseholder, PersonType.HousingOfficer }))
+                .When(w => _steps.WhenSearchingByFirstAndLastName(firstName, lastName))
+                .Then(t => _steps.ThenTheResultShouldNotContainHousingOfficers())
                 .BDDfy();
         }
     }
