@@ -28,7 +28,7 @@ namespace HousingSearchApi.Tests.V1.Factories
         }
 
         [Fact]
-        public void GenratesCorrectQueryWhenUsingSimpleQuery()
+        public void GeneratesCorrectQueryWhenUsingSimpleQuery()
         {
             (Nest.QueryContainerDescriptor<QueryableAsset>, string, List<string>) paramsCalled = (null, "", null);
 
