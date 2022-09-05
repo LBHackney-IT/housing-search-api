@@ -42,7 +42,7 @@ module "elasticsearch_db_production" {
   domain_name            = "housing-search-api-es"
   subnet_ids             = data.aws_subnet_ids.production.ids
   project_name           = "housing-search-api"
-  es_version             = "8.4"
+  es_version             = ""7.10
   encrypt_at_rest        = "true"
   instance_type          = "t3.medium.elasticsearch"
   instance_count         = "2"
