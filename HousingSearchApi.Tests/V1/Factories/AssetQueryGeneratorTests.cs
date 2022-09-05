@@ -39,7 +39,7 @@ namespace HousingSearchApi.Tests.V1.Factories
             var request = new GetAssetListRequest
             {
                 SearchText = "12 Pitcairn",
-                SimpleQuery = true
+                IsSimpleQuery = true
             };
 
             var qcd = new Nest.QueryContainerDescriptor<QueryableAsset>();
