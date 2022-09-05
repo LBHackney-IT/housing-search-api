@@ -61,7 +61,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
-
         public async Task WhenAnAssetStatusIsProvided(string assetStatus)
         {
             var route = new Uri($"api/v1/search/assets/all?assetStatus={assetStatus}&pageSize={1}",

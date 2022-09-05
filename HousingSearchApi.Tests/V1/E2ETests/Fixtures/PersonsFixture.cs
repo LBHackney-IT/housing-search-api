@@ -164,5 +164,26 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             ElasticSearchClient.IndexMany(listOfPersons, INDEX);
             ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
+
+        public void GivenThereExistPersonsWithDifferentPersonTypes(string firstName, string lastName, List<PersonType> personTypes)
+        {
+            var listOfPersons = new List<QueryablePerson>();
+
+            foreach (var personType in personTypes)
+            {
+                listOfPersons.Add(new QueryablePerson
+                {
+                    Firstname = firstName,
+                    Surname = lastName,
+                    PersonTypes = new List<string> { personType.ToString() }
+                });
+            }
+
+            var awaitable = ElasticSearchClient.IndexManyAsync(listOfPersons, INDEX).ConfigureAwait(true);
+
+            while (!awaitable.GetAwaiter().IsCompleted) { }
+
+            Thread.Sleep(5000);
+        }
     }
 }
