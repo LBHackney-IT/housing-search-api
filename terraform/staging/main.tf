@@ -50,6 +50,7 @@ module "elasticsearch_db_staging" {
   ebs_volume_size  = "10"
   region           = data.aws_region.current.name
   account_id       = data.aws_caller_identity.current.account_id
+  zone_awareness_enabled = true
 }
 
 resource "aws_ssm_parameter" "search_elasticsearch_domain" {
