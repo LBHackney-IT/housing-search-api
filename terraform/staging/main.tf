@@ -40,7 +40,7 @@ module "elasticsearch_db_staging" {
   environment_name = "staging"
   port             = 443
   domain_name      = "housing-search-api-es"
-  subnet_ids       = [tolist(data.aws_subnet_ids.staging.ids)[0]]
+  subnet_ids       = data.aws_subnet_ids.staging.ids
   project_name     = "housing-search-api"
   es_version       = "7.8"
   encrypt_at_rest  = "true"
