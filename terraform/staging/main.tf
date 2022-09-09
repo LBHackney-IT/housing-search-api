@@ -40,7 +40,7 @@ module "elasticsearch_db_staging" {
   environment_name = "staging"
   port             = 443
   domain_name      = "housing-search-api-es"
-  subnet_ids       = [tolist(data.aws_subnet_ids.staging.ids)[0]]
+  subnet_ids       = data.aws_subnet_ids.staging.ids
   project_name     = "housing-search-api"
   es_version       = "7.8"
   encrypt_at_rest  = "true"
@@ -50,6 +50,7 @@ module "elasticsearch_db_staging" {
   ebs_volume_size  = "10"
   region           = data.aws_region.current.name
   account_id       = data.aws_caller_identity.current.account_id
+  zone_awareness_enabled = true
 }
 
 resource "aws_ssm_parameter" "search_elasticsearch_domain" {

@@ -33,8 +33,8 @@ namespace HousingSearchApi.V1.Boundary.Requests
         [FromQuery(Name = "isDesc")]
         public bool IsDesc { get; set; }
 
-        [FromQuery(Name = "matchType")]
-        public Nest.TextQueryType MatchType { get; set; } = Nest.TextQueryType.MostFields;
+        [FromQuery(Name = "issimplequery")]
+        public bool IsSimpleQuery { get; set; }
 
     }
 }
