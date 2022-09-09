@@ -33,5 +33,8 @@ namespace HousingSearchApi.V1.Boundary.Requests
 
         [FromQuery(Name = "parentAssetId")]
         public string ParentAssetId { get; set; }
+
+        [FromQuery(Name = "isActive")]
+        public string IsActive { get; set; }
     }
 }
