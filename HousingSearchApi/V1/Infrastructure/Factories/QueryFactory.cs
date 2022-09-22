@@ -57,7 +57,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             }
             if (typeof(T) == typeof(QueryableProcess))
             {
-                return (IQueryGenerator<T>) new ProcessesQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableProcess>>()); 
+                return (IQueryGenerator<T>) new ProcessesQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableProcess>>());
             }
             throw new System.NotImplementedException($"Query type {typeof(T)} is not implemented");
         }

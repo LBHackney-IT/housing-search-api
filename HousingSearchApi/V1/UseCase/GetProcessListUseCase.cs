@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HousingSearchApi.V1.UseCase
 {
-    public class GetProcessListUseCase : IGetProcessListUseCase 
+    public class GetProcessListUseCase : IGetProcessListUseCase
     {
         private readonly ISearchGateway _searchGateway;
 
