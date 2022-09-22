@@ -12,6 +12,7 @@ using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.Que
 using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
 using HousingSearchApi.V1.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Staffs;
+using Hackney.Shared.HousingSearch.Gateways.Models.Processes;
 
 namespace HousingSearchApi.V1.Infrastructure.Factories
 {
@@ -54,7 +55,10 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             {
                 return (IQueryGenerator<T>) new StaffQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableStaff>>());
             }
-
+            if (typeof(T) == typeof(QueryableProcess))
+            {
+                return (IQueryGenerator<T>) new ProcessesQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableProcess>>()); 
+            }
             throw new System.NotImplementedException($"Query type {typeof(T)} is not implemented");
         }
     }

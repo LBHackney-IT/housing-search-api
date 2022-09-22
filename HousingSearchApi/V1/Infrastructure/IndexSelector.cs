@@ -10,6 +10,7 @@ using Nest;
 using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
 using Hackney.Shared.HousingSearch.Gateways.Models.Staffs;
+using Hackney.Shared.HousingSearch.Gateways.Models.Processes;
 
 namespace HousingSearchApi.V1.Infrastructure
 {
@@ -36,6 +37,9 @@ namespace HousingSearchApi.V1.Infrastructure
 
             if (type == typeof(QueryableStaff))
                 return Indices.Index(new List<IndexName> { "staff" });
+
+            if (type == typeof(QueryableProcess))
+                return Indices.Index(new List<IndexName> { "processes" });
 
             throw new NotImplementedException($"No index for type {typeof(T)}");
         }
