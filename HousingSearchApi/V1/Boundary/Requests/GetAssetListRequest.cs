@@ -9,8 +9,5 @@ namespace HousingSearchApi.V1.Boundary.Requests
 
         [FromQuery(Name = "numberOfBedrooms")]
         public string NumberOfBedrooms { get; set; }
-
-        [FromQuery(Name = "isActive")]
-        public string IsActive { get; set; }
     }
 }

@@ -36,8 +36,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             if (request.GetType() == typeof(GetAssetListRequest))
             {
                 //This is so assets search endpoint works as before
-                return _queryFilterBuilder
-                    .WithMultipleFilterQuery(assetListRequest.IsActive, new List<string> { "isActive" })
+                return _queryBuilder
                     .WithWildstarQuery(assetListRequest.SearchText,
                         new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
                     .WithExactQuery(assetListRequest.SearchText,
@@ -69,7 +68,6 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.StepFree, new List<string> { "assetCharacteristics.isStepFree" })
                         .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "assetManagement.isTemporaryAccomodation" })
                         .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
-                        .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
                         .WithWildstarQuery(assetListAllRequest.SearchText,
                             new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
                         .WithExactQuery(assetListAllRequest.SearchText,
@@ -101,7 +99,6 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.StepFree, new List<string> { "assetCharacteristics.isStepFree" })
                         .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "assetManagement.isTemporaryAccomodation" })
                         .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
-                        .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
                         .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
                         .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetManagement.propertyOccupiedStatus" })
                         .Build(q);
