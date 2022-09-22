@@ -28,10 +28,10 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             if (assetListRequest == null)
                 throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
 
-            if (assetListRequest.IsSimpleQuery)
-            {
-                return _queryBuilder.BuildSimpleQuery(q, assetListRequest.SearchText, new List<string> { "assetAddress.addressLine1.textAddress", "assetAddress.postCode" });
-            }
+            //if (assetListRequest.IsSimpleQuery)
+            //{
+            //    return _queryBuilder.BuildSimpleQuery(q, assetListRequest.SearchText, new List<string> { "assetAddress.addressLine1.textAddress", "assetAddress.postCode" });
+            //}
 
             if (request.GetType() == typeof(GetAssetListRequest))
             {
