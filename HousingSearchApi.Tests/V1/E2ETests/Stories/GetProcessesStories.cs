@@ -1,4 +1,5 @@
 using Hackney.Shared.HousingSearch.Domain.Process;
+using Hackney.Shared.Processes.Domain;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
 using System;

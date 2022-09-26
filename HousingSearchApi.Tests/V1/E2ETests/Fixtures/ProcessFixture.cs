@@ -2,6 +2,7 @@ using AutoFixture;
 using Elasticsearch.Net;
 using Hackney.Shared.HousingSearch.Domain.Process;
 using Hackney.Shared.HousingSearch.Gateways.Models.Processes;
+using Hackney.Shared.Processes.Domain;
 using Nest;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
+using RelatedEntity = Hackney.Shared.HousingSearch.Domain.Process.RelatedEntity;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 {
@@ -19,11 +21,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public static ProcessStub[] Processes =
         {
-            new ProcessStub{ Id = Guid.NewGuid(), TargetId = Guid.NewGuid(), TargetType = TargetType.tenure, ProcessName = ProcessName.soletojoint, State = "ProcessStarted", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
-            new ProcessStub{ Id = Guid.NewGuid(), TargetId = Guid.NewGuid(), TargetType = TargetType.person, ProcessName = ProcessName.changeofname, State = "ProcessUpdated", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
-            new ProcessStub{ Id = Guid.NewGuid(), TargetId = Guid.NewGuid(), TargetType = TargetType.asset, ProcessName = ProcessName.soletojoint, State = "ProcessClosed", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
-            new ProcessStub{ Id = Guid.NewGuid(), TargetId = Guid.NewGuid(), TargetType = TargetType.person, ProcessName = ProcessName.changeofname, State = "ProcessCancelled", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
-            new ProcessStub{ Id = Guid.NewGuid(), TargetId = Guid.NewGuid(), TargetType = TargetType.tenure, ProcessName = ProcessName.soletojoint, State = "ProcessCompleted", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
+            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = TargetType.tenure, ProcessName = ProcessName.soletojoint, State = "ProcessStarted", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
+            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = TargetType.person, ProcessName = ProcessName.changeofname, State = "ProcessUpdated", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
+            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = TargetType.asset, ProcessName = ProcessName.soletojoint, State = "ProcessClosed", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
+            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = TargetType.person, ProcessName = ProcessName.changeofname, State = "ProcessCancelled", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
+            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = TargetType.tenure, ProcessName = ProcessName.soletojoint, State = "ProcessCompleted", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
         };
 
 
@@ -84,8 +86,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
     public class ProcessStub
     {
-        public Guid Id { get; set; }
-        public Guid TargetId { get; set; }
+        public string Id { get; set; }
+        public string TargetId { get; set; }
 
         public TargetType TargetType { get; set; }
         public ProcessName ProcessName { get; set; }

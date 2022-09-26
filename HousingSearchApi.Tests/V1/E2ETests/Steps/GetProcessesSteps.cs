@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Hackney.Shared.HousingSearch.Domain.Process;
+using Hackney.Shared.Processes.Domain;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps.Base;
 using HousingSearchApi.V1.Boundary.Responses;
@@ -37,7 +38,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
 
-        public async Task WhenTargetTypeAndTargetIdAreProvided(TargetType targetType, Guid targetId)
+        public async Task WhenTargetTypeAndTargetIdAreProvided(TargetType targetType, string targetId)
         {
             var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture.Processes[2].TargetId}&targetId={targetId}&targetType={targetType}&pageSize={5}",
                 UriKind.Relative);
@@ -54,7 +55,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             result.Results.Processes.Count.Should().Be(pageSize);
         }
 
-        public async Task ThenOnlyTheseTargetTypeAndTargetIdShouldBeIncluded(TargetType allowedTargetType, Guid allowedTargetId)
+        public async Task ThenOnlyTheseTargetTypeAndTargetIdShouldBeIncluded(TargetType allowedTargetType, string allowedTargetId)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetProcessListResponse>>(resultBody, _jsonOptions);

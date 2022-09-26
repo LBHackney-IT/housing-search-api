@@ -1,4 +1,4 @@
-using Hackney.Shared.HousingSearch.Domain.Process;
+using Hackney.Shared.Processes.Domain;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
