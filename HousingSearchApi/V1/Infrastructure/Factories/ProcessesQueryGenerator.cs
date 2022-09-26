@@ -32,7 +32,6 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                     new List<string> { "targetId" }, new ExactSearchQuerystringProcessor())
                 .WithFilterQuery(processListRequest.TargetType.ToString(), new List<string> { "targetType" })
                 .WithFilterQuery(processListRequest.TargetId.ToString(), new List<string> { "targetId" });
-            //.Build(q);
 
             return _queryBuilder.Build(q);
         }

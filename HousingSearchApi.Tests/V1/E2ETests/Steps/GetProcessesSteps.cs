@@ -60,7 +60,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var result = JsonSerializer.Deserialize<APIResponse<GetProcessListResponse>>(resultBody, _jsonOptions);
 
 
-            result.Results.Processes.All(x => x.TargetType == allowedTargetType || x.TargetId == allowedTargetId);
+            result.Results.Processes.All(x => x.TargetType == allowedTargetType && x.TargetId == allowedTargetId);
         }
     }
 }
