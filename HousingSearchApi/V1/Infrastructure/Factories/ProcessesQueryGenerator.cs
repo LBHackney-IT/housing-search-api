@@ -27,9 +27,9 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 
             _queryBuilder
                 .WithWildstarQuery(processListRequest.SearchText,
-                    new List<string> { "targetId", "targetType" })
+                    new List<string> { "targetId", "targetType", "isOpen" })
                 .WithExactQuery(processListRequest.SearchText,
-                    new List<string> { "targetId", "targetType"}, new ExactSearchQuerystringProcessor())
+                    new List<string> { "targetId", "targetType", "isOpen" }, new ExactSearchQuerystringProcessor())
                 .WithFilterQuery(processListRequest.TargetType, new List<string> { "targetType" })
                 .WithFilterQuery(processListRequest.TargetId.ToString(), new List<string> { "targetId" });
 
