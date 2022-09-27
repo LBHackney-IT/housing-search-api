@@ -7,7 +7,7 @@ namespace HousingSearchApi.V1.Boundary.Requests
     public class GetProcessListRequest : HousingSearchRequest
     {
         [FromQuery(Name = "targetType")]
-        public TargetType TargetType { get; set; }
+        public string TargetType { get; set; }
 
         [FromQuery(Name = "targetId")]
         public Guid TargetId { get; set; }

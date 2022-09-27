@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
-using RelatedEntity = Hackney.Shared.HousingSearch.Domain.Process.RelatedEntity;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 {
@@ -21,11 +20,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public static ProcessStub[] Processes =
         {
-            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = TargetType.tenure, ProcessName = ProcessName.soletojoint, State = "ProcessStarted", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
-            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = TargetType.person, ProcessName = ProcessName.changeofname, State = "ProcessUpdated", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
-            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = TargetType.asset, ProcessName = ProcessName.soletojoint, State = "ProcessClosed", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
-            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = TargetType.person, ProcessName = ProcessName.changeofname, State = "ProcessCancelled", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
-            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = TargetType.tenure, ProcessName = ProcessName.soletojoint, State = "ProcessCompleted", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<RelatedEntity>().ToList()},
+            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = "tenure", ProcessName = ProcessName.soletojoint, State = "ProcessStarted", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<QueryableRelatedEntity>().ToList()},
+            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = "person", ProcessName = ProcessName.changeofname, State = "ProcessUpdated", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<QueryableRelatedEntity>().ToList()},
+            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = "asset", ProcessName = ProcessName.soletojoint, State = "ProcessClosed", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<QueryableRelatedEntity>().ToList()},
+            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = "person", ProcessName = ProcessName.changeofname, State = "ProcessCancelled", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<QueryableRelatedEntity>().ToList()},
+            new ProcessStub{ Id = Guid.NewGuid().ToString(), TargetId = Guid.NewGuid().ToString(), TargetType = "tenure", ProcessName = ProcessName.soletojoint, State = "ProcessCompleted", PatchAssignment = _fixture.Create<PatchAssignment>(), RelatedEntities = _fixture.CreateMany<QueryableRelatedEntity>().ToList()},
         };
 
 
@@ -89,10 +88,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public string Id { get; set; }
         public string TargetId { get; set; }
 
-        public TargetType TargetType { get; set; }
+        public string TargetType { get; set; }
         public ProcessName ProcessName { get; set; }
         public string State { get; set; }
         public PatchAssignment PatchAssignment { get; set; }
-        public List<RelatedEntity> RelatedEntities { get; set; }
+        public List<QueryableRelatedEntity> RelatedEntities { get; set; }
     }
 }

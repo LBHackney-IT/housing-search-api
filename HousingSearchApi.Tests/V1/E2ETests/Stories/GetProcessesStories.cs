@@ -50,7 +50,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceFiltersGivenTargetTypeAndTargetId()
         {
-            var targetType = TargetType.tenure;
+            var targetType = "tenure";
             var targetId = ProcessFixture.Processes[2].TargetId;
             this.Given(g => _processesFixture.GivenAnProcessIndexExists())
                 .When(w => _steps.WhenTargetTypeAndTargetIdAreProvided(targetType, targetId))
