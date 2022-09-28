@@ -23,7 +23,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenRequestContainsSearchString()
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/staff?searchText=abc", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/staff?searchText=%20abc", UriKind.Relative)).ConfigureAwait(false);
         }
 
         public async Task WhenSearchingByEmailAddress(string emailaddress)
