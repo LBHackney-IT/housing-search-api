@@ -57,5 +57,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenOnlyTheseTargetTypeAndTargetIdShouldBeIncluded(targetType, targetId))
                 .BDDfy();
         }
+
+        [Fact]
+        public void ServiceFailWhenOnlyTargetTypeIsGiven()
+        {
+            var targetType = "tenure";
+            this.Given(g => _processesFixture.GivenAnProcessIndexExists())
+                .When(w => _steps.WhenTargetTypeIsProvided(targetType))
+                .Then(t => _steps.ThenTheLastRequestShouldBeBadRequestResult(default))
+                .BDDfy();
+        }
     }
 }

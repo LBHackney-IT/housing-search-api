@@ -46,6 +46,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
 
+        public async Task WhenTargetTypeIsProvided(string targetType)
+        {
+            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture.Processes[2].TargetId}&targetType={targetType}&pageSize={5}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
 
         public async Task ThenTheReturningResultsShouldBeOfThatSize(int pageSize)
         {
@@ -63,5 +70,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             result.Results.Processes.All(x => x.TargetType == allowedTargetType && x.TargetId == allowedTargetId);
         }
+
     }
 }
