@@ -25,14 +25,16 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                 throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
             }
 
+            
             _queryBuilder
                 .WithWildstarQuery(processListRequest.SearchText,
-                    new List<string> { "targetId", "targetType", "isOpen" })
+                    new List<string> { "patchId" })
                 .WithExactQuery(processListRequest.SearchText,
-                    new List<string> { "targetId", "targetType", "isOpen" }, new ExactSearchQuerystringProcessor())
+                    new List<string> { "patchId" }, new ExactSearchQuerystringProcessor())
                 .WithFilterQuery(processListRequest.TargetType, new List<string> { "targetType" })
-                .WithFilterQuery(processListRequest.TargetId.ToString(), new List<string> { "targetId" });
-
+                .WithFilterQuery(processListRequest.TargetId.ToString(), new List<string> { "targetId" })
+                .WithFilterQuery(processListRequest.ProcessName?.ToString(), new List<string> { "processName" })
+                .WithFilterQuery(processListRequest.IsOpen.ToString(), new List<string> { "isOpen"});
             return _queryBuilder.Build(q);
         }
     }

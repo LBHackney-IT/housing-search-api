@@ -59,6 +59,27 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         }
 
         [Fact]
+        public void ServiceFiltersGivenProcessName()
+        {
+            var processName = "soletojoint";
+            this.Given(g => _processesFixture.GivenAnProcessIndexExists())
+                .When(w => _steps.WhenProcessNameIsProvided(processName))
+                .Then(t => _steps.ThenOnlyTheProcessNameShouldBeIncluded(processName))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceFiltersGivenIsOpen()
+        {
+            bool isOpen = true;
+            this.Given(g => _processesFixture.GivenAnProcessIndexExists())
+                .When(w => _steps.WhenProcessStatusIsProvided(isOpen))
+                .Then(t => _steps.ThenOnlyTheProcessStatusShouldBeIncluded(isOpen))
+                .BDDfy();
+        }
+
+
+        [Fact]
         public void ServiceFailWhenOnlyTargetTypeIsGiven()
         {
             var targetType = "tenure";
