@@ -1,5 +1,4 @@
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
-using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using Hackney.Shared.HousingSearch.Gateways.Models.Transactions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Interfaces.Sorting;

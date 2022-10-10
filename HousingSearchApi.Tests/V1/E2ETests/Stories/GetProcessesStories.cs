@@ -1,8 +1,5 @@
-using Hackney.Shared.HousingSearch.Domain.Process;
-using Hackney.Shared.Processes.Domain;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
-using System;
 using TestStack.BDDfy;
 using Xunit;
 
@@ -68,10 +65,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .BDDfy();
         }
 
-        [Fact]
-        public void ServiceFiltersGivenIsOpen()
+        [Theory]
+        [InlineData(true)]
+        // [InlineData(false)]
+        public void ServiceFiltersByOpenStatus(bool isOpen)
         {
-            bool isOpen = true;
             this.Given(g => _processesFixture.GivenAnProcessIndexExists())
                 .When(w => _steps.WhenProcessStatusIsProvided(isOpen))
                 .Then(t => _steps.ThenOnlyTheProcessStatusShouldBeIncluded(isOpen))

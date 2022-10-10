@@ -1,5 +1,5 @@
 using Hackney.Core.Logging;
-using Hackney.Shared.HousingSearch.Domain.Process;
+using Hackney.Shared.HousingSearch.Factories;
 using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using Hackney.Shared.HousingSearch.Gateways.Models.Processes;
@@ -12,7 +12,6 @@ using HousingSearchApi.V1.Factories;
 using HousingSearchApi.V1.Gateways.Interfaces;
 using HousingSearchApi.V1.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
@@ -115,8 +114,7 @@ namespace HousingSearchApi.V1.Gateways
             var searchResponse = await _elasticSearchWrapper.Search<QueryableProcess, GetProcessListRequest>(query).ConfigureAwait(false);
             var processListResponse = new GetProcessListResponse();
 
-            processListResponse.Processes.AddRange(searchResponse.Documents.Select(queryableProcess =>
-                queryableProcess.Create())
+            processListResponse.Processes.AddRange(searchResponse.Documents.Select(x => x.ToDomain())
             );
 
             processListResponse.SetTotal(searchResponse.Total);

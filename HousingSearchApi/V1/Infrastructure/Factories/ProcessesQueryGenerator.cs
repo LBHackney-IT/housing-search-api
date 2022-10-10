@@ -1,5 +1,6 @@
 using Hackney.Core.ElasticSearch.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Processes;
+using Hackney.Shared.Processes.Domain.Constants;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Interfaces.Factories;
 using Nest;
@@ -17,6 +18,12 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             _queryBuilder = queryBuilder;
         }
 
+        private static string ConstructIsOpenFilter(GetProcessListRequest processListRequest)
+        {
+            var closedStates = $"{SharedStates.ProcessClosed}"; // | {SharedStates.ProcessCompleted} | {SharedStates.ProcessCancelled}";
+            return processListRequest.IsOpen.Value ? $"NOT {closedStates}" : closedStates;
+        }
+
         public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryableProcess> q)
         {
 
@@ -25,7 +32,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                 throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
             }
 
-            
+
             _queryBuilder
                 .WithWildstarQuery(processListRequest.SearchText,
                     new List<string> { "patchId" })
@@ -33,9 +40,15 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                     new List<string> { "patchId" }, new ExactSearchQuerystringProcessor())
                 .WithFilterQuery(processListRequest.TargetType, new List<string> { "targetType" })
                 .WithFilterQuery(processListRequest.TargetId.ToString(), new List<string> { "targetId" })
-                .WithFilterQuery(processListRequest.ProcessName?.ToString(), new List<string> { "processName" })
-                .WithFilterQuery(processListRequest.IsOpen.ToString(), new List<string> { "isOpen"});
+                .WithFilterQuery(processListRequest.ProcessName, new List<string> { "processName" });
+            
+            // if (processListRequest.IsOpen.HasValue)
+                // _queryBuilder.WithFilterQuery(ConstructIsOpenFilter(processListRequest), new List<string> { "state" });
+
             return _queryBuilder.Build(q);
         }
     }
 }
+
+
+

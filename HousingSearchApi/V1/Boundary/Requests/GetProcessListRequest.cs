@@ -12,7 +12,7 @@ namespace HousingSearchApi.V1.Boundary.Requests
         public Guid? TargetId { get; set; }
 
         [FromQuery(Name = "isOpen")]
-        public bool? IsOpen { get; set; }    
+        public bool? IsOpen { get; set; }
 
         [FromQuery(Name = "processName")]
         public string ProcessName { get; set; }
