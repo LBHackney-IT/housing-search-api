@@ -17,6 +17,15 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             _queryBuilder = queryBuilder;
         }
 
+        private static string[] GetProcessStatus(bool? isOpen)
+        {
+            if (isOpen.Value)
+            {
+
+            }
+            return (bool) isOpen ? new string[] { "ProcessStarted", "ProcessUpdated" } : new string[] { "ProcessCancelled", "ProcessCompleted" };
+        }
+
         public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryableProcess> q)
         {
 
@@ -34,7 +43,8 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                 .WithFilterQuery(processListRequest.TargetType, new List<string> { "targetType" })
                 .WithFilterQuery(processListRequest.TargetId.ToString(), new List<string> { "targetId" })
                 .WithFilterQuery(processListRequest.ProcessName?.ToString(), new List<string> { "processName" })
-                .WithFilterQuery(processListRequest.IsOpen.ToString(), new List<string> { "isOpen"});
+                .WithFilterQuery($"NOT {SharedStates.} ", new List<string> { "state"})
+                .WithFilterQuery(GetProcessStatus(processListRequest.IsOpen)[1], new List<string> { "isOpen"});
             return _queryBuilder.Build(q);
         }
     }
