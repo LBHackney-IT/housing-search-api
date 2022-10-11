@@ -67,7 +67,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
 
         [Theory]
         [InlineData(true)]
-        // [InlineData(false)]
+        [InlineData(false)]
         public void ServiceFiltersByOpenStatus(bool isOpen)
         {
             this.Given(g => _processesFixture.GivenAnProcessIndexExists())
@@ -84,6 +84,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             this.Given(g => _processesFixture.GivenAnProcessIndexExists())
                 .When(w => _steps.WhenTargetTypeIsProvided(targetType))
                 .Then(t => _steps.ThenTheLastRequestShouldBeBadRequestResult(default))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceReturnsCorrectPageSize()
+        {
+            this.Given(g => _processesFixture.GivenAnProcessIndexExists())
+                .When(w => _steps.WhenAPageSizeIsProvided(3))
+                .Then(t => _steps.ThenTheReturningResultsShouldBeOfThatSize(3))
                 .BDDfy();
         }
     }

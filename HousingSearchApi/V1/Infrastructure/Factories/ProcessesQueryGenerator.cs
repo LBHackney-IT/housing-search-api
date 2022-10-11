@@ -20,8 +20,8 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 
         private static string ConstructIsOpenFilter(GetProcessListRequest processListRequest)
         {
-            var closedStates = $"{SharedStates.ProcessClosed}"; // | {SharedStates.ProcessCompleted} | {SharedStates.ProcessCancelled}";
-            return processListRequest.IsOpen.Value ? $"NOT {closedStates}" : closedStates;
+            var closedStates = $"{SharedStates.ProcessClosed} | {SharedStates.ProcessCompleted} | {SharedStates.ProcessCancelled}";
+            return processListRequest.IsOpen.Value ? $"NOT ({closedStates})" : closedStates;
         }
 
         public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryableProcess> q)
@@ -35,15 +35,15 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 
             _queryBuilder
                 .WithWildstarQuery(processListRequest.SearchText,
-                    new List<string> { "patchId" })
+                   new List<string> { "patchAssignment.patchId" })
                 .WithExactQuery(processListRequest.SearchText,
-                    new List<string> { "patchId" }, new ExactSearchQuerystringProcessor())
+                    new List<string> { "patchAssignment.patchId" }, new ExactSearchQuerystringProcessor())
                 .WithFilterQuery(processListRequest.TargetType, new List<string> { "targetType" })
                 .WithFilterQuery(processListRequest.TargetId.ToString(), new List<string> { "targetId" })
                 .WithFilterQuery(processListRequest.ProcessName, new List<string> { "processName" });
-            
-            // if (processListRequest.IsOpen.HasValue)
-                // _queryBuilder.WithFilterQuery(ConstructIsOpenFilter(processListRequest), new List<string> { "state" });
+
+            if (processListRequest.IsOpen.HasValue)
+                _queryBuilder.WithFilterQuery(ConstructIsOpenFilter(processListRequest), new List<string> { "state" });
 
             return _queryBuilder.Build(q);
         }

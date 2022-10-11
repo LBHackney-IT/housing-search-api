@@ -21,14 +21,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public const string INDEX = "processes";
         private static readonly Fixture _fixture = new Fixture();
 
-        private static QueryablePatchAssignment _patchAssignment = _fixture.Create<QueryablePatchAssignment>();
-        public static QueryableProcess[] Processes =
+        private static PatchAssignment _patchAssignment = _fixture.Create<PatchAssignment>();
+
+        public static Process[] Processes =
         {
-            QueryableProcess.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<QueryableRelatedEntity>().ToList(), ProcessName.soletojoint, _patchAssignment , SharedStates.DocumentsAppointmentRescheduled),
-            QueryableProcess.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<QueryableRelatedEntity>().ToList(), ProcessName.changeofname, _patchAssignment, SharedStates.DocumentChecksPassed),
-            QueryableProcess.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "asset", _fixture.CreateMany<QueryableRelatedEntity>().ToList(), ProcessName.soletojoint, _patchAssignment,  SharedStates.ProcessCancelled),
-            QueryableProcess.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<QueryableRelatedEntity>().ToList(), ProcessName.changeofname, _patchAssignment, SharedStates.ProcessClosed),
-            QueryableProcess.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<QueryableRelatedEntity>().ToList(), ProcessName.soletojoint, _patchAssignment, SharedStates.ProcessCompleted),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, _patchAssignment , SharedStates.DocumentsAppointmentRescheduled),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.changeofname, _patchAssignment, SharedStates.DocumentChecksPassed),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "asset", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, _patchAssignment,  SharedStates.ProcessCancelled),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.changeofname, _patchAssignment, SharedStates.ProcessClosed),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, _patchAssignment, SharedStates.ProcessCompleted),
         };
 
 
@@ -47,7 +48,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(INDEX, processSettingsDoc)
                                                     .ConfigureAwait(true);
 
-                var awaitable = ElasticSearchClient.IndexManyAsync(Processes, INDEX).ConfigureAwait(true);
+                var processes = Processes.Select(x => x.ToDatabase());
+                var awaitable = ElasticSearchClient.IndexManyAsync(processes, INDEX).ConfigureAwait(true);
 
                 while (!awaitable.GetAwaiter().IsCompleted)
                 {

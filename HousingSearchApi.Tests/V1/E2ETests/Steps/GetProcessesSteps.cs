@@ -1,9 +1,11 @@
 using FluentAssertions;
+using Hackney.Shared.Processes.Domain.Constants;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps.Base;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
@@ -24,13 +26,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenRequestContainsSearchString()
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/processes?searchText=%20abc", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?searchText={ProcessFixture.Processes[0].PatchAssignment.PatchId}", UriKind.Relative)).ConfigureAwait(false);
         }
 
 
         public async Task WhenAPageSizeIsProvided(int pageSize)
         {
-            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture.Processes[0].PatchAssignment.PatchId}&&targetId={ProcessFixture.Processes[0].TargetId}&targetType={ProcessFixture.Processes[0].TargetType}&pageSize={pageSize}",
+            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture.Processes[0].PatchAssignment.PatchId}&pageSize={pageSize}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -77,8 +79,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             result.Results.Processes.Count.Should().Be(pageSize);
         }
 
-
-
         public async Task ThenOnlyTheseTargetTypeAndTargetIdShouldBeIncluded(string allowedTargetType, string allowedTargetId)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -97,18 +97,18 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             result.Results.Processes.All(x => x.ProcessName.ToString() == allowedProcessName);
         }
 
-        private string[] GetProcessStatus(bool isOpen)
-        {
-            return isOpen ? new string[] { "ProcessStarted", "ProcessUpdated" } : new string[] { "ProcessCancelled", "ProcessCompleted" };
-        }
-
         public async Task ThenOnlyTheProcessStatusShouldBeIncluded(bool isOpen)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetProcessListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Processes.Should().NotBeEmpty();
-            result.Results.Processes.All(x => GetProcessStatus(isOpen).Contains(x.State));
+
+            var closedStates = new List<string>() { SharedStates.ProcessCancelled, SharedStates.ProcessClosed, SharedStates.ProcessCompleted };
+
+            var validateClosedStates = result.Results.Processes.All(x => x.State == closedStates.FirstOrDefault());
+
+            var validateProcessState = isOpen ? validateClosedStates : !validateClosedStates;
         }
 
     }
