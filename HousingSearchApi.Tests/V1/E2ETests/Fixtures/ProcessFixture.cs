@@ -21,7 +21,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public const string INDEX = "processes";
         private static readonly Fixture _fixture = new Fixture();
 
-        private static PatchAssignment _patchAssignment = _fixture.Create<PatchAssignment>();
+        public static PatchAssignment _patchAssignment = _fixture.Create<PatchAssignment>();
 
         public static Process[] Processes =
         {

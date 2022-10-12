@@ -26,13 +26,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenRequestContainsSearchString()
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?searchText={ProcessFixture.Processes[0].PatchAssignment.PatchId}", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?searchText={ProcessFixture._patchAssignment.PatchId}&targetId={ProcessFixture.Processes[0].TargetId}", UriKind.Relative)).ConfigureAwait(false);
         }
 
 
         public async Task WhenAPageSizeIsProvided(int pageSize)
         {
-            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture.Processes[0].PatchAssignment.PatchId}&pageSize={pageSize}",
+            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture._patchAssignment.PatchId}&pageSize={pageSize}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -40,7 +40,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenTargetTypeAndTargetIdAreProvided(string targetType, string targetId)
         {
-            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture.Processes[0].PatchAssignment.PatchId}&targetId={targetId}&targetType={targetType}&pageSize={5}",
+            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture._patchAssignment.PatchId}&targetId={targetId}&targetType={targetType}&pageSize={5}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -48,7 +48,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenProcessNameIsProvided(string processName)
         {
-            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture.Processes[0].PatchAssignment.PatchId}&processName={processName}&pageSize={5}",
+            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture._patchAssignment.PatchId}&processName={processName}&pageSize={5}",
                             UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -56,7 +56,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenProcessStatusIsProvided(bool isOpen)
         {
-            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture.Processes[0].PatchAssignment.PatchId}&isOpen={isOpen}&pageSize={5}",
+            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture._patchAssignment.PatchId}&isOpen={isOpen}&pageSize={5}",
                             UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -65,7 +65,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenTargetTypeIsProvided(string targetType)
         {
-            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture.Processes[0].PatchAssignment.PatchId}&targetType={targetType}&pageSize={5}",
+            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture._patchAssignment.PatchId}&targetType={targetType}&pageSize={5}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);

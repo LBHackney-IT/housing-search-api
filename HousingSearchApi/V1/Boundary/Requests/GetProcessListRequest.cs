@@ -17,8 +17,5 @@ namespace HousingSearchApi.V1.Boundary.Requests
         [FromQuery(Name = "processName")]
         public string ProcessName { get; set; }
 
-        [FromQuery(Name = "patchId")]
-        public string PatchId { get; set; }
-
     }
 }
