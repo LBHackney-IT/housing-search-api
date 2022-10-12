@@ -25,11 +25,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public static Process[] Processes =
         {
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, _patchAssignment , SharedStates.DocumentsAppointmentRescheduled),
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.changeofname, _patchAssignment, SharedStates.DocumentChecksPassed),
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "asset", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, _patchAssignment,  SharedStates.ProcessCancelled),
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.changeofname, _patchAssignment, SharedStates.ProcessClosed),
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, _patchAssignment, SharedStates.ProcessCompleted),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, PatchAssignment , SharedStates.DocumentsAppointmentRescheduled),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.changeofname, PatchAssignment, SharedStates.DocumentChecksPassed),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "asset", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, PatchAssignment,  SharedStates.ProcessCancelled),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.changeofname, PatchAssignment, SharedStates.ProcessClosed),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, PatchAssignment, SharedStates.ProcessCompleted),
         };
 
 
