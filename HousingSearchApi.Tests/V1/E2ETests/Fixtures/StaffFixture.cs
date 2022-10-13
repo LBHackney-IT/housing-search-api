@@ -42,7 +42,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(INDEX, staffSettingsDoc)
                     .ConfigureAwait(true);
 
-                var staff = Staffs.Select(x=> x.ToDatabase());
+                var staff = Staffs.Select(x => x.ToDatabase());
                 var awaitable = ElasticSearchClient.IndexManyAsync(staff, INDEX).ConfigureAwait(true);
 
                 while (!awaitable.GetAwaiter().IsCompleted)
