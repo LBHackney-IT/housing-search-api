@@ -48,6 +48,9 @@
     <PackageReference Include="Docker.DotNet" Version="3.125.4" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="Hackney.Core.ElasticSearch" Version="1.73.0" />
+    <PackageReference Include="Hackney.Core.Http" Version="1.70.0" />
+    <PackageReference Include="Hackney.Core.JWT" Version="1.49.0" />
+    <PackageReference Include="Hackney.Shared.HousingSearch" Version="0.48.0-feat-mttl-3427-0002" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
