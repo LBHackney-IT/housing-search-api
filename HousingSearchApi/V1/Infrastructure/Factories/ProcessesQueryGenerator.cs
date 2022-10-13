@@ -34,8 +34,6 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 
 
             _queryBuilder
-                .WithWildstarQuery(processListRequest.SearchText,
-                   new List<string> { "patchAssignment.patchId", "targetId" })
                 .WithExactQuery(processListRequest.SearchText,
                     new List<string> { "patchAssignment.patchId", "targetId" }, new ExactSearchQuerystringProcessor())
                 .WithFilterQuery(processListRequest.TargetType, new List<string> { "targetType" })
