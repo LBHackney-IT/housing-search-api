@@ -21,10 +21,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public static Staff[] Staffs =
         {
             Staff.Create("firstName1", "lastName1", "firstName1.lastName1@test.com", Guid.NewGuid(), Guid.NewGuid()),
-            Staff.Create("firstName1", "lastName1", "firstName1.lastName1@test.com", Guid.NewGuid(), Guid.NewGuid()),
-            Staff.Create("firstName1", "lastName1", "firstName1.lastName1@test.com", Guid.NewGuid(), Guid.NewGuid()),
-            Staff.Create("firstName1", "lastName1", "firstName1.lastName1@test.com", Guid.NewGuid(), Guid.NewGuid()),
-            Staff.Create("firstName1", "lastName1", "firstName1.lastName1@test.com", Guid.NewGuid(), Guid.NewGuid())
+            Staff.Create("firstName2", "lastName2", "firstName2.lastName2@test.com", Guid.NewGuid(), Guid.NewGuid()),
+            Staff.Create("firstName3", "lastName3", "firstName3.lastName3@test.com", Guid.NewGuid(), Guid.NewGuid()),
+            Staff.Create("firstName4", "lastName4", "firstName4.lastName4@test.com", Guid.NewGuid(), Guid.NewGuid()),
+            Staff.Create("firstName5", "lastName5", "firstName5.lastName5@test.com", Guid.NewGuid(), Guid.NewGuid())
         };
 
         public StaffFixture(IElasticClient elasticClient, HttpClient httpClient) : base(elasticClient, httpClient)
