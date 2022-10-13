@@ -16,11 +16,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public static StaffStub[] Staffs =
         {
-            new StaffStub{FirstName = "firstName1", LastName = "lastName1", EmailAddress = "firstname1.lastname1@test.com", PatchId = Guid.NewGuid()},
-            new StaffStub{FirstName = "firstName2", LastName = "lastName2", EmailAddress = "firstname2.lastname2@test.com", PatchId = Guid.NewGuid()},
-            new StaffStub{FirstName = "firstName3", LastName = "lastName3", EmailAddress = "firstname3.lastname3@test.com", PatchId = Guid.NewGuid()},
-            new StaffStub{FirstName = "firstName4", LastName = "lastName4", EmailAddress = "firstname4.lastname4@test.com", PatchId = Guid.NewGuid()},
-            new StaffStub{FirstName = "firstName5", LastName = "lastName5", EmailAddress = "firstname5.lastname5@test.com", PatchId = Guid.NewGuid()}
+            new StaffStub{FirstName = "firstName1", LastName = "lastName1", EmailAddress = "firstname1.lastname1@test.com", PatchId = Guid.NewGuid(), AreaId = Guid.NewGuid()},
+            new StaffStub{FirstName = "firstName2", LastName = "lastName2", EmailAddress = "firstname2.lastname2@test.com", PatchId = Guid.NewGuid(), AreaId = Guid.NewGuid()},
+            new StaffStub{FirstName = "firstName3", LastName = "lastName3", EmailAddress = "firstname3.lastname3@test.com", PatchId = Guid.NewGuid(), AreaId = Guid.NewGuid()},
+            new StaffStub{FirstName = "firstName4", LastName = "lastName4", EmailAddress = "firstname4.lastname4@test.com", PatchId = Guid.NewGuid(), AreaId = Guid.NewGuid()},
+            new StaffStub{FirstName = "firstName5", LastName = "lastName5", EmailAddress = "firstname5.lastname5@test.com", PatchId = Guid.NewGuid(), AreaId = Guid.NewGuid()}
         };
 
         public StaffFixture(IElasticClient elasticClient, HttpClient httpClient) : base(elasticClient, httpClient)
@@ -87,6 +87,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 staff.LastName = value.LastName;
                 staff.EmailAddress = value.EmailAddress;
                 staff.PatchId = value.PatchId;
+                staff.AreaId = value.AreaId;
                 listOfStaffs.Add(staff);
             }
 
@@ -100,6 +101,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
         public Guid? PatchId { get; set; }
+        public Guid? AreaId { get; set; }
 
     }
 }
