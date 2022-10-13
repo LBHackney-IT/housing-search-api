@@ -1,6 +1,4 @@
 using Xunit;
-using AutoFixture;
-using FluentAssertions;
 using HousingSearchApi.V1.Infrastructure.Factories;
 using Moq;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
