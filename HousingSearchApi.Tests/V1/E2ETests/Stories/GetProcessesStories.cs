@@ -1,8 +1,5 @@
-using Hackney.Shared.HousingSearch.Domain.Process;
-using Hackney.Shared.Processes.Domain;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
-using System;
 using TestStack.BDDfy;
 using Xunit;
 
@@ -59,12 +56,43 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         }
 
         [Fact]
+        public void ServiceFiltersGivenProcessName()
+        {
+            var processName = "soletojoint";
+            this.Given(g => _processesFixture.GivenAnProcessIndexExists())
+                .When(w => _steps.WhenProcessNameIsProvided(processName))
+                .Then(t => _steps.ThenOnlyTheProcessNameShouldBeIncluded(processName))
+                .BDDfy();
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ServiceFiltersByOpenStatus(bool isOpen)
+        {
+            this.Given(g => _processesFixture.GivenAnProcessIndexExists())
+                .When(w => _steps.WhenProcessStatusIsProvided(isOpen))
+                .Then(t => _steps.ThenOnlyTheProcessStatusShouldBeIncluded(isOpen))
+                .BDDfy();
+        }
+
+
+        [Fact]
         public void ServiceFailWhenOnlyTargetTypeIsGiven()
         {
             var targetType = "tenure";
             this.Given(g => _processesFixture.GivenAnProcessIndexExists())
                 .When(w => _steps.WhenTargetTypeIsProvided(targetType))
                 .Then(t => _steps.ThenTheLastRequestShouldBeBadRequestResult(default))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceReturnsCorrectPageSize()
+        {
+            this.Given(g => _processesFixture.GivenAnProcessIndexExists())
+                .When(w => _steps.WhenAPageSizeIsProvided(3))
+                .Then(t => _steps.ThenTheReturningResultsShouldBeOfThatSize(3))
                 .BDDfy();
         }
     }
