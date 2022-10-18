@@ -23,13 +23,17 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public static PatchAssignment PatchAssignment = _fixture.Create<PatchAssignment>();
 
+        private static DateTime _processStartedAt = DateTime.UtcNow;
+
+        private static DateTime _stateStartedAt = DateTime.UtcNow;
+
         public static Process[] Processes =
         {
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, PatchAssignment , SharedStates.DocumentsAppointmentRescheduled, DateTime.Now, DateTime.Now),
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.changeofname, PatchAssignment, SharedStates.DocumentChecksPassed, DateTime.Now, DateTime.Now),
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "asset", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, PatchAssignment,  SharedStates.ProcessCancelled, DateTime.Now, DateTime.Now),
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.changeofname, PatchAssignment, SharedStates.ProcessClosed, DateTime.Now, DateTime.Now),
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, PatchAssignment, SharedStates.ProcessCompleted, DateTime.Now, DateTime.Now),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, PatchAssignment , SharedStates.DocumentsAppointmentRescheduled, _processStartedAt, _stateStartedAt),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.changeofname, PatchAssignment, SharedStates.DocumentChecksPassed,  _processStartedAt, _stateStartedAt),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "asset", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, PatchAssignment,  SharedStates.ProcessCancelled,  _processStartedAt, _stateStartedAt),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.changeofname, PatchAssignment, SharedStates.ProcessClosed, _processStartedAt, _stateStartedAt),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, PatchAssignment, SharedStates.ProcessCompleted, _processStartedAt, _stateStartedAt),
         };
 
 
