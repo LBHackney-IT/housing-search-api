@@ -56,7 +56,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceReturnsExactMatchForEmailAddress()
         {
-            var emailAddress = "firstname3.lastname3@test.com";
+            var emailAddress = "firstName3.lastName3@test.com";
 
             this.Given(g => _staffsFixture.GivenAnStaffIndexExists())
                 .Given(g => _staffsFixture.GivenThereExistStaffsWithSimilarEmailAddress(emailAddress))
