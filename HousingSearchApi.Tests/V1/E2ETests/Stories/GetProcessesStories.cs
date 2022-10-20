@@ -45,6 +45,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         }
 
         [Fact]
+        public void ServiceReturnsOkResultWithOnlyTargetId()
+        {
+            this.Given(g => _processesFixture.GivenAnProcessIndexExists())
+                .When(w => _steps.WhenRequestContainsTargetId())
+                .Then(t => _steps.ThenTheLastRequestShouldBe200())
+                .BDDfy();
+        }
+
+        [Fact]
         public void ServiceFiltersGivenTargetTypeAndTargetId()
         {
             var targetType = "tenure";
