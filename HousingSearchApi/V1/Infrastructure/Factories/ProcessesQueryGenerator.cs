@@ -39,7 +39,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                 .WithExactQuery(processListRequest.TargetId?.ToString(),
                     new List<string> { "targetId" })
                 .WithFilterQuery(processListRequest.TargetType, new List<string> { "targetType" })
-                .WithFilterQuery(processListRequest.ProcessName, new List<string> { "processName" });
+                .WithFilterQuery(processListRequest.ProcessNames, new List<string> { "processName" });
 
             if (processListRequest.IsOpen.HasValue)
                 _queryBuilder.WithFilterQuery(ConstructIsOpenFilter(processListRequest), new List<string> { "state" });

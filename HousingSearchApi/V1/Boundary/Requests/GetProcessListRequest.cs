@@ -14,8 +14,8 @@ namespace HousingSearchApi.V1.Boundary.Requests
         [FromQuery(Name = "isOpen")]
         public bool? IsOpen { get; set; }
 
-        [FromQuery(Name = "processName")]
-        public string ProcessName { get; set; }
+        [FromQuery(Name = "processNames")]
+        public string ProcessNames { get; set; }
 
     }
 }
