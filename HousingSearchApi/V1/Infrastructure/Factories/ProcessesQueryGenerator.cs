@@ -35,7 +35,9 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 
             _queryBuilder
                 .WithExactQuery(processListRequest.SearchText,
-                    new List<string> { "patchAssignment.patchId", "targetId" })
+                    new List<string> { "patchAssignment.patchId"})
+                .WithExactQuery(processListRequest.TargetId?.ToString(),
+                    new List<string> { "targetId"})
                 .WithFilterQuery(processListRequest.TargetType, new List<string> { "targetType" })
                 .WithFilterQuery(processListRequest.ProcessName, new List<string> { "processName" });
 
