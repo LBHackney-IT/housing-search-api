@@ -45,10 +45,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         }
 
         [Fact]
-        public void ServiceReturnsOkResultWithOnlyTargetId()
+        public void ServiceReturnsOkResultWithBothTargetIdAndTargetType()
         {
             this.Given(g => _processesFixture.GivenAnProcessIndexExists())
-                .When(w => _steps.WhenRequestContainsTargetId())
+                .When(w => _steps.WhenRequestContainsBothTargetIdAndTargetType())
                 .Then(t => _steps.ThenTheLastRequestShouldBe200())
                 .BDDfy();
         }

@@ -39,7 +39,7 @@ namespace HousingSearchApi.Tests.V1.Boundary.Requests.Validation
         }
 
         [Fact]
-        public void ShouldErrorOnlyTargetId()
+        public void ShouldErrorIfTargetTypeWithoutTargetId()
         {
             var query = new GetProcessListRequest()
             {
