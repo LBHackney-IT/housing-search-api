@@ -26,7 +26,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenRequestContainsSearchString()
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?searchText={ProcessFixture.PatchAssignment.PatchId}&targetId={ProcessFixture.Processes[0].TargetId}", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?searchText={ProcessFixture.PatchAssignment.PatchId}", UriKind.Relative)).ConfigureAwait(false);
+        }
+
+        public async Task WhenRequestContainsBothTargetIdAndTargetType()
+        {
+            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?targetId={ProcessFixture.Processes[0].TargetId}&targetType={ProcessFixture.Processes[0].TargetType}", UriKind.Relative)).ConfigureAwait(false);
         }
 
 

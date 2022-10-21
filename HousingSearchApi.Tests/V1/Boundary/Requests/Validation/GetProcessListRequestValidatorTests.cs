@@ -39,14 +39,14 @@ namespace HousingSearchApi.Tests.V1.Boundary.Requests.Validation
         }
 
         [Fact]
-        public void ShouldNotErrorOnlyTargetId()
+        public void ShouldErrorIfTargetTypeWithoutTargetId()
         {
             var query = new GetProcessListRequest()
             {
                 TargetId = Guid.NewGuid()
             };
             var result = _sut.TestValidate(query);
-            result.ShouldNotHaveAnyValidationErrors();
+            result.ShouldHaveValidationErrorFor(x => x.TargetType);
         }
 
         [Fact]
@@ -59,6 +59,7 @@ namespace HousingSearchApi.Tests.V1.Boundary.Requests.Validation
             var result = _sut.TestValidate(query);
             result.ShouldHaveValidationErrorFor(x => x.TargetId);
         }
+
 
 
 
