@@ -12,9 +12,9 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 {
     public class ProcessesQueryGenerator : IQueryGenerator<QueryableProcess>
     {
-        private readonly IFilterQueryBuilder<QueryableProcess> _queryBuilder;
+        private readonly IQueryBuilder<QueryableProcess> _queryBuilder;
 
-        public ProcessesQueryGenerator(IFilterQueryBuilder<QueryableProcess> queryBuilder)
+        public ProcessesQueryGenerator(IQueryBuilder<QueryableProcess> queryBuilder)
         {
             _queryBuilder = queryBuilder;
         }
@@ -33,40 +33,19 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                 throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
             }
 
-            //if (processListRequest.SearchText == null)
-            //{
-            //    _queryBuilder
-            //        .WithExactQuery(processListRequest.TargetId?.ToString(),
-            //            new List<string> { "targetId" })
-            //        .WithFilterQuery(processListRequest.TargetType, new List<string> { "targetType" })
-            //        .WithFilterQuery(processListRequest.ProcessNames, new List<string> { "processName" });
-            //}
-            //else
-            //{
-
-            //    _queryBuilder
-            //        .WithExactQuery(processListRequest.SearchText,
-            //            new List<string> { "patchAssignment.patchId" })
-            //        .WithFilterQuery(processListRequest.TargetId?.ToString(),
-            //            new List<string> { "targetId" })
-            //        .WithFilterQuery(processListRequest.TargetType, new List<string> { "targetType" })
-            //        .WithFilterQuery(processListRequest.ProcessNames, new List<string> { "processName" });
-            //}
-
             if (processListRequest.TargetId.HasValue)
             {
                 _queryBuilder
-                    .WithExactQuery(processListRequest.TargetId?.ToString(),
+                    .WithExactQuery(processListRequest.TargetId.ToString(),
                         new List<string> { "targetId" }, new ExactSearchQuerystringProcessor())
                     .WithFilterQuery(processListRequest.TargetType, new List<string> { "targetType" })
                     .WithFilterQuery(processListRequest.ProcessNames, new List<string> { "processName" });
             }
             else
             {
-
                 _queryBuilder
                     .WithExactQuery(processListRequest.SearchText,
-                        new List<string> { "patchAssignment.patchId" })
+                        new List<string> { "patchAssignment.patchId" }, new ExactSearchQuerystringProcessor())
                     .WithFilterQuery(processListRequest.ProcessNames, new List<string> { "processName" });
             }
 

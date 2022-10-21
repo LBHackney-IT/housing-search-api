@@ -29,9 +29,9 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?searchText={patchId}", UriKind.Relative)).ConfigureAwait(false);
         }
 
-        public async Task WhenRequestContainsBothTargetIdAndTargetType(string targetId)
+        public async Task WhenRequestContainsBothTargetIdAndTargetType(string targetId, string targetType)
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?targetId={targetId}&targetType={ProcessFixture.Processes[0].TargetType}", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?targetId={targetId}&targetType={targetType}", UriKind.Relative)).ConfigureAwait(false);
         }
 
 
