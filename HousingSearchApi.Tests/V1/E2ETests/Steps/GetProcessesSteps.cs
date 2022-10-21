@@ -24,9 +24,9 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/processes", UriKind.Relative)).ConfigureAwait(false);
         }
 
-        public async Task WhenRequestContainsSearchString()
+        public async Task WhenRequestContainsSearchString(string patchId)
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?searchText={ProcessFixture.PatchAssignment.PatchId}", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?searchText={patchId}", UriKind.Relative)).ConfigureAwait(false);
         }
 
         public async Task WhenRequestContainsBothTargetIdAndTargetType()
@@ -116,5 +116,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var validateProcessState = isOpen ? validateClosedStates : !validateClosedStates;
         }
 
+        public async Task ThenTheFirstResultShouldBeAnExactMatchOfPatchId(string patchId)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<GetProcessListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Processes.First().PatchAssignment.PatchId.Should().Be(patchId);
+        }
     }
 }

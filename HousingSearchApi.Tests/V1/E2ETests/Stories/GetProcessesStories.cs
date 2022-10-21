@@ -1,5 +1,6 @@
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
+using System;
 using TestStack.BDDfy;
 using Xunit;
 
@@ -38,9 +39,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceReturnsOkResult()
         {
+            ProcessFixture.Processes[2].PatchAssignment.PatchId = Guid.NewGuid().ToString();
+            var patchId = ProcessFixture.Processes[2].PatchAssignment.PatchId;
+
             this.Given(g => _processesFixture.GivenAnProcessIndexExists())
-                .When(w => _steps.WhenRequestContainsSearchString())
+                .When(w => _steps.WhenRequestContainsSearchString(patchId))
                 .Then(t => _steps.ThenTheLastRequestShouldBe200())
+                .Then(t => _steps.ThenTheFirstResultShouldBeAnExactMatchOfPatchId(patchId))
                 .BDDfy();
         }
 
