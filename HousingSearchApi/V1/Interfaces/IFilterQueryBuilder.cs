@@ -8,7 +8,5 @@ namespace HousingSearchApi.V1.Interfaces
     {
         public IFilterQueryBuilder<T> WithMultipleFilterQuery(string commaSeparatedFilters, List<string> fields);
         public new QueryContainer Build(QueryContainerDescriptor<T> containerDescriptor);
-
-
     }
 }
