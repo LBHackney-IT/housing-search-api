@@ -52,9 +52,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceReturnsOkResultWithBothTargetIdAndTargetType()
         {
+            var targetId = ProcessFixture.Processes[2].TargetId;
             this.Given(g => _processesFixture.GivenAnProcessIndexExists())
-                .When(w => _steps.WhenRequestContainsBothTargetIdAndTargetType())
+                .When(w => _steps.WhenRequestContainsBothTargetIdAndTargetType(targetId))
                 .Then(t => _steps.ThenTheLastRequestShouldBe200())
+                .Then(t => _steps.ThenTheFirstResultShouldBeAnExactMatchOfTargetId(targetId))
                 .BDDfy();
         }
 
