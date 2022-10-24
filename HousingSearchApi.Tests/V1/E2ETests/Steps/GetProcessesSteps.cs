@@ -24,9 +24,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/processes", UriKind.Relative)).ConfigureAwait(false);
         }
 
-        public async Task WhenRequestContainsSearchString()
+        public async Task WhenRequestContainsSearchString(string patchId)
         {
-            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?searchText={ProcessFixture.PatchAssignment.PatchId}&targetId={ProcessFixture.Processes[0].TargetId}", UriKind.Relative)).ConfigureAwait(false);
+            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?searchText={patchId}", UriKind.Relative)).ConfigureAwait(false);
+        }
+
+        public async Task WhenRequestContainsBothTargetIdAndTargetType(string targetId, string targetType)
+        {
+            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/processes?targetId={targetId}&targetType={targetType}", UriKind.Relative)).ConfigureAwait(false);
         }
 
 
@@ -111,5 +116,20 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var validateProcessState = isOpen ? validateClosedStates : !validateClosedStates;
         }
 
+        public async Task ThenTheFirstResultShouldBeAnExactMatchOfPatchId(string patchId)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<GetProcessListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Processes.First().PatchAssignment.PatchId.Should().Be(patchId);
+        }
+
+        public async Task ThenTheFirstResultShouldBeAnExactMatchOfTargetId(string targetId)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<GetProcessListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Processes.First().TargetId.Should().Be(targetId);
+        }
     }
 }

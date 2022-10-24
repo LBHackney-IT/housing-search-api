@@ -2,6 +2,7 @@ using Hackney.Core.ElasticSearch.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Processes;
 using Hackney.Shared.Processes.Domain.Constants;
 using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Interfaces;
 using HousingSearchApi.V1.Interfaces.Factories;
 using Nest;
 using System;
@@ -32,18 +33,29 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                 throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
             }
 
-
-            _queryBuilder
-                .WithExactQuery(processListRequest.SearchText,
-                    new List<string> { "patchAssignment.patchId", "targetId" }, new ExactSearchQuerystringProcessor())
-                .WithFilterQuery(processListRequest.TargetType, new List<string> { "targetType" })
-                .WithFilterQuery(processListRequest.ProcessName, new List<string> { "processName" });
+            if (processListRequest.TargetId.HasValue)
+            {
+                _queryBuilder
+                    .WithExactQuery(processListRequest.TargetId.ToString(),
+                        new List<string> { "targetId" }, new ExactSearchQuerystringProcessor())
+                    .WithFilterQuery(processListRequest.TargetType, new List<string> { "targetType" })
+                    .WithFilterQuery(processListRequest.ProcessNames, new List<string> { "processName" });
+            }
+            else
+            {
+                _queryBuilder
+                    .WithExactQuery(processListRequest.SearchText,
+                        new List<string> { "patchAssignment.patchId" }, new ExactSearchQuerystringProcessor())
+                    .WithFilterQuery(processListRequest.ProcessNames, new List<string> { "processName" });
+            }
 
             if (processListRequest.IsOpen.HasValue)
                 _queryBuilder.WithFilterQuery(ConstructIsOpenFilter(processListRequest), new List<string> { "state" });
 
             return _queryBuilder.Build(q);
         }
+
+
     }
 }
 

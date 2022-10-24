@@ -1,8 +1,8 @@
 using AutoFixture;
 using Elasticsearch.Net;
+using Hackney.Shared.HousingSearch.Domain.Process;
 using Hackney.Shared.HousingSearch.Factories;
 using Hackney.Shared.HousingSearch.Gateways.Models.Processes;
-using Hackney.Shared.Processes.Domain;
 using Hackney.Shared.Processes.Domain.Constants;
 using Nest;
 using System;
@@ -29,11 +29,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public static Process[] Processes =
         {
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, PatchAssignment , SharedStates.DocumentsAppointmentRescheduled, _processStartedAt, _stateStartedAt),
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.changeofname, PatchAssignment, SharedStates.DocumentChecksPassed,  _processStartedAt, _stateStartedAt),
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "asset", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, PatchAssignment,  SharedStates.ProcessCancelled,  _processStartedAt, _stateStartedAt),
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.changeofname, PatchAssignment, SharedStates.ProcessClosed, _processStartedAt, _stateStartedAt),
-            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), ProcessName.soletojoint, PatchAssignment, SharedStates.ProcessCompleted, _processStartedAt, _stateStartedAt),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), "soletojoint", PatchAssignment , SharedStates.DocumentsAppointmentRescheduled, _processStartedAt, _stateStartedAt),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), "changeofname", PatchAssignment, SharedStates.DocumentChecksPassed,  _processStartedAt, _stateStartedAt),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "asset", _fixture.CreateMany<RelatedEntity>().ToList(), "soletojoint", PatchAssignment,  SharedStates.ProcessCancelled,  _processStartedAt, _stateStartedAt),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "person", _fixture.CreateMany<RelatedEntity>().ToList(), "changeofname", PatchAssignment, SharedStates.ProcessClosed, _processStartedAt, _stateStartedAt),
+            Process.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "tenure", _fixture.CreateMany<RelatedEntity>().ToList(), "soletojoint", PatchAssignment, SharedStates.ProcessCompleted, _processStartedAt, _stateStartedAt),
         };
 
 

@@ -20,7 +20,6 @@ namespace HousingSearchApi.Tests.V1.Boundary.Requests.Validation
         {
             var query = new GetProcessListRequest()
             {
-                SearchText = "abc",
                 TargetId = Guid.NewGuid(),
                 TargetType = "tenure"
             };
@@ -40,15 +39,14 @@ namespace HousingSearchApi.Tests.V1.Boundary.Requests.Validation
         }
 
         [Fact]
-        public void ShouldNotErrorOnlyTargetIddSearchText()
+        public void ShouldErrorIfTargetTypeWithoutTargetId()
         {
             var query = new GetProcessListRequest()
             {
-                SearchText = "abc",
                 TargetId = Guid.NewGuid()
             };
             var result = _sut.TestValidate(query);
-            result.ShouldNotHaveAnyValidationErrors();
+            result.ShouldHaveValidationErrorFor(x => x.TargetType);
         }
 
         [Fact]
@@ -56,12 +54,12 @@ namespace HousingSearchApi.Tests.V1.Boundary.Requests.Validation
         {
             var query = new GetProcessListRequest()
             {
-                SearchText = "abc",
                 TargetType = "tenure"
             };
             var result = _sut.TestValidate(query);
             result.ShouldHaveValidationErrorFor(x => x.TargetId);
         }
+
 
 
 
