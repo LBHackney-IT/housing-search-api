@@ -16,6 +16,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 {
     public class StaffFixture : BaseFixture
     {
+        //private static Fixture _fixture = new Fixture();
         private const string INDEX = "staff";
 
         public static Staff[] Staffs =
