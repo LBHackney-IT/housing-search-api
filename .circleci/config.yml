@@ -253,16 +253,16 @@ workflows:
       - terraform-apply-development:
           requires:
             - terraform-compliance-development
-          filters:
-            branches:
-              only: master
+          #filters:
+          #  branches:
+          #    only: master
       - deploy-to-development:
           context: api-nuget-token-context
           requires:
             - terraform-apply-development
-          filters:
-            branches:
-              only: master
+          #filters:
+          #  branches:
+          #    only: master
   check-and-deploy-staging-and-production:
       jobs:
       - check-code-formatting:
