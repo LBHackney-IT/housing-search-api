@@ -56,10 +56,11 @@ namespace HousingSearchApi.V1.Infrastructure.Sorting
                         case "name":
                             return (ISort<T>) new RelatedEntityTypeDesc();
                         case "process":
+                            return (ISort<T>) new ProcessDesc();
                         case "patch":
+                            return (ISort<T>) new PatchDesc();
                         case "state":
-                        default:
-                            break;
+                            return (ISort<T>) new StateDesc();
                     }
                 }
                 else
@@ -69,10 +70,11 @@ namespace HousingSearchApi.V1.Infrastructure.Sorting
                         case "name":
                             return (ISort<T>) new RelatedEntityTypeAsc();
                         case "process":
+                            return (ISort<T>) new ProcessAsc();
                         case "patch":
+                            return (ISort<T>) new PatchAsc();
                         case "state":
-                        default:
-                            break;
+                            return (ISort<T>) new StateAsc();
                     }
                 }
             }
