@@ -10,10 +10,7 @@ namespace HousingSearchApi.V1.Infrastructure.Sorting
         public SortDescriptor<QueryableProcess> GetSortDescriptor(SortDescriptor<QueryableProcess> descriptor)
         {
             return descriptor
-                .Field(f => f.Field(p => SortingExtensions.OrderByTargetType(p, "person"))
-                .Ascending())
-                .Field(f => f.Field(p => SortingExtensions.OrderByTargetType(p, "tenure"))
-                .Ascending());
+                .Ascending(f => f.RelatedEntities.Find(SortingExtensions.GetTenantDetails()).Description.Suffix("keyword"));
         }
     }
 }

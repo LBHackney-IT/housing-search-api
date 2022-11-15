@@ -1,11 +1,15 @@
 using Hackney.Shared.HousingSearch.Gateways.Models.Processes;
+using Hackney.Shared.Processes.Domain;
+using System;
 using System.Linq;
 
 namespace HousingSearchApi.V1.Infrastructure
 {
     public static class SortingExtensions
     {
-        public static string OrderByTargetType(QueryableProcess p, string targetType) =>
-            p.RelatedEntities.First(x => x.TargetType == targetType)?.Description;
+        public static Predicate<QueryableRelatedEntity> GetTenantDetails()
+        {
+            return x => x.TargetType == TargetType.person.ToString();
+        }
     }
 }

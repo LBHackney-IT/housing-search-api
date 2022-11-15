@@ -8,7 +8,7 @@ namespace HousingSearchApi.V1.Infrastructure.Sorting
         public SortDescriptor<QueryableProcess> GetSortDescriptor(SortDescriptor<QueryableProcess> descriptor)
         {
             return descriptor
-                .Ascending(f => f.PatchAssignment.PatchName);
+                .Ascending(f => f.PatchAssignment.PatchName.Suffix("keyword"));
         }
     }
 }
