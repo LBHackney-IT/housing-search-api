@@ -19,7 +19,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void ShouldNotSortAsDefault()
         {
             // Arrange + Act
-            var result = _sut.Create<QueryableProcess, GetProcessListRequest> (new GetProcessListRequest());
+            var result = _sut.Create<QueryableProcess, GetProcessListRequest>(new GetProcessListRequest());
 
             // Assert
             result.Should().BeOfType(typeof(DefaultSort<QueryableProcess>));
