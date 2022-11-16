@@ -112,5 +112,19 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenTheReturningResultsShouldBeOfThatSize(3))
                 .BDDfy();
         }
+
+        [Theory]
+        [InlineData("name")]
+        [InlineData("process")]
+        [InlineData("patch")]
+        [InlineData("state")]
+        public void ServiceReturnsCorrectSort(string sortBy)
+        {
+            this.Given(g => _processesFixture.GivenAnProcessIndexExists())
+                .When(w => _steps.WhenARequestIsSortedByAFieldAsc(sortBy))
+                .Then(t => _steps.ThenTheResultShouldBeSortedAsc(sortBy, ProcessFixture.Processes))
+                .BDDfy();
+        }
+
     }
 }
