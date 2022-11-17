@@ -118,13 +118,25 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [InlineData("process")]
         [InlineData("patch")]
         [InlineData("state")]
-        public void ServiceReturnsCorrectSort(string sortBy)
+        public void ServiceReturnsCorrectAscSort(string sortBy)
         {
             this.Given(g => _processesFixture.GivenAnProcessIndexExists())
-                .When(w => _steps.WhenARequestIsSortedByAFieldAsc(sortBy))
-                .Then(t => _steps.ThenTheResultShouldBeSortedAsc(sortBy, ProcessFixture.Processes))
+                .When(w => _steps.WhenARequestIsSortedByAFieldAsc(sortBy, false))
+                .Then(t => _steps.ThenTheResultShouldBeSortedAsc(sortBy, false, ProcessFixture.Processes))
                 .BDDfy();
         }
 
+        [Theory]
+        [InlineData("name")]
+        [InlineData("process")]
+        [InlineData("patch")]
+        [InlineData("state")]
+        public void ServiceReturnsCorrectDescSort(string sortBy)
+        {
+            this.Given(g => _processesFixture.GivenAnProcessIndexExists())
+                .When(w => _steps.WhenARequestIsSortedByAFieldAsc(sortBy, true))
+                .Then(t => _steps.ThenTheResultShouldBeSortedDesc(sortBy, true, ProcessFixture.Processes))
+                .BDDfy();
+        }
     }
 }

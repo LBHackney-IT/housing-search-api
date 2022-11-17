@@ -66,5 +66,37 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 Thread.Sleep(5000);
             }
         }
+
+        private static List<List<RelatedEntity>> GenerateRelatedEntities(int count)
+        {
+            if (count < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count));
+            }
+
+            var allRelatedEntities = new List<List<RelatedEntity>>();
+            for (int i = 0; i < count; i++)
+            {
+                var relatedEntityPerson = new RelatedEntity()
+                {
+                    Id = "Ide1f4712b-b0af-4438-8037-edbde301c77c",
+                    Description = $"test person {i}",
+                    SubType = "Ide1f4712b-b0af-4438-8037-edbde301c77c",
+                    TargetType = "person"
+                };
+                var relatedEntityTenure = new RelatedEntity()
+                {
+                    Id = "Ide1f4712b-b0af-4438-8037-edbde301c77c",
+                    Description = $"test tenure {i}",
+                    SubType = "Ide1f4712b-b0af-4438-8037-edbde301c77c",
+                    TargetType = "tenure"
+                };
+
+                var entitiesCreated = new List<RelatedEntity>() { relatedEntityPerson, relatedEntityTenure };
+                allRelatedEntities.Add(entitiesCreated);
+            }
+
+            return allRelatedEntities;
+        }
     }
 }

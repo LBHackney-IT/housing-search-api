@@ -4,7 +4,7 @@ using Nest;
 
 namespace HousingSearchApi.V1.Infrastructure.Sorting
 {
-    public class ProcessAsc : ISort<QueryableProcess>
+    public class ProcessNameAsc : ISort<QueryableProcess>
     {
         public SortDescriptor<QueryableProcess> GetSortDescriptor(SortDescriptor<QueryableProcess> descriptor)
         {

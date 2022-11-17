@@ -16,7 +16,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         }
 
         [Fact]
-        public void ShouldNotSortAsDefault()
+        public void ShouldSortAsDefault()
         {
             // Arrange + Act
             var result = _sut.Create<QueryableProcess, GetProcessListRequest>(new GetProcessListRequest());
@@ -32,7 +32,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             var result = _sut.Create<QueryableProcess, GetProcessListRequest>(new GetProcessListRequest { SortBy = "name", IsDesc = false });
 
             // Assert
-            result.Should().BeOfType(typeof(RelatedEntityTypeAsc));
+            result.Should().BeOfType(typeof(PersonNameAsc));
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             var result = _sut.Create<QueryableProcess, GetProcessListRequest>(new GetProcessListRequest { SortBy = "name", IsDesc = true });
 
             // Assert
-            result.Should().BeOfType(typeof(RelatedEntityTypeDesc));
+            result.Should().BeOfType(typeof(PersonNameDesc));
         }
 
         [Fact]
@@ -52,7 +52,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             var result = _sut.Create<QueryableProcess, GetProcessListRequest>(new GetProcessListRequest { SortBy = "process", IsDesc = true });
 
             // Assert
-            result.Should().BeOfType(typeof(ProcessDesc));
+            result.Should().BeOfType(typeof(ProcessNameDesc));
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             var result = _sut.Create<QueryableProcess, GetProcessListRequest>(new GetProcessListRequest { SortBy = "process", IsDesc = false });
 
             // Assert
-            result.Should().BeOfType(typeof(ProcessAsc));
+            result.Should().BeOfType(typeof(ProcessNameAsc));
         }
 
         [Fact]

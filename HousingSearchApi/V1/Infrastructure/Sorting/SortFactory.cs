@@ -54,9 +54,9 @@ namespace HousingSearchApi.V1.Infrastructure.Sorting
                     switch (sortBy)
                     {
                         case "name":
-                            return (ISort<T>) new RelatedEntityTypeDesc();
+                            return (ISort<T>) new PersonNameDesc();
                         case "process":
-                            return (ISort<T>) new ProcessDesc();
+                            return (ISort<T>) new ProcessNameDesc();
                         case "patch":
                             return (ISort<T>) new PatchDesc();
                         case "state":
@@ -68,9 +68,9 @@ namespace HousingSearchApi.V1.Infrastructure.Sorting
                     switch (sortBy)
                     {
                         case "name":
-                            return (ISort<T>) new RelatedEntityTypeAsc();
+                            return (ISort<T>) new PersonNameAsc();
                         case "process":
-                            return (ISort<T>) new ProcessAsc();
+                            return (ISort<T>) new ProcessNameAsc();
                         case "patch":
                             return (ISort<T>) new PatchAsc();
                         case "state":
