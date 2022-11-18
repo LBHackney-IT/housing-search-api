@@ -1,4 +1,6 @@
 using FluentAssertions;
+using Hackney.Shared.HousingSearch.Domain.Process;
+using Hackney.Shared.Processes.Domain;
 using Hackney.Shared.Processes.Domain.Constants;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps.Base;
@@ -76,6 +78,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
 
+        public async Task WhenARequestIsSortedByAFieldAsc(string fieldName, bool isDesc)
+        {
+            var route = new Uri($"api/v1/search/processes?searchText={ProcessFixture.PatchAssignment.PatchId}&sortBy={fieldName}&isDesc={isDesc}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+
         public async Task ThenTheReturningResultsShouldBeOfThatSize(int pageSize)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -130,6 +140,52 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var result = JsonSerializer.Deserialize<APIResponse<GetProcessListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Processes.First().TargetId.Should().Be(targetId);
+        }
+
+        public async Task ThenTheResultShouldBeSortedAsc(string sortBy, bool isDesc, Hackney.Shared.HousingSearch.Domain.Process.Process[] processes)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<GetProcessListResponse>>(resultBody, _jsonOptions);
+
+            var firstProcessIdAfterSort = DetermineFirstProcessId(sortBy, isDesc, processes);
+            result.Results.Processes.First().Id.Should().Be(firstProcessIdAfterSort);
+        }
+
+        public async Task ThenTheResultShouldBeSortedDesc(string sortBy, bool isDesc, Hackney.Shared.HousingSearch.Domain.Process.Process[] processes)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<GetProcessListResponse>>(resultBody, _jsonOptions);
+
+            var firstProcessIdAfterSort = DetermineFirstProcessId(sortBy, isDesc, processes);
+            result.Results.Processes.First().Id.Should().Be(firstProcessIdAfterSort);
+        }
+
+        private string DetermineFirstProcessId(string sortBy, bool isDesc, Hackney.Shared.HousingSearch.Domain.Process.Process[] processes)
+        {
+            if (isDesc)
+            {
+                return sortBy switch
+                {
+                    "name" => processes
+                                .OrderByDescending(x => x.RelatedEntities.Where(x => x.TargetType == TargetType.person.ToString()).Min(x => x.Description))
+                                .First()?.Id,
+                    "process" => processes.OrderByDescending(x => x.ProcessName).First()?.Id,
+                    "patch" => processes.OrderByDescending(x => x.PatchAssignment.PatchName).First()?.Id,
+                    "state" => processes.OrderByDescending(x => x.State).First()?.Id,
+                    _ => processes.First()?.Id,
+                };
+            }
+
+            return sortBy switch
+            {
+                "name" => processes
+                            .OrderBy(x => x.RelatedEntities.Where(x => x.TargetType == TargetType.person.ToString()).Min(x => x.Description))
+                            .First()?.Id,
+                "process" => processes.OrderBy(x => x.ProcessName).First()?.Id,
+                "patch" => processes.OrderBy(x => x.PatchAssignment.PatchName).First()?.Id,
+                "state" => processes.OrderBy(x => x.State).First()?.Id,
+                _ => processes.First()?.Id,
+            };
         }
     }
 }
