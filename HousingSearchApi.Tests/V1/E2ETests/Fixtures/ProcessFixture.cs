@@ -2,16 +2,13 @@ using AutoFixture;
 using Elasticsearch.Net;
 using Hackney.Shared.HousingSearch.Domain.Process;
 using Hackney.Shared.HousingSearch.Factories;
-using Hackney.Shared.HousingSearch.Gateways.Models.Processes;
 using Hackney.Shared.Processes.Domain.Constants;
 using Nest;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
-using System.Threading.Tasks;
 using Process = Hackney.Shared.HousingSearch.Domain.Process.Process;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures

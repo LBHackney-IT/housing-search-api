@@ -2,7 +2,6 @@ using Hackney.Core.ElasticSearch.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Processes;
 using Hackney.Shared.Processes.Domain.Constants;
 using HousingSearchApi.V1.Boundary.Requests;
-using HousingSearchApi.V1.Interfaces;
 using HousingSearchApi.V1.Interfaces.Factories;
 using Nest;
 using System;
