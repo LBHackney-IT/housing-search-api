@@ -1,5 +1,3 @@
-using System;
-
 namespace HousingSearchApi.V1.Boundary.Responses
 {
     public class GetAllAssetListResponse : GetAssetListResponse

@@ -1,5 +1,4 @@
 using System;
-using FluentAssertions;
 using Hackney.Core.ElasticSearch;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using HousingSearchApi.V1.Boundary.Requests;

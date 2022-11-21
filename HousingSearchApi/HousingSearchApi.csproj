@@ -20,12 +20,12 @@
     <PackageReference Include="FluentValidation.AspNetCore" Version="10.2.0" />
     <PackageReference Include="Hackney.Core.ElasticSearch" Version="1.73.0" />
     <PackageReference Include="Hackney.Core.HealthCheck" Version="1.30.0" />
-    <PackageReference Include="Hackney.Core.Http" Version="1.30.0" />
-    <PackageReference Include="Hackney.Core.JWT" Version="1.30.0" />
+    <PackageReference Include="Hackney.Core.Http" Version="1.70.0" />
+    <PackageReference Include="Hackney.Core.JWT" Version="1.49.0" />
     <PackageReference Include="Hackney.Core.Logging" Version="1.30.0" />
-    <PackageReference Include="Hackney.Core.Middleware" Version="1.30.0" />
+    <PackageReference Include="Hackney.Core.Middleware" Version="1.49.0" />
     <PackageReference Include="Hackney.Core.Validation" Version="1.30.0" />
-    <PackageReference Include="Hackney.Shared.HousingSearch" Version="0.40.0" />
+    <PackageReference Include="Hackney.Shared.HousingSearch" Version="0.67.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.1.1" />
