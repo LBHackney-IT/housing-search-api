@@ -9,7 +9,7 @@ namespace HousingSearchApi.V1.Infrastructure.Sorting
         public SortDescriptor<QueryableProcess> GetSortDescriptor(SortDescriptor<QueryableProcess> descriptor)
         {
             return descriptor
-                .Descending(f => f.State.Suffix("keyword"));
+                .Descending(f => f.State);
         }
     }
 }
