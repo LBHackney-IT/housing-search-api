@@ -7,7 +7,7 @@ namespace HousingSearchApi.V1.Infrastructure
 {
     public static class SortingExtensions
     {
-        public static Predicate<QueryableRelatedEntity> GetPersonDetails()
+        public static Predicate<QueryableRelatedEntity> GetTenantDetails()
         {
             return x => x.TargetType == TargetType.person.ToString() && x.SubType == SubType.tenant.ToString();
         }
