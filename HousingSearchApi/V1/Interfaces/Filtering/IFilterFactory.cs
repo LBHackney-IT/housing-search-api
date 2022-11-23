@@ -1,5 +1,3 @@
-using Nest;
-
 namespace HousingSearchApi.V1.Interfaces.Filtering
 {
     public interface IFilterFactory

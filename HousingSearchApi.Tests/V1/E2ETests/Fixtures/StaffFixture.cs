@@ -1,26 +1,31 @@
 using AutoFixture;
 using Elasticsearch.Net;
+using Hackney.Shared.HousingSearch.Domain.Staff;
+using Hackney.Shared.HousingSearch.Factories;
 using Hackney.Shared.HousingSearch.Gateways.Models.Staffs;
 using Nest;
-using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
+using Staff = Hackney.Shared.HousingSearch.Domain.Staff.Staff;
+
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 {
     public class StaffFixture : BaseFixture
     {
+        private static Fixture _fixture = new Fixture();
         private const string INDEX = "staff";
 
-        public static StaffStub[] Staffs =
+        public static Staff[] Staffs =
         {
-            new StaffStub{FirstName = "firstName1", LastName = "lastName1", EmailAddress = "firstname1.lastname1@test.com", PatchId = Guid.NewGuid()},
-            new StaffStub{FirstName = "firstName2", LastName = "lastName2", EmailAddress = "firstname2.lastname2@test.com", PatchId = Guid.NewGuid()},
-            new StaffStub{FirstName = "firstName3", LastName = "lastName3", EmailAddress = "firstname3.lastname3@test.com", PatchId = Guid.NewGuid()},
-            new StaffStub{FirstName = "firstName4", LastName = "lastName4", EmailAddress = "firstname4.lastname4@test.com", PatchId = Guid.NewGuid()},
-            new StaffStub{FirstName = "firstName5", LastName = "lastName5", EmailAddress = "firstname5.lastname5@test.com", PatchId = Guid.NewGuid()}
+            Staff.Create("firstName1", "lastName1", "firstName1.lastName1@test.com", new List<StaffPatch>{ _fixture.Create<StaffPatch>() }),
+            Staff.Create("firstName3", "lastName3", "firstName3.lastName3@test.com", new List<StaffPatch>{ _fixture.Create<StaffPatch>() }),
+            Staff.Create("firstName4", "lastName4", "firstName4.lastName4@test.com", new List<StaffPatch>{ _fixture.Create<StaffPatch>() }),
+            Staff.Create("firstName2", "lastName2", "firstName2.lastName2@test.com", new List<StaffPatch>{ _fixture.Create<StaffPatch>() }),
+            Staff.Create("firstName5", "lastName5", "firstName5.lastName5@test.com", new List<StaffPatch>{ _fixture.Create<StaffPatch>() })
         };
 
         public StaffFixture(IElasticClient elasticClient, HttpClient httpClient) : base(elasticClient, httpClient)
@@ -38,7 +43,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(INDEX, staffSettingsDoc)
                     .ConfigureAwait(true);
 
-                var staff = CreateStaffData();
+                var staff = Staffs.Select(x => x.ToDatabase());
                 var awaitable = ElasticSearchClient.IndexManyAsync(staff, INDEX).ConfigureAwait(true);
 
                 while (!awaitable.GetAwaiter().IsCompleted)
@@ -73,33 +78,5 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             Thread.Sleep(5000);
         }
-
-        private List<QueryableStaff> CreateStaffData()
-        {
-            var listOfStaffs = new List<QueryableStaff>();
-            var fixture = new Fixture();
-            var random = new Random();
-
-            foreach (var value in Staffs)
-            {
-                var staff = fixture.Create<QueryableStaff>();
-                staff.FirstName = value.FirstName;
-                staff.LastName = value.LastName;
-                staff.EmailAddress = value.EmailAddress;
-                staff.PatchId = value.PatchId;
-                listOfStaffs.Add(staff);
-            }
-
-            return listOfStaffs;
-        }
-    }
-
-    public class StaffStub
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string EmailAddress { get; set; }
-        public Guid? PatchId { get; set; }
-
     }
 }

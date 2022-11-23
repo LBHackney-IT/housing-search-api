@@ -14,5 +14,6 @@ namespace HousingSearchApi.V1.Gateways.Interfaces
         Task<GetAccountListResponse> GetListOfAccounts(GetAccountListRequest query);
         Task<GetTransactionListResponse> GetListOfTransactions(GetTransactionListRequest request);
         Task<GetStaffListResponse> GetListOfStaffs(GetStaffListRequest query);
+        Task<GetProcessListResponse> GetListOfProcesses(GetProcessListRequest query);
     }
 }

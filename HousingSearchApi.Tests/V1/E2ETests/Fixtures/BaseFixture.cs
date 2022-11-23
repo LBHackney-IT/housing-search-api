@@ -1,6 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
+using Amazon.DynamoDBv2;
+using Hackney.Shared.HousingSearch.Domain.Process;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Nest;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
