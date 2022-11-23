@@ -9,7 +9,7 @@ namespace HousingSearchApi.V1.Infrastructure
     {
         public static Predicate<QueryableRelatedEntity> GetPersonDetails()
         {
-            return x => x.TargetType == TargetType.person.ToString();
+            return x => x.TargetType == TargetType.person.ToString() && x.SubType == SubType.tenant.ToString();
         }
     }
 }
