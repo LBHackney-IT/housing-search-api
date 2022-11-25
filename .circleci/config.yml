@@ -15,7 +15,7 @@ executors:
       - image: hashicorp/terraform:1.0.11
   docker-dotnet:
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image: mcr.microsoft.com/dotnet/sdk:6.0
 
 references:
   workspace_root: &workspace_root "~"
