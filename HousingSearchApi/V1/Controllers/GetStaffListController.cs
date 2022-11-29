@@ -27,7 +27,7 @@ namespace HousingSearchApi.V1.Controllers
         [ProducesResponseType(typeof(APIResponse<NotFoundException>), 404)]
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
         [HttpGet, MapToApiVersion("1")]
-        [LogCall(LogLevel.Information)]
+        [LogCall(Microsoft.Extensions.Logging.LogLevel.Information)]
         public async Task<IActionResult> GetStaffList([FromQuery] GetStaffListRequest request)
         {
             try

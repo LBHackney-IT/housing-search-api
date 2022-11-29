@@ -22,16 +22,29 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             if (!(request is GetTenureListRequest tenureListRequest))
                 throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
 
-            if (string.IsNullOrWhiteSpace(tenureListRequest.SearchText)) return null;
+            if (tenureListRequest.SearchText != null && tenureListRequest.SearchText.Length > 0)
+            {
 
-            return _queryBuilder
+                return _queryBuilder
                 .WithWildstarQuery(tenureListRequest.SearchText, new List<string>
                 {
                     "paymentReference",
                     "tenuredAsset.fullAddress^3",
                     "householdMembers",
                     "householdMembers.fullName^3"
-                }).Build(q);
+                })
+                .Build(q);
+            }
+            else
+            {
+                return _queryBuilder
+                .WithExactQuery(tenureListRequest.Uprn,
+                new List<string>
+                {
+                    "tenuredAsset.uprn",
+                })
+                .Build(q);
+            }
         }
     }
 }
