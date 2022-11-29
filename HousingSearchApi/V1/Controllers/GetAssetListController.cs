@@ -30,7 +30,7 @@ namespace HousingSearchApi.V1.Controllers
         [ProducesResponseType(typeof(APIResponse<NotFoundException>), 404)]
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
         [HttpGet, MapToApiVersion("1")]
-        [LogCall(LogLevel.Information)]
+        [LogCall(Microsoft.Extensions.Logging.LogLevel.Information)]
         public async Task<IActionResult> GetAssetList([FromQuery] GetAssetListRequest request)
         {
             try
@@ -53,7 +53,7 @@ namespace HousingSearchApi.V1.Controllers
         [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
         [Route("all")]
         [HttpGet, MapToApiVersion("1")]
-        [LogCall(LogLevel.Information)]
+        [LogCall(Microsoft.Extensions.Logging.LogLevel.Information)]
         public async Task<IActionResult> GetAllAssetList([FromQuery] GetAllAssetListRequest request)
         {
             try

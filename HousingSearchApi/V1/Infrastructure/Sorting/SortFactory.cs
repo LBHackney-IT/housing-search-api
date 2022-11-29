@@ -1,4 +1,5 @@
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
+using Hackney.Shared.HousingSearch.Gateways.Models.Processes;
 using Hackney.Shared.HousingSearch.Gateways.Models.Transactions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Interfaces.Sorting;
@@ -40,6 +41,42 @@ namespace HousingSearchApi.V1.Infrastructure.Sorting
             if (typeof(T) == typeof(QueryableTransaction))
             {
                 return (ISort<T>) new TransactionDateDesc();
+            }
+
+            if (typeof(T) == typeof(QueryableProcess))
+            {
+                var sortBy = ((HousingSearchRequest) (object) request).SortBy;
+                if (string.IsNullOrEmpty(sortBy))
+                    return new DefaultSort<T>();
+
+                if (((HousingSearchRequest) (object) request).IsDesc)
+                {
+                    switch (sortBy)
+                    {
+                        case "name":
+                            return (ISort<T>) new PersonNameDesc();
+                        case "process":
+                            return (ISort<T>) new ProcessNameDesc();
+                        case "patch":
+                            return (ISort<T>) new PatchDesc();
+                        case "state":
+                            return (ISort<T>) new StateDesc();
+                    }
+                }
+                else
+                {
+                    switch (sortBy)
+                    {
+                        case "name":
+                            return (ISort<T>) new PersonNameAsc();
+                        case "process":
+                            return (ISort<T>) new ProcessNameAsc();
+                        case "patch":
+                            return (ISort<T>) new PatchAsc();
+                        case "state":
+                            return (ISort<T>) new StateAsc();
+                    }
+                }
             }
 
             return new DefaultSort<T>();

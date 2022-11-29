@@ -80,8 +80,7 @@ namespace HousingSearchApi
                     {
                         NamingStrategy = new CamelCaseNamingStrategy()
                     };
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                });
 
             services.AddApiVersioning(o =>
             {

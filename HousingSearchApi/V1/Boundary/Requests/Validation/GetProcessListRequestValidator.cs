@@ -1,6 +1,5 @@
 using FluentValidation;
 using Hackney.Core.Validation;
-using System;
 
 namespace HousingSearchApi.V1.Boundary.Requests.Validation
 {
