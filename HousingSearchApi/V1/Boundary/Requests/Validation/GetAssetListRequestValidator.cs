@@ -7,8 +7,7 @@ namespace HousingSearchApi.V1.Boundary.Requests.Validation
     {
         public GetAssetListRequestValidator()
         {
-            RuleFor(x => x.SearchText).NotNull()
-                                      .NotEmpty()
+            RuleFor(x => x.SearchText)
                                       .MinimumLength(2)
                                       .NotXssString();
             RuleFor(x => x.PageSize).GreaterThan(0);

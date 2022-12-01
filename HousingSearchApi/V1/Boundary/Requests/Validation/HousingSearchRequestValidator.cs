@@ -7,15 +7,12 @@ namespace HousingSearchApi.V1.Boundary.Requests.Validation
     {
         public HousingSearchRequestValidator()
         {
-            When(u => u.Uprn == null, () =>
-            {
-                RuleFor(x => x.SearchText).NotNull()
+            RuleFor(x => x.SearchText).NotNull()
                                       .NotEmpty()
                                       .MinimumLength(2)
                                       .NotXssString();
-                RuleFor(x => x.PageSize).GreaterThan(0);
-                RuleFor(x => x.SortBy).NotXssString();
-            });
+            RuleFor(x => x.PageSize).GreaterThan(0);
+            RuleFor(x => x.SortBy).NotXssString();
         }
     }
 }
