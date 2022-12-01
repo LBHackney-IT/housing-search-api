@@ -22,6 +22,11 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             if (!(request is GetTenureListRequest tenureListRequest))
                 throw new ArgumentNullException($"{nameof(request)} shouldn't be null.");
 
+            if (string.IsNullOrEmpty(tenureListRequest.SearchText) && string.IsNullOrEmpty(tenureListRequest.Uprn))
+            {
+                throw new ArgumentNullException($"{nameof(request).ToString()} should include seachText or Uprn.");
+            }
+
             if (tenureListRequest.SearchText != null && tenureListRequest.SearchText.Length > 0)
             {
 
