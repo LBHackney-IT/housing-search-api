@@ -20,7 +20,12 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
         public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryableTenure> q)
         {
             if (!(request is GetTenureListRequest tenureListRequest))
-                throw new ArgumentNullException($"{nameof(request).ToString()} shouldn't be null.");
+                throw new ArgumentNullException($"{nameof(request)} shouldn't be null.");
+
+            if (string.IsNullOrEmpty(tenureListRequest.SearchText) && string.IsNullOrEmpty(tenureListRequest.Uprn))
+            {
+                throw new ArgumentNullException($"{nameof(request).ToString()} should include seachText or Uprn.");
+            }
 
             if (tenureListRequest.SearchText != null && tenureListRequest.SearchText.Length > 0)
             {
