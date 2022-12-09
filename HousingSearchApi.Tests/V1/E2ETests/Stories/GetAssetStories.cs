@@ -122,5 +122,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenFloorNoShouldBeInResult(floorNo))
                 .BDDfy();
         }
+
+        [Fact]
+        public void ServiceReturnsExactMatchOnlyWhenIsFilteredQueryTrue()
+        {
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenAnExactMatchExistsAndIsFilteredQueryTrue("N1 6TY"))
+                .Then(t => _steps.ThenThatAddressShouldBeTheOnlyResult("N1 6TY"))
+                .BDDfy();
+        }
     }
 }

@@ -90,6 +90,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
 
+
+        public async Task WhenAnExactMatchExistsAndIsFilteredQueryTrue(string address)
+        {
+            var route = new Uri($"api/v1/search/assets?searchText={address}&isFilteredQuery=true&pageSize={1}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+
         public async Task ThenTheReturningResultsShouldBeOfThatSize(int pageSize)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -132,6 +141,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.First().AssetAddress.AddressLine1.Should().Be(address);
+        }
+
+        public async Task ThenThatAddressShouldBeTheOnlyResult(string address)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Assets.First().AssetAddress.PostCode.Should().Be(address);
+            result.Results.Assets.Count().Should().Be(1);
         }
 
         public async Task ThenOnlyAllAssetsResponseTheseAssetStatusesShouldBeIncluded(string allowedAssetStatus)
