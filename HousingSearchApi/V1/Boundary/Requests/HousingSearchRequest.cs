@@ -35,5 +35,8 @@ namespace HousingSearchApi.V1.Boundary.Requests
 
         [FromQuery(Name = "issimplequery")]
         public bool IsSimpleQuery { get; set; }
+
+        [FromQuery(Name = "isFilteredQuery")]
+        public bool IsFilteredQuery { get; set; }
     }
 }
