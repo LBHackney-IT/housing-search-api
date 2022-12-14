@@ -89,7 +89,7 @@ namespace HousingSearchApi.V1.Gateways
                 queryableAsset.CreateAll())
             );
 
-            if (query.IsFilteredQuery)
+            if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText))
             {
                 FilterResponse(query, assetListResponse);
                 assetListResponse.SetTotal(assetListResponse.Assets.Count);
