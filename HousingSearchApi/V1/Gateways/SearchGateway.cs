@@ -16,6 +16,7 @@ using HousingSearchApi.V1.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
 using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
@@ -81,6 +82,21 @@ namespace HousingSearchApi.V1.Gateways
         [LogCall]
         public async Task<GetAllAssetListResponse> GetListOfAssetsSets(GetAllAssetListRequest query)
         {
+            if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText) && query.SearchText.Length >= 5
+                && query.SearchText.Length <= 7 && !query.SearchText.Contains(" ") && query.SearchText.Any(char.IsDigit))
+            {
+                var regex = @"^(GIR 0AA)|[a-z-[qvx]](?:\d|\d{2}|[a-z-[qvx]]\d|[a-z-[qvx]]\d[a-z-[qvx]]|[a-z-[qvx]]\d{2})(?:\s?\d[a-z-[qvx]]{2})?$";
+
+                Match match = Regex.Match(query.SearchText, regex, RegexOptions.IgnoreCase);
+
+                if (match.Success)
+                {
+                    var beginningOfPostcode = query.SearchText.Substring(0, query.SearchText.Length - 3);
+                    var endOfPostcode = query.SearchText.Substring(query.SearchText.Length - 3);
+                    query.SearchText = beginningOfPostcode + " " + endOfPostcode;
+                }
+            }
+
             var searchResponse = await _elasticSearchWrapper.SearchSets<QueryableAsset, GetAllAssetListRequest>(query).ConfigureAwait(false);
             var assetListResponse = new GetAllAssetListResponse();
 
@@ -89,7 +105,7 @@ namespace HousingSearchApi.V1.Gateways
                 queryableAsset.CreateAll())
             );
 
-            if (query.IsFilteredQuery)
+            if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText))
             {
                 FilterResponse(query, assetListResponse);
                 assetListResponse.SetTotal(assetListResponse.Assets.Count);
