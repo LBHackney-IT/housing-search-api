@@ -33,11 +33,6 @@ namespace HousingSearchApi.V1.Controllers
         [LogCall(Microsoft.Extensions.Logging.LogLevel.Information)]
         public async Task<IActionResult> GetAssetList([FromQuery] GetAssetListRequest request)
         {
-            // Validate query parameters
-
-            // conditionally override pageSize to '400'
-            // ignore page, sortBy, isDesc
-
             if (request.UseCustomSorting && RequestIncludesOtherSortParameters(request))
             {
                 return BadRequest($"UseCustomSorting is True. You cannot use other sort parameters, such as {nameof(request.Page)}, or {nameof(request.PageSize)}");

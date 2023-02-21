@@ -71,18 +71,16 @@ namespace HousingSearchApi.V1.Gateways
 
             if (query.UseCustomSorting)
             {
-                // Override pageSize to 
+                // Override pageSize with CustomSortPageSize
                 // CustomSorting fetches lots of results in one go
                 // and does filtering/sorting on that
-                // therefore pageSize is redundant for this useCase
+                // therefore pageSize (pagination) is redundant for this useCase
                 query.PageSize = CustomSortPageSize;
             }
 
             var searchResponse = await _elasticSearchWrapper
                 .Search<QueryableAsset, GetAssetListRequest>(query)
                 .ConfigureAwait(false);
-
-            // ignore page, sortBy, isDesc
 
             var response = searchResponse.ToResponse();
 
@@ -97,7 +95,6 @@ namespace HousingSearchApi.V1.Gateways
         [LogCall]
         public async Task<GetAllAssetListResponse> GetListOfAssetsSets(GetAllAssetListRequest query)
         {
-            // WTF does this do? :)
             if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText) && query.SearchText.Length >= 5
                 && query.SearchText.Length <= 7 && !query.SearchText.Contains(" ") && query.SearchText.Any(char.IsDigit))
             {
