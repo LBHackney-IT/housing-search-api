@@ -11,7 +11,7 @@ using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Transactions;
 using HousingSearchApi.V1.Factories;
 using HousingSearchApi.V1.Gateways.Interfaces;
-using HousingSearchApi.V1.Helper;
+using HousingSearchApi.V1.Helper.Interfaces;
 using HousingSearchApi.V1.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -26,12 +26,12 @@ namespace HousingSearchApi.V1.Gateways
     public class SearchGateway : ISearchGateway
     {
         private readonly IElasticSearchWrapper _elasticSearchWrapper;
-        private readonly IComparer<AssetAddress> _comparer;
+        private readonly ICustomAddressSorter _customAddressSorter;
 
-        public SearchGateway(IElasticSearchWrapper elasticSearchWrapper, IComparer<AssetAddress> comparer)
+        public SearchGateway(IElasticSearchWrapper elasticSearchWrapper, ICustomAddressSorter customAddressSorter)
         {
             _elasticSearchWrapper = elasticSearchWrapper;
-            _comparer = comparer;
+            _customAddressSorter = customAddressSorter;
         }
 
         [LogCall]
@@ -107,7 +107,8 @@ namespace HousingSearchApi.V1.Gateways
 
             if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText))
             {
-                FilterResponse(query, assetListResponse);
+                _customAddressSorter.FilterResponse(query, assetListResponse);
+
                 assetListResponse.SetTotal(assetListResponse.Assets.Count);
             }
             else
@@ -189,17 +190,7 @@ namespace HousingSearchApi.V1.Gateways
             return GetTransactionListResponse.Create(searchResponse.Total, transactions.ToResponse());
         }
 
-        public void FilterResponse(HousingSearchRequest searchModel, GetAllAssetListResponse content)
-        {
-            if (content == null || content.Assets == null) return;
 
-            content.Assets = content.Assets
-                .Where(x => AddressSearchHelper.MatchAddress(x, searchModel))
-                .OrderBy(x => x.AssetType)
-                .ThenBy(x => x.AssetAddress.PostCode)
-                .ThenBy(y => y.AssetAddress, _comparer)
-                .ToList();
-        }
 
     }
 }
