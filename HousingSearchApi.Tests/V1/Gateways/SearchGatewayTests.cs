@@ -13,9 +13,11 @@ using Moq;
 using Nest;
 using NUnit.Framework;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Gateways
 {
+    [Collection("LogCall collection")]
     public class SearchGatewayTests
     {
         private readonly SearchGateway _searchGateway;
@@ -26,6 +28,8 @@ namespace HousingSearchApi.Tests.V1.Gateways
 
         public SearchGatewayTests()
         {
+            new LogCallAspectFixture().RunBeforeTests();
+
             _elasticSearchWrapperMock = new Mock<IElasticSearchWrapper>();
             _customAddressSorterMock = new Mock<ICustomAddressSorter>();
 
@@ -35,7 +39,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
             );
         }
 
-        [Test]
+        [Fact]
         public async Task GetListOfAssets_WhenCustomSortingFalse_DoesntUseCustomSort()
         {
             // Arrange
@@ -60,7 +64,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
                 .Verify(x => x.FilterResponse(query, It.IsAny<GetAssetListResponse>()), Times.Never);
         }
 
-        [Test]
+        [Fact]
         public async Task GetListOfAssets_WhenCustomSortingTrue_OverridesPageSize()
         {
             // Arrange
@@ -82,7 +86,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
             query.PageSize.Should().Be(400);
         }
 
-        [Test]
+        [Fact]
         public async Task GetListOfAssets_WhenCustomSortingTrue_CallsCustomAddressSorter()
         {
             // Arrange
