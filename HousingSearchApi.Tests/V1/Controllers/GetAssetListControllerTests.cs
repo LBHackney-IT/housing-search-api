@@ -1,7 +1,10 @@
+using FluentAssertions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
+using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using HousingSearchApi.V1.Controllers;
 using HousingSearchApi.V1.UseCase.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Threading.Tasks;
 using Xunit;
@@ -9,7 +12,7 @@ using Xunit;
 namespace HousingSearchApi.Tests.V1.Controllers
 {
     [Collection("LogCall collection")]
-    public class GetAssetListControllerTests
+    public class GetAssetListControllerTests : ControllerTests
     {
         private readonly Mock<IGetAssetListUseCase> _mockGetAssetListUseCase;
         private readonly Mock<IGetAssetListSetsUseCase> _mockGetAssetListSetsUseCase;
@@ -90,6 +93,34 @@ namespace HousingSearchApi.Tests.V1.Controllers
 
             // then
             _mockGetAssetListSetsUseCase.Verify(x => x.ExecuteAsync(request), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAssetReturnsBadRequestWhenUseCustomSortingTrueAndOtherSearchParametersIncluded()
+        {
+            // given
+            var request = new GetAssetListRequest()
+            {
+                UseCustomSorting = true,
+                Page = 1,
+                SortBy = "Something"
+            };
+
+            var useCaseResponse = new GetAssetListResponse();
+
+            _mockGetAssetListUseCase
+                .Setup(x => x.ExecuteAsync(request))
+                .ReturnsAsync(useCaseResponse);
+
+            // when
+            var response = await _classUnderTest
+                .GetAssetList(request)
+                .ConfigureAwait(false);
+
+            // then
+            var statusCode = GetStatusCode(response);
+
+            statusCode.Should().Be(400);
         }
     }
 }

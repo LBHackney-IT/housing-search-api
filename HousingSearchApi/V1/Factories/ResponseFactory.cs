@@ -56,7 +56,7 @@ namespace HousingSearchApi.V1.Factories
             response.SetTotal(searchResponse.Total);
 
             return response;
-            
+
         }
     }
 }
