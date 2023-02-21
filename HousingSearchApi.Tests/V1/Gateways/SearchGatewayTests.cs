@@ -12,6 +12,7 @@ using HousingSearchApi.V1.Interfaces;
 using Moq;
 using Nest;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace HousingSearchApi.Tests.V1.Gateways
 {
@@ -35,7 +36,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
         }
 
         [Test]
-        public async void GetListOfAssets_WhenCustomSortingFalse_DoesntUseCustomSort()
+        public async Task GetListOfAssets_WhenCustomSortingFalse_DoesntUseCustomSort()
         {
             // Arrange
             var query = new GetAssetListRequest
@@ -60,7 +61,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
         }
 
         [Test]
-        public async void GetListOfAssets_WhenCustomSortingTrue_OverridesPageSize()
+        public async Task GetListOfAssets_WhenCustomSortingTrue_OverridesPageSize()
         {
             // Arrange
             var query = new GetAssetListRequest
@@ -82,7 +83,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
         }
 
         [Test]
-        public async void GetListOfAssets_WhenCustomSortingTrue_CallsCustomAddressSorter()
+        public async Task GetListOfAssets_WhenCustomSortingTrue_CallsCustomAddressSorter()
         {
             // Arrange
             var query = new GetAssetListRequest
