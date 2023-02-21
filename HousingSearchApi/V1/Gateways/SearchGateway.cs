@@ -67,21 +67,37 @@ namespace HousingSearchApi.V1.Gateways
         [LogCall]
         public async Task<GetAssetListResponse> GetListOfAssets(GetAssetListRequest query)
         {
-            var searchResponse = await _elasticSearchWrapper.Search<QueryableAsset, GetAssetListRequest>(query).ConfigureAwait(false);
-            var assetListResponse = new GetAssetListResponse();
+            const int CustomSortPageSize = 400;
 
-            assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
-                queryableAsset.Create())
-            );
+            if (query.UseCustomSorting)
+            {
+                // Override pageSize to 
+                // CustomSorting fetches lots of results in one go
+                // and does filtering/sorting on that
+                // therefore pageSize is redundant for this useCase
+                query.PageSize = CustomSortPageSize;
+            }
 
-            assetListResponse.SetTotal(searchResponse.Total);
+            var searchResponse = await _elasticSearchWrapper
+                .Search<QueryableAsset, GetAssetListRequest>(query)
+                .ConfigureAwait(false);
 
-            return assetListResponse;
+            // ignore page, sortBy, isDesc
+
+            var response = searchResponse.ToResponse();
+
+            if (query.UseCustomSorting)
+            {
+                _customAddressSorter.FilterResponse(query, response);
+            }
+
+            return response;
         }
 
         [LogCall]
         public async Task<GetAllAssetListResponse> GetListOfAssetsSets(GetAllAssetListRequest query)
         {
+            // WTF does this do? :)
             if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText) && query.SearchText.Length >= 5
                 && query.SearchText.Length <= 7 && !query.SearchText.Contains(" ") && query.SearchText.Any(char.IsDigit))
             {

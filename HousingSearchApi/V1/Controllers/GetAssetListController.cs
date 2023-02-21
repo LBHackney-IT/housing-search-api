@@ -33,11 +33,26 @@ namespace HousingSearchApi.V1.Controllers
         [LogCall(Microsoft.Extensions.Logging.LogLevel.Information)]
         public async Task<IActionResult> GetAssetList([FromQuery] GetAssetListRequest request)
         {
+            // Validate query parameters
+
+            // conditionally override pageSize to '400'
+            // ignore page, sortBy, isDesc
+
+            if (request.UseCustomSorting && RequestIncludesOtherSortParameters(request))
+            {
+                return BadRequest($"UseCustomSorting is True. You cannot use other sort parameters, such as {nameof(request.Page)}, or {nameof(request.PageSize)}");
+            }
+
             try
             {
-                var assetsSearchResult = await _getAssetListUseCase.ExecuteAsync(request).ConfigureAwait(false);
-                var apiResponse = new APIResponse<GetAssetListResponse>(assetsSearchResult);
-                apiResponse.Total = assetsSearchResult.Total();
+                var assetsSearchResult = await _getAssetListUseCase
+                    .ExecuteAsync(request)
+                    .ConfigureAwait(false);
+
+                var apiResponse = new APIResponse<GetAssetListResponse>(assetsSearchResult)
+                {
+                    Total = assetsSearchResult.Total()
+                };
 
                 return new OkObjectResult(apiResponse);
             }
@@ -46,6 +61,12 @@ namespace HousingSearchApi.V1.Controllers
                 LambdaLogger.Log(e.Message + e.StackTrace);
                 return new BadRequestObjectResult(e.Message);
             }
+        }
+
+        private static bool RequestIncludesOtherSortParameters(GetAssetListRequest request)
+        {
+            return request.Page != 0
+                || !string.IsNullOrEmpty(request.SortBy);
         }
 
         [ProducesResponseType(typeof(APIResponse<GetAllAssetListResponse>), 200)]

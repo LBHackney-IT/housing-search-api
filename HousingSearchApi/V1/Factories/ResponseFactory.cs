@@ -1,5 +1,8 @@
 using Hackney.Shared.HousingSearch.Domain.Transactions;
+using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
+using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Transactions;
+using Nest;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -39,6 +42,21 @@ namespace HousingSearchApi.V1.Factories
             return domainList == null ?
                 new List<TransactionResponse>() :
                 domainList.Select(domain => domain.ToResponse()).ToList();
+        }
+
+        public static GetAssetListResponse ToResponse(this ISearchResponse<QueryableAsset> searchResponse)
+        {
+            var response = new GetAssetListResponse
+            {
+                Assets = searchResponse.Documents
+                    .Select(queryableAsset => queryableAsset.Create())
+                    .ToList()
+            };
+
+            response.SetTotal(searchResponse.Total);
+
+            return response;
+            
         }
     }
 }

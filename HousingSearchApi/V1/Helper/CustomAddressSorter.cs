@@ -1,6 +1,7 @@
 using Hackney.Shared.HousingSearch.Domain.Asset;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
+using HousingSearchApi.V1.Helper.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace HousingSearchApi.V1.Helper
             _comparer = comparer;
         }
 
-        public void FilterResponse(HousingSearchRequest searchModel, GetAllAssetListResponse content)
+        public void FilterResponse(HousingSearchRequest searchModel, GetAssetListResponse content)
         {
             if (content == null || content.Assets == null) return;
 

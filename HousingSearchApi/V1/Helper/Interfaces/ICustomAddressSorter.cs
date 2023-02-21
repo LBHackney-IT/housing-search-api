@@ -5,6 +5,6 @@ namespace HousingSearchApi.V1.Helper.Interfaces
 {
     public interface ICustomAddressSorter
     {
-        void FilterResponse(HousingSearchRequest searchModel, GetAllAssetListResponse content);
+        void FilterResponse(HousingSearchRequest searchModel, GetAssetListResponse content);
     }
 }
