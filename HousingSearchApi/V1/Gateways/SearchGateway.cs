@@ -11,7 +11,7 @@ using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Transactions;
 using HousingSearchApi.V1.Factories;
 using HousingSearchApi.V1.Gateways.Interfaces;
-using HousingSearchApi.V1.Helper;
+using HousingSearchApi.V1.Helper.Interfaces;
 using HousingSearchApi.V1.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -26,12 +26,12 @@ namespace HousingSearchApi.V1.Gateways
     public class SearchGateway : ISearchGateway
     {
         private readonly IElasticSearchWrapper _elasticSearchWrapper;
-        private readonly IComparer<AssetAddress> _comparer;
+        private readonly ICustomAddressSorter _customAddressSorter;
 
-        public SearchGateway(IElasticSearchWrapper elasticSearchWrapper, IComparer<AssetAddress> comparer)
+        public SearchGateway(IElasticSearchWrapper elasticSearchWrapper, ICustomAddressSorter customAddressSorter)
         {
             _elasticSearchWrapper = elasticSearchWrapper;
-            _comparer = comparer;
+            _customAddressSorter = customAddressSorter;
         }
 
         [LogCall]
@@ -67,16 +67,29 @@ namespace HousingSearchApi.V1.Gateways
         [LogCall]
         public async Task<GetAssetListResponse> GetListOfAssets(GetAssetListRequest query)
         {
-            var searchResponse = await _elasticSearchWrapper.Search<QueryableAsset, GetAssetListRequest>(query).ConfigureAwait(false);
-            var assetListResponse = new GetAssetListResponse();
+            const int CustomSortPageSize = 400;
 
-            assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
-                queryableAsset.Create())
-            );
+            if (query.UseCustomSorting)
+            {
+                // Override pageSize with CustomSortPageSize
+                // CustomSorting fetches lots of results in one go
+                // and does filtering/sorting on that
+                // therefore pageSize (pagination) is redundant for this useCase
+                query.PageSize = CustomSortPageSize;
+            }
 
-            assetListResponse.SetTotal(searchResponse.Total);
+            var searchResponse = await _elasticSearchWrapper
+                .Search<QueryableAsset, GetAssetListRequest>(query)
+                .ConfigureAwait(false);
 
-            return assetListResponse;
+            var response = searchResponse.ToResponse();
+
+            if (query.UseCustomSorting)
+            {
+                _customAddressSorter.FilterResponse(query, response);
+            }
+
+            return response;
         }
 
         [LogCall]
@@ -107,7 +120,8 @@ namespace HousingSearchApi.V1.Gateways
 
             if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText))
             {
-                FilterResponse(query, assetListResponse);
+                _customAddressSorter.FilterResponse(query, assetListResponse);
+
                 assetListResponse.SetTotal(assetListResponse.Assets.Count);
             }
             else
@@ -189,17 +203,7 @@ namespace HousingSearchApi.V1.Gateways
             return GetTransactionListResponse.Create(searchResponse.Total, transactions.ToResponse());
         }
 
-        public void FilterResponse(HousingSearchRequest searchModel, GetAllAssetListResponse content)
-        {
-            if (content == null || content.Assets == null) return;
 
-            content.Assets = content.Assets
-                .Where(x => AddressSearchHelper.MatchAddress(x, searchModel))
-                .OrderBy(x => x.AssetType)
-                .ThenBy(x => x.AssetAddress.PostCode)
-                .ThenBy(y => y.AssetAddress, _comparer)
-                .ToList();
-        }
 
     }
 }
