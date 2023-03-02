@@ -44,9 +44,11 @@ namespace HousingSearchApi.V1.Controllers
                     .ExecuteAsync(request)
                     .ConfigureAwait(false);
 
+                var totalResults = request.UseCustomSorting ? assetsSearchResult.Assets.Count : assetsSearchResult.Total();
+
                 var apiResponse = new APIResponse<GetAssetListResponse>(assetsSearchResult)
                 {
-                    Total = assetsSearchResult.Total()
+                    Total = totalResults
                 };
 
                 return new OkObjectResult(apiResponse);
