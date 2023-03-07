@@ -43,6 +43,9 @@ using HousingSearchApi.V1.Infrastructure.Sorting;
 using HousingSearchApi.V1.Interfaces.Factories;
 using HousingSearchApi.V1.Interfaces.Filtering;
 using HousingSearchApi.V1.Infrastructure.Core;
+using Hackney.Shared.HousingSearch.Domain.Asset;
+using HousingSearchApi.V1.Helper;
+using HousingSearchApi.V1.Helper.Interfaces;
 
 namespace HousingSearchApi
 {
@@ -160,6 +163,8 @@ namespace HousingSearchApi
             services.AddScoped<IWildCardAppenderAndPrepender, WildCardAppenderAndPrepender>();
             services.AddScoped<IQueryFactory, QueryFactory>();
             services.AddScoped<IIndexSelector, IndexSelector>();
+            services.AddSingleton<IComparer<AssetAddress>, AddressComparer>();
+            services.AddSingleton<ICustomAddressSorter, CustomAddressSorter>();
 
             services.AddLogCallAspect();
         }

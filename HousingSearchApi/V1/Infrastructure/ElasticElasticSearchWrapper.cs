@@ -45,7 +45,7 @@ namespace HousingSearchApi.V1.Infrastructure
                 if (request == null)
                     return new SearchResponse<T>();
 
-                HousingSearchRequest searchRequest = (HousingSearchRequest) (object) request;
+                var searchRequest = (HousingSearchRequest) (object) request;
 
                 var pageOffset = _pagingHelper.GetPageOffset(searchRequest.PageSize, searchRequest.Page);
 

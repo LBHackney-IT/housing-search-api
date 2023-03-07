@@ -1,4 +1,5 @@
 using Hackney.Core.Logging;
+using Hackney.Shared.HousingSearch.Domain.Asset;
 using Hackney.Shared.HousingSearch.Factories;
 using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
@@ -10,9 +11,12 @@ using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Transactions;
 using HousingSearchApi.V1.Factories;
 using HousingSearchApi.V1.Gateways.Interfaces;
+using HousingSearchApi.V1.Helper.Interfaces;
 using HousingSearchApi.V1.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
 using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
@@ -22,10 +26,12 @@ namespace HousingSearchApi.V1.Gateways
     public class SearchGateway : ISearchGateway
     {
         private readonly IElasticSearchWrapper _elasticSearchWrapper;
+        private readonly ICustomAddressSorter _customAddressSorter;
 
-        public SearchGateway(IElasticSearchWrapper elasticSearchWrapper)
+        public SearchGateway(IElasticSearchWrapper elasticSearchWrapper, ICustomAddressSorter customAddressSorter)
         {
             _elasticSearchWrapper = elasticSearchWrapper;
+            _customAddressSorter = customAddressSorter;
         }
 
         [LogCall]
@@ -61,21 +67,49 @@ namespace HousingSearchApi.V1.Gateways
         [LogCall]
         public async Task<GetAssetListResponse> GetListOfAssets(GetAssetListRequest query)
         {
-            var searchResponse = await _elasticSearchWrapper.Search<QueryableAsset, GetAssetListRequest>(query).ConfigureAwait(false);
-            var assetListResponse = new GetAssetListResponse();
+            const int CustomSortPageSize = 400;
 
-            assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
-                queryableAsset.Create())
-            );
+            if (query.UseCustomSorting)
+            {
+                // Override pageSize with CustomSortPageSize
+                // CustomSorting fetches lots of results in one go
+                // and does filtering/sorting on that
+                // therefore pageSize (pagination) is redundant for this useCase
+                query.PageSize = CustomSortPageSize;
+            }
 
-            assetListResponse.SetTotal(searchResponse.Total);
+            var searchResponse = await _elasticSearchWrapper
+                .Search<QueryableAsset, GetAssetListRequest>(query)
+                .ConfigureAwait(false);
 
-            return assetListResponse;
+            var response = searchResponse.ToResponse();
+
+            if (query.UseCustomSorting)
+            {
+                _customAddressSorter.FilterResponse(query, response);
+            }
+
+            return response;
         }
 
         [LogCall]
         public async Task<GetAllAssetListResponse> GetListOfAssetsSets(GetAllAssetListRequest query)
         {
+            if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText) && query.SearchText.Length >= 5
+                && query.SearchText.Length <= 7 && !query.SearchText.Contains(" ") && query.SearchText.Any(char.IsDigit))
+            {
+                var regex = @"^(GIR 0AA)|[a-z-[qvx]](?:\d|\d{2}|[a-z-[qvx]]\d|[a-z-[qvx]]\d[a-z-[qvx]]|[a-z-[qvx]]\d{2})(?:\s?\d[a-z-[qvx]]{2})?$";
+
+                Match match = Regex.Match(query.SearchText, regex, RegexOptions.IgnoreCase);
+
+                if (match.Success)
+                {
+                    var beginningOfPostcode = query.SearchText.Substring(0, query.SearchText.Length - 3);
+                    var endOfPostcode = query.SearchText.Substring(query.SearchText.Length - 3);
+                    query.SearchText = beginningOfPostcode + " " + endOfPostcode;
+                }
+            }
+
             var searchResponse = await _elasticSearchWrapper.SearchSets<QueryableAsset, GetAllAssetListRequest>(query).ConfigureAwait(false);
             var assetListResponse = new GetAllAssetListResponse();
 
@@ -84,11 +118,23 @@ namespace HousingSearchApi.V1.Gateways
                 queryableAsset.CreateAll())
             );
 
-            assetListResponse.SetTotal(searchResponse.Total);
+            if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText))
+            {
+                _customAddressSorter.FilterResponse(query, assetListResponse);
+
+                assetListResponse.SetTotal(assetListResponse.Assets.Count);
+            }
+            else
+            {
+                assetListResponse.SetTotal(searchResponse.Total);
+            }
+
             if (searchResponse.Documents.Count > 0)
             {
                 assetListResponse.SetLastHitId(searchResponse.Hits.Last().Id);
             }
+
+
 
             return assetListResponse;
         }
