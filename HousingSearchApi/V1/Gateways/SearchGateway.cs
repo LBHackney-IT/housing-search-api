@@ -11,6 +11,7 @@ using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Transactions;
 using HousingSearchApi.V1.Factories;
 using HousingSearchApi.V1.Gateways.Interfaces;
+using HousingSearchApi.V1.Helper;
 using HousingSearchApi.V1.Helper.Interfaces;
 using HousingSearchApi.V1.Interfaces;
 using System;
@@ -76,6 +77,12 @@ namespace HousingSearchApi.V1.Gateways
                 // and does filtering/sorting on that
                 // therefore pageSize (pagination) is redundant for this useCase
                 query.PageSize = CustomSortPageSize;
+
+                // if searchText contains a postCode, normalize the formatting
+                if (PostCodeHelpers.SearchTextIsValidPostCode(query.SearchText))
+                {
+                    query.SearchText = PostCodeHelpers.NormalizePostcode(query.SearchText);
+                }
             }
 
             var searchResponse = await _elasticSearchWrapper
