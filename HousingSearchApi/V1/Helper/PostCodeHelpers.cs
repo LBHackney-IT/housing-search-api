@@ -22,6 +22,8 @@ namespace HousingSearchApi.V1.Helper
 
         public static bool SearchTextIsValidPostCode(string searchText)
         {
+            if (searchText == null) return false;
+
             var trimmed = searchText.Replace(" ", "");
 
             if (trimmed.Length > 7) return false;
