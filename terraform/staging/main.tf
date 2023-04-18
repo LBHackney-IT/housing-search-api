@@ -58,6 +58,10 @@ module "elasticsearch_db_staging" {
   region           = data.aws_region.current.name
   account_id       = data.aws_caller_identity.current.account_id
   zone_awareness_enabled = true
+  
+  auto_tune_options {
+    desires_state = "DISABLED"
+  }
 }
 
 resource "aws_ssm_parameter" "search_elasticsearch_domain" {
