@@ -1,7 +1,7 @@
 provider "aws" {
   region  = "eu-west-2"
-  version = "~> 2.0"
 }
+
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 locals {
@@ -14,6 +14,13 @@ terraform {
     encrypt = true
     region  = "eu-west-2"
     key     = "services/housing-search-api/state"
+  }
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 2.0"
+    }
   }
 }
 
