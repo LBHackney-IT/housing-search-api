@@ -8,6 +8,7 @@ using HousingSearchApi.V1.Helper;
 using Moq;
 using Nest;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -29,24 +30,24 @@ namespace HousingSearchApi.Tests.V1.Helper
         public void FilterResponse_WhenCalled_IncludesAddressesWithMatchingUPRN()
         {
             // Arrange
-            var asset = _fixture.Create<Asset>();
+            var assets = _fixture.CreateMany<Asset>().ToList();
 
             var content = new GetAssetListResponse
             {
-                Assets = new List<Asset> { asset }
+                Assets = assets
             };
 
             var searchModel = new GetAssetListRequest
             {
-                SearchText = asset.AssetId,
+                SearchText = assets.First().AssetId,
             };
 
             // Act
             _classUnderTest.FilterResponse(searchModel, content);
 
             // Assert
-
             content.Assets.Should().HaveCount(1);
+            content.Assets.First().AssetId.Should().Be(assets.First().AssetId);
         }
     }
 }
