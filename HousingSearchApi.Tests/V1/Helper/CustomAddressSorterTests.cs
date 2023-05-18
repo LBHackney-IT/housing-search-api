@@ -31,11 +31,13 @@ namespace HousingSearchApi.Tests.V1.Helper
             // Arrange
             var asset = _fixture.Create<Asset>();
 
-            var content = new GetAssetListResponse {
+            var content = new GetAssetListResponse
+            {
                 Assets = new List<Asset> { asset }
             };
 
-            var searchModel = new GetAssetListRequest {
+            var searchModel = new GetAssetListRequest
+            {
                 SearchText = asset.AssetId,
             };
 
