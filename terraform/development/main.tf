@@ -29,7 +29,7 @@ data "aws_subnet_ids" "development" {
   vpc_id = data.aws_vpc.development_vpc.id
   filter {
     name   = "tag:Type"
-    values = ["private"]
+    values = ["public"]
   }
 }
 
@@ -39,7 +39,7 @@ module "elasticsearch_db_development" {
   environment_name = "development"
   port             = 443
   domain_name      = "housing-search-api-es"
-  subnet_ids       = [tolist(data.aws_subnet_ids.development.ids)[0]]
+  subnet_ids       = ["subnet-05ce390ba88c42bfd"]
   project_name     = "housing-search-api"
   es_version       = "7.10"
   encrypt_at_rest  = "true"
