@@ -25,14 +25,6 @@ data "aws_vpc" "development_vpc" {
   }
 }
 
-data "aws_subnet_ids" "development" {
-  vpc_id = data.aws_vpc.development_vpc.id
-  filter {
-    name   = "tag:Type"
-    values = ["public"]
-  }
-}
-
 module "elasticsearch_db_development" {
   source           = "github.com/LBHackney-IT/aws-hackney-common-terraform.git//modules/database/elasticsearch"
   vpc_id           = data.aws_vpc.development_vpc.id
