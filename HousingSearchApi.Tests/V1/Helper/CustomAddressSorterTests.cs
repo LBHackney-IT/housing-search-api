@@ -39,7 +39,7 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             var searchModel = new GetAssetListRequest
             {
-                SearchText = assets.First().AssetId,
+                SearchText = assets.First().AssetAddress.Uprn,
             };
 
             // Act
@@ -47,7 +47,7 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             // Assert
             content.Assets.Should().HaveCount(1);
-            content.Assets.First().AssetId.Should().Be(assets.First().AssetId);
+            content.Assets.First().AssetAddress.Uprn.Should().Be(assets.First().AssetAddress.Uprn);
         }
     }
 }

@@ -38,7 +38,7 @@ namespace HousingSearchApi.V1.Helper
             if (!string.IsNullOrEmpty(asset.AssetAddress.PostCode) && asset.AssetAddress.PostCode.ToLower().Replace(" ", "").Contains(searchModel.SearchText.ToLower().Replace(" ", ""))) return true;
 
             // UPRN
-            if (!string.IsNullOrEmpty(asset.AssetId) && asset.AssetId.Trim().ToLower() == searchModel.SearchText.Trim().ToLower()) return true;
+            if (!string.IsNullOrEmpty(asset?.AssetAddress.Uprn) && asset?.AssetAddress.Uprn.Trim().ToLower() == searchModel.SearchText.Trim().ToLower()) return true;
 
             return false;
         };
