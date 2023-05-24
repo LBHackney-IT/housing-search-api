@@ -7,19 +7,20 @@ using HousingSearchApi.V1.UseCase.Interfaces;
 
 namespace HousingSearchApi.V1.UseCase
 {
-    public class GetAssetListUseCase : IGetAssetListUseCase
+    public class GetAssetRelationshipsUseCase : IGetAssetRelationshipsUseCase
     {
         private readonly ISearchGateway _searchGateway;
 
-        public GetAssetListUseCase(ISearchGateway searchGateway)
+        public GetAssetRelationshipsUseCase(ISearchGateway searchGateway)
         {
             _searchGateway = searchGateway;
         }
 
         [LogCall]
-        public async Task<GetAssetListResponse> ExecuteAsync(GetAssetListRequest housingSearchRequest)
+        public async Task<GetAssetRelationshipsResponse> ExecuteAsync(GetAssetRelationshipsRequest getAssetRelationshipsRequest)
         {
-            return await _searchGateway.GetListOfAssets(housingSearchRequest).ConfigureAwait(false);
+            // TODO: compelte response with parent and ancestor assets
+            return await _searchGateway.GetChildAssets(getAssetRelationshipsRequest).ConfigureAwait(false);
         }
     }
 }

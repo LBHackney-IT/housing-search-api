@@ -2,6 +2,8 @@ using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using System.Threading.Tasks;
 using HousingSearchApi.V1.Boundary.Responses.Transactions;
+using Hackney.Shared.HousingSearch.Domain.Asset;
+using System.Collections.Generic;
 
 namespace HousingSearchApi.V1.Gateways.Interfaces
 {
@@ -15,6 +17,6 @@ namespace HousingSearchApi.V1.Gateways.Interfaces
         Task<GetTransactionListResponse> GetListOfTransactions(GetTransactionListRequest request);
         Task<GetStaffListResponse> GetListOfStaffs(GetStaffListRequest query);
         Task<GetProcessListResponse> GetListOfProcesses(GetProcessListRequest query);
-        Task<GetAssetRelationshipsResponse> GetAssetRelationships(GetAssetRelationshipsRequest request);
+        Task<List<Asset>> GetChildAssets(GetAssetRelationshipsRequest request);
     }
 }
