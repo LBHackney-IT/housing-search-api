@@ -1,17 +1,14 @@
 using AutoFixture;
 using FluentAssertions;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
-using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Factories;
 using HousingSearchApi.V1.Gateways;
-using HousingSearchApi.V1.Gateways.Interfaces;
 using HousingSearchApi.V1.Helper.Interfaces;
 using HousingSearchApi.V1.Interfaces;
 using Moq;
 using Nest;
-using NUnit.Framework;
 using System.Threading.Tasks;
 using Xunit;
 
