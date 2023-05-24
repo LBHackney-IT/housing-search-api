@@ -20,7 +20,12 @@ namespace HousingSearchApi.V1.UseCase
         public async Task<GetAssetRelationshipsResponse> ExecuteAsync(GetAssetRelationshipsRequest getAssetRelationshipsRequest)
         {
             // TODO: compelte response with parent and ancestor assets
-            return await _searchGateway.GetChildAssets(getAssetRelationshipsRequest).ConfigureAwait(false);
+            var response = new GetAssetRelationshipsResponse
+            {
+                ChildAssets = await _searchGateway.GetChildAssets(getAssetRelationshipsRequest).ConfigureAwait(false)
+            };
+
+            return response;
         }
     }
 }
