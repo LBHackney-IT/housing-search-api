@@ -16,7 +16,6 @@ namespace HousingSearchApi.V1.UseCase
             _searchGateway = searchGateway;
         }
 
-        [LogCall]
         public async Task<GetAssetRelationshipsResponse> ExecuteAsync(GetAssetRelationshipsRequest getAssetRelationshipsRequest)
         {
             var response = new GetAssetRelationshipsResponse
