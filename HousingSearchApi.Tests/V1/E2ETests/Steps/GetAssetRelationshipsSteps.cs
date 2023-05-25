@@ -1,10 +1,8 @@
 using FluentAssertions;
-using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps.Base;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -13,7 +11,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 {
     public class GetAssetRelationshipsSteps : BaseSteps
     {
-        private string _lastHitId;
         public GetAssetRelationshipsSteps(HttpClient httpClient) : base(httpClient)
         {
         }
