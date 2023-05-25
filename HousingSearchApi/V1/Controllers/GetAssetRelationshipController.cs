@@ -24,9 +24,9 @@ namespace HousingSearchApi.V1.Controllers
             _getAssetRelationshipsUseCase = getAssetRelationshipsUseCase;
         }
 
-        [ProducesResponseType(typeof(APIResponse<GetAssetRelationshipsResponse>), 200)]
-        [ProducesResponseType(typeof(APIResponse<NoContentResult>), 204)]
-        [ProducesResponseType(typeof(APIResponse<BadRequestException>), 400)]
+        [ProducesResponseType(typeof(GetAssetRelationshipsResponse), 200)]
+        [ProducesResponseType(typeof(NoContentResult), 204)]
+        [ProducesResponseType(typeof(BadRequestException), 400)]
         [HttpGet, MapToApiVersion("1")]
         [LogCall(Microsoft.Extensions.Logging.LogLevel.Information)]
         public async Task<IActionResult> GetAssetRelationships([FromQuery] GetAssetRelationshipsRequest request)

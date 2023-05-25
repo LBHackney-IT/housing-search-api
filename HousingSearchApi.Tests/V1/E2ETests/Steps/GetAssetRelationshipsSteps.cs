@@ -28,9 +28,9 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task ThenTheReturningResultsShouldBeOfThatSize(int pageSize)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var result = JsonSerializer.Deserialize<APIResponse<GetAssetRelationshipsResponse>>(resultBody, _jsonOptions);
+            var result = JsonSerializer.Deserialize<GetAssetRelationshipsResponse>(resultBody, _jsonOptions);
 
-            result.Results.ChildAssets.Count.Should().Be(pageSize);
+            result.ChildAssets.Count.Should().Be(pageSize);
         }
     }
 }
