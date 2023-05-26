@@ -14,6 +14,7 @@ using HousingSearchApi.V1.Gateways.Interfaces;
 using HousingSearchApi.V1.Helper;
 using HousingSearchApi.V1.Helper.Interfaces;
 using HousingSearchApi.V1.Interfaces;
+using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -210,7 +211,20 @@ namespace HousingSearchApi.V1.Gateways
             return GetTransactionListResponse.Create(searchResponse.Total, transactions.ToResponse());
         }
 
+        public async Task<List<Asset>> GetChildAssets(GetAssetRelationshipsRequest query)
+        {
+            var searchResponse = await _elasticSearchWrapper
+                .Search<QueryableAsset, GetAssetRelationshipsRequest>(query)
+                .ConfigureAwait(false);
 
+            var childAssets = new List<Asset>();
 
+            if (searchResponse == null) return childAssets;
+            childAssets.AddRange(searchResponse.Documents.Select(queryableAsset =>
+                queryableAsset.CreateAll())
+            );
+
+            return childAssets;
+        }
     }
 }

@@ -22,6 +22,15 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 
         public QueryContainer Create<TRequest>(TRequest request, QueryContainerDescriptor<QueryableAsset> q)
         {
+            //Pre-default check for relationships query
+            if (request.GetType() == typeof(GetAssetRelationshipsRequest))
+            {
+                var relationshipRequest = request as GetAssetRelationshipsRequest;
+                return _queryFilterBuilder
+                    .WithExactQuery(relationshipRequest.SearchText, new List<string> { "parentAssetIds" })
+                    .Build(q);
+            }
+
             //Default to search endpoint
             GetAssetListRequest assetListRequest = request as GetAssetListRequest;
 
