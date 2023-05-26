@@ -38,8 +38,6 @@ namespace HousingSearchApi.V1.Controllers
             {
                 var assetsSearchResult = await _getAssetRelationshipsUseCase.ExecuteAsync(request).ConfigureAwait(false);
 
-                if (!assetsSearchResult.ChildAssets.Any()) return new OkObjectResult(new List<Asset>());
-
                 return new OkObjectResult(assetsSearchResult);
             }
             catch (Exception e)
