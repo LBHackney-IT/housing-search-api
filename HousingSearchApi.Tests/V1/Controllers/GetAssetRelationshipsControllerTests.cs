@@ -65,7 +65,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         }
 
         [Fact]
-        public async Task GetAssetRelationshipsReturnsDataAnd404WhenNoMatches()
+        public async Task GetAssetRelationshipsReturnsEmptyArray200WhenNoMatches()
         {
             // Arrange
             var request = new GetAssetRelationshipsRequest()
@@ -88,7 +88,11 @@ namespace HousingSearchApi.Tests.V1.Controllers
 
             // Asset
             var statusCode = GetStatusCode(response);
-            statusCode.Should().Be(204);
+            statusCode.Should().Be(200);
+
+            var assets = GetResultData<GetAssetRelationshipsResponse>(response);
+            assets.ChildAssets.Should().NotBeNull();
+            assets.ChildAssets.Should().HaveCount(0);
         }
 
         [Fact]

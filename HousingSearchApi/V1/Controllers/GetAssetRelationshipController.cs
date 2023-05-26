@@ -1,11 +1,13 @@
 using Amazon.Lambda.Core;
 using Hackney.Core.Logging;
+using Hackney.Shared.HousingSearch.Domain.Asset;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
 using HousingSearchApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,7 +27,6 @@ namespace HousingSearchApi.V1.Controllers
         }
 
         [ProducesResponseType(typeof(GetAssetRelationshipsResponse), 200)]
-        [ProducesResponseType(typeof(NoContentResult), 204)]
         [ProducesResponseType(typeof(BadRequestException), 400)]
         [HttpGet, MapToApiVersion("1")]
         [LogCall(Microsoft.Extensions.Logging.LogLevel.Information)]
@@ -37,7 +38,7 @@ namespace HousingSearchApi.V1.Controllers
             {
                 var assetsSearchResult = await _getAssetRelationshipsUseCase.ExecuteAsync(request).ConfigureAwait(false);
 
-                if (!assetsSearchResult.ChildAssets.Any()) return new NoContentResult();
+                if (!assetsSearchResult.ChildAssets.Any()) return new OkObjectResult(new List<Asset>());
 
                 return new OkObjectResult(assetsSearchResult);
             }
