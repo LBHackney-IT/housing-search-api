@@ -1,4 +1,3 @@
-using Bogus;
 using FluentAssertions;
 using Hackney.Shared.HousingSearch.Domain.Asset;
 using HousingSearchApi.V1.Helper;
@@ -51,8 +50,8 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             var address2 = new AssetAddress
             {
-                AddressLine1 = "2 Pitcairn House",
-                AddressLine2 = "St Thomass Square"
+                AddressLine1 = "2",
+                AddressLine2 = "Pitcairn House St Thomass Square"
             };
 
 
