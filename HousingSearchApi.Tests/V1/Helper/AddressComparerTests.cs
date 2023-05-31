@@ -16,7 +16,6 @@ namespace HousingSearchApi.Tests.V1.Helper
             _classUnderTest = new AddressComparer();
         }
 
-
         [Fact]
         public void Compare_DoesntThrowException_WhenAddressLine1ContainsNoSpaces()
         {
@@ -38,6 +37,30 @@ namespace HousingSearchApi.Tests.V1.Helper
 
             // Assert
             func.Should().NotThrow();
+        }
+
+        [Fact]
+        public void Compare_WhenTheStreetIsTheSame_ReturnsTheAddressesSortedByNumber()
+        {
+            // Arrange
+            var address1 = new AssetAddress
+            {
+                AddressLine1 = "1 Pitcairn House",
+                AddressLine2 = "St Thomass Square"
+            };
+
+            var address2 = new AssetAddress
+            {
+                AddressLine1 = "2 Pitcairn House",
+                AddressLine2 = "St Thomass Square"
+            };
+
+
+            // Act
+            var result = _classUnderTest.Compare(address1, address2);
+
+            // Assert
+            result.Should().Be(-1);
         }
     }
 }
