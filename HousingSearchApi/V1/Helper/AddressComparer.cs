@@ -20,16 +20,25 @@ namespace HousingSearchApi.V1.Helper
                 }
             }
 
-            var addressline1_1 = address1.AddressLine1.Split(' ');
-            var addressline1_2 = address2.AddressLine1.Split(' ');
+            var address1Parts = address1.AddressLine1.Split(' ');
+            var address2Parts = address2.AddressLine1.Split(' ');
 
-            if (addressline1_1[1] == addressline1_2[1]
-                && int.TryParse(addressline1_1[0], out var house1)
-                && int.TryParse(addressline1_2[0], out var house2))
+            // prevent IndexOutOfRange exception (addressLine1 contains no spaces)
+            if (address1Parts.Length >= 2 && address2Parts.Length >= 2)
             {
-                return house1 - house2;
+                // if the street is the same, try compare house number
+                if (address1Parts[1] == address2Parts[1]
+                    && int.TryParse(address1Parts[0], out var house1)
+                    && int.TryParse(address2Parts[0], out var house2))
+                {
+                    return house1 - house2;
+                }
+
+                return address1Parts[1].CompareTo(address2Parts[1]);
             }
-            return addressline1_1[1].CompareTo(addressline1_2[1]);
+
+            // default sorting - compare addresssLine1 alphabetically
+            return string.Compare(address1.AddressLine1, address2.AddressLine1);
         }
 
         private static int? TryParseFlatNumber(AssetAddress address)
