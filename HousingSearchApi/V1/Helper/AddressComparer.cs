@@ -1,6 +1,8 @@
 using Hackney.Shared.HousingSearch.Domain.Asset;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace HousingSearchApi.V1.Helper
 {
@@ -20,11 +22,11 @@ namespace HousingSearchApi.V1.Helper
                 }
             }
 
-            var address1Parts = address1.AddressLine1.Split(' ');
-            var address2Parts = address2.AddressLine1.Split(' ');
+            var address1Parts = ExtractAddressParts(address1);
+            var address2Parts = ExtractAddressParts(address2);
 
             // prevent IndexOutOfRange exception (addressLine1 contains no spaces)
-            if (address1Parts.Length >= 2 && address2Parts.Length >= 2)
+            if (address1Parts.Count >= 2 && address2Parts.Count >= 2)
             {
                 // if the street is the same, try compare house number
                 if (address1Parts[1] == address2Parts[1]
@@ -38,7 +40,26 @@ namespace HousingSearchApi.V1.Helper
             }
 
             // default sorting - compare addresssLine1 alphabetically
-            return string.Compare(address1.AddressLine1, address2.AddressLine1);
+            return address1.AddressLine1.CompareTo(address2.AddressLine1);
+        }
+
+        private static List<string> ExtractAddressParts(AssetAddress address)
+        {
+            var addressParts = new List<string> { };
+
+            // the relevant parts of the address will be in lines 1 and 2
+
+            if (!string.IsNullOrWhiteSpace(address.AddressLine1))
+            {
+                addressParts.AddRange(address.AddressLine1.Split(' '));
+            }
+
+            if (!string.IsNullOrWhiteSpace(address.AddressLine2))
+            {
+                addressParts.AddRange(address.AddressLine2.Split(' '));
+            }
+
+            return addressParts;
         }
 
         private static int? TryParseFlatNumber(AssetAddress address)
