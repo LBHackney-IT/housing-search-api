@@ -1,17 +1,16 @@
 using AutoFixture;
 using FluentAssertions;
+using Hackney.Shared.HousingSearch.Domain.Asset;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
-using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Factories;
 using HousingSearchApi.V1.Gateways;
-using HousingSearchApi.V1.Gateways.Interfaces;
 using HousingSearchApi.V1.Helper.Interfaces;
 using HousingSearchApi.V1.Interfaces;
 using Moq;
 using Nest;
-using NUnit.Framework;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -109,6 +108,28 @@ namespace HousingSearchApi.Tests.V1.Gateways
 
             _customAddressSorterMock
                 .Verify(x => x.FilterResponse(query, It.IsAny<GetAssetListResponse>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetChildAssets_WhenSearchResponseIsNullReturnEmptyList()
+        {
+            // Arrange
+            var query = new GetAssetRelationshipsRequest
+            {
+                SearchText = "test"
+            };
+
+            SearchResponse<QueryableAsset> elasticSearchResponse = null;
+
+            _elasticSearchWrapperMock
+                .Setup(x => x.Search<QueryableAsset, GetAssetRelationshipsRequest>(query))
+                .ReturnsAsync(elasticSearchResponse);
+
+            // Act
+            var response = await _searchGateway.GetChildAssets(query);
+
+            // Assert
+            response.Should().BeEquivalentTo(new List<Asset>());
         }
 
     }
