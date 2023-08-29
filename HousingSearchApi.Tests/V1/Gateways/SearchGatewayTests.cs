@@ -82,7 +82,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
             var response = await _searchGateway.GetListOfAssets(query);
 
             // Assert
-            query.PageSize.Should().Be(400);
+            query.PageSize.Should().Be(650);
         }
 
         [Fact]
