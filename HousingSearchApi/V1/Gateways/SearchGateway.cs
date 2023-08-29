@@ -69,7 +69,7 @@ namespace HousingSearchApi.V1.Gateways
         [LogCall]
         public async Task<GetAssetListResponse> GetListOfAssets(GetAssetListRequest query)
         {
-            const int CustomSortPageSize = 400;
+            const int CustomSortPageSize = 650;
 
             if (query.UseCustomSorting)
             {
