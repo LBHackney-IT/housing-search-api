@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Hackney.Core.Logging;
 using HousingSearchApi.V1.Boundary.Requests;
@@ -16,11 +17,20 @@ namespace HousingSearchApi.V1.UseCase
             _searchGateway = searchGateway;
         }
 
-        public async Task<GetAssetRelationshipsResponse> ExecuteAsync(GetAssetRelationshipsRequest getAssetRelationshipsRequest)
+        public async Task<GetAssetRelationshipsResponse> ExecuteAsync(GetAssetRelationshipsRequest request)
         {
+            var childAssets = await _searchGateway.GetChildAssets(request).ConfigureAwait(false);
+
+            if (childAssets.Any())
+            {
+                // Child assets may have matched partially on the GUID
+                // Filter to ensure the whole GUID is contained in parentAssetIds
+                childAssets = childAssets.Where(x => x.ParentAssetIds.Contains(request.SearchText)).ToList();
+            }
+
             var response = new GetAssetRelationshipsResponse
             {
-                ChildAssets = await _searchGateway.GetChildAssets(getAssetRelationshipsRequest).ConfigureAwait(false)
+                ChildAssets = childAssets
             };
 
             return response;
