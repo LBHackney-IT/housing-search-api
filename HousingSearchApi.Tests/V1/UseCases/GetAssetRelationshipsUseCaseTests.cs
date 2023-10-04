@@ -102,5 +102,43 @@ namespace HousingSearchApi.Tests.V1.UseCases
 
             result.ChildAssets.Should().HaveCount(assetList.Count - 1);
         }
+
+        [Fact]
+        public async Task ShouldNotFilterOutResultsWithMultipleParents()
+        {
+            // Arrange
+            var parentId = "854cd27e-AAAA-a312-c510-bec6f816ec5c";
+
+            var assetList = new List<Asset>
+            {
+                new Asset
+                {
+                    AssetId = "TEST0001",
+                    ParentAssetIds = parentId
+                },
+                new Asset
+                {
+                    AssetId = "TEST0002",
+                    ParentAssetIds = $"{parentId}#28d4c9f2-1bf7-4c38-a174-76211214d738"
+                }
+            };
+
+            _searchGatewayMock
+                .Setup(x => x.GetChildAssets(It.IsAny<GetAssetRelationshipsRequest>()))
+                .ReturnsAsync(assetList);
+
+            var request = new GetAssetRelationshipsRequest
+            {
+                SearchText = parentId,
+            };
+
+            // Act
+            var result = await _sut.ExecuteAsync(request);
+
+            // Assert
+            result.Should().BeOfType<GetAssetRelationshipsResponse>();
+
+            result.ChildAssets.Should().HaveCount(assetList.Count);
+        }
     }
 }
