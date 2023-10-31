@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Hackney.Core.ElasticSearch.Interfaces;
 using HousingSearchApi.V1.Interfaces;
 using Nest;
@@ -11,7 +12,8 @@ namespace HousingSearchApi.V1.Infrastructure.Core
         private readonly IWildCardAppenderAndPrepender _wildCardAppenderAndPrepender;
         private Func<QueryContainerDescriptor<T>, QueryContainer> _wildstarQuery;
         private Func<QueryContainerDescriptor<T>, QueryContainer> _exactQuery;
-        private List<Func<QueryContainerDescriptor<T>, QueryContainer>> _filterQueries;
+        private List<List<Func<QueryContainerDescriptor<T>, QueryContainer>>> _filterQueries =
+            new List<List<Func<QueryContainerDescriptor<T>, QueryContainer>>>();
         private List<Func<QueryContainerDescriptor<T>, QueryContainer>> _multipleFilterQueries =
             new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
 
@@ -36,11 +38,12 @@ namespace HousingSearchApi.V1.Infrastructure.Core
         {
             if (commaSeparatedFilters != null)
             {
-                _filterQueries = new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
+                var filterQuery = new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
                 foreach (var filterWord in commaSeparatedFilters.Split(","))
                 {
-                    _filterQueries.Add(CreateQuery(filterWord, fields));
+                    filterQuery.Add(CreateQuery(filterWord, fields));
                 }
+                _filterQueries.Add(filterQuery);
             }
 
             return this;
@@ -99,24 +102,39 @@ namespace HousingSearchApi.V1.Infrastructure.Core
         {
             var queryContainer = containerDescriptor.Bool(x => x.Should(_wildstarQuery, _exactQuery));
 
-            if (_multipleFilterQueries != null)
+            if (_multipleFilterQueries?.Any() == true)
             {
                 var listOfMultiples = new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
-                listOfMultiples.AddRange(_multipleFilterQueries);
-                //Must with multiple filter queries
+                /*
+                 * We have to match ALL filter values, ie. a Must clause.
+                 */
                 queryContainer = containerDescriptor.Bool(x =>
                     x.Must(containerDescriptor.Bool(x => x.Must(listOfMultiples)),
                     queryContainer));
             }
 
-            if (_filterQueries != null)
+            if (_filterQueries?.Any() == true)
             {
-                var listOfFunctions = new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
-                listOfFunctions.AddRange(_filterQueries);
-                //Should with text search and multiple fields like AssetTypes
-                queryContainer = containerDescriptor.Bool(x =>
-                    x.Must(containerDescriptor.Bool(x => x.Should(listOfFunctions)),
-                    queryContainer));
+                /*
+                 * Each field must be match, but it can match any one of
+                 * of the filter values (a Should clause).
+                 *
+                 * In C# terms, the logic would look like:
+                 * (field1 === filterValue1 || field1 === filterValue2)
+                 *   && (field2 === filterValue3 || field2 === filterValue4) 
+                 *   && ...
+                 *
+                 * This is suitable for fields like Asset Type or Tenure Type,
+                 * where we want to return all matching assets from a set of types.
+                 */
+                foreach (var filterQuery in _filterQueries) {
+                    var listOfFunctions = new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
+                    listOfFunctions.AddRange(filterQuery);
+                    //Should with text search and multiple fields like AssetTypes
+                    queryContainer = containerDescriptor.Bool(x =>
+                        x.Must(containerDescriptor.Bool(x => x.Should(listOfFunctions)),
+                        queryContainer));                   
+                }
             }
 
             return queryContainer;
