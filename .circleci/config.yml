@@ -255,14 +255,14 @@ workflows:
             - terraform-compliance-development
           filters:
             branches:
-              only: feature/TS-785-tenure-type-amends
+              only: master
       - deploy-to-development:
           context: api-nuget-token-context
           requires:
             - terraform-apply-development
           filters:
             branches:
-              only: feature/TS-785-tenure-type-amends
+              only: master
   check-and-deploy-staging-and-production:
       jobs:
       - check-code-formatting:
