@@ -26,9 +26,9 @@ namespace HousingSearchApi.V1.Infrastructure.Core
         private readonly IWildCardAppenderAndPrepender _wildCardAppenderAndPrepender;
         private Func<QueryContainerDescriptor<T>, QueryContainer> _wildstarQuery;
         private Func<QueryContainerDescriptor<T>, QueryContainer> _exactQuery;
-        private List<List<Func<QueryContainerDescriptor<T>, QueryContainer>>> _filterQueries =
+        private readonly List<List<Func<QueryContainerDescriptor<T>, QueryContainer>>> _filterQueries =
             new List<List<Func<QueryContainerDescriptor<T>, QueryContainer>>>();
-        private List<Func<QueryContainerDescriptor<T>, QueryContainer>> _multipleFilterQueries =
+        private readonly List<Func<QueryContainerDescriptor<T>, QueryContainer>> _multipleFilterQueries =
             new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
 
 
@@ -116,7 +116,7 @@ namespace HousingSearchApi.V1.Infrastructure.Core
         {
             var queryContainer = containerDescriptor.Bool(x => x.Should(_wildstarQuery, _exactQuery));
 
-            if (_multipleFilterQueries?.Any() == true)
+            if (_multipleFilterQueries.Any())
             {
                 var listOfMultiples = new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
                 listOfMultiples.AddRange(_multipleFilterQueries);
@@ -132,7 +132,7 @@ namespace HousingSearchApi.V1.Infrastructure.Core
                 );
             }
 
-            if (_filterQueries?.Any() == true)
+            if (_filterQueries.Any())
             {
                 /*
                  * Each field must be match, but it can match any one of
