@@ -139,8 +139,8 @@ namespace HousingSearchApi.V1.Infrastructure.Core
                  * of the filter values (a Should clause).
                  *
                  * In C# terms, the logic would look like:
-                 * (field1 === filterValue1 || field1 === filterValue2)
-                 *   && (field2 === filterValue3 || field2 === filterValue4) 
+                 * (field1 == filterValue1 || field1 == filterValue2)
+                 *   && (field2 == filterValue3 || field2 == filterValue4) 
                  *   && ...
                  *
                  * This is suitable for fields like Asset Type or Tenure Type,
