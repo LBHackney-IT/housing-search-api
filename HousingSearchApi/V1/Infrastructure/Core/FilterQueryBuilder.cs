@@ -14,7 +14,7 @@ namespace HousingSearchApi.V1.Infrastructure.Core
     /// defined to allow successive <c>Must</c> clauses.
     /// But successive <c>Must</c> clauses are already possible by repeated calls to
     /// <see cref="IQueryBuilder{T}.WithFilterQuery"/>.
-    /// A possible use case could be applying Must clauses to fields
+    /// A possible use case could be applying <c>Must</c> clauses to fields
     /// that repeat in the document - but it is unclear whether
     /// this is a genuine use case for the organisation.
     /// A future analysis piece should be to determine the need for this
