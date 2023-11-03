@@ -7,6 +7,20 @@ using Nest;
 
 namespace HousingSearchApi.V1.Infrastructure.Core
 {
+    /// <remarks>
+    /// Note: this class was copied from <see cref="Hackney.Core.ElasticSearch.QueryBuilder{T}"/> 
+    /// in <see href="https://github.com/LBHackney-IT/housing-search-api/pull/126">PR 126</see>
+    /// and a new interface <see cref="IFilterQueryBuilder{T}"/>
+    /// defined to allow successive <c>Must</c> clauses.
+    /// But successive <c>Must</c> clauses are already possible by repeated calls to
+    /// <see cref="IQueryBuilder{T}.WithFilterQuery"/>.
+    /// A possible use case could be apply Must clauses to fields
+    /// that repeat in the document - but it is unclear whether
+    /// this is a genuine use case in the organisation.
+    /// A future analysis piece should be to determine the need for this
+    /// class, and revert to using <see cref="Hackney.Core.ElasticSearch.QueryBuilder{T}"/>
+    /// as appropriate.
+    /// </remarks>
     public class FilterQueryBuilder<T> : IFilterQueryBuilder<T> where T : class
     {
         private readonly IWildCardAppenderAndPrepender _wildCardAppenderAndPrepender;
@@ -105,12 +119,17 @@ namespace HousingSearchApi.V1.Infrastructure.Core
             if (_multipleFilterQueries?.Any() == true)
             {
                 var listOfMultiples = new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
+                listOfMultiples.AddRange(_multipleFilterQueries);
+
                 /*
                  * We have to match ALL filter values, ie. a Must clause.
                  */
                 queryContainer = containerDescriptor.Bool(x =>
-                    x.Must(containerDescriptor.Bool(x => x.Must(listOfMultiples)),
-                    queryContainer));
+                    x.Must(
+                        containerDescriptor.Bool(x => x.Must(listOfMultiples)),
+                        queryContainer
+                    )
+                );
             }
 
             if (_filterQueries?.Any() == true)
@@ -127,14 +146,15 @@ namespace HousingSearchApi.V1.Infrastructure.Core
                  * This is suitable for fields like Asset Type or Tenure Type,
                  * where we want to return all matching assets from a set of types.
                  */
-                foreach (var filterQuery in _filterQueries) {
-                    var listOfFunctions = new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
-                    listOfFunctions.AddRange(filterQuery);
-                    //Should with text search and multiple fields like AssetTypes
-                    queryContainer = containerDescriptor.Bool(x =>
-                        x.Must(containerDescriptor.Bool(x => x.Should(listOfFunctions)),
-                        queryContainer));                   
-                }
+                queryContainer = containerDescriptor.Bool(
+                    x => x.Must(
+                        _filterQueries.Select(fq =>
+                            containerDescriptor.Bool(y => y.Should(fq))
+                        )
+                        .Concat(new[] { queryContainer })
+                        .ToArray()
+                    )
+                );
             }
 
             return queryContainer;
