@@ -1,18 +1,34 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Hackney.Core.ElasticSearch.Interfaces;
 using HousingSearchApi.V1.Interfaces;
 using Nest;
 
 namespace HousingSearchApi.V1.Infrastructure.Core
 {
+    /// <remarks>
+    /// Note: this class was copied from <see cref="Hackney.Core.ElasticSearch.QueryBuilder{T}"/> 
+    /// in <see href="https://github.com/LBHackney-IT/housing-search-api/pull/126">PR 126</see>
+    /// and a new interface <see cref="IFilterQueryBuilder{T}"/>
+    /// defined to allow successive <c>Must</c> clauses.
+    /// But successive <c>Must</c> clauses are already possible by repeated calls to
+    /// <see cref="IQueryBuilder{T}.WithFilterQuery"/>.
+    /// A possible use case could be applying <c>Must</c> clauses to fields
+    /// that repeat in the document - but it is unclear whether
+    /// this is a genuine use case for the organisation.
+    /// A future analysis piece should be to determine the need for this
+    /// class, and revert to using <see cref="Hackney.Core.ElasticSearch.QueryBuilder{T}"/>
+    /// as appropriate.
+    /// </remarks>
     public class FilterQueryBuilder<T> : IFilterQueryBuilder<T> where T : class
     {
         private readonly IWildCardAppenderAndPrepender _wildCardAppenderAndPrepender;
         private Func<QueryContainerDescriptor<T>, QueryContainer> _wildstarQuery;
         private Func<QueryContainerDescriptor<T>, QueryContainer> _exactQuery;
-        private List<Func<QueryContainerDescriptor<T>, QueryContainer>> _filterQueries;
-        private List<Func<QueryContainerDescriptor<T>, QueryContainer>> _multipleFilterQueries =
+        private readonly List<List<Func<QueryContainerDescriptor<T>, QueryContainer>>> _filterQueries =
+            new List<List<Func<QueryContainerDescriptor<T>, QueryContainer>>>();
+        private readonly List<Func<QueryContainerDescriptor<T>, QueryContainer>> _multipleFilterQueries =
             new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
 
 
@@ -36,11 +52,12 @@ namespace HousingSearchApi.V1.Infrastructure.Core
         {
             if (commaSeparatedFilters != null)
             {
-                _filterQueries = new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
+                var filterQuery = new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
                 foreach (var filterWord in commaSeparatedFilters.Split(","))
                 {
-                    _filterQueries.Add(CreateQuery(filterWord, fields));
+                    filterQuery.Add(CreateQuery(filterWord, fields));
                 }
+                _filterQueries.Add(filterQuery);
             }
 
             return this;
@@ -99,24 +116,45 @@ namespace HousingSearchApi.V1.Infrastructure.Core
         {
             var queryContainer = containerDescriptor.Bool(x => x.Should(_wildstarQuery, _exactQuery));
 
-            if (_multipleFilterQueries != null)
+            if (_multipleFilterQueries.Any())
             {
                 var listOfMultiples = new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
                 listOfMultiples.AddRange(_multipleFilterQueries);
-                //Must with multiple filter queries
+
+                /*
+                 * We have to match ALL filter values, ie. a Must clause.
+                 */
                 queryContainer = containerDescriptor.Bool(x =>
-                    x.Must(containerDescriptor.Bool(x => x.Must(listOfMultiples)),
-                    queryContainer));
+                    x.Must(
+                        containerDescriptor.Bool(x => x.Must(listOfMultiples)),
+                        queryContainer
+                    )
+                );
             }
 
-            if (_filterQueries != null)
+            if (_filterQueries.Any())
             {
-                var listOfFunctions = new List<Func<QueryContainerDescriptor<T>, QueryContainer>>();
-                listOfFunctions.AddRange(_filterQueries);
-                //Should with text search and multiple fields like AssetTypes
-                queryContainer = containerDescriptor.Bool(x =>
-                    x.Must(containerDescriptor.Bool(x => x.Should(listOfFunctions)),
-                    queryContainer));
+                /*
+                 * Each field must be match, but it can match any one of
+                 * of the filter values (a Should clause).
+                 *
+                 * In C# terms, the logic would look like:
+                 * (field1 == filterValue1 || field1 == filterValue2)
+                 *   && (field2 == filterValue3 || field2 == filterValue4) 
+                 *   && ...
+                 *
+                 * This is suitable for fields like Asset Type or Tenure Type,
+                 * where we want to return all matching assets from a set of types.
+                 */
+                queryContainer = containerDescriptor.Bool(
+                    x => x.Must(
+                        _filterQueries.Select(fq =>
+                            containerDescriptor.Bool(y => y.Should(fq))
+                        )
+                        .Concat(new[] { queryContainer })
+                        .ToArray()
+                    )
+                );
             }
 
             return queryContainer;
