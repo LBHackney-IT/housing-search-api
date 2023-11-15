@@ -48,10 +48,6 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             {
                 return (IQueryGenerator<T>) new TransactionsQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableTransaction>>());
             }
-            if (typeof(T) == typeof(QueryableStaff))
-            {
-                return (IQueryGenerator<T>) new StaffQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableStaff>>());
-            }
             if (typeof(T) == typeof(QueryableProcess))
             {
                 return (IQueryGenerator<T>) new ProcessesQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableProcess>>());

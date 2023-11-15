@@ -148,21 +148,6 @@ namespace HousingSearchApi.V1.Gateways
         }
 
         [LogCall]
-        public async Task<GetStaffListResponse> GetListOfStaffs(GetStaffListRequest query)
-        {
-            var searchResponse = await _elasticSearchWrapper.Search<QueryableStaff, GetStaffListRequest>(query).ConfigureAwait(false);
-            var staffListResponse = new GetStaffListResponse();
-
-            staffListResponse.Staff.AddRange(searchResponse.Documents.Select(queryableStaff =>
-               queryableStaff.ToDomain())
-           );
-
-            staffListResponse.SetTotal(searchResponse.Total);
-
-            return staffListResponse;
-        }
-
-        [LogCall]
         public async Task<GetProcessListResponse> GetListOfProcesses(GetProcessListRequest query)
         {
             var searchResponse = await _elasticSearchWrapper.Search<QueryableProcess, GetProcessListRequest>(query).ConfigureAwait(false);
