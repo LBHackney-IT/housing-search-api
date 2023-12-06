@@ -4,7 +4,6 @@ using Hackney.Shared.HousingSearch.Factories;
 using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using Hackney.Shared.HousingSearch.Gateways.Models.Processes;
-using Hackney.Shared.HousingSearch.Gateways.Models.Staffs;
 using Hackney.Shared.HousingSearch.Gateways.Models.Transactions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
@@ -14,7 +13,6 @@ using HousingSearchApi.V1.Gateways.Interfaces;
 using HousingSearchApi.V1.Helper;
 using HousingSearchApi.V1.Helper.Interfaces;
 using HousingSearchApi.V1.Interfaces;
-using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -145,21 +143,6 @@ namespace HousingSearchApi.V1.Gateways
 
 
             return assetListResponse;
-        }
-
-        [LogCall]
-        public async Task<GetStaffListResponse> GetListOfStaffs(GetStaffListRequest query)
-        {
-            var searchResponse = await _elasticSearchWrapper.Search<QueryableStaff, GetStaffListRequest>(query).ConfigureAwait(false);
-            var staffListResponse = new GetStaffListResponse();
-
-            staffListResponse.Staff.AddRange(searchResponse.Documents.Select(queryableStaff =>
-               queryableStaff.ToDomain())
-           );
-
-            staffListResponse.SetTotal(searchResponse.Total);
-
-            return staffListResponse;
         }
 
         [LogCall]

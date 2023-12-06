@@ -187,7 +187,6 @@ namespace HousingSearchApi
             services.AddScoped<IGetAssetListUseCase, GetAssetListUseCase>();
             services.AddScoped<IGetAssetListSetsUseCase, GetAssetListSetsUseCase>();
             services.AddScoped<IGetTransactionListUseCase, GetTransactionListUseCase>();
-            services.AddScoped<IGetStaffListUseCase, GetStaffListUseCase>();
             services.AddScoped<IGetProcessListUseCase, GetProcessListUseCase>();
             services.AddScoped<IGetAssetRelationshipsUseCase, GetAssetRelationshipsUseCase>();
         }
