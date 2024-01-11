@@ -27,7 +27,9 @@ namespace HousingSearchApi.V1.Helper
 
         public static string NormalizeEmbeddedPostcode(string searchText)
         {
-            return _embeddedPostcode.Replace(searchText, m => NormalizePostcode(m.ToString()));
+            return searchText is null ?
+                null :
+                _embeddedPostcode.Replace(searchText, m => NormalizePostcode(m.ToString()));
         }
 
         public static bool SearchTextIsValidPostCode(string searchText)
