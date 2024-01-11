@@ -48,6 +48,16 @@ namespace HousingSearchApi.V1.Infrastructure.Core
             return this;
         }
 
+        public IQueryBuilder<T> WithWildstarQueryMatchAll(string searchText, List<string> fields, TextQueryType textQueryType = TextQueryType.MostFields)
+        {
+            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(searchText);
+            var queryString = $"({string.Join(" AND ", listOfWildCardedWords)}) ";
+
+            _wildstarQuery = CreateQuery(queryString, fields);
+
+            return this;
+        }
+
         public IQueryBuilder<T> WithFilterQuery(string commaSeparatedFilters, List<string> fields, TextQueryType textQueryType = TextQueryType.MostFields)
         {
             if (commaSeparatedFilters != null)

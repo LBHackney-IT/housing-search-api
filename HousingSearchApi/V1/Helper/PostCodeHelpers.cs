@@ -4,6 +4,11 @@ namespace HousingSearchApi.V1.Helper
 {
     public static class PostCodeHelpers
     {
+        private const string EmbeddedPostcodeExpression = @"\b[A-Z]{1,2}[0-9]{1,2}\s*[0-9][A-Z]{2}\b";
+
+        private static readonly Regex _embeddedPostcode =
+            new Regex(EmbeddedPostcodeExpression, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         public static string NormalizePostcode(string postcode)
         {
             //removes space in middle spaces
@@ -18,6 +23,11 @@ namespace HousingSearchApi.V1.Helper
                 7 => postcode.Insert(4, " "),
                 _ => postcode,
             };
+        }
+
+        public static string NormalizeEmbeddedPostcode(string searchText)
+        {
+            return _embeddedPostcode.Replace(searchText, m => NormalizePostcode(m.ToString()));
         }
 
         public static bool SearchTextIsValidPostCode(string searchText)

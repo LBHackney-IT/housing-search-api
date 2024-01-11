@@ -79,15 +79,17 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "assetManagement.isTemporaryAccomodation" })
                         .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
                         .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
-                        .WithWildstarQuery(assetListAllRequest.SearchText,
+                        .WithWildstarQueryMatchAll(assetListAllRequest.SearchText,
                             new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
                         .WithExactQuery(assetListAllRequest.SearchText,
                             new List<string>
                             {
-                            "assetAddress.addressLine1",
+                            "assetAddress.addressLine1.textAddress",
                             "assetAddress.uprn",
                             "assetAddress.postCode"
-                            })
+                            },
+                            new ExactSearchAllTermsQuerystringProcessor()
+                            )
                         .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
                         .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetManagement.propertyOccupiedStatus" })
                         .WithFilterQuery(assetListAllRequest.TenureType, new List<string> { "tenure.type.keyword" })

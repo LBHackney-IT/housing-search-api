@@ -101,6 +101,7 @@ namespace HousingSearchApi.V1.Gateways
         [LogCall]
         public async Task<GetAllAssetListResponse> GetListOfAssetsSets(GetAllAssetListRequest query)
         {
+            /*
             if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText) && query.SearchText.Length >= 5
                 && query.SearchText.Length <= 7 && !query.SearchText.Contains(" ") && query.SearchText.Any(char.IsDigit))
             {
@@ -115,6 +116,9 @@ namespace HousingSearchApi.V1.Gateways
                     query.SearchText = beginningOfPostcode + " " + endOfPostcode;
                 }
             }
+            */
+
+            query.SearchText = PostCodeHelpers.NormalizeEmbeddedPostcode(query.SearchText);
 
             var searchResponse = await _elasticSearchWrapper.SearchSets<QueryableAsset, GetAllAssetListRequest>(query).ConfigureAwait(false);
             var assetListResponse = new GetAllAssetListResponse();
@@ -126,8 +130,6 @@ namespace HousingSearchApi.V1.Gateways
 
             if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText))
             {
-                _customAddressSorter.FilterResponse(query, assetListResponse);
-
                 assetListResponse.SetTotal(assetListResponse.Assets.Count);
             }
             else
