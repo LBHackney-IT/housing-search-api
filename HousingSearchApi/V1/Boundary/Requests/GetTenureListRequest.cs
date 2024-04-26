@@ -6,5 +6,11 @@ namespace HousingSearchApi.V1.Boundary.Requests
     {
         [FromQuery(Name = "uprn")]
         public string Uprn { get; set; }
+
+        [FromQuery(Name = "bookingStatus")]
+        public string BookingStatus { get; set; }
+
+        [FromQuery(Name = "isTemporaryAccommodation")]
+        public string IsTemporaryAccommodation { get; set; }
     }
 }
