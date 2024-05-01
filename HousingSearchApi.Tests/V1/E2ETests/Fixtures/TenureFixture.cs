@@ -103,5 +103,53 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             Thread.Sleep(10000);
         }
+
+        public void GivenTaTenuresExist(int tenuresToCreate)
+        {
+            var listOfTenures = new List<QueryableTenure>();
+            var fixture = new Fixture();
+            for (var i = 0; i < tenuresToCreate; i++)
+            {
+                var tenure = fixture.Create<QueryableTenure>();
+                tenure.TenuredAsset.IsTemporaryAccommodation = true;
+
+                listOfTenures.Add(tenure);
+            }
+
+            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
+
+            while (!awaitable.GetAwaiter().IsCompleted) { }
+
+            Thread.Sleep(10000);
+        }
+
+        public void GivenSimilarTaTenuresExist(string bookingStatus, string fullName)
+        {
+            var fixture = new Fixture();
+            var listOfTenures = new List<QueryableTenure>();
+
+            var firstTenure = fixture.Create<QueryableTenure>();
+            firstTenure.TenuredAsset.IsTemporaryAccommodation = true;
+            firstTenure.TempAccommodationInfo.BookingStatus = bookingStatus;
+
+            listOfTenures.Add(firstTenure);
+
+            var secondTenure = fixture.Create<QueryableTenure>();
+            secondTenure.TenuredAsset.IsTemporaryAccommodation = true;
+            secondTenure.HouseholdMembers.First().FullName = fullName;
+            listOfTenures.Add(secondTenure);
+
+            var thirdTenure = fixture.Create<QueryableTenure>();
+            thirdTenure.TenuredAsset.IsTemporaryAccommodation = true;
+            thirdTenure.TempAccommodationInfo.BookingStatus = bookingStatus;
+            thirdTenure.HouseholdMembers.First().FullName = fullName;
+            listOfTenures.Add(thirdTenure);
+
+            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
+
+            while (!awaitable.GetAwaiter().IsCompleted) { }
+
+            Thread.Sleep(10000);
+        }
     }
 }
