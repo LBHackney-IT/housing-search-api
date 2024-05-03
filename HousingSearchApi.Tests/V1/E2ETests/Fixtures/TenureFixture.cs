@@ -104,6 +104,23 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             Thread.Sleep(10000);
         }
 
+        public void GivenATenureWithSpecificUprn(string uprn)
+        {
+            var fixture = new Fixture();
+            var listOfTenures = new List<QueryableTenure>();
+
+            var tenure = fixture.Create<QueryableTenure>();
+            tenure.TenuredAsset.Uprn = uprn;
+
+            listOfTenures.Add(tenure);
+
+            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
+
+            while (!awaitable.GetAwaiter().IsCompleted) { }
+
+            Thread.Sleep(10000);
+        }
+
         public void GivenTaTenuresExist(int tenuresToCreate)
         {
             var listOfTenures = new List<QueryableTenure>();

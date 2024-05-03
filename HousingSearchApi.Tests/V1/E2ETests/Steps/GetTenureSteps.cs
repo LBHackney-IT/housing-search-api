@@ -27,6 +27,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/tenures?searchText=abc", UriKind.Relative)).ConfigureAwait(false);
         }
 
+        public async Task WhenRequestContainsUprn(string uprn)
+        {
+            _lastResponse = await _httpClient.GetAsync(new Uri($"api/v1/search/tenures?uprn={uprn}", UriKind.Relative)).ConfigureAwait(false);
+        }
+
         public async Task WhenSearchingForAllTaTenures()
         {
             _lastResponse = await _httpClient.GetAsync(new Uri("api/v1/search/tenures?searchText=\"\"&isTemporaryAccommodation=true", UriKind.Relative)).ConfigureAwait(false);
@@ -76,6 +81,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             result.Results.Tenures.First().PaymentReference.Should().Be(paymentReference);
             result.Results.Tenures.First().TenuredAsset.FullAddress.Should().Be(fullAddress);
             result.Results.Tenures.First().HouseholdMembers.First().FullName.Should().Be(fullName);
+        }
+
+        public async Task ThenTheReturningResultShouldBeTheSpecificTenure(string uprn)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<GetTenureListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Tenures.Count.Should().Be(1);
+            result.Results.Tenures.First().TenuredAsset.Uprn.Should().Be(uprn);
         }
 
         public async Task ThenTheReturningResultsShouldIncludeAllTaTenures(int amountOfTaTenures)

@@ -62,6 +62,17 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenTheFirstOfTheReturningResultsShouldBeTheMostRelevantOne("FirstEntry", "SecondEntry", "ThirdEntry"))
                 .BDDfy();
         }
+
+        [Fact]
+        public void ServiceReturnSpecificTenureByUprn()
+        {
+            this.Given(g => _tenureFixture.GivenATenureIndexExists())
+                .Given(g => _tenureFixture.GivenATenureWithSpecificUprn("12345678"))
+                .When(w => _steps.WhenRequestContainsUprn("12345678"))
+                .Then(t => _steps.ThenTheReturningResultShouldBeTheSpecificTenure("12345678"))
+                .BDDfy();
+        }
+
         [Fact]
         public void ServiceReturnsAllTaTenures()
         {
