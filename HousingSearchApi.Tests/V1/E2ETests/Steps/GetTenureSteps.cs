@@ -83,12 +83,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             result.Results.Tenures.First().HouseholdMembers.First().FullName.Should().Be(fullName);
         }
 
-        public async Task ThenTheReturningResultShouldBeTheSpecificTenure(string uprn)
+        public async Task ThenTheReturningResultShouldBeTheSpecificTenure(string uprn, int tenureCount)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetTenureListResponse>>(resultBody, _jsonOptions);
 
-            result.Results.Tenures.Count.Should().Be(1);
+            result.Results.Tenures.Count.Should().Be(tenureCount);
             result.Results.Tenures.First().TenuredAsset.Uprn.Should().Be(uprn);
         }
 
@@ -106,39 +106,39 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             }
         }
 
-        public async Task ThenTheReturningResultsShouldBeTheFilteredTaTenures(string bookingStatus)
+        public async Task ThenTheReturningResultsShouldBeTheFilteredTaTenures(string bookingStatus, int tenureCount)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetTenureListResponse>>(resultBody, _jsonOptions);
 
             var tenures = result.Results.Tenures;
-            tenures.Count.Should().Be(2);
+            tenures.Count.Should().Be(tenureCount);
             foreach (var tenure in tenures)
             {
                 tenure.TempAccommodationInfo.BookingStatus.Should().Be(bookingStatus);
             }
         }
 
-        public async Task ThenTheReturningResultsShouldBeTheSearchedTaTenures(string fullName)
+        public async Task ThenTheReturningResultsShouldBeTheSearchedTaTenures(string fullName, int tenureCount)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetTenureListResponse>>(resultBody, _jsonOptions);
 
             var tenures = result.Results.Tenures;
-            tenures.Count.Should().Be(2);
+            tenures.Count.Should().Be(tenureCount);
             foreach (var tenure in tenures)
             {
                 tenure.HouseholdMembers.First().FullName.Should().Be(fullName);
             }
         }
 
-        public async Task ThenTheReturningResultShouldHaveTheSpecificTaTenure(string bookingStatus, string fullName)
+        public async Task ThenTheReturningResultShouldHaveTheSpecificTaTenure(string bookingStatus, string fullName, int tenureCount)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetTenureListResponse>>(resultBody, _jsonOptions);
 
             var tenures = result.Results.Tenures;
-            tenures.Count.Should().Be(1);
+            tenures.Count.Should().Be(tenureCount);
             tenures.First().TempAccommodationInfo.BookingStatus.Should().Be(bookingStatus);
             tenures.First().HouseholdMembers.First().FullName.Should().Be(fullName);
         }

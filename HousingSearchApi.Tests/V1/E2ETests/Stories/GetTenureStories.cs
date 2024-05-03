@@ -69,7 +69,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             this.Given(g => _tenureFixture.GivenATenureIndexExists())
                 .Given(g => _tenureFixture.GivenATenureWithSpecificUprn("12345678"))
                 .When(w => _steps.WhenRequestContainsUprn("12345678"))
-                .Then(t => _steps.ThenTheReturningResultShouldBeTheSpecificTenure("12345678"))
+                .Then(t => _steps.ThenTheReturningResultShouldBeTheSpecificTenure("12345678", 1))
                 .BDDfy();
         }
 
@@ -90,7 +90,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Given(g => _tenureFixture.GivenTaTenuresExist(5))
                 .Given(g => _tenureFixture.GivenSimilarTaTenuresExist("ACC", "John Doe"))
                 .When(w => _steps.WhenSearchingForTaTenuresWithABookingStatusAndNoSearchText("ACC"))
-                .Then(t => _steps.ThenTheReturningResultsShouldBeTheFilteredTaTenures("ACC"))
+                .Then(t => _steps.ThenTheReturningResultsShouldBeTheFilteredTaTenures("ACC", 2))
                 .BDDfy();
         }
 
@@ -101,7 +101,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Given(g => _tenureFixture.GivenTaTenuresExist(5))
                 .Given(g => _tenureFixture.GivenSimilarTaTenuresExist("ACC", "John Doe"))
                 .When(w => _steps.WhenSearchingForASpecificTaTenureByTenantFullName("John Doe"))
-                .Then(t => _steps.ThenTheReturningResultsShouldBeTheSearchedTaTenures("John Doe"))
+                .Then(t => _steps.ThenTheReturningResultsShouldBeTheSearchedTaTenures("John Doe", 2))
                 .BDDfy();
         }
 
@@ -113,7 +113,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Given(g => _tenureFixture.GivenTaTenuresExist(5))
                 .Given(g => _tenureFixture.GivenSimilarTaTenuresExist("ACC", "John Doe"))
                 .When(w => _steps.WhenSearchingForASpecificTaTenureByBookingStatusAndTenantFullName("ACC", "John Doe"))
-                .Then(t => _steps.ThenTheReturningResultShouldHaveTheSpecificTaTenure("ACC", "John Doe"))
+                .Then(t => _steps.ThenTheReturningResultShouldHaveTheSpecificTaTenure("ACC", "John Doe", 1))
                 .BDDfy();
         }
     }
