@@ -18,6 +18,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         private const string INDEX = "tenures";
         public static string[] Alphabet = { "aa", "bb", "cc", "dd", "ee", "vv", "ww", "xx", "yy", "zz" };
 
+        private readonly Fixture _fixture = new Fixture();
+
         public TenureFixture(IElasticClient elasticClient, HttpClient httpClient) : base(elasticClient, httpClient)
         {
             WaitForESInstance();
@@ -49,13 +51,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         {
             var listOfTenures = new List<QueryableTenure>();
             var random = new Random();
-            var fixture = new Fixture();
 
             foreach (var value in Alphabet)
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    var tenure = fixture.Create<QueryableTenure>();
+                    var tenure = _fixture.Create<QueryableTenure>();
                     tenure.PaymentReference = value;
 
                     listOfTenures.Add(tenure);
@@ -65,7 +66,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             // Add loads more at random
             for (int i = 0; i < 900; i++)
             {
-                var tenure = fixture.Create<QueryableTenure>();
+                var tenure = _fixture.Create<QueryableTenure>();
 
                 listOfTenures.Add(tenure);
             }
@@ -75,27 +76,88 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public void GivenSimilarTenures(string paymentReference, string fullAddress, string fullName)
         {
-            var fixture = new Fixture();
             var listOfTenures = new List<QueryableTenure>();
 
-            var firstTenure = fixture.Create<QueryableTenure>();
+            var firstTenure = _fixture.Create<QueryableTenure>();
             firstTenure.PaymentReference = paymentReference;
             firstTenure.TenuredAsset.FullAddress = fullAddress;
             firstTenure.HouseholdMembers.First().FullName = fullName;
 
             listOfTenures.Add(firstTenure);
 
-            var secondTenure = fixture.Create<QueryableTenure>();
+            var secondTenure = _fixture.Create<QueryableTenure>();
             secondTenure.PaymentReference = paymentReference;
             listOfTenures.Add(secondTenure);
 
-            var thirdTenure = fixture.Create<QueryableTenure>();
+            var thirdTenure = _fixture.Create<QueryableTenure>();
             thirdTenure.TenuredAsset.FullAddress = fullAddress;
             listOfTenures.Add(thirdTenure);
 
-            var forthTenure = fixture.Create<QueryableTenure>();
+            var forthTenure = _fixture.Create<QueryableTenure>();
             thirdTenure.HouseholdMembers.First().FullName = fullName;
             listOfTenures.Add(forthTenure);
+
+            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
+
+            while (!awaitable.GetAwaiter().IsCompleted) { }
+
+            Thread.Sleep(10000);
+        }
+
+        public void GivenATenureWithSpecificUprn(string uprn)
+        {
+            var listOfTenures = new List<QueryableTenure>();
+
+            var tenure = _fixture.Create<QueryableTenure>();
+            tenure.TenuredAsset.Uprn = uprn;
+
+            listOfTenures.Add(tenure);
+
+            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
+
+            while (!awaitable.GetAwaiter().IsCompleted) { }
+
+            Thread.Sleep(10000);
+        }
+
+        public void GivenTaTenuresExist(int tenuresToCreate)
+        {
+            var listOfTenures = new List<QueryableTenure>();
+            for (var i = 0; i < tenuresToCreate; i++)
+            {
+                var tenure = _fixture.Create<QueryableTenure>();
+                tenure.TenuredAsset.IsTemporaryAccommodation = true;
+
+                listOfTenures.Add(tenure);
+            }
+
+            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
+
+            while (!awaitable.GetAwaiter().IsCompleted) { }
+
+            Thread.Sleep(10000);
+        }
+
+        public void GivenSimilarTaTenuresExist(string bookingStatus, string fullName)
+        {
+            var listOfTenures = new List<QueryableTenure>();
+
+            var firstTenure = _fixture.Create<QueryableTenure>();
+            firstTenure.TenuredAsset.IsTemporaryAccommodation = true;
+            firstTenure.TempAccommodationInfo.BookingStatus = bookingStatus;
+
+            listOfTenures.Add(firstTenure);
+
+            var secondTenure = _fixture.Create<QueryableTenure>();
+            secondTenure.TenuredAsset.IsTemporaryAccommodation = true;
+            secondTenure.HouseholdMembers.First().FullName = fullName;
+            listOfTenures.Add(secondTenure);
+
+            var thirdTenure = _fixture.Create<QueryableTenure>();
+            thirdTenure.TenuredAsset.IsTemporaryAccommodation = true;
+            thirdTenure.TempAccommodationInfo.BookingStatus = bookingStatus;
+            thirdTenure.HouseholdMembers.First().FullName = fullName;
+            listOfTenures.Add(thirdTenure);
 
             var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
 

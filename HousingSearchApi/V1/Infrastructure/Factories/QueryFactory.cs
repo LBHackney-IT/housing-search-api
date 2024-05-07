@@ -30,7 +30,8 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
 
             if (typeof(T) == typeof(QueryableTenure))
             {
-                return (IQueryGenerator<T>) new TenureQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableTenure>>());
+                return (IQueryGenerator<T>) new TenureQueryGenerator(_serviceProvider.GetService<IQueryBuilder<QueryableTenure>>(),
+                    _serviceProvider.GetService<IFilterQueryBuilder<QueryableTenure>>());
             }
 
             if (typeof(T) == typeof(QueryableAsset))
