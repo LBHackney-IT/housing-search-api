@@ -149,6 +149,12 @@ namespace HousingSearchApi.Tests.V1.Factories
 
             var expectedTextQueryType = TextQueryType.MostFields;
 
+            _queryFilterBuilderMock.Setup(x =>
+              x.WithMultipleFilterQuery(It.IsAny<string>(), It.IsAny<List<string>>())
+              .WithFilterQuery(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<TextQueryType>())
+              .WithWildstarQuery(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<TextQueryType>())
+              .Build(It.IsAny<QueryContainerDescriptor<QueryableTenure>>()));
+
             _queryBuilderMock.Setup(x =>
                 x.WithExactQuery(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<IExactSearchQuerystringProcessor>(), It.IsAny<TextQueryType>())
                 .Build(It.IsAny<QueryContainerDescriptor<QueryableTenure>>()));
@@ -160,6 +166,12 @@ namespace HousingSearchApi.Tests.V1.Factories
             _queryBuilderMock.Verify(x =>
                 x.WithExactQuery(_request.Uprn, expectedExactQueryFields, null, expectedTextQueryType)
                 .Build(_queryContainerDescriptor), Times.Once);
+
+            _queryFilterBuilderMock.Verify(x =>
+             x.WithMultipleFilterQuery(It.IsAny<string>(), It.IsAny<List<string>>())
+              .WithFilterQuery(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<TextQueryType>())
+              .WithWildstarQuery(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<TextQueryType>())
+              .Build(It.IsAny<QueryContainerDescriptor<QueryableTenure>>()), Times.Never);
         }
     }
 }
