@@ -120,7 +120,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceReturnsLatestTenuresFirstWhenSortingByTenureStartDateIsSetToDesc()
         {
-            this.Given(g => _tenureFixture.GivenATenureIndexExists()) 
+            this.Given(g => _tenureFixture.GivenATenureIndexExists())
                 .Given(g => _tenureFixture.GivenTenuresWithDifferentStartDatesExist())
                 .When(w => _steps.WhenSearchingForTenuresWithSortingByTenureStartDate(true))
                 .Then(t => _steps.ThenTheReturningResultsShouldBeSortedByDescendingTenureStartDate())

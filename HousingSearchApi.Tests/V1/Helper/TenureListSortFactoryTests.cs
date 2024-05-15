@@ -43,7 +43,7 @@ namespace HousingSearchApi.Tests.V1.Helper
             var result = _sut.Create<QueryableTenure, GetTenureListRequest>(new GetTenureListRequest { SortBy = _tenureStartDateFieldName, IsDesc = true });
 
             // Assert
-            result.Should().BeOfType(typeof (TenureStartDateDesc));
+            result.Should().BeOfType(typeof(TenureStartDateDesc));
         }
     }
 }

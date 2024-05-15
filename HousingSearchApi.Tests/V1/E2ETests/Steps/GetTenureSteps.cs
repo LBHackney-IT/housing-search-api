@@ -163,7 +163,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task ThenTheReturningResultsShouldBeSortedByAscendingTenureStartDate()
         {
-            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait (false);
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIAllResponse<GetTenureListResponse>>(resultBody, _jsonOptions);
 
             var tenures = result.Results.Tenures;
