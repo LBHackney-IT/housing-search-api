@@ -116,5 +116,26 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenTheReturningResultShouldHaveTheSpecificTaTenure("ACC", "John Doe", 1))
                 .BDDfy();
         }
+
+        [Fact]
+        public void ServiceReturnsLatestTenuresFirstWhenSortingByTenureStartDateIsSetToDesc()
+        {
+            this.Given(g => _tenureFixture.GivenATenureIndexExists()) 
+                .Given(g => _tenureFixture.GivenTenuresWithDifferentStartDatesExist())
+                .When(w => _steps.WhenSearchingForTenuresWithSortingByTenureStartDate(true))
+                .Then(t => _steps.ThenTheReturningResultsShouldBeSortedByDescendingTenureStartDate())
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceReturnsLatestTenuresLastWhenSortingByTenureStartDateIsSetToAsc()
+        {
+            this.Given(g => _tenureFixture.GivenATenureIndexExists())
+                .Given(g => _tenureFixture.GivenTenuresWithDifferentStartDatesExist())
+                .When(w => _steps.WhenSearchingForTenuresWithSortingByTenureStartDate(false))
+                .Then(t => _steps.ThenTheReturningResultsShouldBeSortedByAscendingTenureStartDate())
+                .BDDfy();
+        }
+
     }
 }

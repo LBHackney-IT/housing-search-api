@@ -1,14 +1,15 @@
+using AutoFixture;
+using Elasticsearch.Net;
+using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
+using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
+using HousingSearchApi.Tests.V1.TestHelpers;
+using Nest;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
-using AutoFixture;
-using Elasticsearch.Net;
-using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
-using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
-using Nest;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 {
@@ -18,7 +19,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         private const string INDEX = "tenures";
         public static string[] Alphabet = { "aa", "bb", "cc", "dd", "ee", "vv", "ww", "xx", "yy", "zz" };
 
-        private readonly Fixture _fixture = new Fixture();
+        // Please note Fixture customization will be ignored altogether if Build() is used. Customization only applies to .Create(). This is by design in AutoFixture itself
+        // If using .Build() in tests ensure the StartOfTenureDate is handled appropriately, so it can be used with date field type in the index
+
+        // Fixture Customizations run only once per Fixture instance, so that's why we have to use a new instance every time we create a new QueryableTenure object
+        //  This ensures we have a proper range of valid dates for tenure start dates
 
         public TenureFixture(IElasticClient elasticClient, HttpClient httpClient) : base(elasticClient, httpClient)
         {
@@ -56,7 +61,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    var tenure = _fixture.Create<QueryableTenure>();
+                    var tenure = new Fixture().Customize(new CreateRandomISOStartOfTenureDate()).Create<QueryableTenure>();
                     tenure.PaymentReference = value;
 
                     listOfTenures.Add(tenure);
@@ -66,7 +71,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             // Add loads more at random
             for (int i = 0; i < 900; i++)
             {
-                var tenure = _fixture.Create<QueryableTenure>();
+                var tenure = new Fixture().Customize(new CreateRandomISOStartOfTenureDate()).Create<QueryableTenure>();
 
                 listOfTenures.Add(tenure);
             }
@@ -78,22 +83,22 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         {
             var listOfTenures = new List<QueryableTenure>();
 
-            var firstTenure = _fixture.Create<QueryableTenure>();
+            var firstTenure = new Fixture().Customize(new CreateRandomISOStartOfTenureDate()).Create<QueryableTenure>();
             firstTenure.PaymentReference = paymentReference;
             firstTenure.TenuredAsset.FullAddress = fullAddress;
             firstTenure.HouseholdMembers.First().FullName = fullName;
 
             listOfTenures.Add(firstTenure);
 
-            var secondTenure = _fixture.Create<QueryableTenure>();
+            var secondTenure = new Fixture().Customize(new CreateRandomISOStartOfTenureDate()).Create<QueryableTenure>();
             secondTenure.PaymentReference = paymentReference;
             listOfTenures.Add(secondTenure);
 
-            var thirdTenure = _fixture.Create<QueryableTenure>();
+            var thirdTenure = new Fixture().Customize(new CreateRandomISOStartOfTenureDate()).Create<QueryableTenure>();
             thirdTenure.TenuredAsset.FullAddress = fullAddress;
             listOfTenures.Add(thirdTenure);
 
-            var forthTenure = _fixture.Create<QueryableTenure>();
+            var forthTenure = new Fixture().Customize(new CreateRandomISOStartOfTenureDate()).Create<QueryableTenure>();
             thirdTenure.HouseholdMembers.First().FullName = fullName;
             listOfTenures.Add(forthTenure);
 
@@ -108,7 +113,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         {
             var listOfTenures = new List<QueryableTenure>();
 
-            var tenure = _fixture.Create<QueryableTenure>();
+            var tenure = new Fixture().Customize(new CreateRandomISOStartOfTenureDate()).Create<QueryableTenure>();
             tenure.TenuredAsset.Uprn = uprn;
 
             listOfTenures.Add(tenure);
@@ -125,7 +130,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             var listOfTenures = new List<QueryableTenure>();
             for (var i = 0; i < tenuresToCreate; i++)
             {
-                var tenure = _fixture.Create<QueryableTenure>();
+                var tenure = new Fixture().Customize(new CreateRandomISOStartOfTenureDate()).Create<QueryableTenure>();
                 tenure.TenuredAsset.IsTemporaryAccommodation = true;
 
                 listOfTenures.Add(tenure);
@@ -142,18 +147,18 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         {
             var listOfTenures = new List<QueryableTenure>();
 
-            var firstTenure = _fixture.Create<QueryableTenure>();
+            var firstTenure = new Fixture().Customize(new CreateRandomISOStartOfTenureDate()).Create<QueryableTenure>();
             firstTenure.TenuredAsset.IsTemporaryAccommodation = true;
             firstTenure.TempAccommodationInfo.BookingStatus = bookingStatus;
 
             listOfTenures.Add(firstTenure);
 
-            var secondTenure = _fixture.Create<QueryableTenure>();
+            var secondTenure = new Fixture().Customize(new CreateRandomISOStartOfTenureDate()).Create<QueryableTenure>();
             secondTenure.TenuredAsset.IsTemporaryAccommodation = true;
             secondTenure.HouseholdMembers.First().FullName = fullName;
             listOfTenures.Add(secondTenure);
 
-            var thirdTenure = _fixture.Create<QueryableTenure>();
+            var thirdTenure = new Fixture().Customize(new CreateRandomISOStartOfTenureDate()).Create<QueryableTenure>();
             thirdTenure.TenuredAsset.IsTemporaryAccommodation = true;
             thirdTenure.TempAccommodationInfo.BookingStatus = bookingStatus;
             thirdTenure.HouseholdMembers.First().FullName = fullName;
@@ -164,6 +169,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             while (!awaitable.GetAwaiter().IsCompleted) { }
 
             Thread.Sleep(10000);
+        }
+
+        public void GivenTenuresWithDifferentStartDatesExist()
+        {
+            //nothing to do here, we already have existing records created by GivenATenureIndexExists fixture
         }
     }
 }
