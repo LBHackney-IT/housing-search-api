@@ -27,7 +27,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         }
 
         [Fact]
-        public void ShouldReturnTenureStartdateAscWhenRequestTenureStartDateAndAsc()
+        public void ShouldReturnTenureStartDateAscWhenRequestTenureStartDateAndAsc()
         {
             // Arrange + Act
             var result = _sut.Create<QueryableTenure, GetTenureListRequest>(new GetTenureListRequest { SortBy = _tenureStartDateFieldName, IsDesc = false });
