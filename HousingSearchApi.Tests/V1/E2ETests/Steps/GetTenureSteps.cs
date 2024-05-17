@@ -1,13 +1,14 @@
-using System;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
 using FluentAssertions;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps.Base;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Boundary.Responses.Metadata;
+using NUnit.Framework;
+using System;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 {
@@ -61,6 +62,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         {
             var route = new Uri($"api/v1/search/tenures?searchText={TenureFixture.Alphabet.Last()}&pageSize={pageSize}",
                 UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+
+        public async Task WhenSearchingForTenuresWithSortingByTenureStartDate(bool desc)
+        {
+            var route = new Uri($"api/v1/search/tenures?searchText=%22%22&sortBy=tenureStartDate&isDesc={desc}", UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
@@ -143,6 +151,24 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             tenures.First().HouseholdMembers.First().FullName.Should().Be(fullName);
         }
 
+        public async Task ThenTheReturningResultsShouldBeSortedByDescendingTenureStartDate()
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetTenureListResponse>>(resultBody, _jsonOptions);
 
+            var tenures = result.Results.Tenures;
+
+            CollectionAssert.AreEqual(tenures.OrderByDescending(x => x.StartOfTenureDate), tenures);
+        }
+
+        public async Task ThenTheReturningResultsShouldBeSortedByAscendingTenureStartDate()
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetTenureListResponse>>(resultBody, _jsonOptions);
+
+            var tenures = result.Results.Tenures;
+
+            CollectionAssert.AreEqual(tenures.OrderBy(x => x.StartOfTenureDate), tenures);
+        }
     }
 }

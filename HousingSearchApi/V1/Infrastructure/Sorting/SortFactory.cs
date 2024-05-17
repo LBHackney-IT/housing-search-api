@@ -4,6 +4,7 @@ using Hackney.Shared.HousingSearch.Gateways.Models.Transactions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Interfaces.Sorting;
 using QueryablePerson = Hackney.Shared.HousingSearch.Gateways.Models.Persons.QueryablePerson;
+using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 
 namespace HousingSearchApi.V1.Infrastructure.Sorting
 {
@@ -75,6 +76,32 @@ namespace HousingSearchApi.V1.Infrastructure.Sorting
                             return (ISort<T>) new PatchAsc();
                         case "state":
                             return (ISort<T>) new StateAsc();
+                    }
+                }
+            }
+
+            if (typeof(T) == typeof(QueryableTenure))
+            {
+                var sortBy = ((HousingSearchRequest) (object) request).SortBy;
+
+                if (string.IsNullOrEmpty(sortBy))
+                    return new DefaultSort<T>();
+
+                if (((HousingSearchRequest) (object) request).IsDesc)
+                {
+                    switch (sortBy)
+                    {
+                        case "tenureStartDate":
+                            return (ISort<T>) new TenureStartDateDesc();
+
+                    }
+                }
+                else
+                {
+                    switch (sortBy)
+                    {
+                        case "tenureStartDate":
+                            return (ISort<T>) new TenureStartDateAsc();
                     }
                 }
             }
