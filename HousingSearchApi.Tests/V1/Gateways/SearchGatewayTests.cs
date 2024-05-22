@@ -2,6 +2,7 @@ using AutoFixture;
 using FluentAssertions;
 using Hackney.Shared.HousingSearch.Domain.Asset;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
+using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Responses;
 using HousingSearchApi.V1.Factories;
@@ -132,5 +133,60 @@ namespace HousingSearchApi.Tests.V1.Gateways
             response.Should().BeEquivalentTo(new List<Asset>());
         }
 
+        //tenures
+        [Fact]
+        public async Task GetListOfTenuresSets_CallsSearchTenuresSets()
+        {
+            var query = new GetAllTenureListRequest();
+
+            SearchResponse<QueryableTenure> elasticSearchResponse = null;
+
+            _elasticSearchWrapperMock
+                .Setup(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(query))
+                .ReturnsAsync(elasticSearchResponse);
+
+            var response = await _searchGateway.GetListOfTenuresSets(query);
+
+            _elasticSearchWrapperMock
+                .Verify(x =>
+                    x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(It.IsAny<GetAllTenureListRequest>())
+                    , Times.Once);
+        }
+
+        [Fact]
+        public async Task GetListOfTenuresSets_CallsSearchTenuresSetsWithCorrectQuery()
+        {
+            var query = _fixture.Create<GetAllTenureListRequest>();
+
+            SearchResponse<QueryableTenure> elasticSearchResponse = null;
+
+            _elasticSearchWrapperMock
+                .Setup(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(query))
+                .ReturnsAsync(elasticSearchResponse);
+
+            var response = await _searchGateway.GetListOfTenuresSets(query);
+
+            _elasticSearchWrapperMock
+                .Verify(x =>
+                    x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(query)
+                    , Times.Once);
+        }
+
+        [Fact]
+        public async Task GetListOfTenuresSets_WhenSearchResponseIsNullReturnsCorrectGetAllTenureListResponse()
+        {
+            var query = _fixture.Create<GetAllTenureListRequest>();
+            SearchResponse<QueryableTenure> elasticSearchResponse = null;
+
+            _elasticSearchWrapperMock
+                .Setup(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(query))
+                .ReturnsAsync(elasticSearchResponse);
+
+            var response = await _searchGateway.GetListOfTenuresSets(query);
+
+            response.Should().BeOfType<GetAllTenureListResponse>();
+            response.LastHitId.Should().BeNull();
+            response.Tenures.Count.Should().Be(0);
+        }
     }
 }

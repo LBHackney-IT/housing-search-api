@@ -209,5 +209,19 @@ namespace HousingSearchApi.V1.Gateways
 
             return childAssets;
         }
+
+        public async Task<GetAllTenureListResponse> GetListOfTenuresSets(GetAllTenureListRequest query)
+        {
+            var searchResponse = await _elasticSearchWrapper
+                .SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(query)
+                .ConfigureAwait(false);
+
+            var tenureListResponse = new GetAllTenureListResponse();
+
+            //TODO: mock Documents
+            //tenureListResponse.Tenures.AddRange(searchResponse.Documents.Select(qt => qt.Create()));
+
+            return tenureListResponse;
+        }
     }
 }

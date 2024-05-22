@@ -1,14 +1,14 @@
+using Elasticsearch.Net;
 using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Interfaces.Factories;
+using HousingSearchApi.V1.Interfaces.Filtering;
 using HousingSearchApi.V1.Interfaces.Sorting;
 using Microsoft.Extensions.Logging;
 using Nest;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Elasticsearch.Net;
-using HousingSearchApi.V1.Interfaces;
-using HousingSearchApi.V1.Interfaces.Factories;
-using HousingSearchApi.V1.Interfaces.Filtering;
 
 namespace HousingSearchApi.V1.Infrastructure
 {
@@ -120,6 +120,13 @@ namespace HousingSearchApi.V1.Infrastructure
                 throw;
             }
 
+        }
+
+        public Task<ISearchResponse<T>> SearchTenuresSets<T, TRequest>(TRequest query)
+            where T : class
+            where TRequest : GetAllTenureListRequest
+        {
+            throw new NotImplementedException();
         }
 
         private IQueryGenerator<T> BaseQuery<T>() where T : class
