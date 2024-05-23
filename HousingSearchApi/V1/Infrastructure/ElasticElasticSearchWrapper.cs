@@ -122,11 +122,20 @@ namespace HousingSearchApi.V1.Infrastructure
 
         }
 
-        public Task<ISearchResponse<T>> SearchTenuresSets<T, TRequest>(TRequest query)
+        public async Task<ISearchResponse<T>> SearchTenuresSets<T, TRequest>(TRequest request)
             where T : class
             where TRequest : GetAllTenureListRequest
         {
-            throw new NotImplementedException();
+            var esNodes = string.Join(';', _esClient.ConnectionSettings.ConnectionPool.Nodes.Select(x => x.Uri));
+
+            _logger.LogDebug($"ElasticSearch Search Sets begins {esNodes}");
+
+            if (request == null)
+            {
+                return new SearchResponse<T>();
+            }
+
+            return await _esClient.SearchAsync<T>().ConfigureAwait(false);
         }
 
         private IQueryGenerator<T> BaseQuery<T>() where T : class
