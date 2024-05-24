@@ -1,7 +1,6 @@
 using AutoFixture;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Hackney.Shared.HousingSearch.Gateways.Models.Accounts;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Infrastructure;
 using HousingSearchApi.V1.Interfaces;
@@ -17,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+using QueryableTenure = Hackney.Shared.HousingSearch.Gateways.Models.Tenures.QueryableTenure;
 
 namespace HousingSearchApi.Tests.V1.Infrastructure
 {
@@ -81,13 +81,13 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
         }
 
         [Fact]
-        public async Task SearchTenuresSets_CallsLoggerToLogESnodesUsedAsDebugInfo()
+        public async Task SearchTenuresSets_CallsLoggerToLogUsedESNodesAsDebugInfo()
         {
             var nodes = _fixture.CreateMany<Node>();
 
             var uris = string.Join(';', nodes.Select(x => x.Uri));
 
-            var expectedLogMessage = $"ElasticSearch Search Sets begins {uris}";
+            var expectedLogMessage = $"ElasticSearch Search Tenures Sets begins {uris}";
 
             _elasticClientMock.Setup(x =>
                 x.ConnectionSettings.ConnectionPool.Nodes.GetEnumerator()).Returns(nodes.GetEnumerator());
@@ -105,14 +105,17 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
         }
 
         [Fact]
-        public async Task SearchTenuresSets_ReturnsEmptyResultsWhenRequestIsNull()
+        public async Task SearchTenuresSets_ReturnsNoResultsWhenRequestIsNull()
         {
+            GetAllTenureListRequest request = null;
+
             var result = await _elasticSearchWrapper
-                .SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(null);
+                .SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(request);
 
             result.Documents.Count.Should().Be(0);
         }
 
+        //questionable because of the setup required
         [Fact]
         public async Task SearchTenuresSets_CallsSearchAsyncOnESClient()
         {
@@ -130,6 +133,46 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
                 x.SearchAsync<QueryableTenure>(
                 It.IsAny<Func<SearchDescriptor<QueryableTenure>, ISearchRequest<QueryableTenure>>>(),
                 default(CancellationToken)), Times.Once);
+        }
+
+        [Fact]
+        public async Task SearchTenuresSets_ThrowsAnExceptionWhenESClientThrowsOne()
+        {
+            var ex = new Exception();
+
+            _elasticClientMock.Setup(x =>
+                x.SearchAsync<QueryableTenure>(
+                It.IsAny<Func<SearchDescriptor<QueryableTenure>, ISearchRequest<QueryableTenure>>>(),
+                It.IsAny<CancellationToken>())).Throws(ex);
+
+            await _elasticSearchWrapper
+                .Invoking(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_request))
+                .Should().ThrowAsync<Exception>();
+        }
+
+        [Fact]
+        public async Task SearchTenuresSets_LogsErrorWhenESClientThrows()
+        {
+            var ex = new Exception();
+            var expectedLogMessage = "ElasticSearch Search Tenures Sets threw an exception";
+
+
+            _elasticClientMock.Setup(x =>
+                  x.SearchAsync<QueryableTenure>(
+                  It.IsAny<Func<SearchDescriptor<QueryableTenure>, ISearchRequest<QueryableTenure>>>(),
+                  It.IsAny<CancellationToken>())).Throws(ex);
+
+            await _elasticSearchWrapper
+                .Invoking(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_request))
+                .Should().ThrowAsync<Exception>();
+
+            _loggerMock.Verify(logger => logger.Log(
+               It.Is<LogLevel>(logLevel => logLevel == LogLevel.Error),
+               It.Is<EventId>(eventId => eventId.Id == 0),
+               It.Is<It.IsAnyType>((@object, @type) => @object.ToString() == expectedLogMessage && @type.Name == "FormattedLogValues"),
+               It.IsAny<Exception>(),
+               It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+           Times.Once);
         }
     }
 }

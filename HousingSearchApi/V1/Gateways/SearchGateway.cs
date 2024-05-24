@@ -218,10 +218,26 @@ namespace HousingSearchApi.V1.Gateways
 
             var tenureListResponse = new GetAllTenureListResponse();
 
-            //TODO: mock Documents
-            //tenureListResponse.Tenures.AddRange(searchResponse.Documents.Select(qt => qt.Create()));
+            if (searchResponse == null)
+            {
+                return tenureListResponse;
+            }
+            else
+            {
+                tenureListResponse
+                    .Tenures
+                    .AddRange(searchResponse.Documents.Select(queryableTenure => queryableTenure.Create()));
 
-            return tenureListResponse;
+                tenureListResponse.SetTotal(searchResponse.Total);
+
+                if (searchResponse.Documents.Count > 0)
+                {
+                    tenureListResponse.LastHitId = searchResponse.Hits.Last().Id;
+                }
+
+                return tenureListResponse;
+            }
         }
     }
 }
+

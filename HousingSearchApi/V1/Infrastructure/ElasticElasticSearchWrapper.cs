@@ -121,21 +121,28 @@ namespace HousingSearchApi.V1.Infrastructure
             }
 
         }
-
         public async Task<ISearchResponse<T>> SearchTenuresSets<T, TRequest>(TRequest request)
             where T : class
             where TRequest : GetAllTenureListRequest
         {
             var esNodes = string.Join(';', _esClient.ConnectionSettings.ConnectionPool.Nodes.Select(x => x.Uri));
 
-            _logger.LogDebug($"ElasticSearch Search Sets begins {esNodes}");
+            _logger.LogDebug($"ElasticSearch Search Tenures Sets begins {esNodes}");
 
             if (request == null)
             {
                 return new SearchResponse<T>();
             }
 
-            return await _esClient.SearchAsync<T>().ConfigureAwait(false);
+            try
+            {
+                return await _esClient.SearchAsync<T>().ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "ElasticSearch Search Tenures Sets threw an exception");
+                throw;
+            }
         }
 
         private IQueryGenerator<T> BaseQuery<T>() where T : class
