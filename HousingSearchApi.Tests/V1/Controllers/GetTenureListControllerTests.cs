@@ -44,7 +44,9 @@ namespace HousingSearchApi.Tests.V1.Controllers
             // given
             var request = new GetTenureListRequest();
             var response = new GetTenureListResponse();
-            _mockGetTenureListUseCase.Setup(x => x.ExecuteAsync(request)).ReturnsAsync(response);
+            _mockGetTenureListUseCase
+                .Setup(x => x.ExecuteAsync(request))
+                .ReturnsAsync(response);
 
             // when
             await _classUnderTest.GetTenureList(request).ConfigureAwait(false);
@@ -58,7 +60,9 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetAllTenureList_CallsGetTenureListSetsUseCase()
         {
             // given
-            _mockGetTenureListSetsUseCase.Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>())).ReturnsAsync(_getAllTenureListResponse);
+            _mockGetTenureListSetsUseCase
+                .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>()))
+                .ReturnsAsync(_getAllTenureListResponse);
 
             // when
             await _classUnderTest.GetAllTenureList(_getAllTenureListRequest).ConfigureAwait(false);
@@ -71,7 +75,9 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetAllTenureList_CallsGetTenureListSetsUseCaseWithGivenGetAllTenureListRequest()
         {
             // given
-            _mockGetTenureListSetsUseCase.Setup(x => x.ExecuteAsync(_getAllTenureListRequest)).ReturnsAsync(_getAllTenureListResponse);
+            _mockGetTenureListSetsUseCase
+                .Setup(x => x.ExecuteAsync(_getAllTenureListRequest))
+                .ReturnsAsync(_getAllTenureListResponse);
 
             // when
             await _classUnderTest.GetAllTenureList(_getAllTenureListRequest).ConfigureAwait(false);
@@ -84,7 +90,9 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetAllTenureList_WhenUseCaseCallIsSuccessfulReturnsOkObjectResult()
         {
             // given
-            _mockGetTenureListSetsUseCase.Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>())).ReturnsAsync(_getAllTenureListResponse);
+            _mockGetTenureListSetsUseCase
+                .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>()))
+                .ReturnsAsync(_getAllTenureListResponse);
 
             // when
             var result = await _classUnderTest.GetAllTenureList(_getAllTenureListRequest).ConfigureAwait(false);
@@ -121,7 +129,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
             // given
             var expectedTenuresCount = _getAllTenureListResponse.Tenures.Count;
 
-            //this is normally set by the search gateway
+            //this is normally set by the search gateway, so we can set it here
             _getAllTenureListResponse.SetTotal(expectedTenuresCount);
 
             _mockGetTenureListSetsUseCase
@@ -132,6 +140,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
             var result = await _classUnderTest.GetAllTenureList(_getAllTenureListRequest).ConfigureAwait(false);
             var okResult = result as OkObjectResult;
             var okResultvalue = (APIAllTenureResponse<GetAllTenureListResponse>) okResult.Value;
+
             // then
             okResultvalue.Total.Should().Be(expectedTenuresCount);
         }

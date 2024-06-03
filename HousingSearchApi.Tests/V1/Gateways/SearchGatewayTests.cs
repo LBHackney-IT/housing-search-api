@@ -216,8 +216,8 @@ namespace HousingSearchApi.Tests.V1.Gateways
             searchResponseMock.Setup(x => x.Hits).Returns(hits);
 
             _elasticSearchWrapperMock
-             .Setup(x => x.SearchTenuresSets(_getAllTenureListRequest))
-             .ReturnsAsync(searchResponseMock.Object);
+                .Setup(x => x.SearchTenuresSets(_getAllTenureListRequest))
+                .ReturnsAsync(searchResponseMock.Object);
 
             var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
             var expectedTotal = _queryableTenureList.Count;

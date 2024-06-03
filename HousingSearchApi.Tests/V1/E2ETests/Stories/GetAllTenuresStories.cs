@@ -107,7 +107,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .BDDfy();
         }
 
-        //TODO: use random names
         [Fact]
         public void ServiceReturnsSpecificTenuresWhenSearchedByNameAndFilteredByBookingStatus()
         {
