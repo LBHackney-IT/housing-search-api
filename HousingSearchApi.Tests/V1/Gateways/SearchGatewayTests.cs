@@ -254,7 +254,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
 
             var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
 
-            response.LastHitId().Should().Be(lastId);
+            response.LastHitId.Should().Be(lastId);
         }
 
         [Fact]
@@ -269,7 +269,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
 
             var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
 
-            response.LastHitId().Should().BeNull();
+            response.LastHitId.Should().BeNull();
         }
 
         [Fact]
@@ -309,7 +309,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
 
             var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
 
-            response.LastHitTenureStartDate().Should().Be(tenureStartDateInMillisecondsSinceEpoch);
+            response.LastHitTenureStartDate.Should().Be(tenureStartDateInMillisecondsSinceEpoch);
         }
 
 
@@ -325,7 +325,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
 
             var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
 
-            response.LastHitTenureStartDate().Should().BeNull();
+            response.LastHitTenureStartDate.Should().BeNull();
         }
 
         [Fact]
@@ -353,7 +353,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
 
             var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
 
-            response.LastHitTenureStartDate().Should().BeNull();
+            response.LastHitTenureStartDate.Should().BeNull();
         }
     }
 }

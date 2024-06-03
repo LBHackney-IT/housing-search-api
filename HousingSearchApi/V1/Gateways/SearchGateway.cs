@@ -235,8 +235,8 @@ namespace HousingSearchApi.V1.Gateways
                     var lastHit = searchResponse.Hits.Last();
                     var lastHitTenureStartDate = lastHit.Sorts?.Count > 0 ? lastHit.Sorts.First() : null;
 
-                    tenureListResponse.SetLastHitId(lastHit.Id);
-                    tenureListResponse.SetLastHitTenureStartDate(lastHitTenureStartDate?.ToString()); //[tenure start date, id]
+                    tenureListResponse.LastHitId = lastHit.Id;
+                    tenureListResponse.LastHitTenureStartDate = lastHitTenureStartDate?.ToString(); //[tenure start date, id]
                 }
 
                 return tenureListResponse;

@@ -105,6 +105,8 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetAllTenureList_WhenUseCaseReturnsResultsIncludesThemInTheResponseObject()
         {
             // given
+            _getAllTenureListResponse.LastHitId = null;
+
             _mockGetTenureListSetsUseCase
                 .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>()))
                 .ReturnsAsync(_getAllTenureListResponse);
@@ -151,7 +153,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
             // given
             var expectedLastHitId = _getAllTenureListResponse.Tenures.Last().Id;
 
-            _getAllTenureListResponse.SetLastHitId(expectedLastHitId);
+            _getAllTenureListResponse.LastHitId = expectedLastHitId;
 
             _mockGetTenureListSetsUseCase
                 .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>()))
@@ -172,7 +174,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
             // given
             var expectedLastHitTenureStartDate = "12345678";
 
-            _getAllTenureListResponse.SetLastHitTenureStartDate(expectedLastHitTenureStartDate);
+            _getAllTenureListResponse.LastHitTenureStartDate = expectedLastHitTenureStartDate;
 
             _mockGetTenureListSetsUseCase
                 .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>()))

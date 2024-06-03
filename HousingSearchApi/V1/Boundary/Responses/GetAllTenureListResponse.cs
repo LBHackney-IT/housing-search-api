@@ -2,27 +2,19 @@ namespace HousingSearchApi.V1.Boundary.Responses
 {
     public class GetAllTenureListResponse : GetTenureListResponse
     {
-        private string _lastHitId;
         private string _lastHitTenureStartDate;
+        private string _lastHitId;
 
-        public void SetLastHitId(string lastHitId)
+        internal string LastHitTenureStartDate
         {
-            _lastHitId = lastHitId;
+            get => _lastHitTenureStartDate;
+            set => _lastHitTenureStartDate = value;
         }
 
-        public string LastHitId()
+        internal string LastHitId
         {
-            return _lastHitId;
-        }
-
-        public void SetLastHitTenureStartDate(string tenureStartDate)
-        {
-            _lastHitTenureStartDate = tenureStartDate;
-        }
-
-        public string LastHitTenureStartDate()
-        {
-            return _lastHitTenureStartDate;
+            get => _lastHitId;
+            set => _lastHitId = value;
         }
     }
 }

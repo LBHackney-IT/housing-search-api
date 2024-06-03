@@ -62,8 +62,8 @@ namespace HousingSearchApi.V1.Controllers
                 var response = new APIAllTenureResponse<GetAllTenureListResponse>()
                 {
                     Total = searchResults.Total(),
-                    LastHitId = searchResults.LastHitId(),
-                    LastHitTenureStartDate = searchResults.LastHitTenureStartDate(),
+                    LastHitId = searchResults.LastHitId,
+                    LastHitTenureStartDate = searchResults.LastHitTenureStartDate,
                     Results = searchResults
 
                 };
