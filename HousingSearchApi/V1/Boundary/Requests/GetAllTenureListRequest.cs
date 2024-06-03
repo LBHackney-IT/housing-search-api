@@ -6,5 +6,9 @@ namespace HousingSearchApi.V1.Boundary.Requests
     {
         [FromQuery(Name = "lastHitId")]
         public string LastHitId { get; set; }
+
+        //in order to use sorting together with last hit id, this must be provided as well 
+        [FromQuery(Name = "lastHitTenureStartDate")]
+        public string LastHitTenureStartDate { get; set; }
     }
 }

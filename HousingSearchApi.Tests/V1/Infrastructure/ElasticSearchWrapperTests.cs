@@ -3,6 +3,7 @@ using Elasticsearch.Net;
 using FluentAssertions;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Infrastructure;
+using HousingSearchApi.V1.Infrastructure.Sorting;
 using HousingSearchApi.V1.Interfaces;
 using HousingSearchApi.V1.Interfaces.Factories;
 using HousingSearchApi.V1.Interfaces.Filtering;
@@ -25,7 +26,7 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
         private readonly Mock<IElasticClient> _elasticClientMock;
         private readonly Mock<IQueryFactory> _queryFactoryMock;
         private readonly Mock<IPagingHelper> _pagingHelperMock;
-        private readonly Mock<ISortFactory> _sorfactoryMock;
+        private readonly Mock<ISortFactory> _sortfactoryMock;
         private readonly Mock<IFilterFactory> _filterFactoryMock;
         private readonly Mock<IIndexSelector> _indexSelectorMock;
         private readonly Mock<ILogger<ElasticSearchWrapper>> _loggerMock;
@@ -36,9 +37,10 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
         public ElasticSearchWrapperTests()
         {
             _elasticClientMock = new Mock<IElasticClient>();
+
             _queryFactoryMock = new Mock<IQueryFactory>();
             _pagingHelperMock = new Mock<IPagingHelper>();
-            _sorfactoryMock = new Mock<ISortFactory>();
+            _sortfactoryMock = new Mock<ISortFactory>();
             _loggerMock = new Mock<ILogger<ElasticSearchWrapper>>();
             _indexSelectorMock = new Mock<IIndexSelector>();
             _filterFactoryMock = new Mock<IFilterFactory>();
@@ -47,7 +49,7 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
                 _elasticClientMock.Object,
                 _queryFactoryMock.Object,
                 _pagingHelperMock.Object,
-                _sorfactoryMock.Object,
+                _sortfactoryMock.Object,
                 _loggerMock.Object,
                 _indexSelectorMock.Object,
                 _filterFactoryMock.Object);
@@ -61,20 +63,17 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
 
             _elasticClientMock.Setup(x =>
                 x.ConnectionSettings.ConnectionPool.Nodes.GetEnumerator()).Returns(nodes);
-        }
 
-        [Fact]
-        public async Task SearchTenuresSets_ResultsTypeIsQueryableTenureAndQueryTypeIsGetAllTenureListRequest()
-        {
-            _ = await _elasticSearchWrapper
-                .SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_request);
+            //return default sort
+            _sortfactoryMock.Setup(x =>
+                x.Create<QueryableTenure, GetAllTenureListRequest>(_request)).Returns(new DefaultSort<QueryableTenure>());
         }
 
         [Fact]
         public async Task SearchTenuresSets_CallsESClientToGetNodeUrisFromConnectionSettings()
         {
             var result = await _elasticSearchWrapper
-                .SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_request);
+                .SearchTenuresSets(_request);
 
             _elasticClientMock.Verify(x =>
                 x.ConnectionSettings.ConnectionPool.Nodes.GetEnumerator(), Times.Once());
@@ -93,15 +92,18 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
                 x.ConnectionSettings.ConnectionPool.Nodes.GetEnumerator()).Returns(nodes.GetEnumerator());
 
             var result = await _elasticSearchWrapper
-                .SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_request);
+                .SearchTenuresSets(_request);
 
-            _loggerMock.Verify(logger => logger.Log(
-                It.Is<LogLevel>(logLevel => logLevel == LogLevel.Debug),
-                It.Is<EventId>(eventId => eventId.Id == 0),
-                It.Is<It.IsAnyType>((@object, @type) => @object.ToString() == expectedLogMessage && @type.Name == "FormattedLogValues"),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Once);
+            MockLoggerExtensions.VerifyExact(_loggerMock, LogLevel.Debug, expectedLogMessage, Times.Once());
+
+        }
+
+        [Fact]
+        public async Task SearchTenuresSets_CallsCreateOnSortFactoryWithRequestToGetTheCorrectSortDescriptor()
+        {
+            var result = await _elasticSearchWrapper.SearchTenuresSets(_request);
+
+            _sortfactoryMock.Verify(x => x.Create<QueryableTenure, GetAllTenureListRequest>(_request), Times.Once);
         }
 
         [Fact]
@@ -110,29 +112,27 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
             GetAllTenureListRequest request = null;
 
             var result = await _elasticSearchWrapper
-                .SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(request);
+                .SearchTenuresSets(request);
 
             result.Documents.Count.Should().Be(0);
         }
 
-        //questionable because of the setup required
         [Fact]
         public async Task SearchTenuresSets_CallsSearchAsyncOnESClient()
         {
             var mockResponse = new Mock<SearchResponse<QueryableTenure>>();
 
             _elasticClientMock.Setup(x =>
-                x.SearchAsync<QueryableTenure>(
-                It.IsAny<Func<SearchDescriptor<QueryableTenure>, ISearchRequest<QueryableTenure>>>(),
+                x.SearchAsync(
+                It.IsAny<Func<SearchDescriptor<QueryableTenure>, ISearchRequest>>(),
                 It.IsAny<CancellationToken>())).ReturnsAsync(mockResponse.Object);
 
-            var result = await _elasticSearchWrapper
-                .SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_request);
+            var result = await _elasticSearchWrapper.SearchTenuresSets(_request);
 
             _elasticClientMock.Verify(x =>
-                x.SearchAsync<QueryableTenure>(
-                It.IsAny<Func<SearchDescriptor<QueryableTenure>, ISearchRequest<QueryableTenure>>>(),
-                default(CancellationToken)), Times.Once);
+                x.SearchAsync(
+                It.IsAny<Func<SearchDescriptor<QueryableTenure>, ISearchRequest>>(),
+                It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -141,12 +141,12 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
             var ex = new Exception();
 
             _elasticClientMock.Setup(x =>
-                x.SearchAsync<QueryableTenure>(
-                It.IsAny<Func<SearchDescriptor<QueryableTenure>, ISearchRequest<QueryableTenure>>>(),
+                x.SearchAsync(
+                It.IsAny<Func<SearchDescriptor<QueryableTenure>, ISearchRequest>>(),
                 It.IsAny<CancellationToken>())).Throws(ex);
 
             await _elasticSearchWrapper
-                .Invoking(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_request))
+                .Invoking(x => x.SearchTenuresSets(_request))
                 .Should().ThrowAsync<Exception>();
         }
 
@@ -156,25 +156,76 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
             var ex = new Exception();
             var expectedLogMessage = "ElasticSearch Search Tenures Sets threw an exception";
 
-
             _elasticClientMock.Setup(x =>
-                  x.SearchAsync<QueryableTenure>(
-                  It.IsAny<Func<SearchDescriptor<QueryableTenure>, ISearchRequest<QueryableTenure>>>(),
+                  x.SearchAsync(
+                  It.IsAny<Func<SearchDescriptor<QueryableTenure>, ISearchRequest>>(),
                   It.IsAny<CancellationToken>())).Throws(ex);
 
             await _elasticSearchWrapper
-                .Invoking(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_request))
+                .Invoking(x => x.SearchTenuresSets(_request))
                 .Should().ThrowAsync<Exception>();
 
-            _loggerMock.Verify(logger => logger.Log(
-               It.Is<LogLevel>(logLevel => logLevel == LogLevel.Error),
-               It.Is<EventId>(eventId => eventId.Id == 0),
-               It.Is<It.IsAnyType>((@object, @type) => @object.ToString() == expectedLogMessage && @type.Name == "FormattedLogValues"),
-               It.IsAny<Exception>(),
-               It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-           Times.Once);
+            MockLoggerExtensions.VerifyExact(_loggerMock, LogLevel.Error, expectedLogMessage, Times.Once());
+        }
+
+        [Fact]
+        public void GetLastSortedItem_ReturnsNullWhenLastHitIdAndLastHitTenureStartDateAreNotProvided()
+        {
+            var request = new GetAllTenureListRequest();
+
+            var result = ElasticSearchWrapper.GetLastSortedItem(request);
+
+            result.Should().BeNull();
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void GetLastSortedItem_ReturnsNullWhenOnlyLastHitIdIsProvided(string lastHitTenureStartDate)
+        {
+            var request = new GetAllTenureListRequest()
+            {
+                LastHitId = Guid.NewGuid().ToString(),
+                LastHitTenureStartDate = lastHitTenureStartDate
+            };
+
+            var result = ElasticSearchWrapper.GetLastSortedItem(request);
+
+            result.Should().BeNull();
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+
+        public void GetLastSortedItem_ReturnsNullWhenOnlyLastHitTenureStartDateIsProvided(string lastHitId)
+        {
+            var request = new GetAllTenureListRequest()
+            {
+                LastHitTenureStartDate = "1717142746", //this must be in Unix epoch time
+                LastHitId = lastHitId
+            };
+
+            var result = ElasticSearchWrapper.GetLastSortedItem(request);
+
+            result.Should().BeNull();
+        }
+
+        [Fact]
+        public void GetLastSortedItem_ReturnsCorrectArrayOfStringsWhenBothLastHitIdAndLastHitTenureStartDateAreProvided()
+        {
+            var request = new GetAllTenureListRequest()
+            {
+                LastHitTenureStartDate = "1717142746",
+                LastHitId = Guid.NewGuid().ToString()
+            };
+
+            var result = ElasticSearchWrapper.GetLastSortedItem(request);
+
+            result.Should().BeOfType(typeof(string[]));
+            result.Length.Should().Be(2);
+            result[0].Should().Be(request.LastHitTenureStartDate);
+            result[1].Should().Be(request.LastHitId);
         }
     }
 }
-
-

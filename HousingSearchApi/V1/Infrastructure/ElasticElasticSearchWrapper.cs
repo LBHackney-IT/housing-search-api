@@ -1,4 +1,5 @@
 using Elasticsearch.Net;
+using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Interfaces;
 using HousingSearchApi.V1.Interfaces.Factories;
@@ -121,9 +122,7 @@ namespace HousingSearchApi.V1.Infrastructure
             }
 
         }
-        public async Task<ISearchResponse<T>> SearchTenuresSets<T, TRequest>(TRequest request)
-            where T : class
-            where TRequest : GetAllTenureListRequest
+        public async Task<ISearchResponse<QueryableTenure>> SearchTenuresSets(GetAllTenureListRequest request)
         {
             var esNodes = string.Join(';', _esClient.ConnectionSettings.ConnectionPool.Nodes.Select(x => x.Uri));
 
@@ -131,12 +130,29 @@ namespace HousingSearchApi.V1.Infrastructure
 
             if (request == null)
             {
-                return new SearchResponse<T>();
+                return new SearchResponse<QueryableTenure>();
             }
+
+            //last hit paging is only supported when sorting by tenure start date
+            //any other type of paging is not supported. Page size can be set however when using start date sorting with last hit paging
+            var sortDescriptor = _sortFactory.Create<QueryableTenure, GetAllTenureListRequest>(request).GetSortDescriptor;
+
+            var lastSortedItem = GetLastSortedItem(request);
+
+            ISearchResponse<QueryableTenure> result = null;
 
             try
             {
-                return await _esClient.SearchAsync<T>().ConfigureAwait(false);
+                result = await _esClient.SearchAsync<QueryableTenure>(
+                    x => x.Index(_indexSelector.Create<QueryableTenure>())
+                    .Query(q => BaseQuery<QueryableTenure>().Create(request, q))
+                    .Size(request.PageSize)
+                    .TrackTotalHits()
+                    .SearchAfter(lastSortedItem)
+                    .Sort(sortDescriptor)
+                    ).ConfigureAwait(false);
+
+                return result;
             }
             catch (Exception e)
             {
@@ -145,9 +161,21 @@ namespace HousingSearchApi.V1.Infrastructure
             }
         }
 
+        public static string[] GetLastSortedItem(GetAllTenureListRequest request)
+        {
+            var lastSortedItem =
+                !string.IsNullOrEmpty(request.LastHitId) && !string.IsNullOrEmpty(request.LastHitTenureStartDate)
+                    ? new string[] { request.LastHitTenureStartDate, request.LastHitId }
+                    : null;
+
+            return lastSortedItem;
+        }
+
         private IQueryGenerator<T> BaseQuery<T>() where T : class
         {
             return _queryFactory.CreateQuery<T>();
         }
+
+
     }
 }

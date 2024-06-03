@@ -28,7 +28,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
         private readonly GetAllTenureListRequest _getAllTenureListRequest;
         private readonly List<QueryableTenure> _queryableTenureList;
 
-        private readonly Fixture _fixture = new Fixture();
+        private readonly Fixture _fixture = new();
 
         public SearchGatewayTests()
         {
@@ -141,38 +141,19 @@ namespace HousingSearchApi.Tests.V1.Gateways
         }
 
         [Fact]
-        public async Task GetListOfTenuresSets_CallsSearchTenuresSets()
-        {
-            var query = new GetAllTenureListRequest();
-
-            SearchResponse<QueryableTenure> elasticSearchResponse = null;
-
-            _elasticSearchWrapperMock
-                .Setup(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(query))
-                .ReturnsAsync(elasticSearchResponse);
-
-            var response = await _searchGateway.GetListOfTenuresSets(query);
-
-            _elasticSearchWrapperMock
-                .Verify(x =>
-                    x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(It.IsAny<GetAllTenureListRequest>())
-                    , Times.Once);
-        }
-
-        [Fact]
         public async Task GetListOfTenuresSets_CallsSearchTenuresSetsWithCorrectQuery()
         {
             SearchResponse<QueryableTenure> elasticSearchResponse = null;
 
             _elasticSearchWrapperMock
-                .Setup(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_getAllTenureListRequest))
+                .Setup(x => x.SearchTenuresSets(_getAllTenureListRequest))
                 .ReturnsAsync(elasticSearchResponse);
 
             var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
 
             _elasticSearchWrapperMock
                 .Verify(x =>
-                    x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_getAllTenureListRequest)
+                    x.SearchTenuresSets(_getAllTenureListRequest)
                     , Times.Once);
         }
 
@@ -182,7 +163,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
             SearchResponse<QueryableTenure> elasticSearchResponse = null;
 
             _elasticSearchWrapperMock
-                .Setup(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_getAllTenureListRequest))
+                .Setup(x => x.SearchTenuresSets(_getAllTenureListRequest))
                 .ReturnsAsync(elasticSearchResponse);
 
             var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
@@ -192,10 +173,11 @@ namespace HousingSearchApi.Tests.V1.Gateways
         }
 
         [Fact]
-        public async Task GetListOfTenuresSets_WhenSearchResponseHasTenuresAddsThemToResults()
+        public async Task GetListOfTenuresSets_WhenSearchResponseHasDocumentsAddsTenuresToResults()
         {
             var hitMock = new Mock<IHit<QueryableTenure>>();
             hitMock.Setup(x => x.Id).Returns(Guid.NewGuid().ToString());
+            hitMock.Setup(x => x.Sorts).Returns(new string[] { "1", "2" });
 
             var hits = new List<IHit<QueryableTenure>>
             {
@@ -207,19 +189,21 @@ namespace HousingSearchApi.Tests.V1.Gateways
             searchResponseMock.Setup(x => x.Hits).Returns(hits);
 
             _elasticSearchWrapperMock
-                .Setup(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_getAllTenureListRequest))
+                .Setup(x => x.SearchTenuresSets(_getAllTenureListRequest))
                 .ReturnsAsync(searchResponseMock.Object);
 
             var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
+            var expectedTenures = _queryableTenureList.Select(x => x.Create());
 
-            response.Tenures.Should().BeEquivalentTo(_queryableTenureList.Select(x => x.Create()));
+            response.Tenures.Should().BeEquivalentTo(expectedTenures);
         }
 
         [Fact]
-        public async Task GetListOfTenuresSets_WhenSearchResponseHasTenuresSetsTheTotal()
+        public async Task GetListOfTenuresSets_WhenSearchResponseHasDocumentsSetsTheTotal()
         {
             var hitMock = new Mock<IHit<QueryableTenure>>();
             hitMock.Setup(x => x.Id).Returns(Guid.NewGuid().ToString());
+            hitMock.Setup(x => x.Sorts).Returns(new string[] { "1", "2" });
 
             var hits = new List<IHit<QueryableTenure>>
             {
@@ -232,16 +216,17 @@ namespace HousingSearchApi.Tests.V1.Gateways
             searchResponseMock.Setup(x => x.Hits).Returns(hits);
 
             _elasticSearchWrapperMock
-             .Setup(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_getAllTenureListRequest))
+             .Setup(x => x.SearchTenuresSets(_getAllTenureListRequest))
              .ReturnsAsync(searchResponseMock.Object);
 
             var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
+            var expectedTotal = _queryableTenureList.Count;
 
-            response.Total().Should().Be(_queryableTenureList.Count);
+            response.Total().Should().Be(expectedTotal);
         }
 
         [Fact]
-        public async Task GetListOfTenuresSets_WhenSearchResponseHasTenuresSetsTheLastHitId()
+        public async Task GetListOfTenuresSets_WhenSearchResponseHasDocumentsSetsTheLastHitId()
         {
             //Record ids matching hits is not relevant here, just that the correct lastHitId is set
             var firstId = Guid.NewGuid().ToString();
@@ -251,6 +236,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
             var lastId = Guid.NewGuid().ToString();
             var lastHitMock = new Mock<IHit<QueryableTenure>>();
             lastHitMock.Setup(x => x.Id).Returns(lastId);
+            lastHitMock.Setup(x => x.Sorts).Returns(new string[] { "1", "2" });
 
             var hits = new List<IHit<QueryableTenure>>
             {
@@ -263,12 +249,12 @@ namespace HousingSearchApi.Tests.V1.Gateways
             searchResponseMock.Setup(x => x.Hits).Returns(hits);
 
             _elasticSearchWrapperMock
-                .Setup(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_getAllTenureListRequest))
+                .Setup(x => x.SearchTenuresSets(_getAllTenureListRequest))
                 .ReturnsAsync(searchResponseMock.Object);
 
             var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
 
-            response.LastHitId.Should().Be(lastId);
+            response.LastHitId().Should().Be(lastId);
         }
 
         [Fact]
@@ -278,12 +264,96 @@ namespace HousingSearchApi.Tests.V1.Gateways
             searchResponseMock.Setup(x => x.Documents).Returns(new List<QueryableTenure>());
 
             _elasticSearchWrapperMock
-                .Setup(x => x.SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(_getAllTenureListRequest))
+                .Setup(x => x.SearchTenuresSets(_getAllTenureListRequest))
                 .ReturnsAsync(searchResponseMock.Object);
 
             var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
 
-            response.LastHitId.Should().BeNull();
+            response.LastHitId().Should().BeNull();
+        }
+
+        [Fact]
+        public async Task GetListOfTenuresSets_WhenSearchResponseHasDocumentsSetsTheLastHitTenureStartDate()
+        {
+            var hitId = Guid.NewGuid().ToString();
+            var document = _fixture.Build<QueryableTenure>().With(x => x.Id, hitId).Create();
+            var documents = new List<QueryableTenure>()
+            {
+                document
+            };
+
+            var tenureStartDateInMillisecondsSinceEpoch = "1716822489000";
+
+            var sorts = new string[]
+            {
+                tenureStartDateInMillisecondsSinceEpoch,
+                hitId
+            };
+
+            var hitMock = new Mock<IHit<QueryableTenure>>();
+            hitMock.Setup(x => x.Id).Returns(hitId);
+            hitMock.Setup(x => x.Sorts).Returns(sorts);
+
+            var hits = new List<IHit<QueryableTenure>>
+            {
+                hitMock.Object
+            };
+
+            var searchResponseMock = new Mock<ISearchResponse<QueryableTenure>>();
+            searchResponseMock.Setup(x => x.Documents).Returns(documents); //documents here are not really relevant
+            searchResponseMock.Setup(x => x.Hits).Returns(hits);
+
+            _elasticSearchWrapperMock
+                .Setup(x => x.SearchTenuresSets(It.IsAny<GetAllTenureListRequest>()))
+                .ReturnsAsync(searchResponseMock.Object);
+
+            var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
+
+            response.LastHitTenureStartDate().Should().Be(tenureStartDateInMillisecondsSinceEpoch);
+        }
+
+
+        [Fact]
+        public async Task GetListOfTenuresSets_WhenSearchResponseHasNoTenuresLastHitTenureStartDateIsNull()
+        {
+            var searchResponseMock = new Mock<ISearchResponse<QueryableTenure>>();
+            searchResponseMock.Setup(x => x.Documents).Returns(new List<QueryableTenure>());
+
+            _elasticSearchWrapperMock
+                .Setup(x => x.SearchTenuresSets(It.IsAny<GetAllTenureListRequest>()))
+                .ReturnsAsync(searchResponseMock.Object);
+
+            var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
+
+            response.LastHitTenureStartDate().Should().BeNull();
+        }
+
+        [Fact]
+        public async Task GetListOfTenuresSets_WhenlastHitInSearchResponseHasNoSortsThenSetsLastHitTenureStartDateToNull()
+        {
+            var hitId = Guid.NewGuid().ToString();
+            var document = _fixture.Build<QueryableTenure>().With(x => x.Id, hitId).Create();
+            var documents = new List<QueryableTenure> { document };
+
+            var hitMock = new Mock<IHit<QueryableTenure>>();
+            hitMock.Setup(x => x.Id).Returns(hitId);
+
+            var hits = new List<IHit<QueryableTenure>>
+            {
+                hitMock.Object
+            };
+
+            var searchResponsoMock = new Mock<ISearchResponse<QueryableTenure>>();
+            searchResponsoMock.Setup(x => x.Documents).Returns(documents);
+            searchResponsoMock.Setup(x => x.Hits).Returns(hits);
+
+            _elasticSearchWrapperMock
+                .Setup(x => x.SearchTenuresSets(It.IsAny<GetAllTenureListRequest>()))
+                .ReturnsAsync(searchResponsoMock.Object);
+
+            var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
+
+            response.LastHitTenureStartDate().Should().BeNull();
         }
     }
 }

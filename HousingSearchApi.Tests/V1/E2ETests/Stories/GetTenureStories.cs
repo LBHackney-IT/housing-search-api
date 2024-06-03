@@ -133,7 +133,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             this.Given(g => _tenureFixture.GivenATenureIndexExists())
                 .Given(g => _tenureFixture.GivenTenuresWithDifferentStartDatesExist())
                 .When(w => _steps.WhenSearchingForTenuresWithSortingByTenureStartDate(false))
-                .Then(t => _steps.ThenTheReturningResultsShouldBeSortedByAscendingTenureStartDate())
+                .Then(t => _steps.ThenTheReturningTenureAllResultsShouldBeSortedByAscendingTenureStartDate())
                 .BDDfy();
         }
 

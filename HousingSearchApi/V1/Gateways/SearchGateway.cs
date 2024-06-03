@@ -213,7 +213,7 @@ namespace HousingSearchApi.V1.Gateways
         public async Task<GetAllTenureListResponse> GetListOfTenuresSets(GetAllTenureListRequest query)
         {
             var searchResponse = await _elasticSearchWrapper
-                .SearchTenuresSets<QueryableTenure, GetAllTenureListRequest>(query)
+                .SearchTenuresSets(query)
                 .ConfigureAwait(false);
 
             var tenureListResponse = new GetAllTenureListResponse();
@@ -232,7 +232,11 @@ namespace HousingSearchApi.V1.Gateways
 
                 if (searchResponse.Documents.Count > 0)
                 {
-                    tenureListResponse.LastHitId = searchResponse.Hits.Last().Id;
+                    var lastHit = searchResponse.Hits.Last();
+                    var lastHitTenureStartDate = lastHit.Sorts?.Count > 0 ? lastHit.Sorts.First() : null;
+
+                    tenureListResponse.SetLastHitId(lastHit.Id);
+                    tenureListResponse.SetLastHitTenureStartDate(lastHitTenureStartDate?.ToString()); //[tenure start date, id]
                 }
 
                 return tenureListResponse;

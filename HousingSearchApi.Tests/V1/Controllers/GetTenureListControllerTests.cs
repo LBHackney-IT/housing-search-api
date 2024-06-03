@@ -97,13 +97,15 @@ namespace HousingSearchApi.Tests.V1.Controllers
         public async Task GetAllTenureList_WhenUseCaseReturnsResultsIncludesThemInTheResponseObject()
         {
             // given
-            _mockGetTenureListSetsUseCase.Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>())).ReturnsAsync(_getAllTenureListResponse);
+            _mockGetTenureListSetsUseCase
+                .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>()))
+                .ReturnsAsync(_getAllTenureListResponse);
 
             // when
             var result = await _classUnderTest.GetAllTenureList(_getAllTenureListRequest).ConfigureAwait(false);
 
             // then
-            var expectedResults = new APIResponse<GetAllTenureListResponse>()
+            var expectedResults = new APIAllTenureResponse<GetAllTenureListResponse>()
             {
                 Results = _getAllTenureListResponse
             };
@@ -122,38 +124,59 @@ namespace HousingSearchApi.Tests.V1.Controllers
             //this is normally set by the search gateway
             _getAllTenureListResponse.SetTotal(expectedTenuresCount);
 
-            _mockGetTenureListSetsUseCase.Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>())).ReturnsAsync(_getAllTenureListResponse);
-
-            var expectedResults = new APIResponse<GetAllTenureListResponse>()
-            {
-                Results = _getAllTenureListResponse,
-                Total = expectedTenuresCount
-            };
+            _mockGetTenureListSetsUseCase
+                .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>()))
+                .ReturnsAsync(_getAllTenureListResponse);
 
             // when
             var result = await _classUnderTest.GetAllTenureList(_getAllTenureListRequest).ConfigureAwait(false);
             var okResult = result as OkObjectResult;
-
+            var okResultvalue = (APIAllTenureResponse<GetAllTenureListResponse>) okResult.Value;
             // then
-            okResult.Value.Should().BeEquivalentTo(expectedResults);
+            okResultvalue.Total.Should().Be(expectedTenuresCount);
         }
 
         [Fact]
-        public async Task GetAllTenureList_WhenUseCaseReturnsResultsAddsCorrectLastHitIdToResponse()
+        public async Task GetAllTenureList_WhenUseCaseReturnsLastHitIdAddsItToResponse()
         {
             // given
-            // lastHitId is set by the search gateway
-            // Use case returns the GetAllTenureListResponse response from the gateway as is, so we can set it here
-            _mockGetTenureListSetsUseCase.Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>())).ReturnsAsync(_getAllTenureListResponse);
+            var expectedLastHitId = _getAllTenureListResponse.Tenures.Last().Id;
+
+            _getAllTenureListResponse.SetLastHitId(expectedLastHitId);
+
+            _mockGetTenureListSetsUseCase
+                .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>()))
+                .ReturnsAsync(_getAllTenureListResponse);
+
+            // when
+            var result = await _classUnderTest.GetAllTenureList(_getAllTenureListRequest).ConfigureAwait(false);
+            var okResult = result as OkObjectResult;
+            var okResultvalue = (APIAllTenureResponse<GetAllTenureListResponse>) okResult.Value;
+
+            // then
+            okResultvalue.LastHitId.Should().Be(expectedLastHitId);
+        }
+
+        [Fact]
+        public async Task GetAllTenureList_WhenUseCaseReturnsLastHitTenureStartDateAddsItToTheResponse()
+        {
+            // given
+            var expectedLastHitTenureStartDate = "12345678";
+
+            _getAllTenureListResponse.SetLastHitTenureStartDate(expectedLastHitTenureStartDate);
+
+            _mockGetTenureListSetsUseCase
+                .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>()))
+                .ReturnsAsync(_getAllTenureListResponse);
 
             // when
             var result = await _classUnderTest.GetAllTenureList(_getAllTenureListRequest).ConfigureAwait(false);
             var okResult = result as OkObjectResult;
 
-            // then
-            var resultValues = okResult.Value as APIAllResponse<GetAllTenureListResponse>;
+            var okResultvalue = (APIAllTenureResponse<GetAllTenureListResponse>) okResult.Value;
 
-            resultValues.LastHitId.Should().Be(_getAllTenureListResponse.LastHitId);
+            // then
+            okResultvalue.LastHitTenureStartDate.Should().Be(expectedLastHitTenureStartDate);
         }
 
         [Fact]
@@ -164,7 +187,8 @@ namespace HousingSearchApi.Tests.V1.Controllers
 
             // when
             _mockGetTenureListSetsUseCase
-                .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>())).ThrowsAsync(ex);
+                .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>()))
+                .ThrowsAsync(ex);
 
             // then
             var result = await _classUnderTest.GetAllTenureList(_getAllTenureListRequest).ConfigureAwait(false);
@@ -181,7 +205,8 @@ namespace HousingSearchApi.Tests.V1.Controllers
 
             // when
             _mockGetTenureListSetsUseCase
-                .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>())).ThrowsAsync(ex);
+                .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>()))
+                .ThrowsAsync(ex);
 
             // then
             var result = await _classUnderTest.GetAllTenureList(_getAllTenureListRequest).ConfigureAwait(false);
@@ -202,7 +227,8 @@ namespace HousingSearchApi.Tests.V1.Controllers
 
             // [HttpGet, MapToApiVersion("1")]
             var apiVersionAttribute = methodAttributes
-                .Where(x => x.GetType() == typeof(MapToApiVersionAttribute)).Select(x => x as MapToApiVersionAttribute).ToList();
+                .Where(x => x.GetType() == typeof(MapToApiVersionAttribute))
+                .Select(x => x as MapToApiVersionAttribute).ToList();
 
             apiVersionAttribute.Count.Should().Be(1);
             apiVersionAttribute.First().Versions.First().MajorVersion.Should().Be(1);
@@ -217,23 +243,25 @@ namespace HousingSearchApi.Tests.V1.Controllers
 
             // responses
             var producesResponseTypeAttributes = methodAttributes
-                .Where(x => x.GetType() == typeof(ProducesResponseTypeAttribute)).Select(x => x as ProducesResponseTypeAttribute).ToList();
+                .Where(x => x.GetType() == typeof(ProducesResponseTypeAttribute))
+                .Select(x => x as ProducesResponseTypeAttribute).ToList();
 
             producesResponseTypeAttributes.Count.Should().Be(2);
 
             // 200 response
             var okResponseAttribute = producesResponseTypeAttributes.First(x => x.StatusCode == 200).Type;
-            var expectedOkResponseTypeFullName = typeof(APIAllResponse<GetAllTenureListResponse>).FullName;
+            var expectedOkResponseTypeFullName = typeof(APIAllTenureResponse<GetAllTenureListResponse>).FullName;
             okResponseAttribute.FullName.Should().Be(expectedOkResponseTypeFullName);
 
             // 400 response
             var badRequestObjectResultAttribute = producesResponseTypeAttributes.First(x => x.StatusCode == 400).Type;
-            var expectedBadRequestObjectResultFullName = typeof(APIAllResponse<BadRequestObjectResult>).FullName;
+            var expectedBadRequestObjectResultFullName = typeof(APIAllTenureResponse<BadRequestObjectResult>).FullName;
             badRequestObjectResultAttribute.FullName.Should().Be(expectedBadRequestObjectResultFullName);
 
             // route
             var routeAttributes = methodAttributes
-                .Where(x => x.GetType() == typeof(RouteAttribute)).Select(x => x as RouteAttribute).ToList();
+                .Where(x => x.GetType() == typeof(RouteAttribute))
+                .Select(x => x as RouteAttribute).ToList();
 
             routeAttributes.Count().Should().Be(1);
             routeAttributes.Any(x => x.Template.ToString() == "all").Should().BeTrue();

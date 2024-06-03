@@ -47,8 +47,8 @@ namespace HousingSearchApi.V1.Controllers
             }
         }
 
-        [ProducesResponseType(typeof(APIAllResponse<GetAllTenureListResponse>), 200)]
-        [ProducesResponseType(typeof(APIAllResponse<BadRequestObjectResult>), 400)]
+        [ProducesResponseType(typeof(APIAllTenureResponse<GetAllTenureListResponse>), 200)]
+        [ProducesResponseType(typeof(APIAllTenureResponse<BadRequestObjectResult>), 400)]
         [Route("all")]
         [HttpGet, MapToApiVersion("1")]
         [LogCall(Microsoft.Extensions.Logging.LogLevel.Information)]
@@ -59,10 +59,13 @@ namespace HousingSearchApi.V1.Controllers
             {
                 var searchResults = await _getTenureListSetsUseCase.ExecuteAsync(request).ConfigureAwait(false);
 
-                var response = new APIAllResponse<GetAllTenureListResponse>(searchResults)
+                var response = new APIAllTenureResponse<GetAllTenureListResponse>()
                 {
                     Total = searchResults.Total(),
-                    LastHitId = searchResults.LastHitId
+                    LastHitId = searchResults.LastHitId(),
+                    LastHitTenureStartDate = searchResults.LastHitTenureStartDate(),
+                    Results = searchResults
+
                 };
 
                 return new OkObjectResult(response);
