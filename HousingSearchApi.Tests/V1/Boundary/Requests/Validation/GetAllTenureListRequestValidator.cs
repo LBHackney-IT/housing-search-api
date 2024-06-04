@@ -84,5 +84,40 @@ namespace HousingSearchApi.Tests.V1.Boundary.Requests.Validation
             result.ShouldNotHaveValidationErrorFor(x => x.LastHitTenureStartDate);
         }
 
+        [Fact]
+        public void ShouldErrorWhenLastHitIdLooksDangerous()
+        {
+            var query = new GetAllTenureListRequest()
+            {
+                LastHitId = "<string"
+            };
+
+            var result = _classUnderTest.TestValidate(query);
+            result.ShouldHaveValidationErrorFor(x => x.LastHitId);
+        }
+
+        [Fact]
+        public void ShouldErrorWhenLastHitIdIsNotInAValidGuidFormat()
+        {
+            var query = new GetAllTenureListRequest()
+            {
+                LastHitId = "random_string"
+            };
+
+            var result = _classUnderTest.TestValidate(query);
+            result.ShouldHaveValidationErrorFor(x => x.LastHitId);
+        }
+
+        [Fact]
+        public void ShouldNotErrorWhenLastHitIdIsInValidGuidFormat()
+        {
+            var query = new GetAllTenureListRequest()
+            {
+                LastHitId = Guid.NewGuid().ToString()
+            };
+
+            var result = _classUnderTest.TestValidate(query);
+            result.ShouldNotHaveValidationErrorFor(x => x.LastHitId);
+        }
     }
 }
