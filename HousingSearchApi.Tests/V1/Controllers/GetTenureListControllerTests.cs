@@ -106,6 +106,7 @@ namespace HousingSearchApi.Tests.V1.Controllers
         {
             // given
             _getAllTenureListResponse.LastHitId = null;
+            _getAllTenureListResponse.LastHitTenureStartDate = null;
 
             _mockGetTenureListSetsUseCase
                 .Setup(x => x.ExecuteAsync(It.IsAny<GetAllTenureListRequest>()))
