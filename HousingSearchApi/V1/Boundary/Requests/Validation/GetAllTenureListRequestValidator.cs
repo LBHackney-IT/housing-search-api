@@ -21,6 +21,8 @@ namespace HousingSearchApi.V1.Boundary.Requests.Validation
                         context.AddFailure("LastHitTenureStartDate must be provided in milliseconds since epoch format");
                     }
                 });
+
+                RuleFor(x => x.LastHitId).NotEmpty().WithMessage("LastHitId must be provided with LastHitTenureStartDate");
             });
         }
     }

@@ -1,7 +1,9 @@
+using FluentAssertions;
 using FluentValidation.TestHelper;
 using HousingSearchApi.V1.Boundary.Requests;
 using HousingSearchApi.V1.Boundary.Requests.Validation;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V1.Boundary.Requests.Validation
@@ -39,6 +41,25 @@ namespace HousingSearchApi.Tests.V1.Boundary.Requests.Validation
             result.ShouldHaveValidationErrorFor(x => x.LastHitTenureStartDate);
         }
 
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void ShouldErrorWhenLastHitTenureStartDateIsProvidedButLastHitIdIsNullOrEmpty(string lastHitId)
+        {
+            var query = new GetAllTenureListRequest()
+            {
+                LastHitTenureStartDate = "1234567",
+                LastHitId = lastHitId
+            };
+
+            var expectedErrorMessage = "LastHitId must be provided with LastHitTenureStartDate";
+
+            var result = _classUnderTest.TestValidate(query);
+
+            result.ShouldHaveValidationErrorFor(x => x.LastHitId);
+            result.Errors.Single().ErrorMessage.Should().Be(expectedErrorMessage);
+        }
+
         [Fact]
         public void ShouldNotErrorWhenLastHitTenureStartDateIsInMillisecondsFormat()
         {
@@ -62,5 +83,6 @@ namespace HousingSearchApi.Tests.V1.Boundary.Requests.Validation
             var result = _classUnderTest.TestValidate(query);
             result.ShouldNotHaveValidationErrorFor(x => x.LastHitTenureStartDate);
         }
+
     }
 }
