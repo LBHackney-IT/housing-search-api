@@ -133,8 +133,8 @@ namespace HousingSearchApi.V1.Infrastructure
                 return new SearchResponse<QueryableTenure>();
             }
 
-            //last hit paging is only supported when sorting by tenure start date
-            //any other type of paging is not supported. Page size can be set however when using start date sorting with last hit paging
+            //Last hit id paging is only supported when sorting by tenureStartDate. Any other type of paging is not supported.
+            //Page size can be set however when using tenureStartDate sorting with last hit id paging
             var sortDescriptor = _sortFactory.Create<QueryableTenure, GetAllTenureListRequest>(request).GetSortDescriptor;
 
             var lastSortedItem = GetLastSortedItem(request);

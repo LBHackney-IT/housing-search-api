@@ -230,7 +230,7 @@ namespace HousingSearchApi.V1.Gateways
 
                 tenureListResponse.SetTotal(searchResponse.Total);
 
-                if (searchResponse.Documents.Count > 0)
+                if (searchResponse.Documents.Any())
                 {
                     var lastHit = searchResponse.Hits.Last();
                     var lastHitTenureStartDate = lastHit.Sorts?.FirstOrDefault(defaultValue: null);

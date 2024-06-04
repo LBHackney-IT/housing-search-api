@@ -47,6 +47,9 @@ namespace HousingSearchApi.V1.Controllers
             }
         }
 
+        /// <summary>
+        /// Last hit id paging is only supported when sorting by tenureStartDate. Any other type of paging is not supported. Page size can be set however when using tenureStartDate sorting with last hit id paging
+        /// </summary>
         [ProducesResponseType(typeof(APIAllTenureResponse<GetAllTenureListResponse>), 200)]
         [ProducesResponseType(typeof(APIAllTenureResponse<BadRequestObjectResult>), 400)]
         [Route("all")]
