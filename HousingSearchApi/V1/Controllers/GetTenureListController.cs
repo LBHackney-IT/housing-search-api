@@ -65,7 +65,6 @@ namespace HousingSearchApi.V1.Controllers
                     LastHitId = searchResults.LastHitId,
                     LastHitTenureStartDate = searchResults.LastHitTenureStartDate,
                     Results = searchResults
-
                 };
 
                 return new OkObjectResult(response);

@@ -329,7 +329,7 @@ namespace HousingSearchApi.Tests.V1.Gateways
         }
 
         [Fact]
-        public async Task GetListOfTenuresSets_WhenlastHitInSearchResponseHasNoSortsThenSetsLastHitTenureStartDateToNull()
+        public async Task GetListOfTenuresSets_WhenSortsInSearchResponseIsNullThenSetsLastHitTenureStartDateToNull()
         {
             var hitId = Guid.NewGuid().ToString();
             var document = _fixture.Build<QueryableTenure>().With(x => x.Id, hitId).Create();
@@ -337,6 +337,35 @@ namespace HousingSearchApi.Tests.V1.Gateways
 
             var hitMock = new Mock<IHit<QueryableTenure>>();
             hitMock.Setup(x => x.Id).Returns(hitId);
+
+            var hits = new List<IHit<QueryableTenure>>
+            {
+                hitMock.Object
+            };
+
+            var searchResponsoMock = new Mock<ISearchResponse<QueryableTenure>>();
+            searchResponsoMock.Setup(x => x.Documents).Returns(documents);
+            searchResponsoMock.Setup(x => x.Hits).Returns(hits);
+
+            _elasticSearchWrapperMock
+                .Setup(x => x.SearchTenuresSets(It.IsAny<GetAllTenureListRequest>()))
+                .ReturnsAsync(searchResponsoMock.Object);
+
+            var response = await _searchGateway.GetListOfTenuresSets(_getAllTenureListRequest);
+
+            response.LastHitTenureStartDate.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task GetListOfTenuresSets_WhenSortsInSearchResponseIsEmptyArrayThenSetsLastHitTenureStartDateToNull()
+        {
+            var hitId = Guid.NewGuid().ToString();
+            var document = _fixture.Build<QueryableTenure>().With(x => x.Id, hitId).Create();
+            var documents = new List<QueryableTenure> { document };
+
+            var hitMock = new Mock<IHit<QueryableTenure>>();
+            hitMock.Setup(x => x.Id).Returns(hitId);
+            hitMock.Setup(x => x.Sorts).Returns(Array.Empty<string>());
 
             var hits = new List<IHit<QueryableTenure>>
             {
