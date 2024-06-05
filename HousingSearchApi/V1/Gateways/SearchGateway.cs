@@ -209,5 +209,38 @@ namespace HousingSearchApi.V1.Gateways
 
             return childAssets;
         }
+
+        public async Task<GetAllTenureListResponse> GetListOfTenuresSets(GetAllTenureListRequest query)
+        {
+            var searchResponse = await _elasticSearchWrapper
+                .SearchTenuresSets(query)
+                .ConfigureAwait(false);
+
+            var tenureListResponse = new GetAllTenureListResponse();
+
+            if (searchResponse == null)
+            {
+                return tenureListResponse;
+            }
+            else
+            {
+                tenureListResponse
+                    .Tenures
+                    .AddRange(searchResponse.Documents.Select(queryableTenure => queryableTenure.Create()));
+
+                tenureListResponse.SetTotal(searchResponse.Total);
+
+                if (searchResponse.Documents.Any())
+                {
+                    var lastHit = searchResponse.Hits.Last();
+                    var lastHitTenureStartDate = lastHit.Sorts?.FirstOrDefault(defaultValue: null);
+                    tenureListResponse.LastHitId = lastHit.Id;
+                    tenureListResponse.LastHitTenureStartDate = lastHitTenureStartDate?.ToString(); //[tenure start date, id]
+                }
+
+                return tenureListResponse;
+            }
+        }
     }
 }
+

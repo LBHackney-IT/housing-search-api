@@ -1,14 +1,15 @@
+using Elasticsearch.Net;
+using Hackney.Shared.HousingSearch.Gateways.Models.Tenures;
 using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Interfaces.Factories;
+using HousingSearchApi.V1.Interfaces.Filtering;
 using HousingSearchApi.V1.Interfaces.Sorting;
 using Microsoft.Extensions.Logging;
 using Nest;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Elasticsearch.Net;
-using HousingSearchApi.V1.Interfaces;
-using HousingSearchApi.V1.Interfaces.Factories;
-using HousingSearchApi.V1.Interfaces.Filtering;
 
 namespace HousingSearchApi.V1.Infrastructure
 {
@@ -121,10 +122,60 @@ namespace HousingSearchApi.V1.Infrastructure
             }
 
         }
+        public async Task<ISearchResponse<QueryableTenure>> SearchTenuresSets(GetAllTenureListRequest request)
+        {
+            var esNodes = string.Join(';', _esClient.ConnectionSettings.ConnectionPool.Nodes.Select(x => x.Uri));
+
+            _logger.LogDebug($"ElasticSearch Search Tenures Sets begins {esNodes}");
+
+            if (request == null)
+            {
+                return new SearchResponse<QueryableTenure>();
+            }
+
+            //Last hit id paging is only supported when sorting by tenureStartDate. Any other type of paging is not supported.
+            //Page size can be set however when using tenureStartDate sorting with last hit id paging
+            var sortDescriptor = _sortFactory.Create<QueryableTenure, GetAllTenureListRequest>(request).GetSortDescriptor;
+
+            var lastSortedItem = GetLastSortedItem(request);
+
+            ISearchResponse<QueryableTenure> result = null;
+
+            try
+            {
+                result = await _esClient.SearchAsync<QueryableTenure>(
+                    x => x.Index(_indexSelector.Create<QueryableTenure>())
+                    .Query(q => BaseQuery<QueryableTenure>().Create(request, q))
+                    .Size(request.PageSize)
+                    .TrackTotalHits()
+                    .SearchAfter(lastSortedItem)
+                    .Sort(sortDescriptor)
+                    ).ConfigureAwait(false);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "ElasticSearch Search Tenures Sets threw an exception");
+                throw;
+            }
+        }
+
+        public static string[] GetLastSortedItem(GetAllTenureListRequest request)
+        {
+            var lastSortedItem =
+                !string.IsNullOrEmpty(request.LastHitId) && !string.IsNullOrEmpty(request.LastHitTenureStartDate)
+                    ? new string[] { request.LastHitTenureStartDate, request.LastHitId }
+                    : null;
+
+            return lastSortedItem;
+        }
 
         private IQueryGenerator<T> BaseQuery<T>() where T : class
         {
             return _queryFactory.CreateQuery<T>();
         }
+
+
     }
 }

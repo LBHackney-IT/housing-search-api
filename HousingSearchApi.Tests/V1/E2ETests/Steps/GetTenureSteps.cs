@@ -170,5 +170,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             CollectionAssert.AreEqual(tenures.OrderBy(x => x.StartOfTenureDate), tenures);
         }
+        public async Task ThenTheReturningTenureAllResultsShouldBeSortedByAscendingTenureStartDate()
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIResponse<GetTenureListResponse>>(resultBody, _jsonOptions);
+
+            var tenures = result.Results.Tenures;
+
+            CollectionAssert.AreEqual(tenures.OrderBy(x => x.StartOfTenureDate), tenures);
+        }
     }
 }
