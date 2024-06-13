@@ -1,14 +1,28 @@
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using FluentValidation.AspNetCore;
+using Hackney.Core.ElasticSearch;
+using Hackney.Core.ElasticSearch.Interfaces;
 using Hackney.Core.HealthCheck;
 using Hackney.Core.JWT;
 using Hackney.Core.Logging;
 using Hackney.Core.Middleware.CorrelationId;
 using Hackney.Core.Middleware.Exception;
 using Hackney.Core.Middleware.Logging;
+using Hackney.Shared.HousingSearch.Domain.Asset;
+using HousingSearchApi.V1.Gateways;
+using HousingSearchApi.V1.Gateways.Interfaces;
 using HousingSearchApi.V1.HealthCheck;
+using HousingSearchApi.V1.Helper;
+using HousingSearchApi.V1.Helper.Interfaces;
 using HousingSearchApi.V1.Infrastructure;
+using HousingSearchApi.V1.Infrastructure.Core;
+using HousingSearchApi.V1.Infrastructure.Extensions;
+using HousingSearchApi.V1.Infrastructure.Factories;
+using HousingSearchApi.V1.Infrastructure.Filtering;
+using HousingSearchApi.V1.Infrastructure.Sorting;
 using HousingSearchApi.V1.Interfaces;
+using HousingSearchApi.V1.Interfaces.Factories;
+using HousingSearchApi.V1.Interfaces.Filtering;
 using HousingSearchApi.V1.Interfaces.Sorting;
 using HousingSearchApi.V1.UseCase;
 using HousingSearchApi.V1.UseCase.Interfaces;
@@ -32,20 +46,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Hackney.Core.ElasticSearch;
-using Hackney.Core.ElasticSearch.Interfaces;
-using HousingSearchApi.V1.Gateways.Interfaces;
-using HousingSearchApi.V1.Gateways;
-using HousingSearchApi.V1.Infrastructure.Extensions;
-using HousingSearchApi.V1.Infrastructure.Factories;
-using HousingSearchApi.V1.Infrastructure.Filtering;
-using HousingSearchApi.V1.Infrastructure.Sorting;
-using HousingSearchApi.V1.Interfaces.Factories;
-using HousingSearchApi.V1.Interfaces.Filtering;
-using HousingSearchApi.V1.Infrastructure.Core;
-using Hackney.Shared.HousingSearch.Domain.Asset;
-using HousingSearchApi.V1.Helper;
-using HousingSearchApi.V1.Helper.Interfaces;
 
 namespace HousingSearchApi
 {
@@ -180,6 +180,7 @@ namespace HousingSearchApi
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
             services.AddScoped<IGetAccountListUseCase, GetAccountListUseCase>();
             services.AddScoped<IGetTenureListUseCase, GetTenureListUseCase>();
+            services.AddScoped<IGetTenureListSetsUseCase, GetTenureListSetsUseCase>();
             services.AddScoped<IElasticSearchWrapper, ElasticSearchWrapper>();
             services.AddScoped<IPagingHelper, PagingHelper>();
             services.AddScoped<ISortFactory, SortFactory>();

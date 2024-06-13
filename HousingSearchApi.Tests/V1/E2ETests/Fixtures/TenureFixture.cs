@@ -169,5 +169,34 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         {
             //nothing to do here, we already have existing records created by GivenATenureIndexExists fixture
         }
+
+        public void GivenTenuresWithSpecificContentExist(string oldestRecord, string middleRecord, string latestRecord)
+        {
+            var listOfTenures = new List<QueryableTenure>();
+
+            var latestTenure = QueryableTenureHelper.CreateQueyableTenure();
+            latestTenure.StartOfTenureDate = "2024-05-28T15:08:09Z";
+            latestTenure.PaymentReference = "veryspecificpaymentreferencefortestinglasthitidone";
+            latestTenure.Id = latestRecord;
+            listOfTenures.Add(latestTenure);
+
+            var middleTenure = QueryableTenureHelper.CreateQueyableTenure();
+            middleTenure.StartOfTenureDate = "2024-05-27T15:08:09Z";
+            middleTenure.PaymentReference = "veryspecificpaymentreferencefortestinglasthitidtwo";
+            middleTenure.Id = middleRecord;
+            listOfTenures.Add(middleTenure);
+
+            var oldestTenure = QueryableTenureHelper.CreateQueyableTenure();
+            oldestTenure.StartOfTenureDate = "2024-05-26T15:08:09Z";
+            oldestTenure.PaymentReference = "veryspecificpaymentreferencefortestinglasthitidthree";
+            oldestTenure.Id = oldestRecord;
+            listOfTenures.Add(oldestTenure);
+
+            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
+
+            while (!awaitable.GetAwaiter().IsCompleted) { }
+
+            Thread.Sleep(10000);
+        }
     }
 }
