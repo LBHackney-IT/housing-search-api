@@ -47,6 +47,15 @@ namespace HousingSearchApi.V1.Infrastructure.Core
 
             return this;
         }
+        public IFilterQueryBuilder<T> WithWildstarBoolQuery(string searchText, List<string> fields, int? minimumShouldMatch = 1, TextQueryType textQueryType = TextQueryType.MostFields)
+        {
+            var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(searchText);
+
+            _wildstarQuery = CreateWildcardBoolQuery(listOfWildCardedWords, fields);
+
+            return this;
+        }
+
 
         public IQueryBuilder<T> WithFilterQuery(string commaSeparatedFilters, List<string> fields, TextQueryType textQueryType = TextQueryType.MostFields)
         {
@@ -112,6 +121,27 @@ namespace HousingSearchApi.V1.Infrastructure.Core
             return query;
         }
 
+        private static Func<QueryContainerDescriptor<T>, QueryContainer> CreateWildcardBoolQuery(
+            List<string> words, List<string> fields, int? minimumShouldMatch = 1)
+        {            
+            Func<QueryContainerDescriptor<T>, QueryContainer> query =
+                (containerDescriptor) => containerDescriptor.Bool(b => b
+                    .Should(fields.Select(field =>
+                        (QueryContainer) new BoolQuery
+                        {
+                            Should = words.Select(word =>
+                                (QueryContainer) new WildcardQuery
+                                {
+                                    Value = word,
+                                    Field = field
+                                }).ToList(),
+                            MinimumShouldMatch = words.Count
+                        }).ToArray()
+                    )
+                );
+
+            return query;
+        }
         public QueryContainer Build(QueryContainerDescriptor<T> containerDescriptor)
         {
             var queryContainer = containerDescriptor.Bool(x => x.Should(_wildstarQuery, _exactQuery));
