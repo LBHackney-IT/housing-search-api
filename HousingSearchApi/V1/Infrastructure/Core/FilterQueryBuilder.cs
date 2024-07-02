@@ -123,7 +123,7 @@ namespace HousingSearchApi.V1.Infrastructure.Core
 
         private static Func<QueryContainerDescriptor<T>, QueryContainer> CreateWildcardBoolQuery(
             List<string> words, List<string> fields, int? minimumShouldMatch = 1)
-        {            
+        {
             Func<QueryContainerDescriptor<T>, QueryContainer> query =
                 (containerDescriptor) => containerDescriptor.Bool(b => b
                     .Should(fields.Select(field =>

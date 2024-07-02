@@ -101,19 +101,9 @@ namespace HousingSearchApi.V1.Gateways
         [LogCall]
         public async Task<GetAllAssetListResponse> GetListOfAssetsSets(GetAllAssetListRequest query)
         {
-            if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText) && query.SearchText.Length >= 5
-                && query.SearchText.Length <= 7 && !query.SearchText.Contains(" ") && query.SearchText.Any(char.IsDigit))
+            if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText) && PostCodeHelpers.SearchTextIsValidPostCode(query.SearchText))
             {
-                var regex = @"^(GIR 0AA)|[a-z-[qvx]](?:\d|\d{2}|[a-z-[qvx]]\d|[a-z-[qvx]]\d[a-z-[qvx]]|[a-z-[qvx]]\d{2})(?:\s?\d[a-z-[qvx]]{2})?$";
-
-                Match match = Regex.Match(query.SearchText, regex, RegexOptions.IgnoreCase);
-
-                if (match.Success)
-                {
-                    var beginningOfPostcode = query.SearchText.Substring(0, query.SearchText.Length - 3);
-                    var endOfPostcode = query.SearchText.Substring(query.SearchText.Length - 3);
-                    query.SearchText = beginningOfPostcode + " " + endOfPostcode;
-                }
+                query.SearchText = PostCodeHelpers.NormalizePostcode(query.SearchText);
             }
 
             var searchResponse = await _elasticSearchWrapper.SearchSets<QueryableAsset, GetAllAssetListRequest>(query).ConfigureAwait(false);
@@ -124,7 +114,7 @@ namespace HousingSearchApi.V1.Gateways
                 queryableAsset.CreateAll())
             );
 
-            if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText))
+            if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText) && query.IsTemporaryAccomodation != "true")
             {
                 _customAddressSorter.FilterResponse(query, assetListResponse);
 
