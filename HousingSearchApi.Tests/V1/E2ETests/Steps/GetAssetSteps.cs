@@ -113,9 +113,9 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task ThenOnlyTemporaryAccomodationResultsShouldBeIncluded(bool isTemporaryAccommodation)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            
+
             var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
-            
+
             result.Results.Assets.All(x => x.AssetManagement.IsTemporaryAccomodation == isTemporaryAccommodation);
         }
 
