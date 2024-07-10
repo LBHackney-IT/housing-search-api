@@ -131,5 +131,22 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenThatAddressShouldBeTheOnlyResult("N1 6TY"))
                 .BDDfy();
         }
+        [Fact]
+        public void ServiceReturnsTemporaryAccomodationResultsWhenisTemporaryAccommodationTrue()
+        {
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenIsTemporaryAccomodation("true"))
+                .Then(t => _steps.ThenOnlyTemporaryAccomodationResultsShouldBeIncluded(true))
+                .BDDfy();
+        }
+        [Fact]
+        public void ServiceReturnsTemporaryAccomodationResultAddressWhereWildstarDoubleMatch()
+        // If a search for made for an address string with more than two values in the string, it should only return a match where both values are found. In the fixture 
+        {
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenIsTemporaryAccomodationAndSearchText("59 buckland"))
+                .Then(t => _steps.ThenThatTemporaryAccomodationAddressShouldBeTheOnlyResult("59 Buckland Court St Johns Estate"))
+                .BDDfy();
+        }
     }
 }
