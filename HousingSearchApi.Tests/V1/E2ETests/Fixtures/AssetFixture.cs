@@ -30,10 +30,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             new AddressStub{ FirstLine = "Gge 52 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234650",
                 AssetStatus = "Void", NoOfBedSpaces = 2, NoOfCots = 0, HasStairs = false, PrivateBathroom = false, PrivateKitchen = true, StepFree = true, ParentAssetIds = "01da3724-1eff-4a91-9bed-923582ae142d#85301d37-c9b4-4c5e-b218-effd4f0b2d7c#52f7309c-305f-4cf6-b0e7-d021cd5c71c0" },
             new AddressStub{ FirstLine = "Gge 51 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
-            new AddressStub{ FirstLine = "5 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 6TY", UPRN = "10008235183"},
+            new AddressStub{ FirstLine = "5 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 6TY", UPRN = "10008235183", ContractIsApproved = true},
             new AddressStub{ FirstLine = "Gge 15 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650"},
             new AddressStub{ FirstLine = "Gge 53 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650", ParentAssetIds = GetGuids()},
-            new AddressStub{ FirstLine = "Gge 25 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650"}
+            new AddressStub{ FirstLine = "Gge 25 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650", ContractIsApproved = true}
         };
 
         private static string GetGuids()
