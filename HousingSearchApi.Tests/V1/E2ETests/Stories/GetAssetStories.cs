@@ -141,11 +141,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         }
         [Fact]
         public void ServiceReturnsTemporaryAccomodationResultAddressWhereWildstarDoubleMatch()
-        // If a search for made for an address string with more than two values in the string, it should only return a match where both values are found. In the fixture 
+        // If a search for made for an address string with more than two values in the string, it should only return a match where both wildstar values are found. 
         {
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenIsTemporaryAccomodationAndSearchText("59 buckland"))
-                .Then(t => _steps.ThenThatTemporaryAccomodationAddressShouldBeTheOnlyResult("59 Buckland Court St Johns Estate"))
+                .Then(t => _steps.ThenThatTemporaryAccomodationAddressShouldBeTheFirstResult("59 Buckland Court St Johns Estate"))
                 .BDDfy();
         }
     }

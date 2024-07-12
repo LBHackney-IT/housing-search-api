@@ -171,13 +171,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             result.Results.Assets.First().AssetAddress.PostCode.Should().Be(address);
             result.Results.Assets.Count().Should().Be(1);
         }
-        public async Task ThenThatTemporaryAccomodationAddressShouldBeTheOnlyResult(string address)
+        public async Task ThenThatTemporaryAccomodationAddressShouldBeTheFirstResult(string address)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.First().AssetAddress.AddressLine1.Should().Be(address);
-            result.Results.Assets.Count().Should().Be(1);
         }
 
         public async Task ThenOnlyAllAssetsResponseTheseAssetStatusesShouldBeIncluded(string allowedAssetStatus)

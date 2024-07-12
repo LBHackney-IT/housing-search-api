@@ -109,6 +109,7 @@ namespace Hackney.Core.Tests.ElasticSearch
                 .Returns(new List<string> { "*12*", "*Pitcairn*", "*Street*" });
             _sut
                 .WithMultipleFilterQuery("1", new List<string> { "assetCharacteristics.numberOfBedrooms" })
+                .WithWildstarBoolQuery("12 Pitcairn Street", new List<string> { "assetAddress.addressLine1" })
                 .WithWildstarQuery("12 Pitcairn Street", new List<string> { "assetAddress.addressLine1" })
                 .WithExactQuery("12 Pitcairn Street", new List<string> { "assetAddress.addressLine1" })
                 .WithFilterQuery("Dwelling,Block", new List<string> { "assetType" })
