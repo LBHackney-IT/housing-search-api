@@ -13,6 +13,9 @@ namespace HousingSearchApi.V1.Boundary.Requests
         [FromQuery(Name = "isActive")]
         public string IsActive { get; set; }
 
+        [FromQuery(Name = "isApproved")]
+        public string IsApproved { get; set; }
+
         [FromQuery(Name = "useCustomSorting")]
         public bool UseCustomSorting { get; set; } = false;
     }
