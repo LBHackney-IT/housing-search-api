@@ -131,5 +131,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenThatAddressShouldBeTheOnlyResult("N1 6TY"))
                 .BDDfy();
         }
+
+        [Fact]
+        public void ServiceFiltersGivenContractIsApprovedStatusWithoutSearchText()
+        {
+            var contractIsApproved = "true";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractIsApprovedIsProvided(contractIsApproved))
+                .Then(t => _steps.ThenAssetsWithContractApprovalStatusShouldBeIncluded(contractIsApproved))
+                .BDDfy();
+        }
     }
 }

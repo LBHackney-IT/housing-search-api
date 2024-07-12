@@ -89,6 +89,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 asset.AssetCharacteristics.HasPrivateKitchen = value.PrivateKitchen;
                 asset.AssetCharacteristics.IsStepFree = value.StepFree;
                 asset.ParentAssetIds = value.ParentAssetIds;
+                asset.AssetContract.IsApproved = value.ContractIsApproved;
                 listOfAssets.Add(asset);
             }
 
@@ -110,5 +111,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public bool PrivateKitchen { get; set; }
         public bool StepFree { get; set; }
         public string ParentAssetIds { get; set; }
+        public bool ContractIsApproved { get; set; }
     }
 }
