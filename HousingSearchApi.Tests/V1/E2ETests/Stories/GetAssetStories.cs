@@ -141,5 +141,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenAssetsWithContractApprovalStatusShouldBeIncluded(contractIsApproved))
                 .BDDfy();
         }
+        [Fact]
+        public void ServiceReturnsAllAssetsWhenNoContractApprovalStatusIsProvidedWithoutSearchText()
+        {
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractIsApprovedIsNotProvided())
+                .Then(t => _steps.ThenAllAssetsAreReturned(11))
+                .BDDfy();
+        }
     }
 }
