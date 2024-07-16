@@ -28,6 +28,9 @@ namespace HousingSearchApi.V1.Boundary.Requests
         [FromQuery(Name = "stepFree")]
         public string StepFree { get; set; }
 
+        [FromQuery(Name = "contractIsApproved")]
+        public string ContractIsApproved { get; set; }
+
         [FromQuery(Name = "isTemporaryAccomodation")]
         public string IsTemporaryAccomodation { get; set; }
 
