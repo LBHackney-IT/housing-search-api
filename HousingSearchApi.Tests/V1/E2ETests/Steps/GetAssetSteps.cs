@@ -183,7 +183,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task ThenNumberOfBedSpacesShouldBeInResult(int numberOfBedSpaces)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var result = JsonSerializer.Deserialize<APIResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.All(x => x.AssetCharacteristics.NumberOfBedSpaces == numberOfBedSpaces);
         }
@@ -191,7 +191,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task ThenFloorNoShouldBeInResult(string floorNo)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var result = JsonSerializer.Deserialize<APIResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.All(x => x.AssetLocation.FloorNo == floorNo);
         }
@@ -199,7 +199,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task ThenAssetsWithContractApprovalStatusShouldBeIncluded(string contractApprovalStatus, int expectedNumberOfAssets)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var result = JsonSerializer.Deserialize<APIResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
             result.Results.Assets.All(x => x.AssetContract.IsApproved == bool.Parse(contractApprovalStatus));
@@ -207,7 +207,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task ThenAllAssetsAreReturned(int amountOfAssets)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var result = JsonSerializer.Deserialize<APIResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
             result.Results.Assets.Count().Should().Be(amountOfAssets);
         }
     }
