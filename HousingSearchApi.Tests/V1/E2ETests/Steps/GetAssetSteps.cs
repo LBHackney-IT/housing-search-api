@@ -199,7 +199,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task ThenAssetsWithContractApprovalStatusShouldBeIncluded(string contractApprovalStatus, int expectedNumberOfAssets)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var result = JsonSerializer.Deserialize<APIResponse<GetAssetListResponse>>(resultBody, _jsonOptions);
+            var result = JsonSerializer.Deserialize<APIResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
             result.Results.Assets.All(x => x.AssetContract.IsApproved == bool.Parse(contractApprovalStatus));
