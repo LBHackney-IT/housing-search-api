@@ -19,6 +19,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         {
             new AddressStub{ FirstLine = "59 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234650",
                 AssetStatus = "Reserved", NoOfBedSpaces = 2, NoOfCots = 1, HasStairs = true, PrivateBathroom = true, PrivateKitchen = true, StepFree = true, ParentAssetIds = GetGuids() },
+            new AddressStub{ FirstLine = "19 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234699",
+                AssetStatus = "Reserved", NoOfBedSpaces = 1, NoOfCots = 1, HasStairs = true, PrivateBathroom = false, PrivateKitchen = true, StepFree = false, TemporaryAccommodation = true, ParentAssetIds = GetGuids() },
+            new AddressStub{ FirstLine = "38 Buckland Court St Johns Estate", AssetType = "Block", PostCode = "N1 5EP", UPRN = "10008234611",
+                AssetStatus = "Occupied", NoOfBedSpaces = 3, NoOfCots = 1, HasStairs = false, PrivateBathroom = true, PrivateKitchen = true, StepFree = true, TemporaryAccommodation = true, ParentAssetIds = GetGuids() },
             new AddressStub{ FirstLine = "54 Buckland Court St Johns Estate", AssetType = "Estate", PostCode = "N1 5EP", UPRN = "10008234655",
                 AssetStatus = "Archived", NoOfBedSpaces = 3, NoOfCots = 0, HasStairs = false, PrivateBathroom = true, PrivateKitchen = true, StepFree = false, ParentAssetIds = GetGuids() },
             new AddressStub{ FirstLine = "65 Buckland Court St Johns Estate", AssetType = "TerracedBlock", PostCode = "N1 5EP", UPRN = "10008234605",

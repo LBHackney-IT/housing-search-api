@@ -105,7 +105,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         }
         public async Task WhenIsTemporaryAccomodationAndSearchText(string searchText)
         {
-            var route = new Uri($"api/v1/search/assets/all?searchText={searchText}&isTemporaryAccomodation=true&page={1}",
+            var route = new Uri($"api/v1/search/assets/all?isTemporaryAccomodation=true&searchText={searchText}&page={1}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);

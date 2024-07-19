@@ -144,8 +144,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         // If a search for made for an address string with more than two values in the string, it should only return a match where both wildstar values are found. 
         {
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
-                .When(w => _steps.WhenIsTemporaryAccomodationAndSearchText("59 buckland"))
-                .Then(t => _steps.ThenThatTemporaryAccomodationAddressShouldBeTheFirstResult("59 Buckland Court St Johns Estate"))
+                .When(w => _steps.WhenIsTemporaryAccomodationAndSearchText("19 buckland"))
+                .Then(t => _steps.ThenThatTemporaryAccomodationAddressShouldBeTheFirstResult("19 Buckland Court St Johns Estate"))
                 .BDDfy();
         }
     }
