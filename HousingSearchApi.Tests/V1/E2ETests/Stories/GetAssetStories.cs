@@ -147,7 +147,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var contractIsNotApproved = "false";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractIsApprovedIsProvided(contractIsNotApproved))
-                .Then(t => _steps.ThenAssetsWithContractApprovalStatusShouldBeIncluded(contractIsNotApproved, 9))
+                .Then(t => _steps.ThenAssetsWithContractApprovalStatusShouldBeIncluded(contractIsNotApproved, 11))
                 .BDDfy();
         }
         [Fact]
@@ -155,7 +155,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         {
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractIsApprovedIsNotProvided())
-                .Then(t => _steps.ThenAllAssetsAreReturned(11))
+                .Then(t => _steps.ThenAllAssetsAreReturned(12))
                 .BDDfy();
         }
         [Fact]
