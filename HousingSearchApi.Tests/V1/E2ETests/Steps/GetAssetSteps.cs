@@ -192,7 +192,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task ThenThatTemporaryAccomodationAddressShouldBeTheFirstResult(string address)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var result = JsonSerializer.Deserialize<APIResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.First().AssetAddress.AddressLine1.Should().Be(address);
         }

@@ -47,7 +47,7 @@ namespace HousingSearchApi.V1.Infrastructure.Core
 
             return this;
         }
-        public IFilterQueryBuilder<T> WithWildstarBoolQuery(string searchText, List<string> fields, int? minimumShouldMatch = 1, TextQueryType textQueryType = TextQueryType.MostFields)
+        public IFilterQueryBuilder<T> WithWildstarBoolQuery(string searchText, List<string> fields, TextQueryType textQueryType = TextQueryType.MostFields)
         {
             var listOfWildCardedWords = _wildCardAppenderAndPrepender.Process(searchText);
 
