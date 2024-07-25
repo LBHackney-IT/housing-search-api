@@ -121,20 +121,20 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
-        public async Task WhenIsTemporaryAccomodationAndSearchText(string searchText)
+        public async Task WhenIsTemporaryAccomodationIsTrueAndSearchText(string searchText)
         {
             var route = new Uri($"api/v1/search/assets/all?isTemporaryAccomodation=true&searchText={searchText}&page={1}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
-        public async Task ThenOnlyTemporaryAccomodationResultsShouldBeIncluded(bool isTemporaryAccommodation)
+        public async Task ThenOnlyTemporaryAccomodationResultsShouldBeIncluded()
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
-            result.Results.Assets.All(x => x.AssetManagement.IsTemporaryAccomodation == isTemporaryAccommodation);
+            result.Results.Assets.All(x => x.AssetManagement.IsTemporaryAccomodation == true);
         }
 
         public async Task ThenTheReturningResultsShouldBeOfThatSize(int pageSize)

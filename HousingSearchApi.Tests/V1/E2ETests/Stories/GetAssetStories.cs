@@ -163,7 +163,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         {
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenIsTemporaryAccomodation("true"))
-                .Then(t => _steps.ThenOnlyTemporaryAccomodationResultsShouldBeIncluded(true))
+                .Then(t => _steps.ThenOnlyTemporaryAccomodationResultsShouldBeIncluded())
                 .BDDfy();
         }
         [Fact]
@@ -171,7 +171,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         // If a search is made for an address string with more than two values in the string, it should only return a match where both wildstar values are found. 
         {
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
-                .When(w => _steps.WhenIsTemporaryAccomodationAndSearchText("19 buckland"))
+                .When(w => _steps.WhenIsTemporaryAccomodationIsTrueAndSearchText("19 buckland"))
                 .Then(t => _steps.ThenThatTemporaryAccomodationAddressShouldBeTheFirstResult("19 Buckland Court St Johns Estate"))
                 .BDDfy();
         }
