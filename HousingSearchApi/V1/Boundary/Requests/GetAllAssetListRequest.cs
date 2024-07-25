@@ -36,5 +36,8 @@ namespace HousingSearchApi.V1.Boundary.Requests
 
         [FromQuery(Name = "tenureType")]
         public string TenureType { get; set; }
+
+        [FromQuery(Name = "isTemporaryAccomodation")]
+        public string IsTemporaryAccomodation { get; set; }
     }
 }

@@ -39,7 +39,5 @@ namespace HousingSearchApi.V1.Boundary.Requests
         [FromQuery(Name = "isFilteredQuery")]
         public bool IsFilteredQuery { get; set; }
 
-        [FromQuery(Name = "isTemporaryAccomodation")]
-        public string IsTemporaryAccomodation { get; set; }
     }
 }

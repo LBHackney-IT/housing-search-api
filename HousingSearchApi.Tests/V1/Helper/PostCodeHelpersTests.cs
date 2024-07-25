@@ -108,7 +108,7 @@ namespace HousingSearchApi.Tests.V1.Helper
         [InlineData("AA99 9 AA", "AA99 9AA")]
 
 
-        public void NormalizePostcode_ShouldReturnNoSpaces(string input, string expected)
+        public void NormalizePostcode_ShouldReturnCorrectSpacing(string input, string expected)
         {
             // Act
             var result = PostCodeHelpers.NormalizePostcode(input);
