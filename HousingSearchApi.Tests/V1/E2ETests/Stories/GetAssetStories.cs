@@ -151,10 +151,29 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .BDDfy();
         }
         [Fact]
-        public void ServiceReturnsAllAssetsWhenNoContractApprovalStatusIsProvidedWithoutSearchText()
+        public void ServiceFiltersTrueContractIsActiveStatusWithoutSearchText()
+        {
+            var contractIsActive = "true";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractIsActiveIsProvided(contractIsActive))
+                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsActive, 10))
+                .BDDfy();
+        }
+        [Fact]
+        public void ServiceFiltersFalseContractIsActiveStatusWithoutSearchText()
+        {
+            var contractIsNotActive = "false";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractIsActiveIsProvided(contractIsNotActive))
+                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsNotActive, 1))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceReturnsAllAssetsWhenNoParameterIsProvided()
         {
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
-                .When(w => _steps.WhenContractIsApprovedIsNotProvided())
+                .When(w => _steps.WhenNoParameterIsProvided())
                 .Then(t => _steps.ThenAllAssetsAreReturned(11))
                 .BDDfy();
         }
