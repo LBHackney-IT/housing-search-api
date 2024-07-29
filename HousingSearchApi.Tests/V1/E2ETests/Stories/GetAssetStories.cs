@@ -131,5 +131,51 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenThatAddressShouldBeTheOnlyResult("N1 6TY"))
                 .BDDfy();
         }
+
+        [Fact]
+        public void ServiceFiltersTrueContractIsApprovedStatusWithoutSearchText()
+        {
+            var contractIsApproved = "true";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractIsApprovedIsProvided(contractIsApproved))
+                .Then(t => _steps.ThenAssetsWithContractApprovalStatusShouldBeIncluded(contractIsApproved, 2))
+                .BDDfy();
+        }
+        [Fact]
+        public void ServiceFiltersFalseContractIsApprovedStatusWithoutSearchText()
+        {
+            var contractIsNotApproved = "false";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractIsApprovedIsProvided(contractIsNotApproved))
+                .Then(t => _steps.ThenAssetsWithContractApprovalStatusShouldBeIncluded(contractIsNotApproved, 9))
+                .BDDfy();
+        }
+        [Fact]
+        public void ServiceFiltersTrueContractIsActiveStatusWithoutSearchText()
+        {
+            var contractIsActive = "true";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractIsActiveIsProvided(contractIsActive))
+                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsActive, 10))
+                .BDDfy();
+        }
+        [Fact]
+        public void ServiceFiltersFalseContractIsActiveStatusWithoutSearchText()
+        {
+            var contractIsNotActive = "false";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractIsActiveIsProvided(contractIsNotActive))
+                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsNotActive, 1))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceReturnsAllAssetsWhenNoParameterIsProvided()
+        {
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenNoParameterIsProvided())
+                .Then(t => _steps.ThenAllAssetsAreReturned(11))
+                .BDDfy();
+        }
     }
 }
