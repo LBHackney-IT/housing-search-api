@@ -106,8 +106,6 @@ namespace HousingSearchApi.Tests.V1.Helper
         [InlineData("AA 999 AA", "AA99 9AA")]
         [InlineData("AA9 99A A", "AA99 9AA")]
         [InlineData("AA99 9 AA", "AA99 9AA")]
-
-
         public void NormalizePostcode_ShouldReturnCorrectSpacing(string input, string expected)
         {
             // Act
