@@ -86,10 +86,18 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
 
-        public async Task WhenContractIsApprovedIsNotProvided()
+        public async Task WhenNoParameterIsProvided()
         {
             var route = new Uri($"api/v1/search/assets/all?page={1}",
                 UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+        public async Task WhenContractIsActiveIsProvided(string contractStatus)
+        {
+            var route = new Uri($"api/v1/search/assets/all?contractIsActive={contractStatus}&page={1}",
+                UriKind.Relative);
+
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
         public async Task WhenFloorNoIsProvided(string floorNo)
@@ -231,11 +239,19 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
             result.Results.Assets.All(x => x.AssetContract.IsApproved == bool.Parse(contractApprovalStatus));
         }
-        public async Task ThenAllAssetsAreReturned(int amountOfAssets)
+        public async Task ThenAssetsWithProvidedContractStatusShouldBeIncluded(string contractStatus, int expectedNumberOfAssets)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
-            result.Results.Assets.Count().Should().Be(amountOfAssets);
+
+            result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
+            result.Results.Assets.All(x => x.AssetContract.IsActive == bool.Parse(contractStatus));
+        }
+        public async Task ThenAllAssetsAreReturned(int expectedNumberOfAssets)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+            result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
         }
     }
 }
