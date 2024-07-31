@@ -156,7 +156,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var contractIsActive = "true";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractIsActiveIsProvided(contractIsActive))
-                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsActive, 10))
+                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsActive, 12))
                 .BDDfy();
         }
         [Fact]
