@@ -116,5 +116,3 @@ namespace HousingSearchApi.Tests.V1.Helper
         }
     }
 }
-
-
