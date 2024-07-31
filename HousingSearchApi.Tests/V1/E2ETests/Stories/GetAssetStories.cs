@@ -172,7 +172,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         public void ServiceReturnsAllAssetsWhenNoContractApprovalStatusIsProvidedWithoutSearchText()
         {
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
-                .When(w => _steps.WhenContractIsApprovedIsNotProvided())
+                .When(w => _steps.WhenNoParameterIsProvided())
                 .Then(t => _steps.ThenAllAssetsAreReturned(12))
                 .BDDfy();
         }
