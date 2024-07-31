@@ -29,7 +29,6 @@ namespace HousingSearchApi.V1.Helper
             if (trimmed.Length > 7) return false;
 
             const string pattern = @"^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$";
-
             RegexOptions options = RegexOptions.IgnoreCase;
 
             return Regex.Match(trimmed, pattern, options).Success;

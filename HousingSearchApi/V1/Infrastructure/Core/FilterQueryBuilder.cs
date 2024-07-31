@@ -56,7 +56,6 @@ namespace HousingSearchApi.V1.Infrastructure.Core
             return this;
         }
 
-
         public IQueryBuilder<T> WithFilterQuery(string commaSeparatedFilters, List<string> fields, TextQueryType textQueryType = TextQueryType.MostFields)
         {
             if (commaSeparatedFilters != null)
