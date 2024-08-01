@@ -61,10 +61,43 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
             }
             else
             {
+                GetAllAssetListRequest assetListAllRequest = request as GetAllAssetListRequest;
+
+                if (assetListRequest.SearchText != null && assetListRequest.SearchText.Length > 0 && assetListAllRequest.IsTemporaryAccomodation == "true")
+                {
+                    // temp accom search 
+                    return _queryFilterBuilder
+                        .WithMultipleFilterQuery(assetListAllRequest.NumberOfBedrooms, new List<string>
+                            {
+                            "assetCharacteristics.numberOfBedrooms"
+                            })
+                        .WithMultipleFilterQuery(assetListAllRequest.NumberOfBedSpaces, new List<string> { "assetCharacteristics.numberOfBedSpaces" })
+                        .WithMultipleFilterQuery(assetListAllRequest.NumberOfCots, new List<string> { "assetCharacteristics.numberOfCots" })
+                        .WithMultipleFilterQuery(assetListAllRequest.FloorNo, new List<string> { "assetLocation.floorNo" })
+                        .WithMultipleFilterQuery(assetListAllRequest.PrivateBathroom, new List<string> { "assetCharacteristics.hasPrivateBathroom" })
+                        .WithMultipleFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "assetCharacteristics.hasPrivateKitchen" })
+                        .WithMultipleFilterQuery(assetListAllRequest.StepFree, new List<string> { "assetCharacteristics.isStepFree" })
+                        .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "assetManagement.isTemporaryAccomodation" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
+                        .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
+                        .WithWildstarBoolQuery(assetListAllRequest.SearchText,
+                            new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
+                        .WithExactQuery(assetListAllRequest.SearchText,
+                            new List<string>
+                            {
+                            "assetAddress.addressLine1",
+                            "assetAddress.uprn",
+                            "assetAddress.postCode"
+                            })
+                        .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
+                        .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetManagement.propertyOccupiedStatus" })
+                        .WithFilterQuery(assetListAllRequest.TenureType, new List<string> { "tenure.type.keyword" })
+
+                        .Build(q);
+                }
                 if (assetListRequest.SearchText != null && assetListRequest.SearchText.Length > 0)
                 {
-                    //For when we need to use searchText and filters together
-                    GetAllAssetListRequest assetListAllRequest = request as GetAllAssetListRequest;
+                    //For when we need to use searchText and filters together                    
                     return _queryFilterBuilder
                         .WithMultipleFilterQuery(assetListAllRequest.NumberOfBedrooms, new List<string>
                             {
@@ -98,8 +131,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                 }
                 else
                 {
-                    //Only the all enpoint should exclude need for SearchText
-                    GetAllAssetListRequest assetListAllRequest = request as GetAllAssetListRequest;
+                    //Only the all enpoint should exclude need for SearchText                    
                     return _queryFilterBuilder
                         .WithMultipleFilterQuery(assetListAllRequest.NumberOfBedrooms, new List<string>
                             {

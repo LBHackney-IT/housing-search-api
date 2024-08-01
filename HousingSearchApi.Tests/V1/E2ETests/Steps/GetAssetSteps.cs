@@ -115,14 +115,34 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
-
-
         public async Task WhenAnExactMatchExistsAndIsFilteredQueryTrue(string address)
         {
             var route = new Uri($"api/v1/search/assets?searchText={address}&isFilteredQuery=true&pageSize={1}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+        public async Task WhenIsTemporaryAccomodation(string isTemporaryAccommodation)
+        {
+            var route = new Uri($"api/v1/search/assets/all?isTemporaryAccomodation={isTemporaryAccommodation}&page={1}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+        public async Task WhenIsTemporaryAccomodationIsTrueAndSearchText(string searchText)
+        {
+            var route = new Uri($"api/v1/search/assets/all?isTemporaryAccomodation=true&searchText={searchText}&page={1}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+        public async Task ThenOnlyTemporaryAccomodationResultsShouldBeIncluded()
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Assets.All(x => x.AssetManagement.IsTemporaryAccomodation == true);
         }
 
         public async Task ThenTheReturningResultsShouldBeOfThatSize(int pageSize)
@@ -176,6 +196,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             result.Results.Assets.First().AssetAddress.PostCode.Should().Be(address);
             result.Results.Assets.Count().Should().Be(1);
+        }
+        public async Task ThenThatTemporaryAccomodationAddressShouldBeTheFirstResult(string address)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Assets.First().AssetAddress.AddressLine1.Should().Be(address);
         }
 
         public async Task ThenOnlyAllAssetsResponseTheseAssetStatusesShouldBeIncluded(string allowedAssetStatus)

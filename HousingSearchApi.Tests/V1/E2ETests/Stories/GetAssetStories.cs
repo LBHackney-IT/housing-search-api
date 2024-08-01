@@ -147,7 +147,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var contractIsNotApproved = "false";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractIsApprovedIsProvided(contractIsNotApproved))
-                .Then(t => _steps.ThenAssetsWithContractApprovalStatusShouldBeIncluded(contractIsNotApproved, 9))
+                .Then(t => _steps.ThenAssetsWithContractApprovalStatusShouldBeIncluded(contractIsNotApproved, 11))
                 .BDDfy();
         }
         [Fact]
@@ -156,7 +156,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var contractIsActive = "true";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractIsActiveIsProvided(contractIsActive))
-                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsActive, 10))
+                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsActive, 12))
                 .BDDfy();
         }
         [Fact]
@@ -168,13 +168,29 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsNotActive, 1))
                 .BDDfy();
         }
-
         [Fact]
         public void ServiceReturnsAllAssetsWhenNoParameterIsProvided()
         {
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenNoParameterIsProvided())
-                .Then(t => _steps.ThenAllAssetsAreReturned(11))
+                .Then(t => _steps.ThenAllAssetsAreReturned(12))
+                .BDDfy();
+        }
+        [Fact]
+        public void ServiceReturnsTemporaryAccomodationResultsWhenisTemporaryAccommodationTrue()
+        {
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenIsTemporaryAccomodation("true"))
+                .Then(t => _steps.ThenOnlyTemporaryAccomodationResultsShouldBeIncluded())
+                .BDDfy();
+        }
+        [Fact]
+        public void ServiceReturnsTemporaryAccomodationResultAddressWhereWildstarDoubleMatch()
+        // If a search is made for an address string with more than two values in the string, it should only return a match where both wildstar values are found. 
+        {
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenIsTemporaryAccomodationIsTrueAndSearchText("19 buckland"))
+                .Then(t => _steps.ThenThatTemporaryAccomodationAddressShouldBeTheFirstResult("19 Buckland Court St Johns Estate"))
                 .BDDfy();
         }
     }
