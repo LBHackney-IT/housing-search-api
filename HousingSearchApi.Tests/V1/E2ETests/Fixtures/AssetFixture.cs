@@ -18,13 +18,17 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public static AddressStub[] Addresses =
         {
             new AddressStub{ FirstLine = "59 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234650",
-                AssetStatus = "Reserved", NoOfBedSpaces = 2, NoOfCots = 1, HasStairs = true, PrivateBathroom = true, PrivateKitchen = true, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = true},
+                AssetStatus = "Reserved", NoOfBedSpaces = 2, NoOfCots = 1, HasStairs = true, PrivateBathroom = true, PrivateKitchen = true, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false},
+            new AddressStub{ FirstLine = "19 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234699",
+                AssetStatus = "Reserved", NoOfBedSpaces = 1, NoOfCots = 1, HasStairs = true, PrivateBathroom = false, PrivateKitchen = true, StepFree = false, TemporaryAccommodation = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false },
+            new AddressStub{ FirstLine = "38 Buckland Court St Johns Estate", AssetType = "Block", PostCode = "N1 5EP", UPRN = "10008234611",
+                AssetStatus = "Occupied", NoOfBedSpaces = 3, NoOfCots = 1, HasStairs = false, PrivateBathroom = true, PrivateKitchen = true, StepFree = true, TemporaryAccommodation = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false },
             new AddressStub{ FirstLine = "54 Buckland Court St Johns Estate", AssetType = "Estate", PostCode = "N1 5EP", UPRN = "10008234655",
                 AssetStatus = "Archived", NoOfBedSpaces = 3, NoOfCots = 0, HasStairs = false, PrivateBathroom = true, PrivateKitchen = true, StepFree = false, ParentAssetIds = GetGuids(), ContractIsApproved = false, ContractIsActive = true},
             new AddressStub{ FirstLine = "65 Buckland Court St Johns Estate", AssetType = "TerracedBlock", PostCode = "N1 5EP", UPRN = "10008234605",
                 AssetStatus = "In council use", NoOfBedSpaces = 4, NoOfCots = 2, HasStairs = true, PrivateBathroom = false, PrivateKitchen = false, StepFree = true, ParentAssetIds = GetGuids(), ContractIsApproved = false, ContractIsActive = false},
             new AddressStub{ FirstLine = "45 Buckland Court St Johns Estate", AssetType = "HighRiseBlock", PostCode = "N1 5EP", UPRN = "10008234650",
-                AssetStatus = "Occupied", NoOfBedSpaces = 5, NoOfCots = 1, HasStairs = false, PrivateBathroom = true, PrivateKitchen = false, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = true},
+                AssetStatus = "Occupied", NoOfBedSpaces = 5, NoOfCots = 1, HasStairs = false, PrivateBathroom = true, PrivateKitchen = false, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false},
             new AddressStub{ FirstLine = "Gge 45 Buckland Court St Johns Estate", AssetType = "Block", PostCode = "N1 5EP", UPRN = "10008234650",
                 AssetStatus = "Vacant", NoOfBedSpaces = 1, NoOfCots = 0, HasStairs = true, PrivateBathroom = false, PrivateKitchen = true, StepFree = false, ParentAssetIds = "85301d37-c9b4-4c5e-b218-effd4f0b2d7c#56043135-96e3-40cc-bb5a-598c25c47b44", ContractIsApproved = false, ContractIsActive = true},
             new AddressStub{ FirstLine = "Gge 52 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234650",
@@ -91,6 +95,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 asset.ParentAssetIds = value.ParentAssetIds;
                 asset.AssetContract.IsApproved = value.ContractIsApproved;
                 asset.AssetContract.IsActive = value.ContractIsActive;
+                asset.AssetManagement.IsTemporaryAccomodation = value.TemporaryAccommodation;
                 listOfAssets.Add(asset);
             }
 
@@ -114,6 +119,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public string ParentAssetIds { get; set; }
         public bool ContractIsApproved { get; set; }
         public bool ContractIsActive { get; set; }
+        public bool TemporaryAccommodation { get; set; }
 
     }
 }
