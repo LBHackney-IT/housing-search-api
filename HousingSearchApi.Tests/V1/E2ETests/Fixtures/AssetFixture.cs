@@ -18,7 +18,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public static AddressStub[] Addresses =
         {
             new AddressStub{ FirstLine = "59 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234650",
-                AssetStatus = "Reserved", NoOfBedSpaces = 2, NoOfCots = 1, HasStairs = true, PrivateBathroom = true, PrivateKitchen = true, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false, ChargesSubType = "rate"},
+                AssetStatus = "Reserved", NoOfBedSpaces = 2, NoOfCots = 1, HasStairs = true, PrivateBathroom = true, PrivateKitchen = true, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false, },
             new AddressStub{ FirstLine = "19 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234699",
                 AssetStatus = "Reserved", NoOfBedSpaces = 1, NoOfCots = 1, HasStairs = true, PrivateBathroom = false, PrivateKitchen = true, StepFree = false, TemporaryAccommodation = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false },
             new AddressStub{ FirstLine = "38 Buckland Court St Johns Estate", AssetType = "Block", PostCode = "N1 5EP", UPRN = "10008234611",
@@ -95,6 +95,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 asset.ParentAssetIds = value.ParentAssetIds;
                 asset.AssetContract.IsApproved = value.ContractIsApproved;
                 asset.AssetContract.IsActive = value.ContractIsActive;
+                asset.AssetContract.Charges.SubType = value.ChargesSubType;
                 asset.AssetManagement.IsTemporaryAccomodation = value.TemporaryAccommodation;
                 listOfAssets.Add(asset);
             }
