@@ -18,7 +18,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public static AddressStub[] Addresses =
         {
             new AddressStub{ FirstLine = "59 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234650",
-                AssetStatus = "Reserved", NoOfBedSpaces = 2, NoOfCots = 1, HasStairs = true, PrivateBathroom = true, PrivateKitchen = true, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false},
+                AssetStatus = "Reserved", NoOfBedSpaces = 2, NoOfCots = 1, HasStairs = true, PrivateBathroom = true, PrivateKitchen = true, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false, ChargesSubType = "rate"},
             new AddressStub{ FirstLine = "19 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234699",
                 AssetStatus = "Reserved", NoOfBedSpaces = 1, NoOfCots = 1, HasStairs = true, PrivateBathroom = false, PrivateKitchen = true, StepFree = false, TemporaryAccommodation = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false },
             new AddressStub{ FirstLine = "38 Buckland Court St Johns Estate", AssetType = "Block", PostCode = "N1 5EP", UPRN = "10008234611",
@@ -119,6 +119,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public string ParentAssetIds { get; set; }
         public bool ContractIsApproved { get; set; }
         public bool ContractIsActive { get; set; }
+        public string ChargesSubType { get; set; }
         public bool TemporaryAccommodation { get; set; }
 
     }
