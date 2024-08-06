@@ -260,6 +260,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
+            result.Results.Assets.All(x => x.AssetContract.Charges.Any(c => c.SubType == "rate"));
+
         }
         public async Task ThenAllAssetsAreReturned(int expectedNumberOfAssets)
         {
