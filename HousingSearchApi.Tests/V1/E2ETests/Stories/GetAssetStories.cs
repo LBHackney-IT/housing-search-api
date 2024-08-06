@@ -167,7 +167,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .When(w => _steps.WhenAssetContractSubtypeIsProvided(chargesSubtype))
                 .Then(t => _steps.ThenAssetsWhoseContractHasProvidedChargesSubytpeAreReturned(chargesSubtype, 1))
                 .BDDfy();
-        }        
+        }
         [Fact]
         public void ServiceFiltersFalseContractIsActiveStatusWithoutSearchText()
         {
