@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using AutoFixture;
 using Elasticsearch.Net;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
+using Hackney.Shared.HousingSearch.Gateways.Models.Contract;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using Nest;
 
@@ -18,7 +20,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public static AddressStub[] Addresses =
         {
             new AddressStub{ FirstLine = "59 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234650",
-                AssetStatus = "Reserved", NoOfBedSpaces = 2, NoOfCots = 1, HasStairs = true, PrivateBathroom = true, PrivateKitchen = true, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false},
+                AssetStatus = "Reserved", NoOfBedSpaces = 2, NoOfCots = 1, HasStairs = true, PrivateBathroom = true, PrivateKitchen = true, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false, ChargesSubType="rate"},
             new AddressStub{ FirstLine = "19 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234699",
                 AssetStatus = "Reserved", NoOfBedSpaces = 1, NoOfCots = 1, HasStairs = true, PrivateBathroom = false, PrivateKitchen = true, StepFree = false, TemporaryAccommodation = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false },
             new AddressStub{ FirstLine = "38 Buckland Court St Johns Estate", AssetType = "Block", PostCode = "N1 5EP", UPRN = "10008234611",
@@ -81,6 +83,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             foreach (var value in Addresses)
             {
                 var asset = fixture.Create<QueryableAsset>();
+                var chargeWithSetSubtype = fixture.Create<QueryableCharges>();
+                chargeWithSetSubtype.SubType = value.ChargesSubType;
                 asset.AssetAddress.AddressLine1 = value.FirstLine;
                 asset.AssetType = value.AssetType;
                 asset.AssetAddress.PostCode = value.PostCode;
@@ -95,6 +99,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 asset.ParentAssetIds = value.ParentAssetIds;
                 asset.AssetContract.IsApproved = value.ContractIsApproved;
                 asset.AssetContract.IsActive = value.ContractIsActive;
+                asset.AssetContract.Charges = asset.AssetContract.Charges.Append(chargeWithSetSubtype);
                 asset.AssetManagement.IsTemporaryAccomodation = value.TemporaryAccommodation;
                 listOfAssets.Add(asset);
             }
@@ -119,6 +124,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public string ParentAssetIds { get; set; }
         public bool ContractIsApproved { get; set; }
         public bool ContractIsActive { get; set; }
+        public string ChargesSubType { get; set; }
         public bool TemporaryAccommodation { get; set; }
 
     }

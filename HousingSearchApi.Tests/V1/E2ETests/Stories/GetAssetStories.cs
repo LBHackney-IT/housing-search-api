@@ -160,6 +160,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .BDDfy();
         }
         [Fact]
+        public void ServiceFiltersAssetContractChargesSubtypeWithoutSearchText()
+        {
+            var chargesSubtype = "rate";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenAssetContractSubtypeIsProvided(chargesSubtype))
+                .Then(t => _steps.ThenAssetsWhoseContractHasProvidedChargesSubytpeAreReturned(chargesSubtype, 1))
+                .BDDfy();
+        }
+        [Fact]
         public void ServiceFiltersFalseContractIsActiveStatusWithoutSearchText()
         {
             var contractIsNotActive = "false";
