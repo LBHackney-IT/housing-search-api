@@ -114,6 +114,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractIsApproved, new List<string> { "assetContract.isApproved" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractIsActive, new List<string> { "assetContract.isActive" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ChargesSubType, new List<string> { "assetContract.charges.subType" })
                         .WithWildstarQuery(assetListAllRequest.SearchText,
                             new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
                         .WithExactQuery(assetListAllRequest.SearchText,
@@ -126,7 +127,6 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
                         .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetManagement.propertyOccupiedStatus" })
                         .WithFilterQuery(assetListAllRequest.TenureType, new List<string> { "tenure.type.keyword" })
-
                         .Build(q);
                 }
                 else
@@ -148,6 +148,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractIsApproved, new List<string> { "assetContract.isApproved" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractIsActive, new List<string> { "assetContract.isActive" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ChargesSubType, new List<string> { "assetContract.charges.subType" })
                         .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
                         .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetManagement.propertyOccupiedStatus" })
                         .WithFilterQuery(assetListAllRequest.TenureType, new List<string> { "tenure.type.keyword" })
