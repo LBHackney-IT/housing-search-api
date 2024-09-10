@@ -30,6 +30,10 @@ namespace HousingSearchApi.V1.Boundary.Requests
 
         [FromQuery(Name = "contractIsApproved")]
         public string ContractIsApproved { get; set; }
+
+        [FromQuery(Name = "contractApprovalStatus")]
+        public string ContractApprovalStatus { get; set; }
+
         [FromQuery(Name = "contractIsActive")]
         public string ContractIsActive { get; set; }
         [FromQuery(Name = "chargesSubType")]

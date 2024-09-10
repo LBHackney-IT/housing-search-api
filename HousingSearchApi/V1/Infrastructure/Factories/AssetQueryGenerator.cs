@@ -113,6 +113,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
                         .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractIsApproved, new List<string> { "assetContract.isApproved" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatus, new List<string> { "assetContract.approvalStatus" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractIsActive, new List<string> { "assetContract.isActive" })
                         .WithMultipleFilterQuery(assetListAllRequest.ChargesSubType, new List<string> { "assetContract.charges.subType" })
                         .WithWildstarQuery(assetListAllRequest.SearchText,
@@ -147,6 +148,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
                         .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractIsApproved, new List<string> { "assetContract.isApproved" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatus, new List<string> { "assetContract.approvalStatus" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractIsActive, new List<string> { "assetContract.isActive" })
                         .WithMultipleFilterQuery(assetListAllRequest.ChargesSubType, new List<string> { "assetContract.charges.subType" })
                         .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
