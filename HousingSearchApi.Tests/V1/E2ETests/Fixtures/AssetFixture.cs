@@ -124,7 +124,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public bool StepFree { get; set; }
         public string ParentAssetIds { get; set; }
         public bool ContractIsApproved { get; set; }
-        public ApprovalStatus ContractApprovalStatus { get; set;}        
+        public ApprovalStatus ContractApprovalStatus { get; set; }
         public bool ContractIsActive { get; set; }
         public string ChargesSubType { get; set; }
         public bool TemporaryAccommodation { get; set; }
