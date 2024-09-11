@@ -1,5 +1,6 @@
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
+using Hackney.Shared.HousingSearch.Domain.Enums;
 using TestStack.BDDfy;
 using Xunit;
 
@@ -141,6 +142,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenAssetsWithContractApprovalStatusShouldBeIncluded(contractIsApproved, 2))
                 .BDDfy();
         }
+        [Fact]
+        public void ServiceFiltersApprovedApprovalStatusWithoutSearchText()
+        {
+            ApprovalStatus approvedApprovalStatus = 0;
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractApprovalStatusIsProvided(approvedApprovalStatus))
+                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(approvedApprovalStatus, 1))
+                .BDDfy();
+        }        
         [Fact]
         public void ServiceFiltersFalseContractIsApprovedStatusWithoutSearchText()
         {
