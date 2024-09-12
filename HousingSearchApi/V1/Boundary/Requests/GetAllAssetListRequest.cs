@@ -33,7 +33,7 @@ namespace HousingSearchApi.V1.Boundary.Requests
         public string ContractIsApproved { get; set; }
 
         [FromQuery(Name = "contractApprovalStatus")]
-        public ApprovalStatus ContractApprovalStatus { get; set; }
+        public string ContractApprovalStatus { get; set; }
 
         [FromQuery(Name = "contractIsActive")]
         public string ContractIsActive { get; set; }

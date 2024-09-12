@@ -143,14 +143,32 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .BDDfy();
         }
         [Fact]
+        public void ServiceFiltersPendingApprovalStatusWithoutSearchText()
+        {
+            var pendingApprovalStatus = "0";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractApprovalStatusIsProvided(pendingApprovalStatus))
+                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(pendingApprovalStatus, 3))
+                .BDDfy();
+        }
+        [Fact]
         public void ServiceFiltersApprovedApprovalStatusWithoutSearchText()
         {
-            ApprovalStatus approvedApprovalStatus = 0;
+            var approvedApprovalStatus = "1";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractApprovalStatusIsProvided(approvedApprovalStatus))
-                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(approvedApprovalStatus, 1))
+                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(approvedApprovalStatus, 2))
                 .BDDfy();
-        }        
+        }
+        [Fact]
+        public void ServiceFiltersPendingReapprovalStatusWithoutSearchText()
+        {
+            var pendingReapprovalApprovalStatus = "2";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractApprovalStatusIsProvided(pendingReapprovalApprovalStatus))
+                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(pendingReapprovalApprovalStatus, 8))
+                .BDDfy();
+        }
         [Fact]
         public void ServiceFiltersFalseContractIsApprovedStatusWithoutSearchText()
         {
