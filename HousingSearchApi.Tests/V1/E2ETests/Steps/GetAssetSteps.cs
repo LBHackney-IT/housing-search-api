@@ -93,7 +93,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
-        }
+        }        
 
         public async Task WhenNoParameterIsProvided()
         {
@@ -262,7 +262,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
             result.Results.Assets.All(x => x.AssetContract.ApprovalStatus == contractApprovalStatus);
-        }
+        }        
         public async Task ThenAssetsWithProvidedContractStatusShouldBeIncluded(string contractStatus, int expectedNumberOfAssets)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);

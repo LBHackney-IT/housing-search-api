@@ -150,7 +150,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .When(w => _steps.WhenContractApprovalStatusIsProvided(approvedApprovalStatus))
                 .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(approvedApprovalStatus, 1))
                 .BDDfy();
-        }
+        }        
         [Fact]
         public void ServiceFiltersFalseContractIsApprovedStatusWithoutSearchText()
         {

@@ -1,3 +1,4 @@
+using Hackney.Shared.HousingSearch.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HousingSearchApi.V1.Boundary.Requests
@@ -32,7 +33,7 @@ namespace HousingSearchApi.V1.Boundary.Requests
         public string ContractIsApproved { get; set; }
 
         [FromQuery(Name = "contractApprovalStatus")]
-        public string ContractApprovalStatus { get; set; }
+        public ApprovalStatus ContractApprovalStatus { get; set; }
 
         [FromQuery(Name = "contractIsActive")]
         public string ContractIsActive { get; set; }
