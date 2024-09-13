@@ -3,9 +3,8 @@ using Hackney.Core.Logging;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using HousingSearchApi.V2.Domain.DTOs;
 using HousingSearchApi.V2.UseCase.Interfaces;
-using static System.Int16;
-using HttpUtility = System.Web.HttpUtility;
 
 namespace HousingSearchApi.V2.Controllers;
 
@@ -24,15 +23,11 @@ public class SearchController : Controller
 
     [LogCall(Microsoft.Extensions.Logging.LogLevel.Information)]
     [HttpGet("{indexName}")]
-    public async Task<IActionResult> Search(string indexName)
+    public async Task<IActionResult> Search(string indexName, [FromQuery] SearchParametersDto searchParametersDto)
     {
         try
         {
-            var query =  Request.QueryString.Value ?? string.Empty;
-            var searchText = HttpUtility.ParseQueryString(query).Get("searchText") ?? string.Empty;
-            var pageSize = Parse(HttpUtility.ParseQueryString(query).Get("pageSize") ?? "40");
-
-            var searchResults = await _searchUseCase.ExecuteAsync(indexName, searchText).ConfigureAwait(false);
+            var searchResults = await _searchUseCase.ExecuteAsync(indexName, searchParametersDto).ConfigureAwait(false);
 
             var response = new
             {

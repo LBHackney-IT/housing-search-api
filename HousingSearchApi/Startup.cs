@@ -46,7 +46,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using V2 = HousingSearchApi.V2;
 
 namespace HousingSearchApi
 {
