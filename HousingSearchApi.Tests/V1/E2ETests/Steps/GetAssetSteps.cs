@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Hackney.Shared.HousingSearch.Domain.Enums;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps.Base;
 using HousingSearchApi.V1.Boundary.Responses;
@@ -81,6 +82,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task WhenContractIsApprovedIsProvided(string contractApprovalStatus)
         {
             var route = new Uri($"api/v1/search/assets/all?contractIsApproved={contractApprovalStatus}&page={1}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+
+        public async Task WhenContractApprovalStatusIsProvided(string approvalStatus)
+        {
+            var route = new Uri($"api/v1/search/assets/all?contractApprovalStatus={approvalStatus}&page={1}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -245,6 +254,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
             result.Results.Assets.All(x => x.AssetContract.IsApproved == bool.Parse(contractApprovalStatus));
+        }
+        public async Task ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(string contractApprovalStatus, int expectedNumberOfAssets)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
+            result.Results.Assets.All(x => x.AssetContract.ApprovalStatus.ToString() == contractApprovalStatus);
         }
         public async Task ThenAssetsWithProvidedContractStatusShouldBeIncluded(string contractStatus, int expectedNumberOfAssets)
         {
