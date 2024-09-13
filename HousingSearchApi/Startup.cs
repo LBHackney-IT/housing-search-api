@@ -46,6 +46,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using V2 = HousingSearchApi.V2;
 
 namespace HousingSearchApi
 {
@@ -171,14 +172,14 @@ namespace HousingSearchApi
 
         private static void RegisterGateways(IServiceCollection services)
         {
-            services.AddScoped<IGetGateway, GetGateway>();
+            services.AddScoped<V2.Gateways.Interfaces.ISearchGateway, V2.Gateways.SearchGateway>();
             services.AddScoped<ISearchGateway, SearchGateway>();
             services.AddScoped<IGetAccountGateway, GetAccountGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
         {
-            services.AddScoped<IGetUseCase, GetUseCase>();
+            services.AddScoped<V2.UseCase.Interfaces.ISearchUseCase, V2.UseCase.SearchUseCase>();
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
             services.AddScoped<IGetAccountListUseCase, GetAccountListUseCase>();
             services.AddScoped<IGetTenureListUseCase, GetTenureListUseCase>();
