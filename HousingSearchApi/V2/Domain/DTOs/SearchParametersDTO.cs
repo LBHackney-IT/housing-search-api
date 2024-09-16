@@ -17,7 +17,7 @@ public class SearchParametersDto
     public string SortField { get; set; } = "_score";
 
     [FromQuery(Name = "sortOrder")]
-    public bool IsDesc { get; set; } = false;
+    public bool IsDesc { get; set; } = true;
 }
 
 

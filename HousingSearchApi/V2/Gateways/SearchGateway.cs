@@ -22,7 +22,7 @@ public class SearchGateway : ISearchGateway
         if (string.IsNullOrEmpty(searchParametersDto.SearchText))
             queryContainer = new MatchAllQuery();
         else
-            queryContainer = new QueryStringQuery
+            queryContainer = new SimpleQueryStringQuery()
             {
                 Query = searchParametersDto.SearchText,
             };
@@ -40,6 +40,7 @@ public class SearchGateway : ISearchGateway
             },
             From = searchParametersDto.PageNumber
         };
+
         var searchResponse = await _elasticClient.SearchAsync<object>(searchRequest).ConfigureAwait(false);
         return searchResponse.Documents;
     }
