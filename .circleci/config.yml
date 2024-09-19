@@ -155,6 +155,13 @@ jobs:
       - run:
           name: Run tests
           command: docker compose run housing-search-api-test
+  sonar-scan:
+    executor: docker-dotnet
+    steps:
+      - checkout
+      - run:
+          name: Run sonar scan
+          command: docker compose run sonar-scan
   assume-role-development:
     executor: docker-python
     steps:

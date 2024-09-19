@@ -25,7 +25,6 @@ services:
       dockerfile: HousingSearchApi.Tests/Dockerfile
       args:
       - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
-      - SONAR_TOKEN=${SONAR_TOKEN}
     environment:
       - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
     depends_on:
@@ -76,10 +75,16 @@ services:
     environment:
       ELASTICSEARCH_HOSTS: http://test-elasticsearch:9200
       SERVER_HOST: 0.0.0.0
+  
+  sonar-scan:
+    image: sonar-scan
+    build:
+      context: .
+      dockerfile: HousingSearchApi.Tests/Sonar/Dockerfile
+      args:
+      - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
+      - SONAR_TOKEN=${SONAR_TOKEN}
 
-volumes:
-    esdata-test:
-        driver: local
 
 networks:
   elastic:
