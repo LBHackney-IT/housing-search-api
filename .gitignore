@@ -74,4 +74,3 @@ testresults/
 # test data files
 venv/
 *.py
-*.json

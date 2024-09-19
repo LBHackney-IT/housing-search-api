@@ -6,7 +6,7 @@ apk add --no-cache curl jq;
 # Wait until Elasticsearch is ready by checking the cluster health
 until curl -s test-elasticsearch:9200/_cluster/health?wait_for_status=green | grep -q '"status":"green"'; do
     echo "Waiting for Elasticsearch to be ready..."
-    sleep 5
+    sleep 1
 done
 
 echo "Elasticsearch is up and running - loading data one by one"
