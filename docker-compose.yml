@@ -1,5 +1,3 @@
-version: "3.2"
-
 services:
   housing-search-api:
     image: housing-search-api
@@ -19,7 +17,7 @@ services:
     depends_on:
       - kibana
       - test-elasticsearch
-      
+
   housing-search-api-test:
     image: housing-search-api-test
     build:
@@ -35,25 +33,40 @@ services:
     depends_on:
       - kibana
       - test-elasticsearch
-      
+
   test-elasticsearch:
-    image: test-elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
     container_name: test-elasticsearch
-    build:
-      context: .
-      dockerfile: data/elasticsearch/Dockerfile
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -fs http://localhost:9200/_cluster/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ports:
       - 9200:9200
       - 9300:9300
     volumes:
-      - esdata-test:/usr/share/elasticsearch/data
-    networks:
-      - elastic
+      - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/assets.json:/usr/share/elasticsearch/data/assets.json
+
+  data-loader:
+    image: alpine:3.20
+    container_name: data-loader
+    environment:
+      - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
+    depends_on:
+      - test-elasticsearch
+    volumes:
+      - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/assets.json:/usr/share/elasticsearch/data/assets.json
+      - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/init.sh:/usr/share/elasticsearch/init.sh
+    entrypoint: sh -c "sh /usr/share/elasticsearch/init.sh"
+
+
+
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.9.3
