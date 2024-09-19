@@ -251,6 +251,14 @@ workflows:
       - build-and-test:
           context:
             - api-nuget-token-context
+          filters:
+            branches:
+              ignore:
+                - master
+                - release
+      - sonar-scan:
+          context:
+            - api-nuget-token-context
             - SonarCloud
           filters:
             branches:
