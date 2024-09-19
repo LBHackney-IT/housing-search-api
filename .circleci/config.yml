@@ -162,7 +162,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Run sonar scan
-          command: docker compose run sonar-scan
+          command: docker compose run sonar-scan --quiet-pull
   assume-role-development:
     executor: docker-python
     steps:
