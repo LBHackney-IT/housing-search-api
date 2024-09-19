@@ -50,8 +50,6 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
-    volumes:
-      - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/assets.json:/usr/share/elasticsearch/data/assets.json
 
   data-loader:
     image: alpine:3.20
@@ -64,9 +62,6 @@ services:
       - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/assets.json:/usr/share/elasticsearch/data/assets.json
       - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/init.sh:/usr/share/elasticsearch/init.sh
     entrypoint: sh -c "sh /usr/share/elasticsearch/init.sh"
-
-
-
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.9.3

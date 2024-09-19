@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using HousingSearchApi.V2.Gateways.Interfaces;
 using Nest;
 using System.Threading.Tasks;
@@ -15,35 +16,27 @@ public class SearchGateway : ISearchGateway
         _elasticClient = elasticClient;
     }
 
-    public async Task<IReadOnlyCollection<object>> Search(string index, SearchParametersDto searchParametersDto)
+    public async Task<IReadOnlyCollection<object>> Search(string indexName, SearchParametersDto searchParametersDto)
     {
-        // Create query
-        QueryContainer queryContainer;
-        if (string.IsNullOrEmpty(searchParametersDto.SearchText))
-            queryContainer = new MatchAllQuery();
-        else
-            queryContainer = new SimpleQueryStringQuery()
-            {
-                Query = searchParametersDto.SearchText,
-            };
-        // Create search request
-        var searchRequest = new SearchRequest(index)
-        {
-            Query = queryContainer,
-            Size = searchParametersDto.PageSize,
-            Sort = new List<ISort> {
-                new FieldSort
-                {
-                    Field = searchParametersDto.SortField,
-                    Order = searchParametersDto.IsDesc ? SortOrder.Descending : SortOrder.Ascending
-                }
-            },
-            From = searchParametersDto.PageNumber
-        };
+        var searchResponse = await _elasticClient.SearchAsync<object>(s => s
+            .Index(indexName)
+            .Query(q => q
+                .SimpleQueryString(qs => qs
+                    .Fields("*")
+                    .Query(searchParametersDto.SearchText)
+                )
+            )
+        );
 
-        var searchResponse = await _elasticClient.SearchAsync<object>(searchRequest).ConfigureAwait(false);
         return searchResponse.Documents;
     }
 }
 
 
+
+// .Sort(so => so
+//     .Field(f => f
+//         .Field(searchParametersDto.SortField)
+//         .Order(searchParametersDto.IsDesc ? SortOrder.Descending : SortOrder.Ascending)
+//     )
+// )

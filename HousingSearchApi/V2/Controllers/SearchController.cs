@@ -2,6 +2,7 @@ using Amazon.Lambda.Core;
 using Hackney.Core.Logging;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HousingSearchApi.V2.Domain.DTOs;
 using HousingSearchApi.V2.UseCase.Interfaces;
@@ -25,23 +26,18 @@ public class SearchController : Controller
     [HttpGet("{indexName}")]
     public async Task<IActionResult> Search(string indexName, [FromQuery] SearchParametersDto searchParametersDto)
     {
-        try
-        {
-            var searchResults = await _searchUseCase.ExecuteAsync(indexName, searchParametersDto).ConfigureAwait(false);
+        var searchResults = await _searchUseCase.ExecuteAsync(indexName, searchParametersDto).ConfigureAwait(false);
 
-            var response = new
+        var response = new
+        {
+            Results = new Dictionary<string, IReadOnlyCollection<object>>
             {
-                Results = searchResults,
-                Total = searchResults.Count
-            };
+                [indexName] = searchResults
+            },
+            Total = searchResults.Count
+        };
 
-            return new OkObjectResult(response);
-        }
-        catch (Exception e)
-        {
-            LambdaLogger.Log(e.Message + e.StackTrace);
-            return new BadRequestObjectResult(e.Message);
-        }
+        return new OkObjectResult(response);
     }
 }
 
