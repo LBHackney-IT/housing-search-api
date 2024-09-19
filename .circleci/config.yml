@@ -151,10 +151,10 @@ jobs:
       - setup_remote_docker
       - run:
           name: build
-          command: docker compose build housing-search-api-test --quiet
+          command: docker compose build --quiet housing-search-api-test
       - run:
           name: Run tests
-          command: docker compose run housing-search-api-test --quiet-pull
+          command: docker compose run housing-search-api-test
   sonar-scan:
     executor: docker-python
     steps:
