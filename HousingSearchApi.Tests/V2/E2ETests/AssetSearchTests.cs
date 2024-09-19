@@ -52,9 +52,9 @@ public class GetAssetStoriesV2 : IClassFixture<MockWebApplicationFactory<Startup
     }
 
     [Theory]
-    [InlineData("148 Kingsland", "83458161-e28e-1d05-72d9-6af5699d1b59")]
-    [InlineData("Flat 421 359 Kingsland", "c300313f-d4ca-6e0e-48c2-7ad2961436ac")]
-    [InlineData("Gge 102 Kingsland", "aaccd37d-f0a0-80da-acab-0ea00d943ca5")]
+    [InlineData("Gge 3b Price", "1de2964d-59a8-4e0e-b2e2-c3722b5f2a6b")]
+    [InlineData("Flat 6 Charles", "660c8a83-9b4c-4944-890e-51a8e7ab1d1b")]
+    [InlineData("10 Norris views", "e1e65cb3-b6f8-4536-9702-13712c8d5d12")]
     public async Task ReturnsRelevantResultFirstByAddress(string searchText, string expectedReturnedId)
     {
         // Arrange
