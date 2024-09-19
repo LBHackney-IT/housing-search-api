@@ -69,3 +69,9 @@ testresults/
 /docker-compose.dcproj
 /docker-compose.override.yml
 /nuget
+
+
+# test data files
+venv/
+*.py
+*.json
