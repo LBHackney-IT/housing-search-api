@@ -150,8 +150,11 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          name: build
+          command: docker compose build housing-search-api-test
+      - run:
           name: Run tests
-          command: make test
+          command: docker compose run housing-search-api-test
   assume-role-development:
     executor: docker-python
     steps:
@@ -289,9 +292,6 @@ workflows:
       jobs:
       - check-code-formatting:
           context: api-nuget-token-context
-          filters:
-            branches:
-              only: release
       - build-and-test:
           context:
             - api-nuget-token-context
