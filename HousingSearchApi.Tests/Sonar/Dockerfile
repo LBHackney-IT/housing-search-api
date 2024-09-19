@@ -27,4 +27,4 @@ RUN dotnet restore ./HousingSearchApi.Tests/HousingSearchApi.Tests.csproj
 COPY . .
 RUN dotnet build -c Release -o out HousingSearchApi/HousingSearchApi.csproj
 RUN dotnet build -c debug -o out HousingSearchApi.Tests/HousingSearchApi.Tests.csproj
-RUN dotnet sonarscanner end /d:sonar.login="${SONAR_TOKEN}"
+RUN dotnet sonarscanner end /d:sonar.login="${SONAR_TOKEN}" && exit 0
