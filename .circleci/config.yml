@@ -147,9 +147,6 @@ jobs:
   
   build-and-test:
     executor: docker-python
-    context:
-      - api-nuget-token-context
-      - SonarCloud
     steps:
       - checkout
       - setup_remote_docker
@@ -263,6 +260,9 @@ workflows:
               branches:
                 only: master
       - build-and-test:
+          context:
+            - api-nuget-token-context
+            - SonarCloud
           filters:
               branches:
                 only: master
