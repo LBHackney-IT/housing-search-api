@@ -26,10 +26,11 @@ services:
       args:
       - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
     environment:
+      - SONAR_TOKEN=${SONAR_TOKEN}
       - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
     depends_on:
-      data-loader:
-        condition: service_completed_successfully
+      test-elasticsearch:
+        condition: service_healthy
 
   test-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
