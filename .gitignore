@@ -70,6 +70,4 @@ testresults/
 /docker-compose.override.yml
 /nuget
 
-
-# test data files
 venv/
