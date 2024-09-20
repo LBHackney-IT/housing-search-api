@@ -21,4 +21,4 @@ COPY . .
 RUN dotnet build -c Release -o out HousingSearchApi/HousingSearchApi.csproj
 RUN dotnet build -c debug -o out HousingSearchApi.Tests/HousingSearchApi.Tests.csproj
 
-CMD dotnet test --filter HousingSearchApi.Tests.V2
+CMD dotnet test --filter HousingSearchApi.Tests.V1
