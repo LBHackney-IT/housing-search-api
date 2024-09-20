@@ -112,7 +112,7 @@ public class GetAssetStoriesV2 : IClassFixture<MockWebApplicationFactory<Startup
 
     [Theory]
     [InlineData("154455647", "1d3f9e8e-d380-441f-97bb-2d280aecb80f")]
-     public async Task ReturnsRelevantResultFirstByPaymentRef(string searchText, string expectedReturnedId)
+    public async Task ReturnsRelevantResultFirstByPaymentRef(string searchText, string expectedReturnedId)
     {
         // Arrange
         var request = CreateSearchRequest(searchText);
