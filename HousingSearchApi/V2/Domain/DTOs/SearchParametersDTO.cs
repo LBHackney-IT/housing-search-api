@@ -8,7 +8,7 @@ public class SearchParametersDto
     public string SearchText { get; set; } = string.Empty;
 
     [FromQuery(Name = "pageSize")]
-    public int PageSize { get; set; } = 40;
+    public int PageSize { get; set; } = 120;
 
     [FromQuery(Name = "pageNumber")]
     public int PageNumber { get; set; } = 1;

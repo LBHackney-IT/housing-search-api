@@ -6,5 +6,5 @@ namespace HousingSearchApi.V2.Gateways.Interfaces;
 
 public interface ISearchGateway
 {
-    Task<IReadOnlyCollection<object>> Search(string indexName, SearchParametersDto searchParametersDto);
+    Task<SearchResponseDto> Search(string indexName, SearchParametersDto searchParametersDto);
 }

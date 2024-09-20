@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HousingSearchApi.V2.Domain.DTOs;
-using HousingSearchApi.V2.UseCase.Interfaces;
+using HousingSearchApi.V2.UseCase;
 
 namespace HousingSearchApi.V2.Controllers;
 
@@ -15,9 +15,9 @@ namespace HousingSearchApi.V2.Controllers;
 [ApiController]
 public class SearchController : Controller
 {
-    private readonly ISearchUseCase _searchUseCase;
+    private readonly SearchUseCase _searchUseCase;
 
-    public SearchController(ISearchUseCase searchUseCase)
+    public SearchController(SearchUseCase searchUseCase)
     {
         _searchUseCase = searchUseCase;
     }
@@ -32,9 +32,9 @@ public class SearchController : Controller
         {
             Results = new Dictionary<string, IReadOnlyCollection<object>>
             {
-                [indexName] = searchResults
+                [indexName] = searchResults.Documents
             },
-            Total = searchResults.Count
+            Total = searchResults.Documents.Count // This should become searchResults.Total when the frontend supports pagination
         };
 
         return new OkObjectResult(response);

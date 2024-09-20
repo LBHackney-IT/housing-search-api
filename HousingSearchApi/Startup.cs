@@ -178,7 +178,7 @@ namespace HousingSearchApi
 
         private static void RegisterUseCases(IServiceCollection services)
         {
-            services.AddScoped<V2.UseCase.Interfaces.ISearchUseCase, V2.UseCase.SearchUseCase>();
+            services.AddScoped<V2.UseCase.SearchUseCase, V2.UseCase.SearchUseCase>();
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
             services.AddScoped<IGetAccountListUseCase, GetAccountListUseCase>();
             services.AddScoped<IGetTenureListUseCase, GetTenureListUseCase>();

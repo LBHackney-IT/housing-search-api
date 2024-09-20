@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using HousingSearchApi.V2.Gateways.Interfaces;
 using Nest;
 using System.Threading.Tasks;
@@ -16,20 +14,28 @@ public class SearchGateway : ISearchGateway
         _elasticClient = elasticClient;
     }
 
-    public async Task<IReadOnlyCollection<object>> Search(string indexName, SearchParametersDto searchParametersDto)
+    public async Task<SearchResponseDto> Search(string indexName, SearchParametersDto searchParams)
     {
         var searchResponse = await _elasticClient.SearchAsync<object>(s => s
-            .Index(indexName)
-            .Query(q => q
-                .SimpleQueryString(qs => qs
-                    .Fields("*")
-                    .Query(searchParametersDto.SearchText)
+                .Index(indexName)
+                .Query(q => q
+                    .SimpleQueryString(qs => qs
+                        .Fields("*")
+                        .Query(searchParams.SearchText)
+                    )
                 )
-            )
+                .Size(searchParams.PageSize)
+                .From((searchParams.PageNumber - 1) * searchParams.PageSize)
+                .TrackTotalHits(true)
         );
 
-        return searchResponse.Documents;
+        return new SearchResponseDto
+        {
+            Documents = searchResponse.Documents,
+            Total = searchResponse.HitsMetadata.Total.Value
+        };
     }
+
 }
 
 
