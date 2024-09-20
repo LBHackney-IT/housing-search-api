@@ -9,7 +9,7 @@ using HousingSearchApi.V2.UseCase;
 
 namespace HousingSearchApi.V2.Controllers;
 
-[ApiVersion("1")]
+[ApiVersion("2")]
 [Produces("application/json")]
 [Route("api/v2/search/")]
 [ApiController]
