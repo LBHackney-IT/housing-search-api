@@ -35,14 +35,4 @@ public class SearchGateway : ISearchGateway
             Total = searchResponse.HitsMetadata.Total.Value
         };
     }
-
 }
-
-
-
-// .Sort(so => so
-//     .Field(f => f
-//         .Field(searchParametersDto.SortField)
-//         .Order(searchParametersDto.IsDesc ? SortOrder.Descending : SortOrder.Ascending)
-//     )
-// )
