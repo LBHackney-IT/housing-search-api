@@ -56,7 +56,6 @@ services:
     depends_on:
       test-elasticsearch:
         condition: service_healthy
-
     volumes:
       - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/assets.json:/usr/share/elasticsearch/data/assets.json
       - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/init.sh:/usr/share/elasticsearch/init.sh
