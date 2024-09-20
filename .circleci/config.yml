@@ -151,9 +151,11 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: build-and-test
-          command: make test
-
+          name: build
+          command: docker-compose build housing-search-api-test
+      - run:
+          name: Run tests
+          command: docker-compose run housing-search-api-test
   assume-role-development:
     executor: docker-python
     steps:
