@@ -1,6 +1,6 @@
 #!/bin/bash
+# Bulk load fixture data into Elasticsearch
 
-# Install curl (jq is no longer needed)
 apk add --no-cache curl
 
 # Wait until Elasticsearch is ready by checking the cluster health
