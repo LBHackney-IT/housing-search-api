@@ -10,14 +10,11 @@ namespace HousingSearchApi.Tests.V2.E2ETests;
 public class GetAssetStoriesV2 : IClassFixture<MockWebApplicationFactory<Startup>>
 {
     // Note: see assets.json for the data that is being searched
-    private readonly MockWebApplicationFactory<Startup> _factory;
     private readonly HttpClient _httpClient;
 
     public GetAssetStoriesV2(MockWebApplicationFactory<Startup> factory)
     {
-        _factory = factory;
         _httpClient = factory.CreateClient();
-        var elasticClient = factory.ElasticSearchClient;
     }
 
     private HttpRequestMessage CreateSearchRequest(string searchText)
