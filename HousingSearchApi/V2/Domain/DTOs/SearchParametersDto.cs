@@ -12,12 +12,6 @@ public class SearchParametersDto
 
     [FromQuery(Name = "pageNumber")]
     public int PageNumber { get; set; } = 1;
-
-    [FromQuery(Name = "sortField")]
-    public string SortField { get; set; } = "_score";
-
-    [FromQuery(Name = "isDesc")]
-    public bool IsDesc { get; set; } = true;
 }
 
 
