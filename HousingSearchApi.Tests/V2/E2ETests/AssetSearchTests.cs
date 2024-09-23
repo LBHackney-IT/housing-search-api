@@ -37,7 +37,7 @@ public class GetAssetStoriesV2 : IClassFixture<MockWebApplicationFactory<Startup
             }
         };
 
-        var assets = splitLines.Select(line => TryParse(line)?.RootElement).Where(x=>x != null);
+        var assets = splitLines.Select(line => TryParse(line)?.RootElement).Where(x => x != null);
         var jsonElements = assets as JsonElement?[] ?? assets.ToArray();
         var asset = jsonElements.ElementAt(new Random().Next(jsonElements.Count()));
         return (JsonElement) asset;
