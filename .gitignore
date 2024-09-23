@@ -69,3 +69,5 @@ testresults/
 /docker-compose.dcproj
 /docker-compose.override.yml
 /nuget
+
+venv/
