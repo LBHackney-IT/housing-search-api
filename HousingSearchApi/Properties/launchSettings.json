@@ -11,10 +11,12 @@
   "profiles": {
     "housing_search_api": {
       "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "api/v1/healthcheck/ping",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "LocalDevelopment"
       },
-      "applicationUrl": "http://localhost:3000"
+      "applicationUrl": "http://localhost:5003"
     },
     "Docker": {
       "commandName": "Docker",

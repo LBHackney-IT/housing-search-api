@@ -171,14 +171,12 @@ namespace HousingSearchApi
 
         private static void RegisterGateways(IServiceCollection services)
         {
-            services.AddScoped<V2.Gateways.Interfaces.ISearchGateway, V2.Gateways.SearchGateway>();
             services.AddScoped<ISearchGateway, SearchGateway>();
             services.AddScoped<IGetAccountGateway, GetAccountGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
         {
-            services.AddScoped<V2.UseCase.SearchUseCase, V2.UseCase.SearchUseCase>();
             services.AddScoped<IGetPersonListUseCase, GetPersonListUseCase>();
             services.AddScoped<IGetAccountListUseCase, GetAccountListUseCase>();
             services.AddScoped<IGetTenureListUseCase, GetTenureListUseCase>();
