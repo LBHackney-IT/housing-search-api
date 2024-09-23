@@ -12,7 +12,8 @@
     "housing_search_api": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "LocalDevelopment"
+        "ASPNETCORE_ENVIRONMENT": "LocalDevelopment",
+        "ELASTICSEARCH_DOMAIN_URL": "http://localhost:9200"
       },
       "applicationUrl": "http://localhost:3000"
     },
@@ -25,7 +26,8 @@
       "applicationUrl": "http://localhost:3000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "http://+:3000;http://+:9200"
+        "ASPNETCORE_URLS": "http://+:3000;http://+:9200",
+        "ELASTICSEARCH_DOMAIN_URL": "https://localhost:9200"
       }
     }
   }

@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,18 +16,44 @@ public class GetAssetStoriesV2 : IClassFixture<MockWebApplicationFactory<Startup
     // Note: see assets.json for the data that is being searched
     private readonly HttpClient _httpClient;
 
+    // Return a random asset from the assets.json file
+    private JsonElement RandomAsset()
+    {
+        using StreamReader r = new StreamReader("V2/E2ETests/Fixtures/assets.json");
+        string json = r.ReadToEnd();
+        List<string> splitLines = new List<string>(json.Split("\n"))
+            .Where(line => !line.Contains("index")
+            ).ToList();
+
+        Func<string, JsonDocument> TryParse = str_json =>
+        {
+            try
+            {
+                return JsonDocument.Parse(str_json);
+            }
+            catch (JsonException)
+            {
+                return null;
+            }
+        };
+
+        var assets = splitLines.Select(line => TryParse(line)?.RootElement).Where(x => x != null);
+        var jsonElements = assets as JsonElement?[] ?? assets.ToArray();
+        var asset = jsonElements.ElementAt(new Random().Next(jsonElements.Count()));
+        return (JsonElement) asset;
+    }
+
     public GetAssetStoriesV2(MockWebApplicationFactory<Startup> factory)
     {
         _httpClient = factory.CreateClient();
     }
 
-    private HttpRequestMessage CreateSearchRequest(string searchText)
-    {
-        return new HttpRequestMessage(
+    private HttpRequestMessage CreateSearchRequest(string searchText) =>
+        new HttpRequestMessage(
             HttpMethod.Get,
             $"http://localhost:3000/api/v2/search/assets/?searchText={searchText}"
             );
-    }
+
 
     private JsonElement GetResponseRootElement(HttpResponseMessage response)
     {
@@ -47,13 +77,80 @@ public class GetAssetStoriesV2 : IClassFixture<MockWebApplicationFactory<Startup
         root.GetProperty("total").GetInt32().Should().Be(0);
     }
 
-    [Theory]
-    [InlineData("Gge 7 Toby Crossroad", "71312edd-10c3-41cf-b298-b97cce0c0123")]
-    [InlineData("6 Philip Alley", "5a6067de-458c-40cb-93a3-d16fe39da12a")]
-    [InlineData("Room 3 2 Kevin Inlet", "b5e85565-6241-4dd2-8f1f-50d626b129f2")]
-    public async Task ReturnsRelevantResultFirstByAddress(string searchText, string expectedReturnedId)
+    [Fact]
+    public async Task ReturnsRelevantResultFirstByAddress()
+    {
+        foreach (var _ in Enumerable.Range(0, 10))
+        {
+            // Arrange
+            var randomAsset = RandomAsset();
+            var expectedReturnedId = randomAsset.GetProperty("id").GetString();
+            var request = CreateSearchRequest(randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString());
+
+            // Act
+            var response = await _httpClient.SendAsync(request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var root = GetResponseRootElement(response);
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResult = root.GetProperty("results").GetProperty("assets")[0];
+            firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+        }
+    }
+
+    [Fact]
+    public async Task ReturnsRelevantResultFirstByPostcode()
+    {
+        foreach (var _ in Enumerable.Range(0, 10))
+        {
+            // Arrange
+            var randomAsset = RandomAsset();
+            var searchTextPostcode = randomAsset.GetProperty("assetAddress").GetProperty("postCode").GetString();
+            var request = CreateSearchRequest(searchTextPostcode);
+
+            // Act
+            var response = await _httpClient.SendAsync(request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var root = GetResponseRootElement(response);
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResult = root.GetProperty("results").GetProperty("assets")[0];
+            firstResult.GetProperty("assetAddress").GetProperty("postCode").GetString().Should().Be(searchTextPostcode);
+        }
+    }
+
+    [Fact]
+    public async Task ReturnsRelevantResultFirstByAddressAndPostcode()
+    {
+        foreach (var _ in Enumerable.Range(0, 10))
+        {
+            // Arrange
+            var randomAsset = RandomAsset();
+            var expectedReturnedId = randomAsset.GetProperty("id").GetString();
+            var searchText = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString() + " " + randomAsset.GetProperty("assetAddress").GetProperty("postCode").GetString();
+            var request = CreateSearchRequest(searchText);
+
+            // Act
+            var response = await _httpClient.SendAsync(request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var root = GetResponseRootElement(response);
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResult = root.GetProperty("results").GetProperty("assets")[0];
+            firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+        }
+    }
+
+    [Fact]
+    public async Task ReturnsRelevantResultFirstByPaymentRef()
     {
         // Arrange
+        var asset = RandomAsset();
+        var expectedReturnedId = asset.GetProperty("id").GetString();
+        var searchText = asset.GetProperty("tenure").GetProperty("paymentReference").GetString();
         var request = CreateSearchRequest(searchText);
 
         // Act
@@ -67,69 +164,13 @@ public class GetAssetStoriesV2 : IClassFixture<MockWebApplicationFactory<Startup
         firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
     }
 
-    [Theory]
-    [InlineData("NW1 3LF")]
-    [InlineData("L22 9BQ")]
-    [InlineData("PA3R 7JR")]
-    public async Task ReturnsRelevantResultFirstByPostcode(string searchTextPostcode)
+    [Fact]
+    public async Task ReturnsRelevantResultFirstByAssetId()
     {
         // Arrange
-        var request = CreateSearchRequest(searchTextPostcode);
-
-        // Act
-        var response = await _httpClient.SendAsync(request);
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var root = GetResponseRootElement(response);
-        root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
-        var firstResult = root.GetProperty("results").GetProperty("assets")[0];
-        firstResult.GetProperty("assetAddress").GetProperty("postCode").GetString().Should().Be(searchTextPostcode);
-    }
-
-    [Theory]
-    [InlineData("Gge 7 Toby CA18", "71312edd-10c3-41cf-b298-b97cce0c0123")]
-    [InlineData("6 Philip Alley BH62 8DR", "5a6067de-458c-40cb-93a3-d16fe39da12a")]
-    [InlineData("Room 3 2 Kevin BR49 6LU", "b5e85565-6241-4dd2-8f1f-50d626b129f2")]
-    public async Task ReturnsRelevantResultFirstByAddressAndPostcode(string searchText, string expectedReturnedId)
-    {
-        // Arrange
-        var request = CreateSearchRequest(searchText);
-
-        // Act
-        var response = await _httpClient.SendAsync(request);
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var root = GetResponseRootElement(response);
-        root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
-        var firstResult = root.GetProperty("results").GetProperty("assets")[0];
-        firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
-    }
-
-    [Theory]
-    [InlineData("154455647", "1d3f9e8e-d380-441f-97bb-2d280aecb80f")]
-    public async Task ReturnsRelevantResultFirstByPaymentRef(string searchText, string expectedReturnedId)
-    {
-        // Arrange
-        var request = CreateSearchRequest(searchText);
-
-        // Act
-        var response = await _httpClient.SendAsync(request);
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var root = GetResponseRootElement(response);
-        root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
-        var firstResult = root.GetProperty("results").GetProperty("assets")[0];
-        firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
-    }
-
-    [Theory]
-    [InlineData("171623604", "9309e7d5-3d4b-4091-9fc5-6bd7c8e1a436")]
-    public async Task ReturnsRelevantResultFirstByAssetId(string searchText, string expectedReturnedId)
-    {
-        // Arrange
+        var asset = RandomAsset();
+        var expectedReturnedId = asset.GetProperty("id").GetString();
+        var searchText = asset.GetProperty("assetId").GetString();
         var request = CreateSearchRequest(searchText);
 
         // Act
