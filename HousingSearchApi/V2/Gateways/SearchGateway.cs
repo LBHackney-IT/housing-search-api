@@ -27,11 +27,14 @@ public class SearchGateway : ISearchGateway
                     )
                 )
             )
-            .MinScore(15)
+            .MinScore(25)
             .Size(searchParams.PageSize)
             .From((searchParams.PageNumber - 1) * searchParams.PageSize)
             .TrackTotalHits()
         );
+
+        if (!searchResponse.IsValid)
+            throw new Exception($"Elasticsearch search failed: {searchResponse.DebugInformation}");
 
         return new SearchResponseDto
         {

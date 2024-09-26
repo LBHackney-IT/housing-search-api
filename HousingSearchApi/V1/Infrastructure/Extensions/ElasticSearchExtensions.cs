@@ -28,6 +28,10 @@ namespace HousingSearchApi.V1.Infrastructure.Extensions
                     .DisableDirectStreaming();
             var esClient = new ElasticClient(connectionSettings);
 
+            var pingResponse = esClient.Ping();
+            if (!pingResponse.IsValid)
+                throw new Exception($"Elasticsearch ping failed: {pingResponse.DebugInformation}");
+
             services.TryAddSingleton<IElasticClient>(esClient);
         }
     }

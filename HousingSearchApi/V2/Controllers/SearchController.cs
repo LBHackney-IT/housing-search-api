@@ -34,7 +34,7 @@ public class SearchController : Controller
             {
                 [indexName] = searchResults.Documents
             },
-            Total = searchResults.Documents.Count // This should become searchResults.Total when the frontend supports pagination
+            searchResults.Total
         };
 
         return new OkObjectResult(response);
