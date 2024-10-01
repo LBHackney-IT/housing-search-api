@@ -76,7 +76,7 @@ public class SearchGateway : ISearchGateway
                 .Query(searchText)
                 .Type(TextQueryType.MostFields)
                 .Operator(Operator.Or)
-                .Boost(boost)
                 .Fuzziness(Fuzziness.Auto)
+                .Boost(boost)
             );
 }
