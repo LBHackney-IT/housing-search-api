@@ -23,11 +23,12 @@ public class SearchGateway : ISearchGateway
                 .Bool(b => b
                     .Should(
                         MultiMatchSingleField(searchParams.SearchText, boost: 6),
-                        MultiMatchAcrossFields(searchParams.SearchText, boost: 2)
+                        MultiMatchCrossFields(searchParams.SearchText, boost: 2),
+                        MultiMatchMostFields(searchParams.SearchText, boost: 2)
                     )
                 )
             )
-            .MinScore(25)
+            .MinScore(30)
             .Size(searchParams.PageSize)
             .From((searchParams.PageNumber - 1) * searchParams.PageSize)
             .TrackTotalHits()
@@ -43,27 +44,39 @@ public class SearchGateway : ISearchGateway
         };
     }
 
-
+    // Score for matching a single (best) field
     private Func<QueryContainerDescriptor<object>, QueryContainer> MultiMatchSingleField(string searchText, double boost) =>
         should => should
             .MultiMatch(mm => mm
                 .Fields("*")
                 .Query(searchText)
-                .Type(TextQueryType.BestFields) // High score if all terms are in the same field
-                .Operator(Operator.And) // All terms must be in the same field
-                .Fuzziness(Fuzziness.Auto) // Allow for some typos
+                .Type(TextQueryType.BestFields)
+                .Operator(Operator.And)
+                .Fuzziness(Fuzziness.Auto)
                 .Boost(boost)
             );
 
 
-    private Func<QueryContainerDescriptor<object>, QueryContainer> MultiMatchAcrossFields(string searchText, double boost) =>
+    // Score for matching the combination of many fields
+    private Func<QueryContainerDescriptor<object>, QueryContainer> MultiMatchCrossFields(string searchText, double boost) =>
         should => should
             .MultiMatch(mm => mm
                 .Fields("*")
                 .Query(searchText)
-                .Type(TextQueryType.CrossFields) // High score if all terms are in any field
-                .Operator(Operator.Or) // Terms can be across fields
+                .Type(TextQueryType.CrossFields)
+                .Operator(Operator.Or)
                 .Boost(boost)
             );
 
+    // Score for matching a high number (quantity) of fields
+    private Func<QueryContainerDescriptor<object>, QueryContainer> MultiMatchMostFields(string searchText, double boost) =>
+        should => should
+            .MultiMatch(mm => mm
+                .Fields("*")
+                .Query(searchText)
+                .Type(TextQueryType.MostFields)
+                .Operator(Operator.Or)
+                .Fuzziness(Fuzziness.Auto)
+                .Boost(boost)
+            );
 }
