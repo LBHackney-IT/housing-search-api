@@ -66,7 +66,6 @@ public class SearchGateway : ISearchGateway
                 .Type(TextQueryType.CrossFields)
                 .Operator(Operator.Or)
                 .Boost(boost)
-                .Fuzziness(Fuzziness.Auto)
             );
 
     // Score for matching a high number (quantity) of fields
@@ -78,5 +77,6 @@ public class SearchGateway : ISearchGateway
                 .Type(TextQueryType.MostFields)
                 .Operator(Operator.Or)
                 .Boost(boost)
+                .Fuzziness(Fuzziness.Auto)
             );
 }
