@@ -31,16 +31,16 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             new AddressStub{ FirstLine = "65 Buckland Court St Johns Estate", AssetType = "TerracedBlock", PostCode = "N1 5EP", UPRN = "10008234605",
                 AssetStatus = "In council use", NoOfBedSpaces = 4, NoOfCots = 2, HasStairs = true, PrivateBathroom = false, PrivateKitchen = false, StepFree = true, ParentAssetIds = GetGuids(), ContractIsApproved = false, ContractIsActive = false, ContractApprovalStatus = "Approved"},
             new AddressStub{ FirstLine = "45 Buckland Court St Johns Estate", AssetType = "HighRiseBlock", PostCode = "N1 5EP", UPRN = "10008234650",
-                AssetStatus = "Occupied", NoOfBedSpaces = 5, NoOfCots = 1, HasStairs = false, PrivateBathroom = true, PrivateKitchen = false, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false,  ContractApprovalStatus = "PendingReapproval" },
+                AssetStatus = "Occupied", NoOfBedSpaces = 5, NoOfCots = 1, HasStairs = false, PrivateBathroom = true, PrivateKitchen = false, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractIsApproved = false,  ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "SuspensionLifted" },
             new AddressStub{ FirstLine = "Gge 45 Buckland Court St Johns Estate", AssetType = "Block", PostCode = "N1 5EP", UPRN = "10008234650",
-                AssetStatus = "Vacant", NoOfBedSpaces = 1, NoOfCots = 0, HasStairs = true, PrivateBathroom = false, PrivateKitchen = true, StepFree = false, ParentAssetIds = "85301d37-c9b4-4c5e-b218-effd4f0b2d7c#56043135-96e3-40cc-bb5a-598c25c47b44", ContractIsApproved = false, ContractIsActive = true,  ContractApprovalStatus = "PendingReapproval"},
+                AssetStatus = "Vacant", NoOfBedSpaces = 1, NoOfCots = 0, HasStairs = true, PrivateBathroom = false, PrivateKitchen = true, StepFree = false, ParentAssetIds = "85301d37-c9b4-4c5e-b218-effd4f0b2d7c#56043135-96e3-40cc-bb5a-598c25c47b44", ContractIsApproved = false, ContractIsActive = true,  ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "SuspensionLifted"},
             new AddressStub{ FirstLine = "Gge 52 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234650",
-                AssetStatus = "Void", NoOfBedSpaces = 2, NoOfCots = 0, HasStairs = false, PrivateBathroom = false, PrivateKitchen = true, StepFree = true, ParentAssetIds = "01da3724-1eff-4a91-9bed-923582ae142d#85301d37-c9b4-4c5e-b218-effd4f0b2d7c#52f7309c-305f-4cf6-b0e7-d021cd5c71c0", ContractIsApproved = false, ContractIsActive = true,  ContractApprovalStatus = "PendingReapproval"},
-            new AddressStub{ FirstLine = "Gge 51 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650", ContractIsApproved = false, ContractIsActive = true,  ContractApprovalStatus = "PendingReapproval"},
-            new AddressStub{ FirstLine = "5 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 6TY", UPRN = "10008235183", ContractIsApproved = false, ContractIsActive = true,  ContractApprovalStatus = "PendingReapproval"},
-            new AddressStub{ FirstLine = "Gge 15 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650", ContractIsApproved = true, ContractIsActive = true,  ContractApprovalStatus = "PendingReapproval"},
-            new AddressStub{ FirstLine = "Gge 53 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650", ParentAssetIds = GetGuids(), ContractIsApproved = false, ContractIsActive = true,   ContractApprovalStatus = "PendingReapproval"},
-            new AddressStub{ FirstLine = "Gge 25 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650", ContractIsApproved = true, ContractIsActive = true,   ContractApprovalStatus = "PendingReapproval"}
+                AssetStatus = "Void", NoOfBedSpaces = 2, NoOfCots = 0, HasStairs = false, PrivateBathroom = false, PrivateKitchen = true, StepFree = true, ParentAssetIds = "01da3724-1eff-4a91-9bed-923582ae142d#85301d37-c9b4-4c5e-b218-effd4f0b2d7c#52f7309c-305f-4cf6-b0e7-d021cd5c71c0", ContractIsApproved = false, ContractIsActive = true,  ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "SuspensionLifted"},
+            new AddressStub{ FirstLine = "Gge 51 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650", ContractIsApproved = false, ContractIsActive = true,  ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "ContractExtended"},
+            new AddressStub{ FirstLine = "5 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 6TY", UPRN = "10008235183", ContractIsApproved = false, ContractIsActive = true,  ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "ContractExtended"},
+            new AddressStub{ FirstLine = "Gge 15 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650", ContractIsApproved = true, ContractIsActive = true,  ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "ContractExtended"},
+            new AddressStub{ FirstLine = "Gge 53 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650", ParentAssetIds = GetGuids(), ContractIsApproved = false, ContractIsActive = true,   ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "ContractExtended"},
+            new AddressStub{ FirstLine = "Gge 25 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650", ContractIsApproved = true, ContractIsActive = true,   ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "ContractExtended"}
         };
 
         private static string GetGuids()
@@ -101,6 +101,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 asset.ParentAssetIds = value.ParentAssetIds;
                 asset.AssetContract.IsApproved = value.ContractIsApproved;
                 asset.AssetContract.ApprovalStatus = parsedApprovalStatus;
+                asset.AssetContract.ApprovalStatusReason = value.ContractApprovalStatusReason;
                 asset.AssetContract.IsActive = value.ContractIsActive;
                 asset.AssetContract.Charges = asset.AssetContract.Charges.Append(chargeWithSetSubtype);
                 asset.AssetManagement.IsTemporaryAccomodation = value.TemporaryAccommodation;
@@ -127,6 +128,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public string ParentAssetIds { get; set; }
         public bool ContractIsApproved { get; set; }
         public string ContractApprovalStatus { get; set; }
+        public string ContractApprovalStatusReason { get; set; }
         public bool ContractIsActive { get; set; }
         public string ChargesSubType { get; set; }
         public bool TemporaryAccommodation { get; set; }

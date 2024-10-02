@@ -94,6 +94,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
+        public async Task WhenContractApprovalStatusReasonIsProvided(string approvalStatusReason)
+        {
+            var route = new Uri($"api/v1/search/assets/all?contractApprovalStatusReason={approvalStatusReason}&page={1}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
 
         public async Task WhenNoParameterIsProvided()
         {
@@ -262,6 +269,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
             result.Results.Assets.All(x => x.AssetContract.ApprovalStatus.ToString() == contractApprovalStatus);
+        }
+        public async Task ThenAssetsWithProvidedContractApprovalStatusReasonShouldBeIncluded(string contractApprovalStatusReason, int expectedNumberOfAssets)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
+            result.Results.Assets.All(x => x.AssetContract.ApprovalStatusReason == contractApprovalStatusReason);
         }
         public async Task ThenAssetsWithProvidedContractStatusShouldBeIncluded(string contractStatus, int expectedNumberOfAssets)
         {
