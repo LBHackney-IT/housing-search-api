@@ -101,6 +101,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 asset.ParentAssetIds = value.ParentAssetIds;
                 asset.AssetContract.IsApproved = value.ContractIsApproved;
                 asset.AssetContract.ApprovalStatus = parsedApprovalStatus;
+                asset.AssetContract.ApprovalStatusReason = value.ContractApprovalStatusReason;
                 asset.AssetContract.IsActive = value.ContractIsActive;
                 asset.AssetContract.Charges = asset.AssetContract.Charges.Append(chargeWithSetSubtype);
                 asset.AssetManagement.IsTemporaryAccomodation = value.TemporaryAccommodation;
@@ -127,7 +128,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public string ParentAssetIds { get; set; }
         public bool ContractIsApproved { get; set; }
         public string ContractApprovalStatus { get; set; }
-        public string ContractApprovalStatusReason { get; set; } 
+        public string ContractApprovalStatusReason { get; set; }
         public bool ContractIsActive { get; set; }
         public string ChargesSubType { get; set; }
         public bool TemporaryAccommodation { get; set; }
