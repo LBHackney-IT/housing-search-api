@@ -241,6 +241,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .BDDfy();
         }
         [Fact]
+        public void ServiceReturnsTemporaryAccomodationResultsWhenisTemporaryAccommodationNotPassed()
+        {
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenUPRNIsPassedButIsTemporaryAccomodationIsNotPassed("10008234650"))
+                .Then(t => _steps.ThenAllResultsWithPassedUPRNShouldBeIncluded())
+                .BDDfy();
+        }
+        [Fact]
         public void ServiceReturnsTemporaryAccomodationResultAddressWhereWildstarDoubleMatch()
         // If a search is made for an address string with more than two values in the string, it should only return a match where both wildstar values are found. 
         {
