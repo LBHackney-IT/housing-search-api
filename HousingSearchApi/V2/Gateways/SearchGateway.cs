@@ -24,11 +24,11 @@ public class SearchGateway : ISearchGateway
                     .Should(
                         MultiMatchSingleField(searchParams.SearchText, boost: 6),
                         MultiMatchCrossFields(searchParams.SearchText, boost: 2),
-                        MultiMatchMostFields(searchParams.SearchText, boost: 2)
+                        MultiMatchMostFields(searchParams.SearchText, boost: 1)
                     )
                 )
             )
-            .MinScore(30)
+            .MinScore(25)
             .Size(searchParams.PageSize)
             .From((searchParams.PageNumber - 1) * searchParams.PageSize)
             .TrackTotalHits()
