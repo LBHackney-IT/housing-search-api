@@ -22,6 +22,7 @@ namespace HousingSearchApi.V1.Infrastructure.Extensions
 
             var connectionSettings =
                 new ConnectionSettings(pool)
+                    // .ServerCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) => url == "https://localhost:9200") // For local connection to dev
                     .PrettyJson()
                     .ThrowExceptions()
                     .DisableDirectStreaming();

@@ -170,6 +170,25 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .BDDfy();
         }
         [Fact]
+        public void ServiceFiltersSuspensionLiftedReapprovalStatusWithoutSearchText()
+        {
+            var approvalStatusReason = "SuspensionLifted";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractApprovalStatusReasonIsProvided(approvalStatusReason))
+                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusReasonShouldBeIncluded(approvalStatusReason, 3))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceFiltersContractExtendedReapprovalStatusWithoutSearchText()
+        {
+            var approvalStatusReason = "ContractExtended";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractApprovalStatusReasonIsProvided(approvalStatusReason))
+                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusReasonShouldBeIncluded(approvalStatusReason, 5))
+                .BDDfy();
+        }
+        [Fact]
         public void ServiceFiltersFalseContractIsApprovedStatusWithoutSearchText()
         {
             var contractIsNotApproved = "false";

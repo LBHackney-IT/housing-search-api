@@ -115,6 +115,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.ContractIsApproved, new List<string> { "assetContract.isApproved" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatus, new List<string> { "assetContract.approvalStatus" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractIsActive, new List<string> { "assetContract.isActive" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatusReason, new List<string> { "assetContract.approvalStatusReason" })
                         .WithMultipleFilterQuery(assetListAllRequest.ChargesSubType, new List<string> { "assetContract.charges.subType" })
                         .WithWildstarQuery(assetListAllRequest.SearchText,
                             new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
@@ -149,6 +150,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractIsApproved, new List<string> { "assetContract.isApproved" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatus, new List<string> { "assetContract.approvalStatus" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatusReason, new List<string> { "assetContract.approvalStatusReason" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractIsActive, new List<string> { "assetContract.isActive" })
                         .WithMultipleFilterQuery(assetListAllRequest.ChargesSubType, new List<string> { "assetContract.charges.subType" })
                         .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
