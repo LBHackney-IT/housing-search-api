@@ -74,22 +74,14 @@ namespace HousingSearchApi.V1.Controllers
         [LogCall(Microsoft.Extensions.Logging.LogLevel.Information)]
         public async Task<IActionResult> GetAllAssetList([FromQuery] GetAllAssetListRequest request)
         {
-            try
+            var assetsSearchResult = await _getAssetListSetsUseCase.ExecuteAsync(request).ConfigureAwait(false);
+            var apiResponse = new APIAllResponse<GetAllAssetListResponse>(assetsSearchResult)
             {
-                var assetsSearchResult = await _getAssetListSetsUseCase.ExecuteAsync(request).ConfigureAwait(false);
-                var apiResponse = new APIAllResponse<GetAllAssetListResponse>(assetsSearchResult)
-                {
-                    Total = assetsSearchResult.Total(),
-                    LastHitId = assetsSearchResult.LastHitId()
-                };
+                Total = assetsSearchResult.Total(),
+                LastHitId = assetsSearchResult.LastHitId()
+            };
 
-                return new OkObjectResult(apiResponse);
-            }
-            catch (Exception e)
-            {
-                LambdaLogger.Log(e.Message + e.StackTrace);
-                return new BadRequestObjectResult(e.Message);
-            }
+            return new OkObjectResult(apiResponse);
         }
     }
 }
