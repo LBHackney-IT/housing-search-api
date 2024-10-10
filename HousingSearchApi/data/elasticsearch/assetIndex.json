@@ -1,82 +1,34 @@
 {
-  "aliases": {
-
-  },
   "mappings": {
     "properties": {
       "id": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "type": "keyword"
       },
       "assetId": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "type": "keyword"
       },
       "assetType": {
         "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "type": "keyword"
           }
         }
       },
-      "parentAssetIds": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+      "isAssetCautionaryAlerted": {
+        "type": "boolean"
       },
       "assetAddress": {
         "properties": {
           "uprn": {
             "type": "keyword",
-            "normalizer": "my_normalizer",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "postPreamble": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+            "normalizer": "my_normalizer"
           },
           "addressLine1": {
-            "type": "keyword",
-            "normalizer": "my_normalizer",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "postCode": {
             "type": "text",
             "fields": {
               "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
+                "type": "keyword"
               }
             }
           },
@@ -84,8 +36,7 @@
             "type": "text",
             "fields": {
               "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
+                "type": "keyword"
               }
             }
           },
@@ -93,8 +44,7 @@
             "type": "text",
             "fields": {
               "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
+                "type": "keyword"
               }
             }
           },
@@ -102,8 +52,23 @@
             "type": "text",
             "fields": {
               "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
+                "type": "keyword"
+              }
+            }
+          },
+          "postCode": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "postPreamble": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
               }
             }
           }
@@ -115,35 +80,7 @@
             "type": "text",
             "fields": {
               "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "startOfTenureDate": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "endOfTenureDate": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "type": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
+                "type": "keyword"
               }
             }
           },
@@ -151,32 +88,248 @@
             "type": "text",
             "fields": {
               "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
+                "type": "keyword"
+              }
+            }
+          },
+          "startOfTenureDate": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "endOfTenureDate": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "rootAsset": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "parentAssetIds": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "assetCharacteristics": {
+        "properties": {
+          "hasCommunalAreas": {
+            "type": "boolean"
+          },
+          "hasPrivateBathroom": {
+            "type": "boolean"
+          },
+          "hasPrivateKitchen": {
+            "type": "boolean"
+          },
+          "hasRampAccess": {
+            "type": "boolean"
+          },
+          "hasStairs": {
+            "type": "boolean"
+          },
+          "isStepFree": {
+            "type": "boolean"
+          },
+          "numberOfBathrooms": {
+            "type": "long"
+          },
+          "numberOfBedSpaces": {
+            "type": "long"
+          },
+          "numberOfBedrooms": {
+            "type": "long"
+          },
+          "numberOfCots": {
+            "type": "long"
+          },
+          "numberOfFloors": {
+            "type": "long"
+          },
+          "numberOfKitchens": {
+            "type": "long"
+          },
+          "numberOfLifts": {
+            "type": "long"
+          },
+          "numberOfLivingRooms": {
+            "type": "long"
+          },
+          "numberOfShowers": {
+            "type": "long"
+          },
+          "numberOfStairs": {
+            "type": "long"
+          },
+          "optionToTax": {
+            "type": "boolean"
+          },
+          "windowType": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "yearConstructed": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "assetManagement": {
+        "properties": {
+          "agent": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "areaOfficeName": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "isCouncilProperty": {
+            "type": "boolean"
+          },
+          "isNoRepairsMaintenance": {
+            "type": "boolean"
+          },
+          "isTMOManaged": {
+            "type": "boolean"
+          },
+          "isTemporaryAccomodation": {
+            "type": "boolean"
+          },
+          "managingOrganisation": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "managingOrganisationId": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "owner": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "propertyOccupiedStatus": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "assetLocation": {
+        "properties": {
+          "floorNo": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "isActive": {
+        "type": "boolean"
+      },
+      "isCautionaryAlerted": {
+        "type": "boolean"
+      },
+      "assetContract": {
+        "properties": {
+          "charges": {
+            "properties": {
+              "amount": {
+                "type": "float"
+              },
+              "frequency": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "id": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "type": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              }
+            }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
               }
             }
           }
         }
       }
-    }
-  },
-  "settings": {
-    "analysis": {
-      "normalizer": {
-        "my_normalizer": {
-          "type": "custom",
-          "filter": [
-            "lowercase",
-            "asciifolding",
-            "trim",
-            "whitespace_remove"
-          ]
-        }
-      }
-    },
-    "index": {
-      "number_of_shards": "1",
-      "number_of_replicas": "1"
     }
   }
 }
