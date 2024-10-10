@@ -8,7 +8,7 @@ namespace HousingSearchApi.V1.Interfaces.Sorting
         public SortDescriptor<QueryableAsset> GetSortDescriptor(SortDescriptor<QueryableAsset> descriptor)
         {
             return descriptor
-                .Descending(f => f.Id.Suffix("keyword"));
+                .Descending(f => f.Id);
         }
     }
 }
