@@ -379,8 +379,243 @@
             "type": "text",
             "fields": {
               "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
+                "type": "keyword"
+              }
+            }
+          },
+          "startOfTenureDate": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "endOfTenureDate": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "rootAsset": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "parentAssetIds": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "assetCharacteristics": {
+        "properties": {
+          "hasCommunalAreas": {
+            "type": "boolean"
+          },
+          "hasPrivateBathroom": {
+            "type": "boolean"
+          },
+          "hasPrivateKitchen": {
+            "type": "boolean"
+          },
+          "hasRampAccess": {
+            "type": "boolean"
+          },
+          "hasStairs": {
+            "type": "boolean"
+          },
+          "isStepFree": {
+            "type": "boolean"
+          },
+          "numberOfBathrooms": {
+            "type": "long"
+          },
+          "numberOfBedSpaces": {
+            "type": "long"
+          },
+          "numberOfBedrooms": {
+            "type": "long"
+          },
+          "numberOfCots": {
+            "type": "long"
+          },
+          "numberOfFloors": {
+            "type": "long"
+          },
+          "numberOfKitchens": {
+            "type": "long"
+          },
+          "numberOfLifts": {
+            "type": "long"
+          },
+          "numberOfLivingRooms": {
+            "type": "long"
+          },
+          "numberOfShowers": {
+            "type": "long"
+          },
+          "numberOfStairs": {
+            "type": "long"
+          },
+          "optionToTax": {
+            "type": "boolean"
+          },
+          "windowType": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "yearConstructed": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "assetManagement": {
+        "properties": {
+          "agent": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "areaOfficeName": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "isCouncilProperty": {
+            "type": "boolean"
+          },
+          "isNoRepairsMaintenance": {
+            "type": "boolean"
+          },
+          "isTMOManaged": {
+            "type": "boolean"
+          },
+          "isTemporaryAccomodation": {
+            "type": "boolean"
+          },
+          "managingOrganisation": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "managingOrganisationId": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "owner": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "propertyOccupiedStatus": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "assetLocation": {
+        "properties": {
+          "floorNo": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "isActive": {
+        "type": "boolean"
+      },
+      "isCautionaryAlerted": {
+        "type": "boolean"
+      },
+      "assetContract": {
+        "properties": {
+          "charges": {
+            "properties": {
+              "amount": {
+                "type": "float"
+              },
+              "frequency": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "id": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "type": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              }
+            }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
               }
             }
           }
