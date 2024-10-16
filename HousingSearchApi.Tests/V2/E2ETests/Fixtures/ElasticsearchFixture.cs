@@ -14,7 +14,8 @@ public class ElasticsearchFixture : IAsyncLifetime
     public ElasticsearchFixture()
     {
         var settings = new ConnectionSettings(new Uri("http://localhost:9200"))
-            .DefaultIndex("assets");
+            .DefaultIndex("assets")
+            .OnRequestCompleted(details => { /* Intentionally left empty to suppress logs */ });
 
         Client = new ElasticClient(settings);
     }
