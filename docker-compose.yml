@@ -17,20 +17,6 @@ services:
     depends_on:
       - kibana
       - test-elasticsearch
-  
-  test-setup: &test-setup
-    image: housing-search-api-test
-    build:
-      context: .
-      dockerfile: HousingSearchApi.Tests/Dockerfile
-      args:
-      - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
-      - SONAR_TOKEN=${SONAR_TOKEN}
-    environment:
-      - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
-    depends_on:
-      data-loader:
-        condition: service_completed_successfully
 
   test-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
@@ -61,6 +47,21 @@ services:
       - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/assets.json:/usr/share/elasticsearch/data/assets.json
       - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/init.sh:/usr/share/elasticsearch/init.sh
     entrypoint: sh -c "sh /usr/share/elasticsearch/init.sh"
+
+  test-setup: &test-setup
+    image: housing-search-api-test
+    build:
+      context: .
+      dockerfile: HousingSearchApi.Tests/Dockerfile
+      args:
+      - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
+      - SONAR_TOKEN=${SONAR_TOKEN}
+      - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
+    environment:
+      - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
+    depends_on:
+      data-loader:
+        condition: service_completed_successfully
 
   housing-search-api-test:
     <<: *test-setup
