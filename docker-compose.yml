@@ -57,10 +57,10 @@ services:
     depends_on:
       data-loader:
         condition: service_completed_successfully
-    working_dir: /app
+    working_dir: /app/HousingSearchApi.Tests
     volumes:
       - .:/app
-    entrypoint: ["sh", "-c", "dotnet build && dotnet test --filter HousingSearchApi.Tests.V2"]
+    entrypoint: ["sh", "-c", "dotnet build  && dotnet test --filter HousingSearchApi.Tests.V2"]
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.9.3
