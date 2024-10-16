@@ -149,7 +149,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Run tests
-          command: docker compose up --quiet-pull data-loader && make test
+          command: make test
   assume-role-development:
     executor: docker-python
     steps:
