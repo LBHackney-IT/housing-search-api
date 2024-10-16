@@ -146,18 +146,13 @@ jobs:
           command: ./dotnet-format-local/dotnet-format --check
   
   build-and-test:
-    executor: docker-base
+    executor: docker-dotnet
     steps:
       - checkout
       - setup_remote_docker
       - run:
-          name: Build and Pull All Dependencies
-          command: |
-            docker compose pull test-elasticsearch data-loader
-            docker compose build housing-search-api-test
-      - run:
-          name: Start Services and Run Tests
-          command: docker compose up housing-search-api-test
+          name: Run tests
+          command: make test-v2
 
   assume-role-development:
     executor: docker-python

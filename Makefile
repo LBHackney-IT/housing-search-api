@@ -18,6 +18,9 @@ shell:
 test:
 	docker compose down && docker compose up housing-search-api-test
 
+test-v2:
+	docker compose down --volumes && docker compose up data-loader && dotnet test --filter HousingSearchApi.Tests.V2
+
 .PHONY: lint
 lint:
 	-dotnet tool install -g dotnet-format
