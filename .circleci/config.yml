@@ -149,6 +149,8 @@ jobs:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:6.0
       - image: docker:20.10.7
+    services:
+      - docker
     steps:
       - checkout
       - setup_remote_docker
