@@ -33,7 +33,7 @@ services:
       test: ["CMD-SHELL", "curl -fs http://localhost:9200/_cluster/health | grep '\"status\":\"green\"'"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 20
 
   data-loader:
     image: alpine:3.20
