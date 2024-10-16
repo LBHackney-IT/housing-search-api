@@ -17,8 +17,8 @@ services:
     depends_on:
       - kibana
       - test-elasticsearch
-
-  housing-search-api-test:
+  
+  test-setup: &test-setup
     image: housing-search-api-test
     build:
       context: .
@@ -29,8 +29,8 @@ services:
     environment:
       - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
     depends_on:
-      test-elasticsearch:
-        condition: service_healthy
+      data-loader:
+        condition: service_completed_successfully
 
   test-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
@@ -61,6 +61,10 @@ services:
       - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/assets.json:/usr/share/elasticsearch/data/assets.json
       - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/init.sh:/usr/share/elasticsearch/init.sh
     entrypoint: sh -c "sh /usr/share/elasticsearch/init.sh"
+
+  housing-search-api-test:
+    <<: *test-setup
+    command: dotnet test --filter HousingSearchApi.Tests.V2
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.9.3

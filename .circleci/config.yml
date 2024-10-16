@@ -152,9 +152,6 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Spin Up Services
-          command: docker compose up -d data-loader
-      - run:
           name: Run Tests
           command: docker compose run housing-search-api-test
               
