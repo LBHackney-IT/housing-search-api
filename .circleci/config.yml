@@ -157,7 +157,7 @@ jobs:
             docker-compose build housing-search-api-test
       - run:
           name: Start Services and Run Tests
-          command: docker-compose up --build housing-search-api-test
+          command: docker-compose up housing-search-api-test
 
   assume-role-development:
     executor: docker-python
