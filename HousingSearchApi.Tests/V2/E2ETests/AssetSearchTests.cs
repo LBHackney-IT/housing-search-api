@@ -8,11 +8,20 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 using System.Text.Json;
+using Nest;
 
 namespace HousingSearchApi.Tests.V2.E2ETests;
 
-public class GetAssetStoriesV2 : IClassFixture<MockWebApplicationFactory<Startup>>
+public class GetAssetStoriesV2 : IClassFixture<MockWebApplicationFactory<Startup>>, IClassFixture<ElasticsearchFixture>
 {
+    private readonly HttpClient _client;
+    private readonly IElasticClient _elasticClient;
+
+    public GetAssetStoriesV2(MockWebApplicationFactory<Startup> factory, ElasticsearchFixture elasticsearchFixture)
+    {
+        _client = factory.CreateClient();
+        _elasticClient = elasticsearchFixture.Client;
+    }
     // Note: see assets.json for the data that is being searched
     private readonly HttpClient _httpClient;
 

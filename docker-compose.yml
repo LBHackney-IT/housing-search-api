@@ -35,20 +35,7 @@ services:
       - 9200:9200
       - 9300:9300
 
-  data-loader:
-    image: alpine:3.20
-    container_name: data-loader
-    environment:
-      - ELASTICSEARCH_DOMAIN_URL=test-elasticsearch:9200
-    depends_on:
-      test-elasticsearch:
-        condition: service_healthy
-    volumes:
-      - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/assets.json:/usr/share/elasticsearch/data/assets.json
-      - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/init.sh:/usr/share/elasticsearch/init.sh
-    entrypoint: sh -c "sh /usr/share/elasticsearch/init.sh"
-
-  test-setup: &test-setup
+  housing-search-api-test:
     image: housing-search-api-test
     build:
       context: .
@@ -59,12 +46,6 @@ services:
       - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
     environment:
       - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
-    depends_on:
-      data-loader:
-        condition: service_completed_successfully
-
-  housing-search-api-test:
-    <<: *test-setup
     command: dotnet test --filter HousingSearchApi.Tests.V2
 
   kibana:
