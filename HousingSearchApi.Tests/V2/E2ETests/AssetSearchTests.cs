@@ -75,6 +75,7 @@ public class GetAssetStoriesV2 : IClassFixture<MockWebApplicationFactory<Startup
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var root = GetResponseRootElement(response);
         root.GetProperty("total").GetInt32().Should().Be(0);
+        root.GetProperty("results").GetProperty("assets").GetArrayLength().Should().Be(0);
     }
 
     [Fact]
