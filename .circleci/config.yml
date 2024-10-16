@@ -150,7 +150,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 20.10.7
           docker_layer_caching: true
       - run:
           name: Spin Up Services for Data Loader
