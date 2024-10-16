@@ -58,7 +58,7 @@ services:
       data-loader:
         condition: service_completed_successfully
     working_dir: /home/circleci/project
-    entrypoint: ["sh", "-c", "dotnet build && dotnet test --filter HousingSearchApi.Tests.V2"]
+    entrypoint: ["sh", "-c", "cd /home/circleci/project && dotnet build && dotnet test --filter HousingSearchApi.Tests.V2"]
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.9.3
