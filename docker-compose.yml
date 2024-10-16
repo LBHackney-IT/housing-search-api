@@ -18,6 +18,20 @@ services:
       - kibana
       - test-elasticsearch
 
+  housing-search-api-test:
+    image: housing-search-api-test
+    build:
+      context: .
+      dockerfile: HousingSearchApi.Tests/Dockerfile
+      args:
+      - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
+      - SONAR_TOKEN=${SONAR_TOKEN}
+    environment:
+      - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
+    depends_on:
+      test-elasticsearch:
+        condition: service_healthy
+
   test-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
     container_name: test-elasticsearch
@@ -34,19 +48,6 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
-
-  housing-search-api-test:
-    image: housing-search-api-test
-    build:
-      context: .
-      dockerfile: HousingSearchApi.Tests/Dockerfile
-      args:
-      - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
-      - SONAR_TOKEN=${SONAR_TOKEN}
-      - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
-    environment:
-      - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
-    command: dotnet test --filter HousingSearchApi.Tests.V2
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.9.3
