@@ -151,8 +151,14 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Run tests
-          command: make test
+          name: Build and Pull All Dependencies
+          command: |
+            docker-compose pull test-elasticsearch data-loader
+            docker-compose build housing-search-api-test
+      - run:
+          name: Start Services and Run Tests
+          command: docker-compose up --build housing-search-api-test
+
   assume-role-development:
     executor: docker-python
     steps:
