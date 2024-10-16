@@ -146,11 +146,11 @@ jobs:
           command: ./dotnet-format-local/dotnet-format --check
   
   build-and-test:
-    executor: docker-dotnet
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:6.0
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
       - run:
           name: Spin Up Services for Data Loader
           command: |
