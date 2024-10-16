@@ -16,10 +16,7 @@ shell:
 
 .PHONY: test
 test:
-	docker compose down && \
-		docker compose up --quiet-pull data-loader && \
-		docker compose build --quiet housing-search-api-test && \
-		docker compose run housing-search-api-test
+	docker compose down && docker compose up housing-search-api-test
 
 .PHONY: lint
 lint:
