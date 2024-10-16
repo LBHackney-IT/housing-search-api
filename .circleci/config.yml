@@ -162,7 +162,7 @@ jobs:
           name: Run Tests with .NET Docker Image
           command: |
             docker run --rm -v $(pwd):/app -w /app \
-              -e ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200 \
+              -e ELASTICSEARCH_DOMAIN_URL=http://localhost:9200 \
               -e LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN} \
               mcr.microsoft.com/dotnet/sdk:6.0 sh -c "
                 dotnet build HousingSearchApi.sln &&
