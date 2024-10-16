@@ -148,14 +148,11 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: build
-          command: docker-compose build --quiet data-loader & docker-compose build --quiet housing-search-api-test
-      - run:
-          name: Spin up test-elasticsearch
-          command: docker compose up data-loader
+          name: Spin up test-elasticsearch with data loader
+          command: docker-compose build --quiet data-loader && docker compose up --quiet-pull data-loader
       - run:
           name: Run tests
-          command: docker compose up housing-search-api-test
+          command: docker-compose build --quiet housing-search-api-test && docker compose up --quiet-pull housing-search-api-test
   assume-role-development:
     executor: docker-python
     steps:
