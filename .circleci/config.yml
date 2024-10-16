@@ -148,6 +148,7 @@ jobs:
   build-and-test:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:6.0
+      - image: docker:20.10.7
     steps:
       - checkout
       - setup_remote_docker
