@@ -146,13 +146,17 @@ jobs:
           command: ./dotnet-format-local/dotnet-format --check
   
   build-and-test:
-    executor: docker-dotnet
+    machine:
+      docker_layer_caching: true
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Run tests
-          command: docker compose down --volumes && docker compose up data-loader && dotnet test --filter HousingSearchApi.Tests.V2
+          command: |
+            docker compose down --volumes
+            docker compose up data-loader
+            dotnet test --filter HousingSearchApi.Tests.V2
 
   assume-role-development:
     executor: docker-python
