@@ -153,13 +153,10 @@ jobs:
       - setup_remote_docker
       - run:
           name: Spin Up Services
-          command: |
-            docker compose down --volumes
-            docker compose up -d data-loader
+          command: docker compose up -d data-loader
       - run:
           name: Run Tests
-          command: |
-            docker compose up housing-search-api-test
+          command: docker compose up housing-search-api-test
               
 
   assume-role-development:
