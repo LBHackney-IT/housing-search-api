@@ -8,22 +8,21 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 using System.Text.Json;
+using HousingSearchApi.Tests.V2.E2ETests.Fixtures;
 using Nest;
 
 namespace HousingSearchApi.Tests.V2.E2ETests;
 
-public class GetAssetStoriesV2 : IClassFixture<MockWebApplicationFactory<Startup>>, IClassFixture<ElasticsearchFixture>
+public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
 {
-    private readonly HttpClient _client;
+    private readonly HttpClient _httpClient;
     private readonly IElasticClient _elasticClient;
 
-    public GetAssetStoriesV2(MockWebApplicationFactory<Startup> factory, ElasticsearchFixture elasticsearchFixture)
+    public GetAssetStoriesV2(CombinedFixture combinedFixture)
     {
-        _client = factory.CreateClient();
-        _elasticClient = elasticsearchFixture.Client;
+        _httpClient = combinedFixture.Factory.CreateClient();
+        _elasticClient = combinedFixture.Elasticsearch.Client;
     }
-    // Note: see assets.json for the data that is being searched
-    private readonly HttpClient _httpClient;
 
     // Return a random asset from the assets.json file
     private JsonElement RandomAsset()
@@ -34,11 +33,11 @@ public class GetAssetStoriesV2 : IClassFixture<MockWebApplicationFactory<Startup
             .Where(line => !line.Contains("index")
             ).ToList();
 
-        Func<string, JsonDocument> TryParse = str_json =>
+        Func<string, JsonDocument> tryParse = strJson =>
         {
             try
             {
-                return JsonDocument.Parse(str_json);
+                return JsonDocument.Parse(strJson);
             }
             catch (JsonException)
             {
@@ -46,15 +45,10 @@ public class GetAssetStoriesV2 : IClassFixture<MockWebApplicationFactory<Startup
             }
         };
 
-        var assets = splitLines.Select(line => TryParse(line)?.RootElement).Where(x => x != null);
+        var assets = splitLines.Select(line => tryParse(line)?.RootElement).Where(x => x != null);
         var jsonElements = assets as JsonElement?[] ?? assets.ToArray();
         var asset = jsonElements.ElementAt(new Random().Next(jsonElements.Count()));
         return (JsonElement) asset;
-    }
-
-    public GetAssetStoriesV2(MockWebApplicationFactory<Startup> factory)
-    {
-        _httpClient = factory.CreateClient();
     }
 
     private HttpRequestMessage CreateSearchRequest(string searchText) =>

@@ -2,6 +2,10 @@ using Nest;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Elasticsearch.Net;
+using Xunit;
+
+namespace HousingSearchApi.Tests.V2.E2ETests.Fixtures;
 
 public class ElasticsearchFixture : IAsyncLifetime
 {
@@ -17,11 +21,10 @@ public class ElasticsearchFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        // This will run once before all tests in this test collection
-        string jsonFilePath = "Path/To/Your/assets.json"; // Update the path accordingly
+        string jsonFilePath = "V2/E2ETests/Fixtures/assets.json";
         if (!File.Exists(jsonFilePath))
         {
-            throw new FileNotFoundException($"The file {jsonFilePath} could not be found.");
+            throw new FileNotFoundException($"The file {jsonFilePath} could not be found in directory {Directory.GetCurrentDirectory()}");
         }
 
         string jsonContent = File.ReadAllText(jsonFilePath);
