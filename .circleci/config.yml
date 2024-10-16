@@ -146,16 +146,16 @@ jobs:
           command: ./dotnet-format-local/dotnet-format --check
   
   build-and-test:
-    docker:
-      - image: docker:27.3.1-cli
+    executor: docker-python
     steps:
       - checkout
       - setup_remote_docker
       - run:
-          name: Run Tests
-          command: docker compose run housing-search-api-test
-              
-
+          name: build
+          command: docker-compose build housing-search-api-test
+      - run:
+          name: Run tests
+          command: docker-compose run housing-search-api-test
   assume-role-development:
     executor: docker-python
     steps:

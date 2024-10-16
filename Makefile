@@ -16,10 +16,8 @@ shell:
 
 .PHONY: test
 test:
-	docker compose down && docker compose up housing-search-api-test
-
-test-v2:
-	docker compose down --volumes && docker compose up data-loader && dotnet test --filter HousingSearchApi.Tests.V2
+	docker compose build --quiet housing-search-api-test && \
+		docker compose run housing-search-api-test
 
 .PHONY: lint
 lint:
