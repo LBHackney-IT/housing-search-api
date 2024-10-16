@@ -16,7 +16,6 @@ public class CombinedFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        // Run setup logic for Elasticsearch if necessary
         await Elasticsearch.InitializeAsync();
     }
 
