@@ -57,9 +57,7 @@ services:
     depends_on:
       data-loader:
         condition: service_completed_successfully
-    working_dir: /app
-    volumes:
-      - .:/app
+    working_dir: /home/circleci/project
     entrypoint: ["sh", "-c", "dotnet build && dotnet test --filter HousingSearchApi.Tests.V2"]
 
   kibana:
