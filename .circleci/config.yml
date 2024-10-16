@@ -4,6 +4,9 @@ orbs:
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
 
 executors:
+  docker-base:
+    docker:
+      - image: cimg/base:stable
   docker-python:
     docker:
       - image: cimg/python:3.11.1
@@ -143,7 +146,7 @@ jobs:
           command: ./dotnet-format-local/dotnet-format --check
   
   build-and-test:
-    executor: docker-python
+    executor: docker-base
     steps:
       - checkout
       - setup_remote_docker
