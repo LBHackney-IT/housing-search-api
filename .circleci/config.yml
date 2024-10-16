@@ -1,8 +1,6 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@3.0.0
-  aws-cli: circleci/aws-cli@0.1.9
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
 
 executors:
@@ -151,10 +149,13 @@ jobs:
       - setup_remote_docker
       - run:
           name: build
-          command: docker-compose build housing-search-api-test
+          command: docker-compose build --quiet data-loader & docker-compose build --quiet housing-search-api-test
+      - run:
+          name: Spin up test-elasticsearch
+          command: docker compose up data-loader
       - run:
           name: Run tests
-          command: docker compose up data-loader & docker compose up housing-search-api-test
+          command: docker compose up housing-search-api-test
   assume-role-development:
     executor: docker-python
     steps:
