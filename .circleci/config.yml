@@ -146,28 +146,21 @@ jobs:
           command: ./dotnet-format-local/dotnet-format --check
   
   build-and-test:
-    machine:
-      docker_layer_caching: true
+    executor: docker-dotnet
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Spin Up Services for Data Loader
           command: |
             docker compose down --volumes
             docker compose up -d data-loader
       - run:
-          name: Pull .NET 6 Docker Image
-          command: docker pull mcr.microsoft.com/dotnet/sdk:6.0
-      - run:
           name: Run Tests with .NET Docker Image
           command: |
-            docker run --rm -v $(pwd):/app -w /app \
-              -e ELASTICSEARCH_DOMAIN_URL=http://localhost:9200 \
-              -e LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN} \
-              mcr.microsoft.com/dotnet/sdk:6.0 sh -c "
                 dotnet build HousingSearchApi.sln &&
-                dotnet test --filter HousingSearchApi.Tests.V2
-              "
+                dotnet test ELASTICSEARCH_DOMAIN_URL=http://localhost:9200 LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN} --filter HousingSearchApi.Tests.V2
+              
 
   assume-role-development:
     executor: docker-python
