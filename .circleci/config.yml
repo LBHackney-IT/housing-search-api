@@ -154,13 +154,16 @@ jobs:
           name: Pull .NET 6 Docker Image
           command: docker pull mcr.microsoft.com/dotnet/sdk:6.0
       - run:
-          name: Run tests
+          name: Spin Up Services for Data Loader
+          command: |
+            docker compose down --volumes
+            docker compose up -d data-loader
+      - run:
+          name: Run Tests with .NET Docker Image
           command: |
             docker run --rm -v $(pwd):/app -w /app mcr.microsoft.com/dotnet/sdk:6.0 sh -c "
-            docker compose down --volumes &&
-            docker compose up data-loader &&
-            dotnet test --filter HousingSearchApi.Tests.V2
-            "
+              dotnet build HousingSearchApi.sln &&
+              dotnet test --filter HousingSearchApi.Tests.V2
 
   assume-role-development:
     executor: docker-python
