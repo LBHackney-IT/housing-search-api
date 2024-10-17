@@ -1,8 +1,6 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@3.0.0
-  aws-cli: circleci/aws-cli@0.1.9
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
 
 executors:
@@ -148,13 +146,20 @@ jobs:
     executor: docker-python
     steps:
       - checkout
-      - setup_remote_docker
-      - run:
-          name: build
-          command: docker-compose build housing-search-api-test
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: Run tests
-          command: docker-compose run housing-search-api-test
+          command: make test
+  build-and-test-v2:
+    executor: docker-python
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Run tests
+          command: make test-v2
   assume-role-development:
     executor: docker-python
     steps:
@@ -250,6 +255,15 @@ workflows:
               ignore:
                 - master
                 - release
+      - build-and-test-v2:
+          context:
+            - api-nuget-token-context
+            - SonarCloud
+          filters:
+            branches:
+              ignore:
+                - master
+                - release
 
   check-and-deploy-development:
     jobs:
@@ -265,10 +279,18 @@ workflows:
           filters:
               branches:
                 only: master
+      - build-and-test-v2:
+          context:
+            - api-nuget-token-context
+            - SonarCloud
+          filters:
+            branches:
+              only: master
       - assume-role-development:
           context: api-assume-role-housing-development-context
           requires:
            - build-and-test
+           - build-and-test-v2
           filters:
               branches:
                 only: master
@@ -302,10 +324,18 @@ workflows:
           filters:
             branches:
               only: release
+      - build-and-test-v2:
+          context:
+            - api-nuget-token-context
+            - SonarCloud
+          filters:
+            branches:
+              only: release
       - assume-role-staging:
           context: api-assume-role-housing-staging-context
           requires:
               - build-and-test
+              - build-and-test-v2
           filters:
              branches:
                only: release
