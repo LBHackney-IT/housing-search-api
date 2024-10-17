@@ -146,7 +146,8 @@ jobs:
     executor: docker-python
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: Run tests
           command: make test
@@ -154,7 +155,8 @@ jobs:
     executor: docker-python
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: Run tests
           command: make test-v2
