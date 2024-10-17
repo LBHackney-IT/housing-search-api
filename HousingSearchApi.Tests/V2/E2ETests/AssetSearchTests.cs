@@ -99,12 +99,15 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var root = GetResponseRootElement(response);
-            try {
+            try
+            {
                 root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
                 var firstResult = root.GetProperty("results").GetProperty("assets")[0];
                 firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
                 successCount++;
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
             }
         }
@@ -128,12 +131,15 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var root = GetResponseRootElement(response);
-            try {
+            try
+            {
                 root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
                 var firstResult = root.GetProperty("results").GetProperty("assets")[0];
                 firstResult.GetProperty("assetAddress").GetProperty("postCode").GetString().Should().Be(searchTextPostcode);
                 successCount++;
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
             }
         }
@@ -158,12 +164,15 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var root = GetResponseRootElement(response);
-            try {
+            try
+            {
                 root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
                 var firstResult = root.GetProperty("results").GetProperty("assets")[0];
                 firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
                 successCount++;
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
             }
         }
