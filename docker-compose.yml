@@ -15,7 +15,7 @@ services:
       - kibana
       - test-elasticsearch
 
-  housing-search-api-test:
+  housing-search-api-test: &housing-search-api-test
     image: housing-search-api-test
     # stdin_open: true
     build:
@@ -30,6 +30,10 @@ services:
     depends_on:
       test-elasticsearch:
         condition: service_healthy
+    command: ["dotnet", "test", "--filter", "HousingSearchApi.Tests.V2"]
+
+  housing-search-api-test-v2:
+    <<: *housing-search-api-test
     command: ["dotnet", "test", "--filter", "HousingSearchApi.Tests.V2"]
 
   test-elasticsearch:

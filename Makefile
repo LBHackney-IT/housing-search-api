@@ -16,7 +16,12 @@ shell:
 
 .PHONY: test
 test:
-	docker compose down && docker compose run --build housing-search-api-test
+	docker compose build housing-search-api-test;
+	docker compose run housing-search-api-test;
+
+test-v2:
+	docker-compose build housing-search-api-test-v2;
+	docker-compose run housing-search-api-test-v2;
 
 .PHONY: lint
 lint:
