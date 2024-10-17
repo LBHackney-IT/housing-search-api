@@ -30,7 +30,7 @@ services:
     depends_on:
       test-elasticsearch:
         condition: service_healthy
-    command: ["dotnet", "test", "--filter", "HousingSearchApi.Tests.V2"]
+    command: ["dotnet", "test", "--filter", "HousingSearchApi.Tests.V1"]
 
   housing-search-api-test-v2:
     <<: *housing-search-api-test

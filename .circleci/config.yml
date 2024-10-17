@@ -148,11 +148,16 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: build
-          command: docker compose build housing-search-api-test
+          name: Run tests
+          command: make test
+  build-and-test-v2:
+    executor: docker-python
+    steps:
+      - checkout
+      - setup_remote_docker
       - run:
           name: Run tests
-          command: docker compose run housing-search-api-test
+          command: make test-v2
   assume-role-development:
     executor: docker-python
     steps:
@@ -240,6 +245,15 @@ workflows:
                 - master
                 - release
       - build-and-test:
+          context:
+            - api-nuget-token-context
+            - SonarCloud
+          filters:
+            branches:
+              ignore:
+                - master
+                - release
+      - build-and-test-v2:
           context:
             - api-nuget-token-context
             - SonarCloud
