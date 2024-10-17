@@ -30,7 +30,7 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
         using StreamReader r = new StreamReader("V2/E2ETests/Fixtures/assets.json");
         string json = r.ReadToEnd();
         List<string> splitLines = new List<string>(json.Split("\n"))
-            .Where(line => !line.Contains("index")
+            .Where(line => !line.Contains("index") && !string.IsNullOrWhiteSpace(line)
             ).ToList();
 
         Func<string, JsonDocument> tryParse = strJson =>
@@ -89,7 +89,8 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
             // Arrange
             var randomAsset = RandomAsset();
             var expectedReturnedId = randomAsset.GetProperty("id").GetString();
-            var request = CreateSearchRequest(randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString());
+            var query = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString();
+            var request = CreateSearchRequest(query);
 
             // Act
             var response = await _httpClient.SendAsync(request);

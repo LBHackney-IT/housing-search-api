@@ -7,23 +7,5 @@
       "applicationUrl": "http://localhost:62900",
       "sslPort": 44394
     }
-  },
-  "profiles": {
-    "housing_search_api": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "LocalDevelopment",
-        "ELASTICSEARCH_DOMAIN_URL": "http://localhost:9200"
-      },
-      "applicationUrl": "http://localhost:3000"
-    },
-    "dev_database": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "LocalDevelopment",
-        "ELASTICSEARCH_DOMAIN_URL": "https://localhost:9200"
-      },
-      "applicationUrl": "http://localhost:3000"
-    }
   }
 }

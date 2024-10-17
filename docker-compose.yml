@@ -9,11 +9,8 @@ services:
     environment:
       SERVERHOST: http://localhost
       ELASTICSEARCH_DOMAIN_URL: http://test-elasticsearch:9200
-
     ports:
       - 3000:3000
-    networks:
-      - elastic
     depends_on:
       - kibana
       - test-elasticsearch
@@ -26,6 +23,7 @@ services:
       args:
       - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
       - SONAR_TOKEN=${SONAR_TOKEN}
+      - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
     environment:
       - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
     depends_on:
@@ -54,16 +52,9 @@ services:
     container_name: kibana
     ports:
       - 5601:5601
-    networks:
-      - elastic
     depends_on:
       test-elasticsearch:
         condition: service_healthy
     environment:
       ELASTICSEARCH_HOSTS: http://test-elasticsearch:9200
       SERVER_HOST: 0.0.0.0
-
-
-networks:
-  elastic:
-    driver: bridge

@@ -13,9 +13,14 @@ public class ElasticsearchFixture : IAsyncLifetime
 
     public ElasticsearchFixture()
     {
-        var settings = new ConnectionSettings(new Uri("http://localhost:9200"))
-            .DefaultIndex("assets")
-            .OnRequestCompleted(details => { /* Intentionally left empty to suppress logs */ });
+        var url = Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL") ?? "http://localhost:9200";
+        var settings = new ConnectionSettings(new Uri(url))
+            .DefaultIndex("assets");
+        
+        if (url != "http://test-elasticsearch:9200")
+        {
+            throw new Exception("The ELASTICSEARCH_DOMAIN_URL environment variable must be set to 'http://test-elasticsearch:9200' for the tests to run.");
+        }
 
         Client = new ElasticClient(settings);
     }
