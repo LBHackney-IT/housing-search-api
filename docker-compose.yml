@@ -15,9 +15,9 @@ services:
       - kibana
       - test-elasticsearch
 
-  housing-search-api-test: &housing-search-api-test
+  housing-search-api-test:
     image: housing-search-api-test
-    # stdin_open: true # Use this to connect with cli for debugging
+    # stdin_open: true
     build:
       context: .
       dockerfile: HousingSearchApi.Tests/Dockerfile
@@ -30,14 +30,7 @@ services:
     depends_on:
       test-elasticsearch:
         condition: service_healthy
-
-  housing-search-api-test-v2:
-    <<: *housing-search-api-test
     command: ["dotnet", "test", "--filter", "HousingSearchApi.Tests.V2"]
-    build:
-      args:
-      - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
-      - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
 
   test-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
