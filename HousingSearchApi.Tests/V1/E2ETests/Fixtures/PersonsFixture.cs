@@ -41,7 +41,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
                 }
 
-                Thread.Sleep(1000);
+                Thread.Sleep(5000);
             }
         }
 
@@ -130,7 +130,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             while (!awaitable.GetAwaiter().IsCompleted) { }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
         }
 
         public void GivenDifferentTypesOfTenureTypes(string firstName, string lastName, List<string> list)
@@ -157,7 +157,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             while (!awaitable.GetAwaiter().IsCompleted) { }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
         }
 
         public void GivenThereExistPersonsWithDifferentPersonTypes(string firstName, string lastName, List<PersonType> personTypes)
@@ -178,7 +178,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             while (!awaitable.GetAwaiter().IsCompleted) { }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
         }
     }
 }
