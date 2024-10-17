@@ -100,7 +100,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             while (!awaitable.GetAwaiter().IsCompleted) { }
 
-            Thread.Sleep(10000);
+            Thread.Sleep(1000);
         }
 
         public void GivenATenureWithSpecificUprn(string uprn)
@@ -116,7 +116,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             while (!awaitable.GetAwaiter().IsCompleted) { }
 
-            Thread.Sleep(10000);
+            Thread.Sleep(1000);
         }
 
         public void GivenTaTenuresExist(int tenuresToCreate)
@@ -134,7 +134,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             while (!awaitable.GetAwaiter().IsCompleted) { }
 
-            Thread.Sleep(10000);
+            Thread.Sleep(1000);
         }
 
         public void GivenSimilarTaTenuresExist(string bookingStatus, string fullName)
@@ -162,7 +162,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             while (!awaitable.GetAwaiter().IsCompleted) { }
 
-            Thread.Sleep(10000);
+            Thread.Sleep(1000);
         }
 
         public void GivenTenuresWithDifferentStartDatesExist()
@@ -196,7 +196,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             while (!awaitable.GetAwaiter().IsCompleted) { }
 
-            Thread.Sleep(10000);
+            Thread.Sleep(1000);
         }
     }
 }
