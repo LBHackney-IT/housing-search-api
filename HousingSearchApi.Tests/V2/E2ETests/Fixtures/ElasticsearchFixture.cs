@@ -16,7 +16,7 @@ public class ElasticsearchFixture : IAsyncLifetime
         var url = Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL") ?? "http://localhost:9200";
         var settings = new ConnectionSettings(new Uri(url))
             .DefaultIndex("assets");
-        
+
         if (url != "http://test-elasticsearch:9200")
         {
             throw new Exception("The ELASTICSEARCH_DOMAIN_URL environment variable must be set to 'http://test-elasticsearch:9200' for the tests to run.");
