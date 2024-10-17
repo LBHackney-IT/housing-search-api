@@ -10,8 +10,8 @@ public class SearchParametersDto
     [FromQuery(Name = "pageSize")]
     public int PageSize { get; set; } = 120;
 
-    [FromQuery(Name = "pageNumber")]
-    public int PageNumber { get; set; } = 1;
+    [FromQuery(Name = "page")]
+    public int Page { get; set; } = 1;
 }
 
 

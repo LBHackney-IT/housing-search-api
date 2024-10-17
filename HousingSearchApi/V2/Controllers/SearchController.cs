@@ -1,7 +1,5 @@
-using Amazon.Lambda.Core;
 using Hackney.Core.Logging;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HousingSearchApi.V2.Domain.DTOs;
