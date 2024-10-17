@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0
 
-# disable microsoft telematry
+# disable microsoft telemetry
 ENV DOTNET_CLI_TELEMETRY_OPTOUT='true'
 
 ARG LBHPACKAGESTOKEN
@@ -13,7 +13,6 @@ ARG SONAR_TOKEN
 ENV SONAR_TOKEN=$SONAR_TOKEN
 
 WORKDIR /app
-
 
 RUN if [ -n "$SONAR_TOKEN" ]; then \
     apt-get update && apt-get install -y openjdk-17-jdk; \
@@ -36,5 +35,6 @@ RUN dotnet build -c Release -o out HousingSearchApi/HousingSearchApi.csproj
 RUN dotnet build -c debug -o out HousingSearchApi.Tests/HousingSearchApi.Tests.csproj
 
 RUN if [ -n "$SONAR_TOKEN" ]; then \
+    export PATH="$PATH:/root/.dotnet/tools"; \
     dotnet sonarscanner end /d:sonar.login="${SONAR_TOKEN}"; \
     fi
