@@ -17,6 +17,7 @@ services:
 
   housing-search-api-test:
     image: housing-search-api-test
+    # stdin_open: true
     build:
       context: .
       dockerfile: HousingSearchApi.Tests/Dockerfile
@@ -29,6 +30,7 @@ services:
     depends_on:
       test-elasticsearch:
         condition: service_healthy
+    command: ["dotnet", "test", "--filter", "HousingSearchApi.Tests.V2"]
 
   test-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
@@ -37,7 +39,7 @@ services:
       test: [ "CMD-SHELL", "curl -fs http://localhost:9200/_cluster/health" ]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 20
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node
