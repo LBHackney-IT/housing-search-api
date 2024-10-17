@@ -49,7 +49,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             while (!awaitable.GetAwaiter().IsCompleted) { }
 
-            Thread.Sleep(5000);
+            Thread.Sleep(1000);
         }
 
         private List<QueryableTransaction> CreateTransactionsData(int transactionsCount)
