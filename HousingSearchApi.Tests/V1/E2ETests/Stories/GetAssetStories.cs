@@ -148,7 +148,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var pendingApprovalStatus = "0";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractApprovalStatusIsProvided(pendingApprovalStatus))
-                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(pendingApprovalStatus, 3))
+                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(pendingApprovalStatus, 2))
                 .BDDfy();
         }
         [Fact]
@@ -166,7 +166,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var pendingReapprovalApprovalStatus = "2";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractApprovalStatusIsProvided(pendingReapprovalApprovalStatus))
-                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(pendingReapprovalApprovalStatus, 8))
+                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(pendingReapprovalApprovalStatus, 9))
                 .BDDfy();
         }
         [Fact]
@@ -203,7 +203,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var contractIsActive = "true";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractIsActiveIsProvided(contractIsActive))
-                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsActive, 12))
+                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsActive, 11))
                 .BDDfy();
         }
         [Fact]
@@ -221,7 +221,16 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var contractIsNotActive = "false";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractIsActiveIsProvided(contractIsNotActive))
-                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsNotActive, 1))
+                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsNotActive, 2))
+                .BDDfy();
+        }
+        [Fact]
+        public void ServiceFiltersContractEndReason()
+        {
+            var contractEndReason = "ContractHasEnded";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractEndReasonIsProvided(contractEndReason))
+                .Then(t => _steps.ThenAssetsWithProvidedEndReasonShouldBeIncluded(contractEndReason, 1))
                 .BDDfy();
         }
         [Fact]
