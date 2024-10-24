@@ -40,8 +40,8 @@ public class SearchGateway : ISearchGateway
                 )
             )
             .MinScore(25)
-            .Size(searchParams.PageSize)
-            .From((searchParams.PageNumber - 1) * searchParams.PageSize)
+            .Size(searchParams.Page)
+            .From((searchParams.Page - 1) * searchParams.PageSize)
             .TrackTotalHits()
         );
 
