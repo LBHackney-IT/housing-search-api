@@ -17,13 +17,13 @@ public class SearchGateway : ISearchGateway
 
     public async Task<SearchResponseDto> Search(string indexName, SearchParametersDto searchParams)
     {
-        string fieldName;
+        string addressSearchFieldName;
         if (indexName == "assets")
-            fieldName = "assetAddress.addressLine1";
+            addressSearchFieldName = "assetAddress.addressLine1";
         else if (indexName == "tenures")
-            fieldName = "tenuredAsset.fullAddress";
+            addressSearchFieldName = "tenuredAsset.fullAddress";
         else if (indexName == "persons")
-            fieldName = "tenures.assetFullAddress";
+            addressSearchFieldName = "tenures.assetFullAddress";
         else
             throw new Exception($"Index name '{indexName}' is not supported");
 
@@ -32,7 +32,7 @@ public class SearchGateway : ISearchGateway
             .Query(q => q
                 .Bool(b => b
                     .Should(
-                        MatchPhrasePrefix(searchParams.SearchText, boost: 10, fieldName: fieldName),
+                        MatchPhrasePrefix(searchParams.SearchText, boost: 10, fieldName: addressSearchFieldName),
                         MultiMatchSingleField(searchParams.SearchText, boost: 6),
                         MultiMatchCrossFields(searchParams.SearchText, boost: 2),
                         MultiMatchMostFields(searchParams.SearchText, boost: 1)
@@ -55,7 +55,7 @@ public class SearchGateway : ISearchGateway
         };
     }
 
-
+    // Score for matching a value which starts with the search text
     private Func<QueryContainerDescriptor<object>, QueryContainer>
         MatchPhrasePrefix(string searchText, double boost, string fieldName) =>
         should => should
