@@ -27,7 +27,10 @@ public class SearchController : Controller
     {
         var useSearchV1 = Environment.GetEnvironmentVariable("USE_SEARCH_V1") ?? "false";
         if (useSearchV1 == "true")
-            return Redirect($"/api/v1/search/{indexName}{Request.QueryString}");
+        {
+            var redirectUrl = $"/api/v1/search/{indexName}{Request.QueryString}";
+            return new RedirectResult(redirectUrl, permanent: false);
+        }
 
         var searchResults = await _searchUseCase.ExecuteAsync(indexName, searchParametersDto).ConfigureAwait(false);
 
