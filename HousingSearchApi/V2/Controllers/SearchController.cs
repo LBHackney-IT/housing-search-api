@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HousingSearchApi.V2.Domain.DTOs;
 using HousingSearchApi.V2.UseCase;
+using System;
 
 namespace HousingSearchApi.V2.Controllers;
 
@@ -24,6 +25,10 @@ public class SearchController : Controller
     [HttpGet("{indexName}")]
     public async Task<IActionResult> Search(string indexName, [FromQuery] SearchParametersDto searchParametersDto)
     {
+        var useSearchV1 = Environment.GetEnvironmentVariable("USE_SEARCH_V1") ?? "false";
+        if (useSearchV1 == "true")
+            return Redirect($"/api/v1/search/{indexName}{Request.QueryString}");
+
         var searchResults = await _searchUseCase.ExecuteAsync(indexName, searchParametersDto).ConfigureAwait(false);
 
         var response = new
