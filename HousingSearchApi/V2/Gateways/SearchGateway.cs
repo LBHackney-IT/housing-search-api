@@ -43,7 +43,7 @@ public class SearchGateway : ISearchGateway
             shouldOperations
             .AddRange(new[]
             {
-                SearchOperations.SearchWithWildcardQuery(searchParams.SearchText, boost: 10, fields: nameFields),
+                SearchOperations.SearchWithWildcardQuery(searchParams.SearchText, fields: nameFields, boost: 10),
                 SearchOperations.MatchPhrasePrefix(searchParams.SearchText, fieldName: addressFieldName, boost: 10),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fieldName: addressFieldName, boost: 5),
             });
