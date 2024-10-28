@@ -25,13 +25,6 @@ public class SearchController : Controller
     [HttpGet("{indexName}")]
     public async Task<IActionResult> Search(string indexName, [FromQuery] SearchParametersDto searchParametersDto)
     {
-        var useSearchV1 = Environment.GetEnvironmentVariable("USE_SEARCH_V1") ?? "false";
-        if (useSearchV1 == "true")
-        {
-            var redirectUrl = $"/api/v1/search/{indexName}{Request.QueryString}";
-            return new RedirectResult(redirectUrl, permanent: false);
-        }
-
         var searchResults = await _searchUseCase.ExecuteAsync(indexName, searchParametersDto).ConfigureAwait(false);
 
         var response = new
