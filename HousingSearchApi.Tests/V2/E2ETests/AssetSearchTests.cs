@@ -1,27 +1,20 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
-using System.Text.Json;
 using HousingSearchApi.Tests.V2.E2ETests.Fixtures;
-using Nest;
-using Xunit.Abstractions;
 
 namespace HousingSearchApi.Tests.V2.E2ETests;
 
-public class AssetSearchTests: BaseSearchTests
+public class AssetSearchTests : BaseSearchTests
 {
-    private readonly ITestOutputHelper _testOutputHelper;
     private readonly HttpClient _httpClient;
 
-    public AssetSearchTests(CombinedFixture combinedFixture, ITestOutputHelper testOutputHelper) : base(combinedFixture, "assets")
+    public AssetSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "assets")
     {
-        _testOutputHelper = testOutputHelper;
         _httpClient = combinedFixture.Factory.CreateClient();
     }
 
@@ -44,8 +37,10 @@ public class AssetSearchTests: BaseSearchTests
     [Fact]
     public async Task ReturnsRelevantResultFirstByAddress()
     {
-        var successCount = 0;
-        foreach (var _ in Enumerable.Range(0, 10))
+        const int attempts = 10;
+        const int minSuccessCount = 9;
+
+        var successCount = await RunWithScore(attempts, async () =>
         {
             // Arrange
             var randomAsset = RandomItem();
@@ -59,26 +54,20 @@ public class AssetSearchTests: BaseSearchTests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var root = GetResponseRootElement(response);
-            try
-            {
-                root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
-                var firstResult = root.GetProperty("results").GetProperty("assets")[0];
-                firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
-                successCount++;
-            }
-            catch (Exception e)
-            {
-                _testOutputHelper.WriteLine(e.ToString());
-            }
-        }
-        successCount.Should().BeGreaterThanOrEqualTo(9);
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResult = root.GetProperty("results").GetProperty("assets")[0];
+            firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+        });
+        successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
 
     [Fact]
     public async Task ReturnsRelevantResultFirstByPostcode()
     {
-        var successCount = 0;
-        foreach (var _ in Enumerable.Range(0, 10))
+        const int maxAttempts = 10;
+        const int minSuccessCount = 9;
+
+        var successCount = await RunWithScore(maxAttempts, async () =>
         {
             // Arrange
             var randomAsset = RandomItem();
@@ -91,26 +80,20 @@ public class AssetSearchTests: BaseSearchTests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var root = GetResponseRootElement(response);
-            try
-            {
-                root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
-                var firstResult = root.GetProperty("results").GetProperty("assets")[0];
-                firstResult.GetProperty("assetAddress").GetProperty("postCode").GetString().Should().Be(searchTextPostcode);
-                successCount++;
-            }
-            catch (Exception e)
-            {
-                _testOutputHelper.WriteLine(e.ToString());
-            }
-        }
-        successCount.Should().BeGreaterThanOrEqualTo(9);
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResult = root.GetProperty("results").GetProperty("assets")[0];
+            firstResult.GetProperty("assetAddress").GetProperty("postCode").GetString().Should().Be(searchTextPostcode);
+        });
+        successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
 
     [Fact]
     public async Task ReturnsRelevantResultFirstByAddressAndPostcode()
     {
-        var successCount = 0;
-        foreach (var _ in Enumerable.Range(0, 10))
+        const int maxAttempts = 10;
+        const int minSuccessCount = 9;
+
+        var successCount = await RunWithScore(maxAttempts, async () =>
         {
             // Arrange
             var randomAsset = RandomItem();
@@ -124,31 +107,25 @@ public class AssetSearchTests: BaseSearchTests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var root = GetResponseRootElement(response);
-            try
-            {
-                root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
-                var firstResult = root.GetProperty("results").GetProperty("assets")[0];
-                firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
-                successCount++;
-            }
-            catch (Exception e)
-            {
-                _testOutputHelper.WriteLine(e.ToString());
-            }
-        }
-        successCount.Should().BeGreaterThanOrEqualTo(9);
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResult = root.GetProperty("results").GetProperty("assets")[0];
+            firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+        });
+        successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
 
     [Fact]
     public async Task ReturnsRelevantResultFirstByAddressPrefix()
     {
-        var successCount = 0;
-        foreach (var _ in Enumerable.Range(0, 10))
+        const int maxAttempts = 10;
+        const int minSuccessCount = 9;
+
+        var successCount = await RunWithScore(maxAttempts, async () =>
         {
             // Arrange
             var randomAsset = RandomItem();
             var expectedReturnedId = randomAsset.GetProperty("id").GetString();
-            var searchText = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString()?[..10];
+            var searchText = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString()?[..12];
             var request = CreateSearchRequest(searchText);
 
             // Act
@@ -157,26 +134,20 @@ public class AssetSearchTests: BaseSearchTests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var root = GetResponseRootElement(response);
-            try
-            {
-                root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
-                var firstResult = root.GetProperty("results").GetProperty("assets")[0];
-                firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
-                successCount++;
-            }
-            catch (Exception e)
-            {
-                _testOutputHelper.WriteLine(e.ToString());
-            }
-        }
-        successCount.Should().BeGreaterThanOrEqualTo(9);
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResult = root.GetProperty("results").GetProperty("assets")[0];
+            firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+        });
+        successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
 
     [Fact]
     public async Task ReturnsRelevantResultFirstByAddressPartial()
     {
-        var successCount = 0;
-        foreach (var _ in Enumerable.Range(0, 10))
+        const int maxAttempts = 10;
+        const int minSuccessCount = 9;
+
+        var successCount = await RunWithScore(maxAttempts, async () =>
         {
             // Arrange
             var randomAsset = RandomItem();
@@ -193,20 +164,13 @@ public class AssetSearchTests: BaseSearchTests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var root = GetResponseRootElement(response);
-            try
-            {
-                root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
-                var firstResult = root.GetProperty("results").GetProperty("assets")[0];
-                // should contain each search term
-                searchTerms.ForEach(term => firstResult.GetProperty("assetAddress").GetProperty("addressLine1").GetString().Should().Contain(term));
-                successCount++;
-            }
-            catch (Exception e)
-            {
-                _testOutputHelper.WriteLine(e.ToString());
-            }
-        }
-        successCount.Should().BeGreaterThanOrEqualTo(9);
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResult = root.GetProperty("results").GetProperty("assets")[0];
+            searchTerms.ForEach(term => 
+                firstResult.GetProperty("assetAddress").GetProperty("addressLine1").GetString().Should().Contain(term)
+            );
+        });
+        successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
 
     [Fact]

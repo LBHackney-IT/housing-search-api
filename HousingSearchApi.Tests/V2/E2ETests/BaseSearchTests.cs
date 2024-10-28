@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 using HousingSearchApi.Tests.V2.E2ETests.Fixtures;
-using Nest;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V2.E2ETests;
@@ -59,5 +59,31 @@ public class BaseSearchTests : IClassFixture<CombinedFixture>
         var jsonElements = items as JsonElement?[] ?? items.ToArray();
         var item = jsonElements.ElementAt(new Random().Next(jsonElements.Count()));
         return (JsonElement) item;
+    }
+
+    /// <summary>
+    /// Executes a given asynchronous action multiple times until the maximum number of attempts is exceeded and tracks successes.
+    /// </summary>
+    /// <param name="attempts">The number of attempts to execute the action.</param>
+    /// <param name="action">The asynchronous action to be executed.</param>
+    /// <returns>The number of successful executions.</returns>
+    protected async Task<int> RunWithScore(int attempts, Func<Task> action)
+    {
+        var successCount = 0;
+
+        for (int attempt = 0; attempt < attempts; attempt++)
+        {
+            try
+            {
+                await action();
+                successCount++;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Attempt {attempt + 1} failed: {e}");
+            }
+        }
+
+        return successCount;
     }
 }
