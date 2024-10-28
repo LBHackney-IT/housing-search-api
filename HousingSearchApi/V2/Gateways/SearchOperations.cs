@@ -9,7 +9,6 @@ namespace HousingSearchApi.V2.Gateways;
 
 class SearchOperations
 {
-    // TODO: Do we need separate wildcard functions?
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
     SearchWithWildcardQuery(string searchText, List<string> fields, int boost)
     {
