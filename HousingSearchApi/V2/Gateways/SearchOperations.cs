@@ -120,7 +120,7 @@ class SearchOperations
         }).ToList();
 
         return q => q.Bool(b => b
-            .Should(wildcardQueries.Select(wq => 
+            .Should(wildcardQueries.Select(wq =>
                 new QueryContainerDescriptor<object>()
                     .Wildcard(w => w
                         .Field(wq.Field)
