@@ -161,7 +161,8 @@ public class PersonSearchTests : BaseSearchTests
             var memberName = person.GetProperty("firstname").GetString() + " " + person.GetProperty("surname").GetString();
             var nameParts = memberName.Split(' ');
             // Remove a random name part (i.e. firstname, "middle name", or surname)
-            nameParts = memberName.Split(' ').Where((_, i) => i != new Random().Next(nameParts.Length)).ToArray();
+            var randomIndexInNameParts = new Random().Next(nameParts.Length);
+            nameParts = nameParts.Where((_, index) => index != randomIndexInNameParts).ToArray();
             var searchText = string.Join(" ", nameParts);
 
             var request = CreateSearchRequest(searchText);
