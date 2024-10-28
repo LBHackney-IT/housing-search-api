@@ -17,17 +17,19 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
 {
     private readonly HttpClient _httpClient;
     private readonly IElasticClient _elasticClient;
+    private readonly string _fixtureFilePath;
 
     public GetAssetStoriesV2(CombinedFixture combinedFixture)
     {
         _httpClient = combinedFixture.Factory.CreateClient();
         _elasticClient = combinedFixture.Elasticsearch.Client;
+        _fixtureFilePath = Path.Combine(combinedFixture.Elasticsearch.FixtureFilesPath, "assets.json");
     }
 
     // Return a random asset from the assets.json file
     private JsonElement RandomAsset()
     {
-        using StreamReader r = new StreamReader("V2/E2ETests/Fixtures/assets.json");
+        using StreamReader r = new StreamReader(_fixtureFilePath);
         string json = r.ReadToEnd();
         List<string> splitLines = new List<string>(json.Split("\n"))
             .Where(line => !line.Contains("index") && !string.IsNullOrWhiteSpace(line)

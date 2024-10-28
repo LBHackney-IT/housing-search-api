@@ -10,6 +10,7 @@ namespace HousingSearchApi.Tests.V2.E2ETests.Fixtures;
 public class ElasticsearchFixture : IAsyncLifetime
 {
     public IElasticClient Client { get; private set; }
+    public string FixtureFilesPath = "V2/E2ETests/Fixtures/Files";
 
     public ElasticsearchFixture()
     {
@@ -22,19 +23,24 @@ public class ElasticsearchFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        string jsonFilePath = "V2/E2ETests/Fixtures/assets.json";
-        if (!File.Exists(jsonFilePath))
+        string[] filenames = { "assets.json", "tenures.json", "persons.json" };
+
+        foreach (string filename in filenames)
         {
-            throw new FileNotFoundException($"The file {jsonFilePath} could not be found in directory {Directory.GetCurrentDirectory()}");
-        }
+            string jsonFilePath = Path.Combine(FixtureFilesPath, filename);
+            if (!File.Exists(jsonFilePath))
+            {
+                throw new FileNotFoundException($"The file {jsonFilePath} could not be found in directory {Directory.GetCurrentDirectory()}");
+            }
 
-        string jsonContent = File.ReadAllText(jsonFilePath);
+            string jsonContent = await File.ReadAllTextAsync(jsonFilePath);
 
-        var bulkResponse = await Client.LowLevel.BulkAsync<StringResponse>(PostData.String(jsonContent));
+            var bulkResponse = await Client.LowLevel.BulkAsync<StringResponse>(PostData.String(jsonContent));
 
-        if (!bulkResponse.Success)
-        {
-            throw new Exception("Bulk insert failed: " + bulkResponse.DebugInformation);
+            if (!bulkResponse.Success)
+            {
+                throw new Exception("Bulk insert failed: " + bulkResponse.DebugInformation);
+            }
         }
     }
 
