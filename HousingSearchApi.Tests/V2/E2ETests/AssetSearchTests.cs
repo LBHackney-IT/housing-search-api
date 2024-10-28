@@ -166,7 +166,7 @@ public class AssetSearchTests : BaseSearchTests
             var root = GetResponseRootElement(response);
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("assets")[0];
-            searchTerms.ForEach(term => 
+            searchTerms.ForEach(term =>
                 firstResult.GetProperty("assetAddress").GetProperty("addressLine1").GetString().Should().Contain(term)
             );
         });
