@@ -43,8 +43,7 @@ public class SearchGateway : ISearchGateway
         {
             var addressFieldName = "tenuredAsset.fullAddress";
             var nameFields = new List<string> { "householdMembers.fullName" };
-            shouldOperations
-            .AddRange(new[]
+            shouldOperations.AddRange(new[]
             {
                 SearchOperations.SearchWithWildcardQuery(searchParams.SearchText, fields: nameFields, boost: 10),
                 SearchOperations.MatchPhrasePrefix(searchParams.SearchText, fieldName: addressFieldName, boost: 10),
