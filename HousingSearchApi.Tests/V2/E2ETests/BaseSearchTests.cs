@@ -34,7 +34,7 @@ public class BaseSearchTests : IClassFixture<CombinedFixture>
         return doc.RootElement;
     }
 
-    // Return a random item from the fixture json file
+    // Return a random item from the fixture json file for the current index
     protected JsonElement RandomItem()
     {
         using StreamReader r = new StreamReader(_fixtureFilePath);
