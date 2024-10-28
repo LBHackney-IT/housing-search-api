@@ -19,13 +19,17 @@ public class SearchGateway : ISearchGateway
     public async Task<SearchResponseDto> Search(string indexName, SearchParametersDto searchParams)
     {
         var shouldOperations = new List<Func<QueryContainerDescriptor<object>, QueryContainer>>();
+
+        // General purpose schema-agnostic search operations
         var defaultShouldOperations = new[]
         {
             SearchOperations.MultiMatchSingleField(searchParams.SearchText, boost: 6),
             SearchOperations.MultiMatchCrossFields(searchParams.SearchText, boost: 2),
             SearchOperations.MultiMatchMostFields(searchParams.SearchText, boost: 1)
         };
+        shouldOperations.AddRange(defaultShouldOperations);
 
+        // Extend search operations depending on the index
         if (indexName == "assets")
         {
             var addressFieldName = "assetAddress.addressLine1";
@@ -34,7 +38,6 @@ public class SearchGateway : ISearchGateway
                 SearchOperations.MatchPhrasePrefix(searchParams.SearchText, fieldName: addressFieldName, boost: 10),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fieldName: addressFieldName, boost: 5),
             });
-            shouldOperations.AddRange(defaultShouldOperations);
         }
         else if (indexName == "tenures")
         {
@@ -47,7 +50,6 @@ public class SearchGateway : ISearchGateway
                 SearchOperations.MatchPhrasePrefix(searchParams.SearchText, fieldName: addressFieldName, boost: 10),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fieldName: addressFieldName, boost: 5),
             });
-            shouldOperations.AddRange(defaultShouldOperations);
         }
         else if (indexName == "persons")
         {
@@ -58,8 +60,6 @@ public class SearchGateway : ISearchGateway
                 SearchOperations.SearchWithExactQuery(searchParams.SearchText, boost: 6, fields: nameFields),
             });
         }
-        else // default
-            shouldOperations.AddRange(defaultShouldOperations);
 
 
         var searchResponse = await _elasticClient.SearchAsync<object>(s => s
