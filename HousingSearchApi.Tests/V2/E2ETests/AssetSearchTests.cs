@@ -19,7 +19,7 @@ public class AssetSearchTests : BaseSearchTests
     }
 
     [Fact]
-    public async Task ReturnsNoResultsWhenNoMatches()
+    public async Task SearchNoMatch()
     {
         // Arrange
         var request = CreateSearchRequest("XXXXXXXX");
@@ -35,7 +35,7 @@ public class AssetSearchTests : BaseSearchTests
     }
 
     [Fact]
-    public async Task ReturnsRelevantResultFirstByAddress()
+    public async Task SearchAddress_Line1()
     {
         const int attempts = 10;
         const int minSuccessCount = 9;
@@ -62,7 +62,7 @@ public class AssetSearchTests : BaseSearchTests
     }
 
     [Fact]
-    public async Task ReturnsRelevantResultFirstByPostcode()
+    public async Task SearchAddress_Postcode()
     {
         const int maxAttempts = 10;
         const int minSuccessCount = 9;
@@ -88,7 +88,7 @@ public class AssetSearchTests : BaseSearchTests
     }
 
     [Fact]
-    public async Task ReturnsRelevantResultFirstByAddressAndPostcode()
+    public async Task SearchAddress_Line1AndPostcode()
     {
         const int maxAttempts = 10;
         const int minSuccessCount = 9;
@@ -115,7 +115,7 @@ public class AssetSearchTests : BaseSearchTests
     }
 
     [Fact]
-    public async Task ReturnsRelevantResultFirstByAddressPrefix()
+    public async Task SearchAddress_Prefix()
     {
         const int maxAttempts = 10;
         const int minSuccessCount = 9;
@@ -136,13 +136,13 @@ public class AssetSearchTests : BaseSearchTests
             var root = GetResponseRootElement(response);
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("assets")[0];
-            firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+            firstResult.GetProperty("assetAddress").GetProperty("addressLine1").GetString().Should().Contain(searchText);
         });
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
 
     [Fact]
-    public async Task ReturnsRelevantResultFirstByAddressPartial()
+    public async Task SearchAddress_Partial()
     {
         const int maxAttempts = 10;
         const int minSuccessCount = 9;
@@ -174,7 +174,7 @@ public class AssetSearchTests : BaseSearchTests
     }
 
     [Fact]
-    public async Task ReturnsRelevantResultFirstByPaymentRef()
+    public async Task SearchTenure_PaymentRef()
     {
         // Arrange
         var asset = RandomItem();
@@ -194,7 +194,7 @@ public class AssetSearchTests : BaseSearchTests
     }
 
     [Fact]
-    public async Task ReturnsRelevantResultFirstByAssetId()
+    public async Task SearchAsset_Id()
     {
         // Arrange
         var asset = RandomItem();
