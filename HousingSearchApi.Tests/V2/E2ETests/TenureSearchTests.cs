@@ -114,8 +114,10 @@ public class TenureSearchTests : BaseSearchTests
             var randomAddress = randomTenure.GetProperty("tenuredAsset").GetProperty("fullAddress").GetString();
             var searchTerms = randomAddress.Split(' ').ToList();
             // remove one search term
-            searchTerms.RemoveAt(new Random().Next(searchTerms.Count));
+            var randomIndexInSearchTerms = new Random().Next(searchTerms.Count);
+            searchTerms = searchTerms.Where((_, index) => index != randomIndexInSearchTerms).ToList();
             var searchText = string.Join(" ", searchTerms);
+
             var request = CreateSearchRequest(searchText);
 
             // Act
