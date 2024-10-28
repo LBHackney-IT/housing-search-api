@@ -148,7 +148,7 @@ public class PersonSearchTests : BaseSearchTests
     }
 
     [Fact]
-    public async Task SearchPerson_NameCutoff()
+    public async Task SearchPerson_NamePartRemoved()
     {
         const int attempts = 10;
         const int minSuccessCount = 9;
