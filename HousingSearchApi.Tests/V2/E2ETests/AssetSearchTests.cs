@@ -18,6 +18,8 @@ public class AssetSearchTests : BaseSearchTests
         _httpClient = combinedFixture.Factory.CreateClient();
     }
 
+    #region General
+
     [Fact]
     public async Task SearchNoMatch()
     {
@@ -33,6 +35,10 @@ public class AssetSearchTests : BaseSearchTests
         root.GetProperty("total").GetInt32().Should().Be(0);
         root.GetProperty("results").GetProperty("assets").GetArrayLength().Should().Be(0);
     }
+
+    #endregion
+
+    # region Address
 
     [Fact]
     public async Task SearchAddress_Line1()
@@ -173,6 +179,10 @@ public class AssetSearchTests : BaseSearchTests
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
 
+    #endregion
+
+    #region Tenure
+
     [Fact]
     public async Task SearchTenure_PaymentRef()
     {
@@ -193,6 +203,10 @@ public class AssetSearchTests : BaseSearchTests
         firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
     }
 
+    #endregion
+
+    #region Asset
+
     [Fact]
     public async Task SearchAsset_Id()
     {
@@ -212,5 +226,7 @@ public class AssetSearchTests : BaseSearchTests
         var firstResult = root.GetProperty("results").GetProperty("assets")[0];
         firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
     }
+
+    #endregion
 }
 
