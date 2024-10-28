@@ -180,6 +180,76 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
     }
 
     [Fact]
+    public async Task ReturnsRelevantResultFirstByAddressPrefix()
+    {
+        var successCount = 0;
+        foreach (var _ in Enumerable.Range(0, 10))
+        {
+            // Arrange
+            var randomAsset = RandomAsset();
+            var expectedReturnedId = randomAsset.GetProperty("id").GetString();
+            var searchText = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString()?[..10];
+            var request = CreateSearchRequest(searchText);
+
+            // Act
+            var response = await _httpClient.SendAsync(request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var root = GetResponseRootElement(response);
+            try
+            {
+                root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+                var firstResult = root.GetProperty("results").GetProperty("assets")[0];
+                firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+                successCount++;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+        successCount.Should().BeGreaterThanOrEqualTo(9);
+    }
+
+    [Fact]
+    public async Task ReturnsRelevantResultFirstByAddressPartial()
+    {
+        var successCount = 0;
+        foreach (var _ in Enumerable.Range(0, 10))
+        {
+            // Arrange
+            var randomAsset = RandomAsset();
+            var randomAddress = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString();
+            var searchTerms = randomAddress.Split(' ').ToList();
+            // remove one search term
+            searchTerms.RemoveAt(new Random().Next(searchTerms.Count));
+            var searchText = string.Join(" ", searchTerms);
+            var request = CreateSearchRequest(searchText);
+
+            // Act
+            var response = await _httpClient.SendAsync(request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var root = GetResponseRootElement(response);
+            try
+            {
+                root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+                var firstResult = root.GetProperty("results").GetProperty("assets")[0];
+                // should contain each search term
+                searchTerms.ForEach(term => firstResult.GetProperty("assetAddress").GetProperty("addressLine1").GetString().Should().Contain(term));
+                successCount++;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+        successCount.Should().BeGreaterThanOrEqualTo(9);
+    }
+
+    [Fact]
     public async Task ReturnsRelevantResultFirstByPaymentRef()
     {
         // Arrange
