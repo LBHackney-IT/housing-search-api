@@ -10,61 +10,19 @@ using Xunit;
 using System.Text.Json;
 using HousingSearchApi.Tests.V2.E2ETests.Fixtures;
 using Nest;
+using Xunit.Abstractions;
 
 namespace HousingSearchApi.Tests.V2.E2ETests;
 
-public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
+public class AssetSearchTests: BaseSearchTests
 {
+    private readonly ITestOutputHelper _testOutputHelper;
     private readonly HttpClient _httpClient;
-    private readonly IElasticClient _elasticClient;
-    private readonly string _fixtureFilePath;
 
-    public GetAssetStoriesV2(CombinedFixture combinedFixture)
+    public AssetSearchTests(CombinedFixture combinedFixture, ITestOutputHelper testOutputHelper) : base(combinedFixture, "assets")
     {
+        _testOutputHelper = testOutputHelper;
         _httpClient = combinedFixture.Factory.CreateClient();
-        _elasticClient = combinedFixture.Elasticsearch.Client;
-        _fixtureFilePath = Path.Combine(combinedFixture.Elasticsearch.FixtureFilesPath, "assets.json");
-    }
-
-    // Return a random asset from the assets.json file
-    private JsonElement RandomAsset()
-    {
-        using StreamReader r = new StreamReader(_fixtureFilePath);
-        string json = r.ReadToEnd();
-        List<string> splitLines = new List<string>(json.Split("\n"))
-            .Where(line => !line.Contains("index") && !string.IsNullOrWhiteSpace(line)
-            ).ToList();
-
-        Func<string, JsonDocument> tryParse = strJson =>
-        {
-            try
-            {
-                return JsonDocument.Parse(strJson);
-            }
-            catch (JsonException)
-            {
-                return null;
-            }
-        };
-
-        var assets = splitLines.Select(line => tryParse(line)?.RootElement).Where(x => x != null);
-        var jsonElements = assets as JsonElement?[] ?? assets.ToArray();
-        var asset = jsonElements.ElementAt(new Random().Next(jsonElements.Count()));
-        return (JsonElement) asset;
-    }
-
-    private HttpRequestMessage CreateSearchRequest(string searchText) =>
-        new HttpRequestMessage(
-            HttpMethod.Get,
-            $"http://localhost:3000/api/v2/search/assets/?searchText={searchText}"
-            );
-
-
-    private JsonElement GetResponseRootElement(HttpResponseMessage response)
-    {
-        var responseBody = response.Content.ReadAsStringAsync().Result;
-        var doc = JsonDocument.Parse(responseBody);
-        return doc.RootElement;
     }
 
     [Fact]
@@ -90,7 +48,7 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
         foreach (var _ in Enumerable.Range(0, 10))
         {
             // Arrange
-            var randomAsset = RandomAsset();
+            var randomAsset = RandomItem();
             var expectedReturnedId = randomAsset.GetProperty("id").GetString();
             var query = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString();
             var request = CreateSearchRequest(query);
@@ -110,7 +68,7 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _testOutputHelper.WriteLine(e.ToString());
             }
         }
         successCount.Should().BeGreaterThanOrEqualTo(9);
@@ -123,7 +81,7 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
         foreach (var _ in Enumerable.Range(0, 10))
         {
             // Arrange
-            var randomAsset = RandomAsset();
+            var randomAsset = RandomItem();
             var searchTextPostcode = randomAsset.GetProperty("assetAddress").GetProperty("postCode").GetString();
             var request = CreateSearchRequest(searchTextPostcode);
 
@@ -142,7 +100,7 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _testOutputHelper.WriteLine(e.ToString());
             }
         }
         successCount.Should().BeGreaterThanOrEqualTo(9);
@@ -155,7 +113,7 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
         foreach (var _ in Enumerable.Range(0, 10))
         {
             // Arrange
-            var randomAsset = RandomAsset();
+            var randomAsset = RandomItem();
             var expectedReturnedId = randomAsset.GetProperty("id").GetString();
             var searchText = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString() + " " + randomAsset.GetProperty("assetAddress").GetProperty("postCode").GetString();
             var request = CreateSearchRequest(searchText);
@@ -175,7 +133,7 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _testOutputHelper.WriteLine(e.ToString());
             }
         }
         successCount.Should().BeGreaterThanOrEqualTo(9);
@@ -188,7 +146,7 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
         foreach (var _ in Enumerable.Range(0, 10))
         {
             // Arrange
-            var randomAsset = RandomAsset();
+            var randomAsset = RandomItem();
             var expectedReturnedId = randomAsset.GetProperty("id").GetString();
             var searchText = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString()?[..10];
             var request = CreateSearchRequest(searchText);
@@ -208,7 +166,7 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _testOutputHelper.WriteLine(e.ToString());
             }
         }
         successCount.Should().BeGreaterThanOrEqualTo(9);
@@ -221,7 +179,7 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
         foreach (var _ in Enumerable.Range(0, 10))
         {
             // Arrange
-            var randomAsset = RandomAsset();
+            var randomAsset = RandomItem();
             var randomAddress = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString();
             var searchTerms = randomAddress.Split(' ').ToList();
             // remove one search term
@@ -245,7 +203,7 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _testOutputHelper.WriteLine(e.ToString());
             }
         }
         successCount.Should().BeGreaterThanOrEqualTo(9);
@@ -255,7 +213,7 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
     public async Task ReturnsRelevantResultFirstByPaymentRef()
     {
         // Arrange
-        var asset = RandomAsset();
+        var asset = RandomItem();
         var expectedReturnedId = asset.GetProperty("id").GetString();
         var searchText = asset.GetProperty("tenure").GetProperty("paymentReference").GetString();
         var request = CreateSearchRequest(searchText);
@@ -275,7 +233,7 @@ public class GetAssetStoriesV2 : IClassFixture<CombinedFixture>
     public async Task ReturnsRelevantResultFirstByAssetId()
     {
         // Arrange
-        var asset = RandomAsset();
+        var asset = RandomItem();
         var expectedReturnedId = asset.GetProperty("id").GetString();
         var searchText = asset.GetProperty("assetId").GetString();
         var request = CreateSearchRequest(searchText);
