@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Threading;
 using AutoFixture;
 using Elasticsearch.Net;
-using Hackney.Shared.HousingSearch.Domain.Enums;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using Hackney.Shared.HousingSearch.Gateways.Models.Contract;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
@@ -85,7 +84,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             {
                 var asset = fixture.Create<QueryableAsset>();
                 var chargeWithSetSubtype = fixture.Create<QueryableCharges>();
-                var parsedApprovalStatus = (ApprovalStatus) Enum.Parse(typeof(ApprovalStatus), value.ContractApprovalStatus);
+                var parsedApprovalStatus = value.ContractApprovalStatus;
                 chargeWithSetSubtype.SubType = value.ChargesSubType;
                 asset.AssetAddress.AddressLine1 = value.FirstLine;
                 asset.AssetType = value.AssetType;
