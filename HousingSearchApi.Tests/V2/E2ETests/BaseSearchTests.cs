@@ -6,9 +6,18 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using HousingSearchApi.Tests.V2.E2ETests.Fixtures;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace HousingSearchApi.Tests.V2.E2ETests;
+
+using Xunit;
+
+[CollectionDefinition("V2.E2ETests Collection", DisableParallelization = true)]
+public class V2E2ETestsCollection
+{
+    // This class is used only to define the collection and its settings.
+}
 
 public class BaseSearchTests : IClassFixture<CombinedFixture>
 {
@@ -16,6 +25,9 @@ public class BaseSearchTests : IClassFixture<CombinedFixture>
     private readonly string _indexName;
 
     protected readonly Random _random = new();
+
+    private readonly ILogger<BaseSearchTests> _logger = new Logger<BaseSearchTests>(new LoggerFactory());
+
 
     protected BaseSearchTests(CombinedFixture combinedFixture, string indexName)
     {
@@ -82,7 +94,7 @@ public class BaseSearchTests : IClassFixture<CombinedFixture>
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Attempt {attempt + 1} failed: {e}");
+                _logger.LogError(e, $"Attempt {attempt + 1} failed.");
             }
         }
 

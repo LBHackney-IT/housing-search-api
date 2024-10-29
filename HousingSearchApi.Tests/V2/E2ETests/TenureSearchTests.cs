@@ -11,6 +11,7 @@ using Xunit.Abstractions;
 
 namespace HousingSearchApi.Tests.V2.E2ETests;
 
+[Collection("V2.E2ETests Collection")]
 public class TenureSearchTests : BaseSearchTests
 {
     private readonly HttpClient _httpClient;
@@ -115,7 +116,7 @@ public class TenureSearchTests : BaseSearchTests
             var randomAddress = randomTenure.GetProperty("tenuredAsset").GetProperty("fullAddress").GetString();
             var searchTerms = randomAddress.Split(' ').ToList();
             // remove one search term
-            searchTerms = searchTerms.Where((_, index) => index != 1).ToList();
+            searchTerms = searchTerms.Where((_, index) => index != searchTerms.Count).ToList();
             var searchText = string.Join(" ", searchTerms);
 
             var request = CreateSearchRequest(searchText);

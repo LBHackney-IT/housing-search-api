@@ -9,6 +9,7 @@ using HousingSearchApi.Tests.V2.E2ETests.Fixtures;
 
 namespace HousingSearchApi.Tests.V2.E2ETests;
 
+[Collection("V2.E2ETests Collection")]
 public class AssetSearchTests : BaseSearchTests
 {
     private readonly HttpClient _httpClient;
