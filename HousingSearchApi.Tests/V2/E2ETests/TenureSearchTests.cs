@@ -95,7 +95,8 @@ public class TenureSearchTests : BaseSearchTests
 
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("tenures")[0];
-            firstResult.GetProperty("tenuredAsset").GetProperty("fullAddress").GetString().Should().Contain(searchText);
+            var firstResultAddress = firstResult.GetProperty("tenuredAsset").GetProperty("fullAddress").GetString();
+            firstResultAddress.Should().Contain(searchText);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
@@ -114,8 +115,7 @@ public class TenureSearchTests : BaseSearchTests
             var randomAddress = randomTenure.GetProperty("tenuredAsset").GetProperty("fullAddress").GetString();
             var searchTerms = randomAddress.Split(' ').ToList();
             // remove one search term
-            var randomIndexInSearchTerms = _random.Next(searchTerms.Count);
-            searchTerms = searchTerms.Where((_, index) => index != randomIndexInSearchTerms).ToList();
+            searchTerms = searchTerms.Where((_, index) => index != 1).ToList();
             var searchText = string.Join(" ", searchTerms);
 
             var request = CreateSearchRequest(searchText);

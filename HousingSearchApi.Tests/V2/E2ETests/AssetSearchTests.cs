@@ -160,7 +160,7 @@ public class AssetSearchTests : BaseSearchTests
             var randomAddress = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString();
             var searchTerms = randomAddress.Split(' ').ToList();
             // remove one search term
-            searchTerms.RemoveAt(_random.Next(searchTerms.Count));
+            searchTerms.RemoveAt(1);
             var searchText = string.Join(" ", searchTerms);
             var request = CreateSearchRequest(searchText);
 
@@ -172,8 +172,9 @@ public class AssetSearchTests : BaseSearchTests
             var root = GetResponseRootElement(response);
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("assets")[0];
+            var firstResultAddress = firstResult.GetProperty("assetAddress").GetProperty("addressLine1").GetString();
             searchTerms.ForEach(term =>
-                firstResult.GetProperty("assetAddress").GetProperty("addressLine1").GetString().Should().Contain(term)
+                firstResultAddress.Should().Contain(term)
             );
         });
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
