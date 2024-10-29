@@ -128,8 +128,9 @@ public class TenureSearchTests : BaseSearchTests
             var root = GetResponseRootElement(response);
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("tenures")[0];
+            var firstResultAddress = firstResult.GetProperty("tenuredAsset").GetProperty("fullAddress").GetString();
             // should contain each search term
-            searchTerms.ForEach(term => firstResult.GetProperty("tenuredAsset").GetProperty("fullAddress").GetString().Should().Contain(term));
+            searchTerms.ForEach(term => firstResultAddress.Should().Contain(term));
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
