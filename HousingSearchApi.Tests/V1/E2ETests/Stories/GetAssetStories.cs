@@ -1,6 +1,5 @@
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
-using Hackney.Shared.HousingSearch.Domain.Enums;
 using TestStack.BDDfy;
 using Xunit;
 
@@ -145,7 +144,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceFiltersPendingApprovalStatusWithoutSearchText()
         {
-            var pendingApprovalStatus = "0";
+            var pendingApprovalStatus = "PendingApproval";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractApprovalStatusIsProvided(pendingApprovalStatus))
                 .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(pendingApprovalStatus, 2))
@@ -154,7 +153,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceFiltersApprovedApprovalStatusWithoutSearchText()
         {
-            var approvedApprovalStatus = "1";
+            var approvedApprovalStatus = "Approved";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractApprovalStatusIsProvided(approvedApprovalStatus))
                 .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(approvedApprovalStatus, 2))
@@ -163,7 +162,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceFiltersPendingReapprovalStatusWithoutSearchText()
         {
-            var pendingReapprovalApprovalStatus = "2";
+            var pendingReapprovalApprovalStatus = "PendingReapproval";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractApprovalStatusIsProvided(pendingReapprovalApprovalStatus))
                 .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(pendingReapprovalApprovalStatus, 9))

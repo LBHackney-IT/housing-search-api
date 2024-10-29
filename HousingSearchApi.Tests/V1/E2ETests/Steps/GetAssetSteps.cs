@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Hackney.Shared.HousingSearch.Domain.Enums;
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps.Base;
 using HousingSearchApi.V1.Boundary.Responses;
