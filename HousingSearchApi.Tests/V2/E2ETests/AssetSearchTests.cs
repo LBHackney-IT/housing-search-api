@@ -160,7 +160,7 @@ public class AssetSearchTests : BaseSearchTests
             var randomAddress = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString();
             var searchTerms = randomAddress.Split(' ').ToList();
             // remove one search term
-            searchTerms.RemoveAt(new Random().Next(searchTerms.Count));
+            searchTerms.RemoveAt(_random.Next(searchTerms.Count));
             var searchText = string.Join(" ", searchTerms);
             var request = CreateSearchRequest(searchText);
 

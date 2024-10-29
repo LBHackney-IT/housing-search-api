@@ -114,7 +114,7 @@ public class TenureSearchTests : BaseSearchTests
             var randomAddress = randomTenure.GetProperty("tenuredAsset").GetProperty("fullAddress").GetString();
             var searchTerms = randomAddress.Split(' ').ToList();
             // remove one search term
-            var randomIndexInSearchTerms = new Random().Next(searchTerms.Count);
+            var randomIndexInSearchTerms = _random.Next(searchTerms.Count);
             searchTerms = searchTerms.Where((_, index) => index != randomIndexInSearchTerms).ToList();
             var searchText = string.Join(" ", searchTerms);
 
@@ -196,7 +196,7 @@ public class TenureSearchTests : BaseSearchTests
             var tenure = RandomItem();
             var expectedReturnedId = tenure.GetProperty("id").GetString();
             var householdMembers = tenure.GetProperty("householdMembers");
-            var randomMember = householdMembers[new Random().Next(householdMembers.GetArrayLength())];
+            var randomMember = householdMembers[_random.Next(householdMembers.GetArrayLength())];
             var searchText = randomMember.GetProperty("fullName").GetString();
             var request = CreateSearchRequest(searchText);
 
@@ -226,11 +226,11 @@ public class TenureSearchTests : BaseSearchTests
             var tenure = RandomItem();
             var expectedReturnedId = tenure.GetProperty("id").GetString();
             var householdMembers = tenure.GetProperty("householdMembers");
-            var randomMember = householdMembers[new Random().Next(householdMembers.GetArrayLength())];
+            var randomMember = householdMembers[_random.Next(householdMembers.GetArrayLength())];
             var memberName = randomMember.GetProperty("fullName").GetString();
             var nameParts = memberName.Split(' ');
             // Remove a character from a random name part
-            nameParts[new Random().Next(nameParts.Length)] = nameParts[new Random().Next(nameParts.Length)][..^1];
+            nameParts[_random.Next(nameParts.Length)] = nameParts[_random.Next(nameParts.Length)][..^1];
             var searchText = string.Join(" ", nameParts);
 
             var request = CreateSearchRequest(searchText);

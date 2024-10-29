@@ -15,7 +15,7 @@ public class BaseSearchTests : IClassFixture<CombinedFixture>
     private readonly string _fixtureFilePath;
     private readonly string _indexName;
 
-    private readonly Random _random = new();
+    protected readonly Random _random = new();
 
     protected BaseSearchTests(CombinedFixture combinedFixture, string indexName)
     {
