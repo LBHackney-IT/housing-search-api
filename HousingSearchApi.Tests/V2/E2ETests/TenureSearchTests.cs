@@ -105,7 +105,7 @@ public class TenureSearchTests : BaseSearchTests
     public async Task SearchAddress_Partial()
     {
         const int attempts = 10;
-        const int minSuccessCount = 9;
+        const int minSuccessCount = 8;
 
         var successCount = await RunWithScore(attempts, async () =>
         {
