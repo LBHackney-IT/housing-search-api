@@ -1,10 +1,7 @@
 {
-  "aliases": {
-
-  },
   "mappings": {
     "properties": {
-      "id": {
+      "endOfTenureDate": {
         "type": "text",
         "fields": {
           "keyword": {
@@ -13,20 +10,7 @@
           }
         }
       },
-      "paymentReference": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
-      "startOfTenureDate": {
-        "type": "date"
-      },
-      "endOfTenureDate": {
+      "fieldToUpdate": {
         "type": "text",
         "fields": {
           "keyword": {
@@ -37,27 +21,21 @@
       },
       "householdMembers": {
         "properties": {
-          "id": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "type": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+          "dateOfBirth": {
+            "type": "date"
           },
           "fullName": {
             "type": "keyword",
-            "normalizer": "my_normalizer",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            },
+            "normalizer": "my_normalizer"
+          },
+          "id": {
+            "type": "text",
             "fields": {
               "keyword": {
                 "type": "keyword",
@@ -73,12 +51,8 @@
                 "ignore_above": 256
               }
             }
-          }
-        }
-      },
-      "tenuredAsset": {
-        "properties": {
-          "id": {
+          },
+          "personTenureType": {
             "type": "text",
             "fields": {
               "keyword": {
@@ -95,24 +69,34 @@
                 "ignore_above": 256
               }
             }
-          },
-          "fullAddress": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "uprn": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+          }
+        }
+      },
+      "id": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "paymentReference": {
+        "type": "keyword",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        },
+        "normalizer": "my_normalizer"
+      },
+      "startOfTenureDate": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
           }
         }
       },
@@ -137,25 +121,63 @@
             }
           }
         }
+      },
+      "tenuredAsset": {
+        "properties": {
+          "fullAddress": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "uprn": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
       }
     }
   },
   "settings": {
-    "analysis": {
-      "normalizer": {
-        "my_normalizer": {
-          "type": "custom",
-          "char_filter": [
-
-          ],
-          "filter": [
-            "lowercase",
-            "asciifolding"
-          ]
-        }
-      }
-    },
     "index": {
+      "analysis": {
+        "normalizer": {
+          "my_normalizer": {
+            "filter": [
+              "lowercase",
+              "asciifolding"
+            ],
+            "type": "custom",
+            "char_filter": []
+          }
+        }
+      },
       "number_of_shards": "1",
       "number_of_replicas": "1"
     }
