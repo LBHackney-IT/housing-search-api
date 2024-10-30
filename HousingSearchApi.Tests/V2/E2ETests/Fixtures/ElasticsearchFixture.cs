@@ -40,35 +40,27 @@ public class ElasticsearchFixture : IAsyncLifetime
     {
         string jsonFilePath = Path.Combine(FixtureFilesPath, filename);
         if (!File.Exists(jsonFilePath))
-        {
             throw new FileNotFoundException($"The file {jsonFilePath} could not be found in directory {Directory.GetCurrentDirectory()}");
-        }
+
 
         string jsonContent = await File.ReadAllTextAsync(jsonFilePath);
 
         var bulkResponse = await Client.LowLevel.BulkAsync<StringResponse>(PostData.String(jsonContent));
 
         if (!bulkResponse.Success)
-        {
             throw new Exception("Bulk insert failed: " + bulkResponse.DebugInformation);
-        }
+
     }
 
     public async Task InitializeAsync()
     {
         var indexSettingsFiles = new string[] { "assetIndex.json", "tenureIndex.json", "personIndex.json" };
-
         foreach (string filename in indexSettingsFiles)
-        {
             await CreateIndexAsync(filename, indexName: filename.Replace("Index.json", ""));
-        }
 
-        string[] filenames = { "assets.json", "tenures.json", "persons.json" };
-
+        var filenames = new string[] { "assets.json", "tenures.json", "persons.json" };
         foreach (string filename in filenames)
-        {
             await LoadDataAsync(filename);
-        }
     }
 
     public Task DisposeAsync()
