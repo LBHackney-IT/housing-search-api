@@ -1,29 +1,8 @@
 {
   "mappings": {
     "properties": {
-      "id": {
-        "type": "keyword"
-      },
-      "assetId": {
-        "type": "keyword"
-      },
-      "assetType": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword"
-          }
-        }
-      },
-      "isAssetCautionaryAlerted": {
-        "type": "boolean"
-      },
       "assetAddress": {
         "properties": {
-          "uprn": {
-            "type": "keyword",
-            "normalizer": "my_normalizer"
-          },
           "addressLine1": {
             "type": "text",
             "fields": {
@@ -71,66 +50,10 @@
                 "type": "keyword"
               }
             }
-          }
-        }
-      },
-      "tenure": {
-        "properties": {
-          "id": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
           },
-          "paymentReference": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
-          },
-          "startOfTenureDate": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
-          },
-          "endOfTenureDate": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
-          },
-          "type": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
-          }
-        }
-      },
-      "rootAsset": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword"
-          }
-        }
-      },
-      "parentAssetIds": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword"
+          "uprn": {
+            "type": "keyword",
+            "normalizer": "my_normalizer"
           }
         }
       },
@@ -205,6 +128,64 @@
           }
         }
       },
+      "assetContract": {
+        "properties": {
+          "charges": {
+            "properties": {
+              "amount": {
+                "type": "float"
+              },
+              "frequency": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "id": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "type": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              }
+            }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "assetId": {
+        "type": "keyword"
+      },
+      "assetLocation": {
+        "properties": {
+          "floorNo": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
       "assetManagement": {
         "properties": {
           "agent": {
@@ -269,54 +250,49 @@
           }
         }
       },
-      "assetLocation": {
-        "properties": {
-          "floorNo": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+      "assetType": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
           }
         }
       },
+      "id": {
+        "type": "keyword"
+      },
       "isActive": {
+        "type": "boolean"
+      },
+      "isAssetCautionaryAlerted": {
         "type": "boolean"
       },
       "isCautionaryAlerted": {
         "type": "boolean"
       },
-      "assetContract": {
+      "parentAssetIds": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "rootAsset": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "tenure": {
         "properties": {
-          "charges": {
-            "properties": {
-              "amount": {
-                "type": "float"
-              },
-              "frequency": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword"
-                  }
-                }
-              },
-              "id": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword"
-                  }
-                }
-              },
-              "type": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword"
-                  }
-                }
+          "endOfTenureDate": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
               }
             }
           },
@@ -327,9 +303,51 @@
                 "type": "keyword"
               }
             }
+          },
+          "paymentReference": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "startOfTenureDate": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
           }
         }
       }
+    }
+  },
+  "settings": {
+    "index": {
+      "analysis": {
+        "normalizer": {
+          "my_normalizer": {
+            "filter": [
+              "lowercase",
+              "asciifolding",
+              "trim"
+            ],
+            "type": "custom"
+          }
+        }
+      },
+      "number_of_shards": "5",
+      "number_of_replicas": "1"
     }
   }
 }
