@@ -27,7 +27,6 @@ public class SearchGateway : ISearchGateway
             SearchOperations.MultiMatchCrossFields(searchParams.SearchText, boost: 2),
             SearchOperations.MultiMatchMostFields(searchParams.SearchText, boost: 1)
         };
-        shouldOperations.AddRange(defaultShouldOperations);
 
         // Extend search operations depending on the index
         if (indexName == "assets")
@@ -38,6 +37,7 @@ public class SearchGateway : ISearchGateway
                 SearchOperations.MatchPhrasePrefix(searchParams.SearchText, fieldName: addressFieldName, boost: 10),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fieldName: addressFieldName, boost: 5),
             });
+            shouldOperations.AddRange(defaultShouldOperations);
         }
         else if (indexName == "tenures")
         {
@@ -49,15 +49,31 @@ public class SearchGateway : ISearchGateway
                 SearchOperations.MatchPhrasePrefix(searchParams.SearchText, fieldName: addressFieldName, boost: 10),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fieldName: addressFieldName, boost: 5),
             });
+            shouldOperations.AddRange(defaultShouldOperations);
         }
         else if (indexName == "persons")
         {
-            var nameFields = new List<string> { "firstname", "surname" };
+            Fields nameFields = new[] { "title", "firstname", "surname" };
+            Fields addressFields = new[] {
+                "tenures.id",
+                "tenures.assetFullAddress",
+                "tenures.type",
+                "tenures.uprn",
+                "tenures.propertyReference",
+                "tenures.assetId",
+                "tenures.paymentReference",
+            };
+
             shouldOperations.AddRange(new[]
             {
-                SearchOperations.SearchWithWildcardQuery(searchParams.SearchText, boost: 10, fields: nameFields),
-                SearchOperations.SearchWithExactQuery(searchParams.SearchText, boost: 6, fields: nameFields),
+                SearchOperations.MultiMatchSingleField(searchParams.SearchText, boost: 6),
+                SearchOperations.MultiMatchMostFields(searchParams.SearchText, boost: 10, fields: nameFields),
+                SearchOperations.NestedMultiMatch(searchParams.SearchText, "tenures", addressFields, boost: 10),
             });
+        }
+        else
+        {
+            shouldOperations.AddRange(defaultShouldOperations);
         }
 
 
@@ -68,7 +84,7 @@ public class SearchGateway : ISearchGateway
                     .Should(shouldOperations)
                 )
             )
-            .MinScore(0)
+            .MinScore(25)
             .Size(searchParams.PageSize)
             .From((searchParams.Page - 1) * searchParams.PageSize)
             .TrackTotalHits()
