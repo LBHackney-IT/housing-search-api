@@ -68,7 +68,7 @@ public class SearchGateway : ISearchGateway
                     .Should(shouldOperations)
                 )
             )
-            .MinScore(25)
+            .MinScore(0)
             .Size(searchParams.PageSize)
             .From((searchParams.Page - 1) * searchParams.PageSize)
             .TrackTotalHits()
