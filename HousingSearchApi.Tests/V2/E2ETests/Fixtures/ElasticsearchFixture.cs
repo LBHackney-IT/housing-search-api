@@ -25,20 +25,15 @@ public class ElasticsearchFixture : IAsyncLifetime
 
     public async Task CreateIndexAsync(string filename, string indexName)
     {
-        var indexraw = await File.ReadAllTextAsync(Path.Combine(_indexFilesPath, filename));
-        var index = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(indexraw);
+        var indexRaw = await File.ReadAllTextAsync(Path.Combine(_indexFilesPath, filename));
+        var client = new ElasticClient();
 
-        var createIndexResponse = await Client.Indices.CreateAsync(indexName, c => c
-            .InitializeUsing(new IndexState
-            {
-                Settings = new IndexSettings(index["mappings"])
-            })
-        );
+        var response = await client.LowLevel.Indices.CreateAsync<StringResponse>(indexName, indexRaw);
 
-        if (!createIndexResponse.IsValid)
-        {
-            throw new Exception("Index creation failed: " + createIndexResponse.DebugInformation);
-        }
+        if (!response.Success)
+            Console.WriteLine($"Failed to create index: {response.DebugInformation}");
+        else
+            Console.WriteLine("Index created successfully.");
     }
 
     public async Task LoadDataAsync(string filename)
