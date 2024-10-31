@@ -92,11 +92,14 @@ public class PersonSearchTests : BaseSearchTests
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var root = GetResponseRootElement(response);
-        try {
+        try
+        {
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("persons")[0];
             firstResult.GetProperty("tenures")[0].GetProperty("paymentReference").GetString().Trim().Should().Be(searchText.Trim());
-        } catch (AssertionException e){
+        }
+        catch (AssertionException e)
+        {
             var errMsg = $"Failed to assert that the payment reference is {searchText}";
             throw new AssertionException(errMsg + "\n" + e.Message);
         }
