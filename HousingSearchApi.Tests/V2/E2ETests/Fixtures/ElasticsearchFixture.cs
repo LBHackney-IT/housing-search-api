@@ -4,14 +4,15 @@ using System.IO;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 using Xunit;
+using System.Collections.Generic;
 
 namespace HousingSearchApi.Tests.V2.E2ETests.Fixtures;
 
 public class ElasticsearchFixture : IAsyncLifetime
 {
     public IElasticClient Client { get; private set; }
-    public string FixtureFilesPath = "V2/E2ETests/Fixtures/Files";
 
+    public string FixtureFilesPath = "V2/E2ETests/Fixtures/Files";
     private string _indexFilesPath => "data/elasticsearch";
 
     public ElasticsearchFixture()
@@ -53,8 +54,13 @@ public class ElasticsearchFixture : IAsyncLifetime
     public async Task InitializeAsync()
     {
         var indexSettingsFiles = new string[] { "assetIndex.json", "tenureIndex.json", "personIndex.json" };
-        foreach (string filename in indexSettingsFiles)
-            await CreateIndexAsync(filename, indexName: filename.Replace("Index.json", ""));
+
+        foreach (string filename in indexSettingsFiles) {
+            var aliasName = filename.Replace("Index.json", "") + "s";
+            var indexName = aliasName + "-test";
+            await CreateIndexAsync(filename, indexName);
+            await Client.Indices.PutAliasAsync(indexName, aliasName);
+        }
 
         var filenames = new string[] { "assets.json", "tenures.json", "persons.json" };
         foreach (string filename in filenames)
