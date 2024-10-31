@@ -98,7 +98,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 asset.AssetCharacteristics.HasPrivateKitchen = value.PrivateKitchen;
                 asset.AssetCharacteristics.IsStepFree = value.StepFree;
                 asset.ParentAssetIds = value.ParentAssetIds;
-                asset.AssetContract.IsApproved = value.ContractIsApproved;
                 asset.AssetContract.EndReason = value.ContractEndReason;
                 asset.AssetContract.ApprovalStatus = parsedApprovalStatus;
                 asset.AssetContract.ApprovalStatusReason = value.ContractApprovalStatusReason;
