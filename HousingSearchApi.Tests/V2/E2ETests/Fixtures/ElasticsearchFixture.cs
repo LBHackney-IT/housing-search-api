@@ -57,10 +57,8 @@ public class ElasticsearchFixture : IAsyncLifetime
 
         foreach (string filename in indexSettingsFiles)
         {
-            var aliasName = filename.Replace("Index.json", "") + "s";
-            var indexName = aliasName + "-test";
+            var indexName = filename.Replace("Index.json", "") + "s";
             await CreateIndexAsync(filename, indexName);
-            await Client.Indices.PutAliasAsync(indexName, aliasName);
         }
 
         var filenames = new string[] { "assets.json", "tenures.json", "persons.json" };

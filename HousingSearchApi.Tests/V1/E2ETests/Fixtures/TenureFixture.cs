@@ -15,7 +15,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
     public class TenureFixture : BaseFixture
     {
         public List<QueryablePerson> Persons { get; private set; }
-        private const string INDEX = "tenures-test";
+        private const string INDEX = "tenures";
         public static string[] Alphabet = { "aa", "bb", "cc", "dd", "ee", "vv", "ww", "xx", "yy", "zz" };
 
         public TenureFixture(IElasticClient elasticClient, HttpClient httpClient) : base(elasticClient, httpClient)
