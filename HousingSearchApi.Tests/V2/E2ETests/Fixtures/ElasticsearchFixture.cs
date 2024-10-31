@@ -25,7 +25,7 @@ public class ElasticsearchFixture : IAsyncLifetime
     public void CreateIndex(string filename, string indexName)
     {
         var client = new ElasticClient();
-        
+
         var existsResponse = client.Indices.Exists(indexName);
         if (existsResponse.Exists)
             return;
