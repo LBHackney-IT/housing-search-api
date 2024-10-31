@@ -4,14 +4,16 @@ from random import choice
 from faker import Faker
 
 
-def generate_assets() -> list[dict]:
+def generate_assets(count: int = 2000) -> list[dict]:
     all_assets = []
     fake = Faker("en_GB")
 
+    addresses_per_street = 10
+
     addresses = []
-    for _ in range(100):
+    for _ in range(count // addresses_per_street):
         street_name = fake.street_name()
-        for i in range(10):
+        for i in range(addresses_per_street):
             flat_number = f"{choice([f'Flat {choice([fake.random_digit(), fake.random_letter().upper()])} ', f'Room {fake.random_digit()} ', 'Gge ', ' '])}{i+1}{choice([fake.random_letter().upper(), ''])}"
             address = f"{flat_number} {street_name}".replace("  ", " ").strip().title()
             addresses.append(address)
@@ -69,6 +71,14 @@ def generate_assets() -> list[dict]:
             "numberOfCots": fake.random_int(min=1, max=3),
             "numberOfShowers": fake.random_int(min=1, max=3),
             "isStepFree": fake.boolean()
+        }
+
+        asset["rootAsset"] = fake.uuid4()
+        asset["isActive"] = True if end_of_tenure_date is None else False
+        asset["parentAssetIds"] = [fake.uuid4() for _ in range(fake.random_int(min=0, max=3))]
+
+        asset["assetManagement"] = {
+            
         }
 
         all_assets.append(asset)
