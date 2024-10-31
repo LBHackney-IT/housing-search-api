@@ -43,10 +43,10 @@ public class ElasticsearchFixture : IAsyncLifetime
             throw new FileNotFoundException($"The file {jsonFilePath} could not be found in directory {Directory.GetCurrentDirectory()}");
 
         string jsonContent = File.ReadAllText(jsonFilePath);
-        
+
         // Perform the bulk insert with immediate refresh
         var bulkResponse = Client.LowLevel.Bulk<StringResponse>(
-            PostData.String(jsonContent), 
+            PostData.String(jsonContent),
             new BulkRequestParameters { Refresh = Refresh.WaitFor }
         );
 
@@ -65,7 +65,8 @@ public class ElasticsearchFixture : IAsyncLifetime
         }
 
         var filenames = new string[] { "assets.json", "tenures.json", "persons.json" };
-        foreach (string filename in filenames){
+        foreach (string filename in filenames)
+        {
             var indexName = filename.Replace("Index.json", "") + "s";
             LoadData(filename, indexName);
         }
