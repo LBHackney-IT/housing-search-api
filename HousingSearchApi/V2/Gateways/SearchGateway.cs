@@ -75,7 +75,7 @@ public class SearchGateway : ISearchGateway
         {
             shouldOperations.AddRange(defaultShouldOperations);
         }
-        
+
         var searchResponse = await _elasticClient.SearchAsync<object>(s => s
             .Index(indexName)
             .Query(q => q
