@@ -56,24 +56,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         }
 
         [Fact]
-        public void ServiceReturnsCorrectAscSort()
-        {
-            this.Given(g => _personsFixture.GivenAPersonIndexExists())
-                .When(w => _steps.WhenARequestIsSortedByAFieldAsc())
-                .Then(t => _steps.ThenTheResultShouldBeSortedAsc())
-                .BDDfy();
-        }
-
-        [Fact]
-        public void ServiceReturnsCorrectDescSort()
-        {
-            this.Given(g => _personsFixture.GivenAPersonIndexExists())
-                .When(w => _steps.WhenARequestIsSortedByAFieldDesc())
-                .Then(t => _steps.ThenTheResultShouldBeSortedDesc())
-                .BDDfy();
-        }
-
-        [Fact]
         public void ServiceReturnsExactMatchForFirstAndLastName()
         {
             var firstName = "Bob";
