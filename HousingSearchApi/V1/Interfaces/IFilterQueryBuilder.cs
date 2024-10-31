@@ -1,5 +1,4 @@
 using Hackney.Core.ElasticSearch.Interfaces;
-using Hackney.Shared.HousingSearch.Domain.Enums;
 using Nest;
 using System.Collections.Generic;
 

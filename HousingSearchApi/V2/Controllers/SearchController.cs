@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HousingSearchApi.V2.Domain.DTOs;
 using HousingSearchApi.V2.UseCase;
+using System;
 
 namespace HousingSearchApi.V2.Controllers;
 
