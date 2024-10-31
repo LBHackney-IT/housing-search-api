@@ -13,7 +13,7 @@ public class ElasticsearchFixture : IAsyncLifetime
     public IElasticClient Client { get; private set; }
 
     public string FixtureFilesPath = "V2/E2ETests/Fixtures/Files";
-    private string _indexFilesPath => "data/elasticsearch";
+    private string _indexFilesPath = "data/elasticsearch";
 
     public ElasticsearchFixture()
     {
@@ -28,15 +28,14 @@ public class ElasticsearchFixture : IAsyncLifetime
 
         var existsResponse = client.Indices.Exists(indexName);
         if (existsResponse.Exists)
-            return;
+            client.Indices.Delete(indexName);
 
         var indexDefinition = File.ReadAllText(Path.Combine(_indexFilesPath, filename));
         var response = client.LowLevel.Indices.Create<StringResponse>(indexName, indexDefinition);
 
         if (!response.Success)
-            Console.WriteLine($"Failed to create index: {response.DebugInformation}");
-        else
-            Console.WriteLine("Index created successfully.");
+            throw new Exception("Failed to create index: " + response.DebugInformation);
+        Console.WriteLine("Index created successfully.");
     }
 
     public async Task LoadDataAsync(string filename)

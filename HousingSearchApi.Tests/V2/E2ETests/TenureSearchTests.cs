@@ -197,7 +197,7 @@ public class TenureSearchTests : BaseSearchTests
             var tenure = RandomItem();
             var expectedReturnedId = tenure.GetProperty("id").GetString();
             var householdMembers = tenure.GetProperty("householdMembers");
-            var randomMember = householdMembers[_random.Next(householdMembers.GetArrayLength())];
+            var randomMember = householdMembers[Random.Next(householdMembers.GetArrayLength())];
             var searchText = randomMember.GetProperty("fullName").GetString();
             var request = CreateSearchRequest(searchText);
 
@@ -227,11 +227,11 @@ public class TenureSearchTests : BaseSearchTests
             var tenure = RandomItem();
             var expectedReturnedId = tenure.GetProperty("id").GetString();
             var householdMembers = tenure.GetProperty("householdMembers");
-            var randomMember = householdMembers[_random.Next(householdMembers.GetArrayLength())];
+            var randomMember = householdMembers[Random.Next(householdMembers.GetArrayLength())];
             var memberName = randomMember.GetProperty("fullName").GetString();
             var nameParts = memberName.Split(' ');
             // Remove a character from a random name part
-            nameParts[_random.Next(nameParts.Length)] = nameParts[_random.Next(nameParts.Length)][..^1];
+            nameParts[Random.Next(nameParts.Length)] = nameParts[Random.Next(nameParts.Length)][..^1];
             var searchText = string.Join(" ", nameParts);
 
             var request = CreateSearchRequest(searchText);

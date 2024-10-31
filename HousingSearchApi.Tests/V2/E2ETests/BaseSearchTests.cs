@@ -24,7 +24,7 @@ public class BaseSearchTests : IClassFixture<CombinedFixture>
     private readonly string _fixtureFilePath;
     private readonly string _indexName;
 
-    protected readonly Random _random = new();
+    protected readonly Random Random = new();
 
     private readonly ILogger<BaseSearchTests> _logger = new Logger<BaseSearchTests>(new LoggerFactory());
 
@@ -71,7 +71,7 @@ public class BaseSearchTests : IClassFixture<CombinedFixture>
 
         var items = splitLines.Select(line => TryParse(line)?.RootElement).Where(x => x != null);
         var jsonElements = items as JsonElement?[] ?? items.ToArray();
-        var item = jsonElements.ElementAt(_random.Next(jsonElements.Count()));
+        var item = jsonElements.ElementAt(Random.Next(jsonElements.Count()));
         return (JsonElement) item;
     }
 
