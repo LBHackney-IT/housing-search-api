@@ -31,7 +31,7 @@ def generate_tenures(assets: list[dict]) -> list[dict]:
         for i in range(member_count):
             member = {}
             member["id"] = fake.uuid4()
-            member["fullName"] = f"{fake.prefix().replace(".","")} {fake.first_name()} {fake.first_name()} {fake.last_name()}"
+            member["fullName"] = f'{fake.prefix().replace(".","")} {fake.first_name()} {fake.first_name()} {fake.last_name()}'
             member["isResponsible"] = i == 0 # First member is responsible
             member["dateOfBirth"] = fake.date_of_birth().strftime("%Y-%m-%dT%H:%M:%SZ")
             member["personTenureType"] = "Freeholder" if member["isResponsible"] else "HouseholdMember"
