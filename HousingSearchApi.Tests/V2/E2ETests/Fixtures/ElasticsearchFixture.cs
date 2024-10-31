@@ -4,8 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 using Xunit;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace HousingSearchApi.Tests.V2.E2ETests.Fixtures;
 
@@ -25,10 +23,10 @@ public class ElasticsearchFixture : IAsyncLifetime
 
     public async Task CreateIndexAsync(string filename, string indexName)
     {
-        var indexRaw = await File.ReadAllTextAsync(Path.Combine(_indexFilesPath, filename));
+        var indexDefinition = await File.ReadAllTextAsync(Path.Combine(_indexFilesPath, filename));
         var client = new ElasticClient();
 
-        var response = await client.LowLevel.Indices.CreateAsync<StringResponse>(indexName, indexRaw);
+        var response = await client.LowLevel.Indices.CreateAsync<StringResponse>(indexName, indexDefinition);
 
         if (!response.Success)
             Console.WriteLine($"Failed to create index: {response.DebugInformation}");
