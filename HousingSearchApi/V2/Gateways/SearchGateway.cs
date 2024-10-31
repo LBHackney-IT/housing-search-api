@@ -23,19 +23,19 @@ public class SearchGateway : ISearchGateway
         // General purpose schema-agnostic search operations
         var defaultShouldOperations = new[]
         {
-            SearchOperations.MultiMatchSingleField(searchParams.SearchText, boost: 6),
-            SearchOperations.MultiMatchCrossFields(searchParams.SearchText, boost: 2),
-            SearchOperations.MultiMatchMostFields(searchParams.SearchText, boost: 1)
+            SearchOperations.MultiMatchSingleField(searchParams.SearchText, boost: 6)
         };
 
         // Extend search operations depending on the index
         if (indexName == "assets")
         {
             var addressFieldName = "assetAddress.addressLine1";
+            Fields tenureFields = new[] { "tenure.id", "tenure.paymentReference" };
             shouldOperations.AddRange(new[]
             {
                 SearchOperations.MatchPhrasePrefix(searchParams.SearchText, fieldName: addressFieldName, boost: 10),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fieldName: addressFieldName, boost: 5),
+                SearchOperations.NestedMultiMatch(searchParams.SearchText, "tenure", tenureFields, boost: 5),
             });
             shouldOperations.AddRange(defaultShouldOperations);
         }
@@ -83,7 +83,7 @@ public class SearchGateway : ISearchGateway
                     .Should(shouldOperations)
                 )
             )
-            .MinScore(25)
+            .MinScore(0)
             .Size(searchParams.PageSize)
             .From((searchParams.Page - 1) * searchParams.PageSize)
             .TrackTotalHits()

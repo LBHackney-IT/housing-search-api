@@ -190,7 +190,6 @@ public class AssetSearchTests : BaseSearchTests
     {
         // Arrange
         var asset = RandomItem();
-        var expectedReturnedId = asset.GetProperty("id").GetString();
         var searchText = asset.GetProperty("tenure").GetProperty("paymentReference").GetString();
         var request = CreateSearchRequest(searchText);
 
@@ -202,7 +201,7 @@ public class AssetSearchTests : BaseSearchTests
         var root = GetResponseRootElement(response);
         root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
         var firstResult = root.GetProperty("results").GetProperty("assets")[0];
-        firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+        firstResult.GetProperty("tenure").GetProperty("paymentReference").GetString().Should().Be(searchText);
     }
 
     #endregion

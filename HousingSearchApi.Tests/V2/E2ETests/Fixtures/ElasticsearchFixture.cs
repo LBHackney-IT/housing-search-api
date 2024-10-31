@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 using Xunit;
-using System.Collections.Generic;
 
 namespace HousingSearchApi.Tests.V2.E2ETests.Fixtures;
 
@@ -26,7 +25,7 @@ public class ElasticsearchFixture : IAsyncLifetime
     {
         var existsResponse = Client.Indices.Exists(indexName);
         if (existsResponse.Exists)
-            Client.Indices.Delete(indexName);
+            return;
 
         var indexDefinition = File.ReadAllText(Path.Combine(_indexFilesPath, filename));
         var response = Client.LowLevel.Indices.Create<StringResponse>(indexName, indexDefinition);
@@ -36,23 +35,26 @@ public class ElasticsearchFixture : IAsyncLifetime
         Console.WriteLine("Index created successfully.");
     }
 
-    public async Task LoadDataAsync(string filename)
+    public void LoadData(string filename, string indexName)
     {
+        Console.WriteLine($"Loading data from {filename} into index {indexName}");
         string jsonFilePath = Path.Combine(FixtureFilesPath, filename);
         if (!File.Exists(jsonFilePath))
             throw new FileNotFoundException($"The file {jsonFilePath} could not be found in directory {Directory.GetCurrentDirectory()}");
 
-
-        string jsonContent = await File.ReadAllTextAsync(jsonFilePath);
-
-        var bulkResponse = await Client.LowLevel.BulkAsync<StringResponse>(PostData.String(jsonContent));
+        string jsonContent = File.ReadAllText(jsonFilePath);
+        
+        // Perform the bulk insert with immediate refresh
+        var bulkResponse = Client.LowLevel.Bulk<StringResponse>(
+            PostData.String(jsonContent), 
+            new BulkRequestParameters { Refresh = Refresh.WaitFor }
+        );
 
         if (!bulkResponse.Success)
             throw new Exception("Bulk insert failed: " + bulkResponse.DebugInformation);
-
     }
 
-    public async Task InitializeAsync()
+    public Task InitializeAsync()
     {
         var indexSettingsFiles = new string[] { "assetIndex.json", "tenureIndex.json", "personIndex.json" };
 
@@ -63,13 +65,16 @@ public class ElasticsearchFixture : IAsyncLifetime
         }
 
         var filenames = new string[] { "assets.json", "tenures.json", "persons.json" };
-        foreach (string filename in filenames)
-            await LoadDataAsync(filename);
+        foreach (string filename in filenames){
+            var indexName = filename.Replace("Index.json", "") + "s";
+            LoadData(filename, indexName);
+        }
+
+        return Task.CompletedTask;
     }
 
     public Task DisposeAsync()
     {
-        // Clean up if necessary, e.g., deleting the index
         return Task.CompletedTask;
     }
 }
