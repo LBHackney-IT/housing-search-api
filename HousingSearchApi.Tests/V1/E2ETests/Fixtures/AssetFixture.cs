@@ -16,7 +16,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
     public class AssetFixture : BaseFixture
     {
         public List<QueryablePerson> Persons { get; private set; }
-        private const string INDEX = "assets";
+        private const string INDEX = "assets-test";
         public static AddressStub[] Addresses =
         {
             new AddressStub{ FirstLine = "59 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234650",
