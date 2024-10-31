@@ -24,14 +24,12 @@ public class ElasticsearchFixture : IAsyncLifetime
 
     public void CreateIndex(string filename, string indexName)
     {
-        var client = new ElasticClient();
-
-        var existsResponse = client.Indices.Exists(indexName);
+        var existsResponse = Client.Indices.Exists(indexName);
         if (existsResponse.Exists)
-            client.Indices.Delete(indexName);
+            Client.Indices.Delete(indexName);
 
         var indexDefinition = File.ReadAllText(Path.Combine(_indexFilesPath, filename));
-        var response = client.LowLevel.Indices.Create<StringResponse>(indexName, indexDefinition);
+        var response = Client.LowLevel.Indices.Create<StringResponse>(indexName, indexDefinition);
 
         if (!response.Success)
             throw new Exception("Failed to create index: " + response.DebugInformation);
