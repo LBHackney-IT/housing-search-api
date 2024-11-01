@@ -25,6 +25,7 @@ public class SearchGateway : ISearchGateway
         {
             SearchOperations.MultiMatchSingleField(searchParams.SearchText, boost: 6)
         };
+        shouldOperations.AddRange(defaultShouldOperations);
 
         // Extend search operations depending on the index
         if (indexName == "assets")
@@ -37,7 +38,6 @@ public class SearchGateway : ISearchGateway
                 SearchOperations.WildcardMatch(searchParams.SearchText, fieldName: addressFieldName, boost: 5),
                 SearchOperations.NestedMultiMatch(searchParams.SearchText, "tenure", tenureFields, boost: 5),
             });
-            shouldOperations.AddRange(defaultShouldOperations);
         }
         else if (indexName == "tenures")
         {
@@ -49,7 +49,6 @@ public class SearchGateway : ISearchGateway
                 SearchOperations.MatchPhrasePrefix(searchParams.SearchText, fieldName: addressFieldName, boost: 10),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fieldName: addressFieldName, boost: 5),
             });
-            shouldOperations.AddRange(defaultShouldOperations);
         }
         else if (indexName == "persons")
         {
@@ -66,7 +65,6 @@ public class SearchGateway : ISearchGateway
 
             shouldOperations.AddRange(new[]
             {
-                SearchOperations.MultiMatchSingleField(searchParams.SearchText, boost: 6),
                 SearchOperations.MultiMatchMostFields(searchParams.SearchText, boost: 10, fields: nameFields),
                 SearchOperations.NestedMultiMatch(searchParams.SearchText, "tenures", addressFields, boost: 10),
             });
