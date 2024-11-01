@@ -178,7 +178,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusReasonShouldBeIncluded(approvalStatusReason, 5))
                 .BDDfy();
         }
-        
         [Fact]
         public void ServiceFiltersTrueContractIsActiveStatusWithoutSearchText()
         {
