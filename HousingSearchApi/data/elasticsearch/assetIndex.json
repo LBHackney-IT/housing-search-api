@@ -21,8 +21,7 @@
       "assetAddress": {
         "properties": {
           "uprn": {
-            "type": "keyword",
-            "normalizer": "my_normalizer"
+            "type": "keyword"
           },
           "addressLine1": {
             "type": "text",
@@ -75,6 +74,7 @@
         }
       },
       "tenure": {
+        "type": "nested",
         "properties": {
           "id": {
             "type": "text",

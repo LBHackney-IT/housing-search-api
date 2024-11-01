@@ -6,9 +6,24 @@ using System.Linq;
 
 namespace HousingSearchApi.V2.Gateways;
 
-
-class SearchOperations
+static class SearchOperations
 {
+    public static Func<QueryContainerDescriptor<object>, QueryContainer>
+    NestedMultiMatch(string searchText, string path, Fields fields, int boost)
+    {
+        return q => q.Nested(n => n
+            .Path(path)
+            .Query(qq => qq
+                .MultiMatch(mm => mm
+                    .Query(searchText)
+                    .Fields(fields)
+                    .Fuzziness(Fuzziness.Auto)
+                    .Boost(boost)
+                )
+            )
+        );
+    }
+
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
     SearchWithWildcardQuery(string searchText, List<string> fields, int boost)
     {
@@ -27,26 +42,6 @@ class SearchOperations
             .Fields(fields.Select(f => (Field) f).ToArray())
             .DefaultOperator(Operator.And)
             .Boost(boost)
-        );
-    }
-
-    public static Func<QueryContainerDescriptor<object>, QueryContainer>
-    SearchWithExactQuery(string searchText, List<string> fields, int boost)
-    {
-        string Process(string searchText)
-        {
-            searchText = searchText.Trim();
-            if (searchText.Split(' ').Length == 2)
-                return searchText.Replace(" ", " AND ");
-            return searchText;
-        }
-
-        var processedQuery = Process(searchText);
-
-        return q => q.QueryString(qs => qs
-            .Query(processedQuery)
-            .Fields(fields.Select(f => (Field) $"{f}^{boost}").ToArray())
-            .DefaultOperator(Operator.And)
         );
     }
 
@@ -87,10 +82,10 @@ class SearchOperations
 
     // Score for matching a high number (quantity) of fields
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
-        MultiMatchMostFields(string searchText, int boost) =>
+        MultiMatchMostFields(string searchText, int boost, Fields fields = null) =>
         should => should
             .MultiMatch(mm => mm
-                .Fields("*")
+                .Fields(fields ?? new[] { "*" })
                 .Query(searchText)
                 .Type(TextQueryType.MostFields)
                 .Operator(Operator.Or)
