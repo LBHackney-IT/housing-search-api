@@ -54,14 +54,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                                                     .ConfigureAwait(true);
 
                 var processes = Processes.Select(x => x.ToDatabase());
-                var awaitable = ElasticSearchClient.IndexManyAsync(processes, INDEX).ConfigureAwait(true);
 
-                while (!awaitable.GetAwaiter().IsCompleted)
-                {
-
-                }
-
-                Thread.Sleep(5000);
+                ElasticSearchClient.IndexMany(processes, INDEX);
+                do
+                    Thread.Sleep(100);
+                while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
             }
         }
 

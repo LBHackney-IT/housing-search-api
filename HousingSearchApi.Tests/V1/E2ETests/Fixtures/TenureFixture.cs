@@ -95,9 +95,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             ElasticSearchClient.IndexMany(listOfTenures, INDEX);
 
             do
-            {
                 Thread.Sleep(100);
-            } while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
 
         public void GivenATenureWithSpecificUprn(string uprn)
@@ -112,9 +111,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             ElasticSearchClient.IndexMany(listOfTenures, INDEX);
 
             do
-            {
                 Thread.Sleep(100);
-            } while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
 
         public void GivenTaTenuresExist(int tenuresToCreate)
@@ -131,9 +129,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             ElasticSearchClient.IndexMany(listOfTenures, INDEX);
 
             do
-            {
                 Thread.Sleep(100);
-            } while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
 
         public void GivenSimilarTaTenuresExist(string bookingStatus, string fullName)
@@ -160,9 +157,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             ElasticSearchClient.IndexMany(listOfTenures, INDEX);
 
             do
-            {
                 Thread.Sleep(100);
-            } while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
 
         public void GivenTenuresWithDifferentStartDatesExist()
@@ -195,9 +191,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             ElasticSearchClient.IndexMany(listOfTenures, INDEX);
 
             do
-            {
                 Thread.Sleep(100);
-            } while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
     }
 }

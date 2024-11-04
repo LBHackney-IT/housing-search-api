@@ -34,14 +34,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                     .ConfigureAwait(true);
 
                 var persons = CreatePersonData();
-                var awaitable = ElasticSearchClient.IndexManyAsync(persons, INDEX).ConfigureAwait(true);
 
-                while (!awaitable.GetAwaiter().IsCompleted)
-                {
-
-                }
-
-                Thread.Sleep(5000);
+                ElasticSearchClient.IndexMany(persons, INDEX);
+                do
+                    Thread.Sleep(100);
+                while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
             }
         }
 
@@ -126,11 +123,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             specificPerson3.Surname = lastName + lastName;
             listOfPersons.Add(specificPerson4);
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfPersons, INDEX).ConfigureAwait(true);
-
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(5000);
+            ElasticSearchClient.IndexMany(listOfPersons, INDEX);
+            do
+                Thread.Sleep(100);
+            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
 
         public void GivenDifferentTypesOfTenureTypes(string firstName, string lastName, List<string> list)
@@ -153,11 +149,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 });
             }
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfPersons, INDEX).ConfigureAwait(true);
-
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(5000);
+            ElasticSearchClient.IndexMany(listOfPersons, INDEX);
+            do
+                Thread.Sleep(100);
+            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
 
         public void GivenThereExistPersonsWithDifferentPersonTypes(string firstName, string lastName, List<PersonType> personTypes)
@@ -174,11 +169,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 });
             }
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfPersons, INDEX).ConfigureAwait(true);
-
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(5000);
+            ElasticSearchClient.IndexMany(listOfPersons, INDEX);
+            do
+            {
+                Thread.Sleep(100);
+            } while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
     }
 }
