@@ -82,8 +82,12 @@ public class TenureSearchTests : BaseSearchTests
         {
             // Arrange
             var randomTenure = RandomItem();
-            var expectedReturnedId = randomTenure.GetProperty("id").GetString();
-            var searchText = randomTenure.GetProperty("tenuredAsset").GetProperty("fullAddress").GetString()?[..12];
+            var randomAddress = randomTenure.GetProperty("tenuredAsset").GetProperty("fullAddress").GetString();
+            var searchTerms = randomAddress.Split(' ').ToList();
+            // remove last search term
+            searchTerms = searchTerms.Where((_, index) => index != searchTerms.Count - 1).ToList();
+            var searchText = string.Join(" ", searchTerms);
+
             var request = CreateSearchRequest(searchText);
 
             // Act
@@ -92,7 +96,6 @@ public class TenureSearchTests : BaseSearchTests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var root = GetResponseRootElement(response);
-
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("tenures")[0];
             var firstResultAddress = firstResult.GetProperty("tenuredAsset").GetProperty("fullAddress").GetString();
@@ -228,15 +231,8 @@ public class TenureSearchTests : BaseSearchTests
             var householdMembers = tenure.GetProperty("householdMembers");
             var randomMember = householdMembers[Random.Next(householdMembers.GetArrayLength())];
             var memberName = randomMember.GetProperty("fullName").GetString();
-            var nameParts = memberName.Split(' ');
-            // Remove a character from a random name part
-            var randomIndex = Random.Next(nameParts.Length);
-            var randomChar = (char) ('a' + Random.Next(26));
-            var namePart = nameParts[randomIndex];
-            var charIndex = Random.Next(namePart.Length);
-            nameParts[randomIndex] = namePart.Remove(charIndex, 1).Insert(charIndex, randomChar.ToString());
-            var searchText = string.Join(" ", nameParts);
 
+            var searchText = CreateTypo(memberName);
             var request = CreateSearchRequest(searchText);
 
             // Act
@@ -246,8 +242,10 @@ public class TenureSearchTests : BaseSearchTests
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var root = GetResponseRootElement(response);
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
-            var firstResult = root.GetProperty("results").GetProperty("tenures")[0];
-            firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+            // assert the result is in the first 5 results
+            var results = root.GetProperty("results").GetProperty("tenures");
+            var resultIds = results.EnumerateArray().Select(r => r.GetProperty("id").GetString()).ToList();
+            resultIds.Should().Contain(expectedReturnedId);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);

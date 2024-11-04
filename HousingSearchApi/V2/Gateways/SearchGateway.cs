@@ -43,7 +43,7 @@ public class SearchGateway : ISearchGateway
             shouldOperations.AddRange(new[]
             {
                 SearchOperations.MultiMatchBestFields(searchParams.SearchText, boost: 6),
-                SearchOperations.NestedMultiMatchPhrase(searchParams.SearchText, "householdMembers", nameFields, boost: 10),
+                SearchOperations.NestedMultiMatch(searchParams.SearchText, "householdMembers", nameFields, matchType: TextQueryType.Phrase, fuzziness: null, boost: 10),
                 SearchOperations.NestedMultiMatch(searchParams.SearchText, "householdMembers", nameFields, matchType: TextQueryType.BestFields, fuzziness: Fuzziness.Auto, boost: 10),
                 SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: keyFields, boost: 10),
             });

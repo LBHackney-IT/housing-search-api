@@ -30,23 +30,6 @@ static class SearchOperations
             );
     }
 
-    public static Func<QueryContainerDescriptor<object>, QueryContainer>
-    NestedMultiMatchPhrase(string searchText, string path, Fields fields, int boost = 1)
-    {
-        return should => should
-            .Nested(n => n
-                .Path(path)
-                .Query(qq => qq
-                    .MultiMatch(mm => mm
-                        .Type(TextQueryType.Phrase)
-                        .Query(searchText)
-                        .Fields(fields)
-                        .Boost(boost)
-                    )
-                )
-            );
-    }
-
     // Score for matching a single (best) field
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
         MultiMatchBestFields(string searchText, Fields fields = null, int boost = 1) =>
