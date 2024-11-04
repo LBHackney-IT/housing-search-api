@@ -11,7 +11,7 @@ namespace HousingSearchApi.Tests.V2.E2ETests;
 public class AssetSearchTests : BaseSearchTests
 {
 
-    public AssetSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "assets") {}
+    public AssetSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "assets") { }
 
     #region General
 

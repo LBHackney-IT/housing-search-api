@@ -111,12 +111,13 @@ public class BaseSearchTests
         return successCount;
     }
 
-    protected string CreateTypo(string text) {
+    protected string CreateTypo(string text)
+    {
         var chars = text.ToCharArray();
         var randomChar = Random.Next(0, 36);
         var charIndexes = chars.Select((c, i) => (c, i)).Where(t => char.IsLetterOrDigit(t.c)).Select(t => t.i).ToList();
         var randomIndex = Random.Next(0, charIndexes.Count);
-        chars[charIndexes[randomIndex]] = (char)('a' + randomChar);
+        chars[charIndexes[randomIndex]] = (char) ('a' + randomChar);
         return new string(chars);
     }
 }

@@ -14,7 +14,7 @@ namespace HousingSearchApi.Tests.V2.E2ETests;
 public class TenureSearchTests : BaseSearchTests
 {
 
-    public TenureSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "tenures"){}
+    public TenureSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "tenures") { }
 
 
     #region General

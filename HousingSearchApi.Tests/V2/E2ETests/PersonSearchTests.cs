@@ -15,7 +15,7 @@ namespace HousingSearchApi.Tests.V2.E2ETests;
 public class PersonSearchTests : BaseSearchTests
 {
 
-    public PersonSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "persons") {}
+    public PersonSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "persons") { }
 
 
     #region General
