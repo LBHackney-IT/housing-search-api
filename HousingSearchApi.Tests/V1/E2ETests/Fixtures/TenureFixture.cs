@@ -25,24 +25,20 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public void GivenATenureIndexExists()
         {
+            // clear index
             ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
+            var tenureSettingsDoc = File.ReadAllText("./data/elasticsearch/tenureIndex.json");
+            ElasticSearchClient.LowLevel.Indices.Create<BytesResponse>(INDEX, tenureSettingsDoc);
+            do
+                Thread.Sleep(100);
+            while (!ElasticSearchClient.Indices.Exists(Indices.Index(INDEX)).Exists);
 
-            if (!ElasticSearchClient.Indices.Exists(Indices.Index(INDEX)).Exists)
-            {
-                var tenureSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/tenureIndex.json").Result;
-                ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(INDEX, tenureSettingsDoc)
-                    .ConfigureAwait(true);
-
-                var tenures = CreateTenureData();
-                var awaitable = ElasticSearchClient.IndexManyAsync(tenures, INDEX).ConfigureAwait(true);
-
-                while (!awaitable.GetAwaiter().IsCompleted)
-                {
-
-                }
-
-                Thread.Sleep(1000);
-            }
+            // load data
+            var tenures = CreateTenureData();
+            ElasticSearchClient.IndexMany(tenures, INDEX);
+            do
+                Thread.Sleep(100);
+            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
 
         private List<QueryableTenure> CreateTenureData()
@@ -130,11 +126,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 listOfTenures.Add(tenure);
             }
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
+            ElasticSearchClient.IndexMany(listOfTenures, INDEX);
 
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(10000);
+            do
+            {
+                Thread.Sleep(100);
+            } while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
 
         public void GivenSimilarTaTenuresExist(string bookingStatus, string fullName)

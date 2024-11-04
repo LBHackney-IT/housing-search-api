@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 using HousingSearchApi.Tests.V2.E2ETests.Fixtures;
-using Xunit.Abstractions;
 
 
 namespace HousingSearchApi.Tests.V2.E2ETests;

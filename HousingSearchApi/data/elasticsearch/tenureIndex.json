@@ -1,7 +1,4 @@
 {
-  "aliases": {
-
-  },
   "mappings": {
     "properties": {
       "id": {
@@ -35,7 +32,6 @@
         }
       },
       "householdMembers": {
-        "type": "nested",
         "properties": {
           "id": {
             "type": "text",
@@ -99,7 +95,13 @@
             }
           },
           "uprn": {
-            "type": "keyword"
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
           }
         }
       },
