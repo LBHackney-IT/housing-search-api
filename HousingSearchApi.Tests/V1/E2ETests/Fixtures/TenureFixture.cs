@@ -29,16 +29,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
             var tenureSettingsDoc = File.ReadAllText("./data/elasticsearch/tenureIndex.json");
             ElasticSearchClient.LowLevel.Indices.Create<BytesResponse>(INDEX, tenureSettingsDoc);
-            do
-                Thread.Sleep(100);
-            while (!ElasticSearchClient.Indices.Exists(Indices.Index(INDEX)).Exists);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
 
             // load data
             var tenures = CreateTenureData();
             ElasticSearchClient.IndexMany(tenures, INDEX);
-            do
-                Thread.Sleep(100);
-            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         private List<QueryableTenure> CreateTenureData()
