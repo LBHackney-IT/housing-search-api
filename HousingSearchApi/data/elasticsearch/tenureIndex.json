@@ -15,7 +15,6 @@
       },
       "paymentReference": {
         "type": "keyword",
-        "normalizer": "my_normalizer",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -57,7 +56,6 @@
           },
           "fullName": {
             "type": "keyword",
-            "normalizer": "my_normalizer",
             "fields": {
               "keyword": {
                 "type": "keyword",
@@ -141,20 +139,6 @@
     }
   },
   "settings": {
-    "analysis": {
-      "normalizer": {
-        "my_normalizer": {
-          "type": "custom",
-          "char_filter": [
-
-          ],
-          "filter": [
-            "lowercase",
-            "asciifolding"
-          ]
-        }
-      }
-    },
     "index": {
       "number_of_shards": "1",
       "number_of_replicas": "1"
