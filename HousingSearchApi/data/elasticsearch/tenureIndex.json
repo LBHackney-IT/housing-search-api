@@ -35,6 +35,7 @@
         }
       },
       "householdMembers": {
+        "type": "nested",
         "properties": {
           "id": {
             "type": "text",
@@ -55,13 +56,7 @@
             }
           },
           "fullName": {
-            "type": "keyword",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+            "type": "text"
           },
           "isResponsible": {
             "type": "text",
@@ -104,13 +99,7 @@
             }
           },
           "uprn": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+            "type": "keyword"
           }
         }
       },
