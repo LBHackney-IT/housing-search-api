@@ -63,14 +63,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                     .ConfigureAwait(true);
 
                 var assets = CreateAssetData();
-                var awaitable = ElasticSearchClient.IndexManyAsync(assets, INDEX).ConfigureAwait(true);
 
-                while (!awaitable.GetAwaiter().IsCompleted)
-                {
-
-                }
-
-                Thread.Sleep(5000);
+                ElasticSearchClient.IndexMany(assets, INDEX);
+                do
+                    Thread.Sleep(100);
+                while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
             }
         }
 
