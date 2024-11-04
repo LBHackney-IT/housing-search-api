@@ -71,7 +71,7 @@ static class SearchOperations
 
     // Score for matching a value which contains the search text
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
-        WildcardMatch(string searchText, string fieldName, int boost)
+        WildcardMatch(string searchText, Fields fieldNames, int boost)
     {
         List<string> ProcessWildcards(string phrase)
         {
@@ -81,12 +81,16 @@ static class SearchOperations
         }
 
         var listOfWildcardedWords = ProcessWildcards(searchText);
-        var wildcardQueries = listOfWildcardedWords.Select(term => new WildcardQuery
-        {
-            Field = fieldName,
-            Value = $"*{term}*",
-            Boost = boost
-        }).ToList();
+        var wildcardQueries = fieldNames.SelectMany(fieldName => 
+            listOfWildcardedWords.Select(term =>
+                new WildcardQuery
+                    {
+                    Field = fieldName,
+                    Value = term,
+                    Boost = boost
+                    }
+                )
+        ).ToList();
 
         return q => q.Bool(b => b
             .Should(wildcardQueries.Select(wq =>

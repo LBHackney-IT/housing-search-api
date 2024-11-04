@@ -23,13 +23,13 @@ public class SearchGateway : ISearchGateway
         // Extend search operations depending on the index
         if (indexName == "assets")
         {
-            var addressFieldNames = new[] { "assetAddress.addressLine1", "assetAddress.addressLine2", "assetAddress.uprn", "assetAddress.postCode" };
+            Fields addressFieldNames = new[] { "assetAddress.addressLine1", "assetAddress.addressLine2", "assetAddress.uprn", "assetAddress.postCode" };
             Fields tenureFields = new[] { "tenure.id", "tenure.paymentReference" };
             shouldOperations.AddRange(new[]
             {
                 SearchOperations.MultiMatchBestFields(searchParams.SearchText, boost: 6),
                 SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: addressFieldNames, boost: 10),
-                SearchOperations.WildcardMatch(searchParams.SearchText, fieldName: "assetAddress.addressLine1", boost: 10),
+                SearchOperations.WildcardMatch(searchParams.SearchText, fieldNames: new[] {"assetAddress.addressLine1"}, boost: 10),
                 SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: tenureFields, boost: 10),
             });
         }
@@ -43,8 +43,7 @@ public class SearchGateway : ISearchGateway
             shouldOperations.AddRange(new[]
             {
                 SearchOperations.MultiMatchBestFields(searchParams.SearchText, boost: 6),
-                SearchOperations.NestedMultiMatch(searchParams.SearchText, "householdMembers", nameFields, matchType: TextQueryType.Phrase, fuzziness: null, boost: 10),
-                SearchOperations.NestedMultiMatch(searchParams.SearchText, "householdMembers", nameFields, matchType: TextQueryType.BestFields, fuzziness: Fuzziness.Auto, boost: 10),
+                SearchOperations.WildcardMatch(searchParams.SearchText, fieldNames: nameFields, boost: 10),
                 SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: keyFields, boost: 10),
             });
         }

@@ -25,7 +25,7 @@ public class ElasticsearchFixture : IAsyncLifetime
     {
         var existsResponse = Client.Indices.Exists(indexName);
         if (existsResponse.Exists)
-            return;
+            Client.Indices.Delete(indexName);
 
         var indexDefinition = File.ReadAllText(Path.Combine(_indexFilesPath, filename));
         var response = Client.LowLevel.Indices.Create<StringResponse>(indexName, indexDefinition);
