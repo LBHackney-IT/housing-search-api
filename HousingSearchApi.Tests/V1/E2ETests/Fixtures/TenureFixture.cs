@@ -92,11 +92,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             thirdTenure.HouseholdMembers.First().FullName = fullName;
             listOfTenures.Add(forthTenure);
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
+            ElasticSearchClient.IndexMany(listOfTenures, INDEX);
 
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(10000);
+            do
+            {
+                Thread.Sleep(100);
+            } while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
 
         public void GivenATenureWithSpecificUprn(string uprn)
@@ -108,11 +109,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             listOfTenures.Add(tenure);
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
+            ElasticSearchClient.IndexMany(listOfTenures, INDEX);
 
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(10000);
+            do
+            {
+                Thread.Sleep(100);
+            } while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
 
         public void GivenTaTenuresExist(int tenuresToCreate)
@@ -155,11 +157,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             thirdTenure.HouseholdMembers.First().FullName = fullName;
             listOfTenures.Add(thirdTenure);
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
+            ElasticSearchClient.IndexMany(listOfTenures, INDEX);
 
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(10000);
+            do
+            {
+                Thread.Sleep(100);
+            } while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
 
         public void GivenTenuresWithDifferentStartDatesExist()
@@ -189,11 +192,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             oldestTenure.Id = oldestRecord;
             listOfTenures.Add(oldestTenure);
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
+            ElasticSearchClient.IndexMany(listOfTenures, INDEX);
 
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(10000);
+            do
+            {
+                Thread.Sleep(100);
+            } while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
     }
 }
