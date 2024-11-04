@@ -11,7 +11,6 @@ using Xunit.Abstractions;
 
 namespace HousingSearchApi.Tests.V2.E2ETests;
 
-[Collection("V2.E2ETests Collection")]
 public class TenureSearchTests : BaseSearchTests
 {
     private readonly HttpClient _httpClient;
@@ -216,7 +215,7 @@ public class TenureSearchTests : BaseSearchTests
     }
 
     [Fact]
-    public async Task SearchPerson_NameCutoff()
+    public async Task SearchPerson_NameTypo()
     {
         const int attempts = 10;
         const int minSuccessCount = 9;
@@ -231,9 +230,48 @@ public class TenureSearchTests : BaseSearchTests
             var memberName = randomMember.GetProperty("fullName").GetString();
             var nameParts = memberName.Split(' ');
             // Remove a character from a random name part
-            nameParts[Random.Next(nameParts.Length)] = nameParts[Random.Next(nameParts.Length)][..^1];
+            var randomIndex = Random.Next(nameParts.Length);
+            var randomChar = (char) ('a' + Random.Next(26));
+            var namePart = nameParts[randomIndex];
+            var charIndex = Random.Next(namePart.Length);
+            nameParts[randomIndex] = namePart.Remove(charIndex, 1).Insert(charIndex, randomChar.ToString());
             var searchText = string.Join(" ", nameParts);
 
+            var request = CreateSearchRequest(searchText);
+
+            // Act
+            var response = await _httpClient.SendAsync(request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var root = GetResponseRootElement(response);
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResult = root.GetProperty("results").GetProperty("tenures")[0];
+            firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+        });
+
+        successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
+    }
+
+    [Fact]
+    public async Task SearchPerson_NameMissingTitle()
+    {
+        const int attempts = 10;
+        const int minSuccessCount = 9;
+
+        var successCount = await RunWithScore(attempts, async () =>
+        {
+            // Arrange
+            var tenure = RandomItem();
+            var expectedReturnedId = tenure.GetProperty("id").GetString();
+            var householdMembers = tenure.GetProperty("householdMembers");
+            var randomMember = householdMembers[Random.Next(householdMembers.GetArrayLength())];
+            var memberName = randomMember.GetProperty("fullName").GetString();
+            var nameParts = memberName.Split(' ').ToList();
+
+            // Remove the title
+            nameParts.RemoveAt(0);
+            var searchText = string.Join(" ", nameParts);
             var request = CreateSearchRequest(searchText);
 
             // Act

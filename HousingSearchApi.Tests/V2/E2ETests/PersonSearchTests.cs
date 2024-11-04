@@ -12,7 +12,6 @@ using NUnit.Framework;
 
 namespace HousingSearchApi.Tests.V2.E2ETests;
 
-[Collection("V2.E2ETests Collection")]
 public class PersonSearchTests : BaseSearchTests
 {
     private readonly HttpClient _httpClient;

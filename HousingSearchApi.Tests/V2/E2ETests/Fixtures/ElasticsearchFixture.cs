@@ -67,7 +67,7 @@ public class ElasticsearchFixture : IAsyncLifetime
         var filenames = new string[] { "assets.json", "tenures.json", "persons.json" };
         foreach (string filename in filenames)
         {
-            var indexName = filename.Replace("Index.json", "") + "s";
+            var indexName = filename.Replace(".json", "");
             LoadData(filename, indexName);
         }
 

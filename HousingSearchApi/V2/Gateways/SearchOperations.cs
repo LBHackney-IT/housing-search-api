@@ -9,23 +9,46 @@ namespace HousingSearchApi.V2.Gateways;
 static class SearchOperations
 {
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
-    NestedMultiMatch(string searchText, string path, Fields fields, int boost)
+    NestedMultiMatch(string searchText, string path, Fields fields, TextQueryType matchType = TextQueryType.BestFields, Fuzziness fuzziness = null, int boost = 1)
     {
-        return q => q.Nested(n => n
-            .Path(path)
-            .Query(qq => qq
-                .MultiMatch(mm => mm
-                    .Query(searchText)
-                    .Fields(fields)
-                    .Fuzziness(Fuzziness.Auto)
-                    .Boost(boost)
+        return should => should
+            .Nested(n => n
+                .Path(path)
+                .Query(qq => qq
+                    .MultiMatch(mm =>
+                        {
+                            mm.Type(matchType)
+                            .Query(searchText)
+                            .Fields(fields)
+                            .Boost(boost);
+                            if (fuzziness != null)
+                                mm.Fuzziness(fuzziness);
+                            return mm;
+                        }
+                    )
                 )
-            )
-        );
+            );
     }
 
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
-    SearchWithWildcardQuery(string searchText, List<string> fields, int boost)
+    NestedMultiMatchPhrase(string searchText, string path, Fields fields, int boost = 1)
+    {
+        return should => should
+            .Nested(n => n
+                .Path(path)
+                .Query(qq => qq
+                    .MultiMatch(mm => mm
+                        .Type(TextQueryType.Phrase)
+                        .Query(searchText)
+                        .Fields(fields)
+                        .Boost(boost)
+                    )
+                )
+            );
+    }
+
+    public static Func<QueryContainerDescriptor<object>, QueryContainer>
+    SimpleQueryStringWords(string searchText, List<string> fields, int boost)
     {
         List<string> ProcessWildcards(string phrase)
         {
@@ -37,11 +60,12 @@ static class SearchOperations
         var listOfWildcardedWords = ProcessWildcards(searchText);
         var queryString = $"({string.Join(" AND ", listOfWildcardedWords)}) " + string.Join(" ", listOfWildcardedWords);
 
-        return q => q.QueryString(qs => qs
-            .Query(queryString)
-            .Fields(fields.Select(f => (Field) f).ToArray())
-            .DefaultOperator(Operator.And)
-            .Boost(boost)
+        return should => should
+            .QueryString(qs => qs
+                .Query(queryString)
+                .Fields(fields.Select(f => (Field) f).ToArray())
+                .DefaultOperator(Operator.And)
+                .Boost(boost)
         );
     }
 
@@ -57,10 +81,10 @@ static class SearchOperations
 
     // Score for matching a single (best) field
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
-        MultiMatchSingleField(string searchText, int boost) =>
+        MultiMatchBestFields(string searchText, Fields fields = null, int boost = 1) =>
         should => should
             .MultiMatch(mm => mm
-                .Fields("*")
+                .Fields(fields ?? new[] { "*" })
                 .Query(searchText)
                 .Type(TextQueryType.BestFields)
                 .Operator(Operator.And)
@@ -70,10 +94,10 @@ static class SearchOperations
 
     // Score for matching the combination of many fields
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
-        MultiMatchCrossFields(string searchText, int boost) =>
+        MultiMatchCrossFields(string searchText, Fields fields = null, int boost = 1) =>
         should => should
             .MultiMatch(mm => mm
-                .Fields("*")
+                .Fields(fields ?? new[] { "*" })
                 .Query(searchText)
                 .Type(TextQueryType.CrossFields)
                 .Operator(Operator.Or)

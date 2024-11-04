@@ -7,21 +7,22 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using HousingSearchApi.Tests.V2.E2ETests.Fixtures;
 using Microsoft.Extensions.Logging;
-using Xunit;
 
 namespace HousingSearchApi.Tests.V2.E2ETests;
 
+using Nest;
 using Xunit;
 
+
 [CollectionDefinition("V2.E2ETests Collection", DisableParallelization = true)]
-public class V2E2ETestsCollection
+public class V2E2ETestsCollection : ICollectionFixture<CombinedFixture>
 {
     // This class is used only to define the collection and its settings.
 }
 
-public class BaseSearchTests : IClassFixture<CombinedFixture>
+[Collection("V2.E2ETests Collection")]
+public class BaseSearchTests
 {
-    private readonly string _fixtureFilePath;
     private readonly string _indexName;
 
     protected readonly Random Random = new();
@@ -32,7 +33,6 @@ public class BaseSearchTests : IClassFixture<CombinedFixture>
     protected BaseSearchTests(CombinedFixture combinedFixture, string indexName)
     {
         _indexName = indexName;
-        _fixtureFilePath = Path.Combine(combinedFixture.Elasticsearch.FixtureFilesPath, $"{indexName}.json");
     }
 
     protected HttpRequestMessage CreateSearchRequest(string searchText) =>
@@ -48,31 +48,39 @@ public class BaseSearchTests : IClassFixture<CombinedFixture>
         return doc.RootElement;
     }
 
-    // Return a random item from the fixture json file for the current index
+
+    protected IElasticClient GetElasticsearch()
+    {
+        var elasticsearchHost = Environment.GetEnvironmentVariable("ELASTICSEARCH_DOMAIN_URL") ?? "http://localhost:9200";
+        var settings = new ConnectionSettings(new Uri(elasticsearchHost));
+        var client = new ElasticClient(settings);
+        // check client connection
+        var pingResult = client.Ping();
+        if (!pingResult.IsValid)
+            throw new Exception("Elasticsearch client connection failed.");
+
+        return client;
+    }
+
+
     protected JsonElement RandomItem()
     {
-        using StreamReader r = new StreamReader(_fixtureFilePath);
-        string json = r.ReadToEnd();
-        List<string> splitLines = new List<string>(json.Split("\n"))
-            .Where(line => !line.Contains("index") && !string.IsNullOrWhiteSpace(line)
-            ).ToList();
-
-        JsonDocument TryParse(string strJson)
-        {
-            try
-            {
-                return JsonDocument.Parse(strJson);
-            }
-            catch (JsonException)
-            {
-                return null;
-            }
-        }
-
-        var items = splitLines.Select(line => TryParse(line)?.RootElement).Where(x => x != null);
-        var jsonElements = items as JsonElement?[] ?? items.ToArray();
-        var item = jsonElements.ElementAt(Random.Next(jsonElements.Count()));
-        return (JsonElement) item;
+        var es = GetElasticsearch();
+        var res = es.Search<Dictionary<string, object>>(s => s
+            .Index(_indexName)
+            .Query(q => q
+                .FunctionScore(fs => fs
+                    .Query(qq => qq.MatchAll())
+                    .Functions(f => f
+                        .RandomScore()
+                    )
+                    .BoostMode(FunctionBoostMode.Multiply)
+                )
+            )
+            .Size(1)
+        );
+        var firstDoc = JsonSerializer.Serialize(res.Documents.First());
+        return JsonDocument.Parse(firstDoc).RootElement;
     }
 
     /// <summary>

@@ -1,163 +1,67 @@
 {
-  "aliases": {
-
-  },
   "mappings": {
     "properties": {
       "id": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "type": "keyword"
       },
       "paymentReference": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "type": "keyword"
       },
       "startOfTenureDate": {
-        "type": "date"
+        "type": "keyword"
       },
       "endOfTenureDate": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "type": "keyword"
       },
-      "householdMembers": {
+      "isActive": {
+        "type": "boolean"
+      },
+      "tenureType": {
         "properties": {
-          "id": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+          "description": {
+            "type": "keyword"
           },
-          "type": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "fullName": {
-            "type": "keyword",
-            "normalizer": "my_normalizer",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "isResponsible": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+          "code": {
+            "type": "keyword"
           }
         }
       },
       "tenuredAsset": {
         "properties": {
           "id": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "type": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "fullAddress": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+            "type": "keyword"
           },
           "uprn": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
           }
         }
       },
-      "tenureType": {
+      "householdMembers": {
+        "type": "nested",
         "properties": {
-          "code": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+          "id": {
+            "type": "keyword"
           },
-          "description": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+          "fullName": {
+            "type": "text"
+          },
+          "isResponsible": {
+            "type": "boolean"
+          },
+          "dateOfBirth": {
+            "type": "date"
+          },
+          "personTenureType": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
           }
         }
       }
-    }
-  },
-  "settings": {
-    "analysis": {
-      "normalizer": {
-        "my_normalizer": {
-          "type": "custom",
-          "char_filter": [
-
-          ],
-          "filter": [
-            "lowercase",
-            "asciifolding"
-          ]
-        }
-      }
-    },
-    "index": {
-      "number_of_shards": "1",
-      "number_of_replicas": "1"
     }
   }
 }
