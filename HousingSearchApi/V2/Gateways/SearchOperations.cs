@@ -47,38 +47,6 @@ static class SearchOperations
             );
     }
 
-    public static Func<QueryContainerDescriptor<object>, QueryContainer>
-    SimpleQueryStringWords(string searchText, List<string> fields, int boost)
-    {
-        List<string> ProcessWildcards(string phrase)
-        {
-            if (string.IsNullOrEmpty(phrase))
-                return new List<string>();
-            return phrase.Split(' ').Select(word => $"*{word}*").ToList();
-        }
-
-        var listOfWildcardedWords = ProcessWildcards(searchText);
-        var queryString = $"({string.Join(" AND ", listOfWildcardedWords)}) " + string.Join(" ", listOfWildcardedWords);
-
-        return should => should
-            .QueryString(qs => qs
-                .Query(queryString)
-                .Fields(fields.Select(f => (Field) f).ToArray())
-                .DefaultOperator(Operator.And)
-                .Boost(boost)
-        );
-    }
-
-    // Score for matching a value which starts with the search text
-    public static Func<QueryContainerDescriptor<object>, QueryContainer>
-        MatchPhrasePrefix(string searchText, string fieldName, int boost) =>
-        should => should
-            .MatchPhrasePrefix(mp => mp
-                .Field(fieldName)
-                .Query(searchText)
-                .Boost(boost)
-            );
-
     // Score for matching a single (best) field
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
         MultiMatchBestFields(string searchText, Fields fields = null, int boost = 1) =>
