@@ -29,16 +29,16 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             if (!ElasticSearchClient.Indices.Exists(Indices.Index(INDEX)).Exists)
             {
-                var personSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/personIndex.json").Result;
-                ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(INDEX, personSettingsDoc)
-                    .ConfigureAwait(true);
+                // clear index
+                ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
+                var personSettingsDoc = File.ReadAllText("./data/elasticsearch/tenureIndex.json");
+                ElasticSearchClient.LowLevel.Indices.Create<BytesResponse>(INDEX, personSettingsDoc);
+                ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
 
+                // load data
                 var persons = CreatePersonData();
-
                 ElasticSearchClient.IndexMany(persons, INDEX);
-                do
-                    Thread.Sleep(100);
-                while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+                ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
             }
         }
 

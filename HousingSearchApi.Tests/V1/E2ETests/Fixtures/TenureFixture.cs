@@ -26,23 +26,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public void GivenATenureIndexExists()
         {
             ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
+            var tenureSettingsDoc = File.ReadAllText("./data/elasticsearch/tenureIndex.json");
+            ElasticSearchClient.LowLevel.Indices.Create<BytesResponse>(INDEX, tenureSettingsDoc);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
 
-            if (!ElasticSearchClient.Indices.Exists(Indices.Index(INDEX)).Exists)
-            {
-                var tenureSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/tenureIndex.json").Result;
-                ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(INDEX, tenureSettingsDoc)
-                    .ConfigureAwait(true);
-
-                var tenures = CreateTenureData();
-                var awaitable = ElasticSearchClient.IndexManyAsync(tenures, INDEX).ConfigureAwait(true);
-
-                while (!awaitable.GetAwaiter().IsCompleted)
-                {
-
-                }
-
-                Thread.Sleep(1000);
-            }
+            // load data
+            var tenures = CreateTenureData();
+            ElasticSearchClient.IndexMany(tenures, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         private List<QueryableTenure> CreateTenureData()
