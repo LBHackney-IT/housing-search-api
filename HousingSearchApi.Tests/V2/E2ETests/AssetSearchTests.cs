@@ -10,12 +10,8 @@ namespace HousingSearchApi.Tests.V2.E2ETests;
 
 public class AssetSearchTests : BaseSearchTests
 {
-    private readonly HttpClient _httpClient;
 
-    public AssetSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "assets")
-    {
-        _httpClient = combinedFixture.Factory.CreateClient();
-    }
+    public AssetSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "assets") {}
 
     #region General
 
@@ -26,7 +22,7 @@ public class AssetSearchTests : BaseSearchTests
         var request = CreateSearchRequest("XXXXXXXX");
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await HttpClient.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -54,7 +50,7 @@ public class AssetSearchTests : BaseSearchTests
             var request = CreateSearchRequest(query);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -80,7 +76,7 @@ public class AssetSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchTextPostcode);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -107,7 +103,7 @@ public class AssetSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -134,7 +130,7 @@ public class AssetSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -164,7 +160,7 @@ public class AssetSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -192,7 +188,7 @@ public class AssetSearchTests : BaseSearchTests
         var request = CreateSearchRequest(searchText);
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await HttpClient.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -216,7 +212,7 @@ public class AssetSearchTests : BaseSearchTests
         var request = CreateSearchRequest(searchText);
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await HttpClient.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);

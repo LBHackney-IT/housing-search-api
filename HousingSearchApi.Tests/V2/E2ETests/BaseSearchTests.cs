@@ -29,10 +29,12 @@ public class BaseSearchTests
 
     private readonly ILogger<BaseSearchTests> _logger = new Logger<BaseSearchTests>(new LoggerFactory());
 
+    public readonly HttpClient HttpClient;
 
     protected BaseSearchTests(CombinedFixture combinedFixture, string indexName)
     {
         _indexName = indexName;
+        HttpClient = combinedFixture.HttpClient;
     }
 
     protected HttpRequestMessage CreateSearchRequest(string searchText) =>

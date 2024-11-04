@@ -14,12 +14,8 @@ namespace HousingSearchApi.Tests.V2.E2ETests;
 
 public class PersonSearchTests : BaseSearchTests
 {
-    private readonly HttpClient _httpClient;
 
-    public PersonSearchTests(CombinedFixture combinedFixture, ITestOutputHelper testOutputHelper) : base(combinedFixture, indexName: "persons")
-    {
-        _httpClient = combinedFixture.Factory.CreateClient();
-    }
+    public PersonSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "persons") {}
 
 
     #region General
@@ -31,7 +27,7 @@ public class PersonSearchTests : BaseSearchTests
         var request = CreateSearchRequest("XXXXXXXX");
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await HttpClient.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -59,7 +55,7 @@ public class PersonSearchTests : BaseSearchTests
             var request = CreateSearchRequest(query);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -86,7 +82,7 @@ public class PersonSearchTests : BaseSearchTests
         var request = CreateSearchRequest(searchText);
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await HttpClient.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -123,7 +119,7 @@ public class PersonSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -157,7 +153,7 @@ public class PersonSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);

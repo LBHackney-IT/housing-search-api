@@ -13,12 +13,8 @@ namespace HousingSearchApi.Tests.V2.E2ETests;
 
 public class TenureSearchTests : BaseSearchTests
 {
-    private readonly HttpClient _httpClient;
 
-    public TenureSearchTests(CombinedFixture combinedFixture, ITestOutputHelper testOutputHelper) : base(combinedFixture, indexName: "tenures")
-    {
-        _httpClient = combinedFixture.Factory.CreateClient();
-    }
+    public TenureSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "tenures"){}
 
 
     #region General
@@ -30,7 +26,7 @@ public class TenureSearchTests : BaseSearchTests
         var request = CreateSearchRequest("XXXXXXXX");
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await HttpClient.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -58,7 +54,7 @@ public class TenureSearchTests : BaseSearchTests
             var request = CreateSearchRequest(query);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -91,7 +87,7 @@ public class TenureSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -124,7 +120,7 @@ public class TenureSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -153,7 +149,7 @@ public class TenureSearchTests : BaseSearchTests
         var request = CreateSearchRequest(searchText);
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await HttpClient.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -173,7 +169,7 @@ public class TenureSearchTests : BaseSearchTests
         var request = CreateSearchRequest(searchText);
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await HttpClient.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -204,7 +200,7 @@ public class TenureSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -236,7 +232,7 @@ public class TenureSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -273,7 +269,7 @@ public class TenureSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
