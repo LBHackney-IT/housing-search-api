@@ -171,9 +171,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             ElasticSearchClient.IndexMany(listOfPersons, INDEX);
             do
-            {
                 Thread.Sleep(100);
-            } while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
         }
     }
 }
