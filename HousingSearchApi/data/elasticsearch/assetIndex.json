@@ -1,49 +1,57 @@
 {
   "mappings": {
     "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "assetId": {
+        "type": "keyword"
+      },
+      "assetType": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "isAssetCautionaryAlerted": {
+        "type": "boolean"
+      },
       "assetAddress": {
         "properties": {
+          "uprn": {
+            "type": "keyword"
+          },
           "addressLine1": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "text"
           },
           "addressLine2": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "text"
           },
           "addressLine3": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "text"
           },
           "addressLine4": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "text"
           },
           "postCode": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "text"
           },
           "postPreamble": {
+            "type": "text"
+          }
+        }
+      },
+      "tenure": {
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "paymentReference": {
+            "type": "keyword"
+          },
+          "startOfTenureDate": {
             "type": "text",
             "fields": {
               "keyword": {
@@ -51,7 +59,36 @@
               }
             }
           },
-          "uprn": {
+          "endOfTenureDate": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "rootAsset": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "parentAssetIds": {
+        "type": "text",
+        "fields": {
+          "keyword": {
             "type": "keyword"
           }
         }
@@ -127,64 +164,6 @@
           }
         }
       },
-      "assetContract": {
-        "properties": {
-          "charges": {
-            "properties": {
-              "amount": {
-                "type": "float"
-              },
-              "frequency": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword"
-                  }
-                }
-              },
-              "id": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword"
-                  }
-                }
-              },
-              "type": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword"
-                  }
-                }
-              }
-            }
-          },
-          "id": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
-          }
-        }
-      },
-      "assetId": {
-        "type": "keyword"
-      },
-      "assetLocation": {
-        "properties": {
-          "floorNo": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
-          }
-        }
-      },
       "assetManagement": {
         "properties": {
           "agent": {
@@ -249,77 +228,58 @@
           }
         }
       },
-      "assetType": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword"
+      "assetLocation": {
+        "properties": {
+          "floorNo": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
           }
         }
       },
-      "id": {
-        "type": "keyword"
-      },
       "isActive": {
-        "type": "boolean"
-      },
-      "isAssetCautionaryAlerted": {
         "type": "boolean"
       },
       "isCautionaryAlerted": {
         "type": "boolean"
       },
-      "parentAssetIds": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword"
-          }
-        }
-      },
-      "rootAsset": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword"
-          }
-        }
-      },
-      "tenure": {
+      "assetContract": {
         "properties": {
-          "endOfTenureDate": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
+          "charges": {
+            "properties": {
+              "amount": {
+                "type": "float"
+              },
+              "frequency": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "id": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "type": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
               }
             }
           },
           "id": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
-          },
-          "paymentReference": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
-          },
-          "startOfTenureDate": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
-          },
-          "type": {
             "type": "text",
             "fields": {
               "keyword": {
