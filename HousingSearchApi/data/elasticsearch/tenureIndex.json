@@ -17,7 +17,7 @@
         "type": "date"
       },
       "endOfTenureDate": {
-        "type": "text"
+        "type": "keyword"
       },
       "householdMembers": {
         "properties": {
