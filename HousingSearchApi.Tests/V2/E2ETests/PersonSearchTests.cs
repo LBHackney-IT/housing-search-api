@@ -133,6 +133,35 @@ public class PersonSearchTests : BaseSearchTests
     }
 
     [Fact]
+    public async Task SearchPerson_NameTypo()
+    {
+        const int attempts = 10;
+        const int minSuccessCount = 9;
+
+        var successCount = await RunWithScore(attempts, async () =>
+        {
+            // Arrange
+            var person = RandomItem();
+            var expectedReturnedId = person.GetProperty("id").GetString();
+            var memberName = person.GetProperty("firstname").GetString() + " " + person.GetProperty("surname").GetString();
+            var searchText = CreateTypo(memberName);
+            var request = CreateSearchRequest(searchText);
+
+            // Act
+            var response = await HttpClient.SendAsync(request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var root = GetResponseRootElement(response);
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResult = root.GetProperty("results").GetProperty("persons")[0];
+            firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+        });
+
+        successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
+    }
+
+    [Fact]
     public async Task SearchPerson_NamePartRemoved()
     {
         const int attempts = 10;

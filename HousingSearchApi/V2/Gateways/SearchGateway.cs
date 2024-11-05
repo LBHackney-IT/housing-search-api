@@ -25,10 +25,12 @@ public class SearchGateway : ISearchGateway
         // Extend search operations depending on the index
         if (indexName == "assets")
         {
-            Fields addressFieldNames = new[] { "assetAddress.addressLine1", "assetAddress.addressLine2", "assetAddress.uprn", "assetAddress.postCode" };
+            Fields keywordFields = new[] { "id", "assetAddress.uprn", "propertyReference" };
+            Fields addressFieldNames = new[] { "assetAddress.addressLine1", "assetAddress.addressLine2", "assetAddress.postCode" };
             Fields tenureFields = new[] { "tenure.id", "tenure.paymentReference" };
             shouldOperations.AddRange(new[]
             {
+                SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: 10),
                 SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: addressFieldNames, boost: 10),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fieldNames: new[] {"assetAddress.addressLine1"}, boost: 10),
                 SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: tenureFields, boost: 10),
@@ -37,14 +39,15 @@ public class SearchGateway : ISearchGateway
         else if (indexName == "tenures")
         {
             Fields nameFields = new[] { "householdMembers.fullName" };
-            Fields keyFields = new[] {
-                "id", "paymentReference", // Main fields
-                "tenuredAsset.id", "tenuredAsset.fullAddress", "tenuredAsset.uprn", // Address fields
+            Fields keywordFields = new[] { "id", "paymentReference", "tenuredAsset.id", "tenuredAsset.uprn" };
+            Fields addressFieldNames = new[] {
+                "tenuredAsset.fullAddress"
             };
             shouldOperations.AddRange(new[]
             {
                 SearchOperations.WildcardMatch(searchParams.SearchText, fieldNames: nameFields, boost: 10),
-                SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: keyFields, boost: 10),
+                SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: 10),
+                SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: addressFieldNames, boost: 10),
             });
         }
         else if (indexName == "persons")
