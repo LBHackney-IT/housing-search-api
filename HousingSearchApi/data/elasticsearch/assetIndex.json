@@ -24,73 +24,32 @@
             "type": "keyword"
           },
           "addressLine1": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "text"
           },
           "addressLine2": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "text"
           },
           "addressLine3": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "text"
           },
           "addressLine4": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "text"
           },
           "postCode": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "text"
           },
           "postPreamble": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "text"
           }
         }
       },
       "tenure": {
-        "type": "nested",
         "properties": {
           "id": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "keyword"
           },
           "paymentReference": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "keyword"
           },
           "startOfTenureDate": {
             "type": "text",
@@ -330,6 +289,12 @@
           }
         }
       }
+    }
+  },
+  "settings": {
+    "index": {
+      "number_of_shards": "5",
+      "number_of_replicas": "1"
     }
   }
 }

@@ -25,7 +25,7 @@ public class ElasticsearchFixture : IAsyncLifetime
     {
         var existsResponse = Client.Indices.Exists(indexName);
         if (existsResponse.Exists)
-            return;
+            Client.Indices.Delete(indexName);
 
         var indexDefinition = File.ReadAllText(Path.Combine(_indexFilesPath, filename));
         var response = Client.LowLevel.Indices.Create<StringResponse>(indexName, indexDefinition);
@@ -67,7 +67,7 @@ public class ElasticsearchFixture : IAsyncLifetime
         var filenames = new string[] { "assets.json", "tenures.json", "persons.json" };
         foreach (string filename in filenames)
         {
-            var indexName = filename.Replace("Index.json", "") + "s";
+            var indexName = filename.Replace(".json", "");
             LoadData(filename, indexName);
         }
 

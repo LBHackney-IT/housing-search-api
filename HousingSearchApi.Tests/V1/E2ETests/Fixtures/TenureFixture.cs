@@ -25,6 +25,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public void GivenATenureIndexExists()
         {
+            // clear index
             ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
             var tenureSettingsDoc = File.ReadAllText("./data/elasticsearch/tenureIndex.json");
             ElasticSearchClient.LowLevel.Indices.Create<BytesResponse>(INDEX, tenureSettingsDoc);

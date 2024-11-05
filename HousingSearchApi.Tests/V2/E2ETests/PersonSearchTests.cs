@@ -12,15 +12,10 @@ using NUnit.Framework;
 
 namespace HousingSearchApi.Tests.V2.E2ETests;
 
-[Collection("V2.E2ETests Collection")]
 public class PersonSearchTests : BaseSearchTests
 {
-    private readonly HttpClient _httpClient;
 
-    public PersonSearchTests(CombinedFixture combinedFixture, ITestOutputHelper testOutputHelper) : base(combinedFixture, indexName: "persons")
-    {
-        _httpClient = combinedFixture.Factory.CreateClient();
-    }
+    public PersonSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "persons") { }
 
 
     #region General
@@ -32,7 +27,7 @@ public class PersonSearchTests : BaseSearchTests
         var request = CreateSearchRequest("XXXXXXXX");
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await HttpClient.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -60,7 +55,7 @@ public class PersonSearchTests : BaseSearchTests
             var request = CreateSearchRequest(query);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -87,7 +82,7 @@ public class PersonSearchTests : BaseSearchTests
         var request = CreateSearchRequest(searchText);
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await HttpClient.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -124,7 +119,36 @@ public class PersonSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var root = GetResponseRootElement(response);
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResult = root.GetProperty("results").GetProperty("persons")[0];
+            firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+        });
+
+        successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
+    }
+
+    [Fact]
+    public async Task SearchPerson_NameTypo()
+    {
+        const int attempts = 10;
+        const int minSuccessCount = 9;
+
+        var successCount = await RunWithScore(attempts, async () =>
+        {
+            // Arrange
+            var person = RandomItem();
+            var expectedReturnedId = person.GetProperty("id").GetString();
+            var memberName = person.GetProperty("firstname").GetString() + " " + person.GetProperty("surname").GetString();
+            var searchText = CreateTypo(memberName);
+            var request = CreateSearchRequest(searchText);
+
+            // Act
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -158,7 +182,7 @@ public class PersonSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);

@@ -1,6 +1,8 @@
 services:
   housing-search-api:
     image: housing-search-api
+    profiles:
+      - api
     build:
       context: .
       dockerfile: HousingSearchApi/Dockerfile
@@ -17,7 +19,8 @@ services:
 
   housing-search-api-test: &housing-search-api-test
     image: housing-search-api-test
-    # stdin_open: true
+    profiles:
+      - test
     build:
       context: .
       dockerfile: HousingSearchApi.Tests/Dockerfile
@@ -34,6 +37,8 @@ services:
 
   housing-search-api-test-v2:
     <<: *housing-search-api-test
+    profiles:
+      - test-v2
     command: ["dotnet", "test", "--filter", "HousingSearchApi.Tests.V2"]
 
   test-elasticsearch:

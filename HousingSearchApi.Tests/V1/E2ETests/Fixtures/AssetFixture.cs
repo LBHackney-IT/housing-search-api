@@ -54,21 +54,16 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public void GivenAnAssetIndexExists()
         {
-            ElasticSearchClient.Indices.Delete(INDEX);
+            // clear index
+            ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
+            var assetSettingsDoc = File.ReadAllText("./data/elasticsearch/assetIndex.json");
+            ElasticSearchClient.LowLevel.Indices.Create<BytesResponse>(INDEX, assetSettingsDoc);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
 
-            if (!ElasticSearchClient.Indices.Exists(Indices.Index(INDEX)).Exists)
-            {
-                // clear index
-                ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
-                var assetSettingsDoc = File.ReadAllText("./data/elasticsearch/assetIndex.json");
-                ElasticSearchClient.LowLevel.Indices.Create<BytesResponse>(INDEX, assetSettingsDoc);
-                ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
-
-                // load data
-                var assets = CreateAssetData();
-                ElasticSearchClient.IndexMany(assets, INDEX);
-                ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
-            }
+            // load data
+            var assets = CreateAssetData();
+            ElasticSearchClient.IndexMany(assets, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         private List<QueryableAsset> CreateAssetData()

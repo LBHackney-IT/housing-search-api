@@ -25,21 +25,17 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public void GivenAPersonIndexExists()
         {
+            // clear index
             ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
+            var personSettingsDoc = File.ReadAllText("./data/elasticsearch/tenureIndex.json");
+            ElasticSearchClient.LowLevel.Indices.Create<BytesResponse>(INDEX, personSettingsDoc);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
 
-            if (!ElasticSearchClient.Indices.Exists(Indices.Index(INDEX)).Exists)
-            {
-                // clear index
-                ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
-                var personSettingsDoc = File.ReadAllText("./data/elasticsearch/tenureIndex.json");
-                ElasticSearchClient.LowLevel.Indices.Create<BytesResponse>(INDEX, personSettingsDoc);
-                ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
+            // load data
+            var persons = CreatePersonData();
+            ElasticSearchClient.IndexMany(persons, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
 
-                // load data
-                var persons = CreatePersonData();
-                ElasticSearchClient.IndexMany(persons, INDEX);
-                ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
-            }
         }
 
         private List<QueryablePerson> CreatePersonData()
