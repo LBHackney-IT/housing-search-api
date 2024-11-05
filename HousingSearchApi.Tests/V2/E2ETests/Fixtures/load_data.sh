@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ES_BASE_URL=$ELASTICSEARCH_DOMAIN_URL
+ES_BASE_URL="test-elasticsearch:9200" # < hardcoding for safety
 CWD=$(pwd)
 INDEX_DIR="/setup/indices"
 DATA_DIR="/setup/data"
