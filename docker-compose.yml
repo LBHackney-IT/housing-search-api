@@ -39,6 +39,9 @@ services:
     <<: *housing-search-api-test
     profiles:
       - test-v2
+    depends_on:
+      data-loader:
+        condition: service_completed_successfully
     command: ["dotnet", "test", "--filter", "HousingSearchApi.Tests.V2"]
 
   test-elasticsearch:
@@ -57,6 +60,20 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+    
+  data-loader:
+    image: alpine
+    container_name: data-loader
+    volumes:
+      - ./HousingSearchApi/data/elasticsearch:/setup/indices
+      - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/Files:/setup/data
+      - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/load_data.sh:/setup/load_data.sh
+    environment:
+      - ELASTICSEARCH_DOMAIN_URL=test-elasticsearch:9200
+    depends_on:
+      test-elasticsearch:
+        condition: service_healthy
+    command: ["sh", "/setup/load_data.sh"]
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.9.3
