@@ -47,9 +47,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             var transactions = CreateTransactionsData(20);
 
             ElasticSearchClient.IndexMany(transactions, IndexName);
-            do
-                Thread.Sleep(100);
-            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(IndexName)).IsValid);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(IndexName));
         }
 
         private List<QueryableTransaction> CreateTransactionsData(int transactionsCount)

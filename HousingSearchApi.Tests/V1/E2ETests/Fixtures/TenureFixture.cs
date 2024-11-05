@@ -88,10 +88,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             listOfTenures.Add(forthTenure);
 
             ElasticSearchClient.IndexMany(listOfTenures, INDEX);
-
-            do
-                Thread.Sleep(100);
-            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         public void GivenATenureWithSpecificUprn(string uprn)
@@ -104,10 +101,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             listOfTenures.Add(tenure);
 
             ElasticSearchClient.IndexMany(listOfTenures, INDEX);
-
-            do
-                Thread.Sleep(100);
-            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         public void GivenTaTenuresExist(int tenuresToCreate)
@@ -121,13 +115,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 listOfTenures.Add(tenure);
             }
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
-
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            do
-                Thread.Sleep(100);
-            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            ElasticSearchClient.IndexMany(listOfTenures, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         public void GivenSimilarTaTenuresExist(string bookingStatus, string fullName)
@@ -152,10 +141,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             listOfTenures.Add(thirdTenure);
 
             ElasticSearchClient.IndexMany(listOfTenures, INDEX);
-
-            do
-                Thread.Sleep(100);
-            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         public void GivenTenuresWithDifferentStartDatesExist()
@@ -186,10 +172,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             listOfTenures.Add(oldestTenure);
 
             ElasticSearchClient.IndexMany(listOfTenures, INDEX);
-
-            do
-                Thread.Sleep(100);
-            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
     }
 }

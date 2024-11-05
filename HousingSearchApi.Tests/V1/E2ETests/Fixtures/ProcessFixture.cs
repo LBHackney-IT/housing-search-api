@@ -56,9 +56,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 var processes = Processes.Select(x => x.ToDatabase());
 
                 ElasticSearchClient.IndexMany(processes, INDEX);
-                do
-                    Thread.Sleep(100);
-                while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+                ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
             }
         }
 
