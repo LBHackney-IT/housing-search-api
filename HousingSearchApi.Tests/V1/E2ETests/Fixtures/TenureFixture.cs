@@ -26,23 +26,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public void GivenATenureIndexExists()
         {
             ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
+            var tenureSettingsDoc = File.ReadAllText("./data/elasticsearch/tenureIndex.json");
+            ElasticSearchClient.LowLevel.Indices.Create<BytesResponse>(INDEX, tenureSettingsDoc);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
 
-            if (!ElasticSearchClient.Indices.Exists(Indices.Index(INDEX)).Exists)
-            {
-                var tenureSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/tenureIndex.json").Result;
-                ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(INDEX, tenureSettingsDoc)
-                    .ConfigureAwait(true);
-
-                var tenures = CreateTenureData();
-                var awaitable = ElasticSearchClient.IndexManyAsync(tenures, INDEX).ConfigureAwait(true);
-
-                while (!awaitable.GetAwaiter().IsCompleted)
-                {
-
-                }
-
-                Thread.Sleep(1000);
-            }
+            // load data
+            var tenures = CreateTenureData();
+            ElasticSearchClient.IndexMany(tenures, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         private List<QueryableTenure> CreateTenureData()
@@ -96,11 +87,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             thirdTenure.HouseholdMembers.First().FullName = fullName;
             listOfTenures.Add(forthTenure);
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
-
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(10000);
+            ElasticSearchClient.IndexMany(listOfTenures, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         public void GivenATenureWithSpecificUprn(string uprn)
@@ -112,11 +100,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             listOfTenures.Add(tenure);
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
-
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(10000);
+            ElasticSearchClient.IndexMany(listOfTenures, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         public void GivenTaTenuresExist(int tenuresToCreate)
@@ -130,11 +115,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 listOfTenures.Add(tenure);
             }
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
-
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(10000);
+            ElasticSearchClient.IndexMany(listOfTenures, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         public void GivenSimilarTaTenuresExist(string bookingStatus, string fullName)
@@ -158,11 +140,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             thirdTenure.HouseholdMembers.First().FullName = fullName;
             listOfTenures.Add(thirdTenure);
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
-
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(10000);
+            ElasticSearchClient.IndexMany(listOfTenures, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         public void GivenTenuresWithDifferentStartDatesExist()
@@ -192,11 +171,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             oldestTenure.Id = oldestRecord;
             listOfTenures.Add(oldestTenure);
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfTenures, INDEX).ConfigureAwait(true);
-
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(10000);
+            ElasticSearchClient.IndexMany(listOfTenures, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
     }
 }

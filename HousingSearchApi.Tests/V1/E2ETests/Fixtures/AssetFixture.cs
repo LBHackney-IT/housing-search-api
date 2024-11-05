@@ -58,19 +58,16 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
             if (!ElasticSearchClient.Indices.Exists(Indices.Index(INDEX)).Exists)
             {
-                var assetSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/assetIndex.json").Result;
-                ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(INDEX, assetSettingsDoc)
-                    .ConfigureAwait(true);
+                // clear index
+                ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
+                var assetSettingsDoc = File.ReadAllText("./data/elasticsearch/assetIndex.json");
+                ElasticSearchClient.LowLevel.Indices.Create<BytesResponse>(INDEX, assetSettingsDoc);
+                ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
 
+                // load data
                 var assets = CreateAssetData();
-                var awaitable = ElasticSearchClient.IndexManyAsync(assets, INDEX).ConfigureAwait(true);
-
-                while (!awaitable.GetAwaiter().IsCompleted)
-                {
-
-                }
-
-                Thread.Sleep(5000);
+                ElasticSearchClient.IndexMany(assets, INDEX);
+                ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
             }
         }
 

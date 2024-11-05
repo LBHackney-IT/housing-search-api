@@ -45,11 +45,9 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 .ConfigureAwait(true);
 
             var transactions = CreateTransactionsData(20);
-            var awaitable = ElasticSearchClient.IndexManyAsync(transactions, IndexName).ConfigureAwait(true);
 
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(5000);
+            ElasticSearchClient.IndexMany(transactions, IndexName);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(IndexName));
         }
 
         private List<QueryableTransaction> CreateTransactionsData(int transactionsCount)
