@@ -18,7 +18,9 @@ public class SearchGateway : ISearchGateway
 
     public async Task<SearchResponseDto> Search(string indexName, SearchParametersDto searchParams)
     {
-        var shouldOperations = new List<Func<QueryContainerDescriptor<object>, QueryContainer>>() { };
+        var shouldOperations = new List<Func<QueryContainerDescriptor<object>, QueryContainer>>() {
+            SearchOperations.MultiMatchBestFields(searchParams.SearchText, boost: 6),
+         };
 
         // Extend search operations depending on the index
         if (indexName == "assets")
@@ -27,7 +29,6 @@ public class SearchGateway : ISearchGateway
             Fields tenureFields = new[] { "tenure.id", "tenure.paymentReference" };
             shouldOperations.AddRange(new[]
             {
-                SearchOperations.MultiMatchBestFields(searchParams.SearchText, boost: 6),
                 SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: addressFieldNames, boost: 10),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fieldNames: new[] {"assetAddress.addressLine1"}, boost: 10),
                 SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: tenureFields, boost: 10),
@@ -42,7 +43,6 @@ public class SearchGateway : ISearchGateway
             };
             shouldOperations.AddRange(new[]
             {
-                SearchOperations.MultiMatchBestFields(searchParams.SearchText, boost: 6),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fieldNames: nameFields, boost: 10),
                 SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: keyFields, boost: 10),
             });
