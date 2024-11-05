@@ -248,6 +248,27 @@
       },
       "assetContract": {
         "properties": {
+          "approvalDate": {
+            "type": "date"
+          },
+          "approvalStatus": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "approvalStatusReason": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
           "charges": {
             "properties": {
               "amount": {
@@ -269,6 +290,15 @@
                   }
                 }
               },
+              "subType": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
               "type": {
                 "type": "text",
                 "fields": {
@@ -286,6 +316,73 @@
                 "type": "keyword"
               }
             }
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "isApproved": {
+            "type": "boolean"
+          },
+          "relatedPeople": {
+            "properties": {
+              "id": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "name": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "subType": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "type": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              }
+            }
+          },
+          "startDate": {
+            "type": "date"
+          },
+          "targetId": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "targetType": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
           }
         }
       }
@@ -293,7 +390,7 @@
   },
   "settings": {
     "index": {
-      "number_of_shards": "5",
+      "number_of_shards": "1",
       "number_of_replicas": "1"
     }
   }

@@ -208,7 +208,7 @@ public class AssetSearchTests : BaseSearchTests
         // Arrange
         var asset = RandomItem();
         var expectedReturnedId = asset.GetProperty("id").GetString();
-        var searchText = asset.GetProperty("assetId").GetString();
+        var searchText = expectedReturnedId;
         var request = CreateSearchRequest(searchText);
 
         // Act

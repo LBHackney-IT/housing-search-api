@@ -9,26 +9,13 @@ namespace HousingSearchApi.V2.Gateways;
 static class SearchOperations
 {
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
-    NestedMultiMatch(string searchText, string path, Fields fields, TextQueryType matchType = TextQueryType.BestFields, Fuzziness fuzziness = null, int boost = 1)
-    {
-        return should => should
-            .Nested(n => n
+        Nested(string path, Func<QueryContainerDescriptor<object>, QueryContainer> func)
+        {
+            return should => should.Nested(n => n
                 .Path(path)
-                .Query(qq => qq
-                    .MultiMatch(mm =>
-                        {
-                            mm.Type(matchType)
-                            .Query(searchText)
-                            .Fields(fields)
-                            .Boost(boost);
-                            if (fuzziness != null)
-                                mm.Fuzziness(fuzziness);
-                            return mm;
-                        }
-                    )
-                )
+                .Query(func)
             );
-    }
+        }
 
     // Score for matching a single (best) field
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
@@ -71,7 +58,7 @@ static class SearchOperations
 
     // Score for matching a value which contains the search text
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
-        WildcardMatch(string searchText, Fields fieldNames, int boost)
+        WildcardMatch(string searchText, Fields fields, int boost)
     {
         List<string> ProcessWildcards(string phrase)
         {
@@ -81,7 +68,7 @@ static class SearchOperations
         }
 
         var listOfWildcardedWords = ProcessWildcards(searchText);
-        var wildcardQueries = fieldNames.SelectMany(fieldName =>
+        var wildcardQueries = fields.SelectMany(fieldName =>
             listOfWildcardedWords.Select(term =>
                 new WildcardQuery
                 {
@@ -100,6 +87,32 @@ static class SearchOperations
                         .Value(wq.Value)
                         .Boost(wq.Boost)
                     )
+                ).ToArray()
+            )
+        );
+    }
+
+    // basic match on field
+    public static Func<QueryContainerDescriptor<object>, QueryContainer>
+        MatchField(string searchText, Field field, int boost)
+    {
+        return should => should
+            .Match(m => m
+                .Field(field)
+                .Query(searchText)
+                .Fuzziness(Fuzziness.Auto)
+                .Boost(boost)
+            );
+    }
+
+    // basic match on a list of fields
+    public static Func<QueryContainerDescriptor<object>, QueryContainer>
+        MatchFields(string searchText, Fields fields, int boost)
+    {
+        return q => q.Bool(b => b
+            .Should(
+                fields.Select(fieldName =>
+                    MatchField(searchText, fieldName, boost)
                 ).ToArray()
             )
         );
