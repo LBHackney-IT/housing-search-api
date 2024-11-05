@@ -81,14 +81,14 @@ static class SearchOperations
         }
 
         var listOfWildcardedWords = ProcessWildcards(searchText);
-        var wildcardQueries = fieldNames.SelectMany(fieldName => 
+        var wildcardQueries = fieldNames.SelectMany(fieldName =>
             listOfWildcardedWords.Select(term =>
                 new WildcardQuery
-                    {
+                {
                     Field = fieldName,
                     Value = term,
                     Boost = boost
-                    }
+                }
                 )
         ).ToList();
 
