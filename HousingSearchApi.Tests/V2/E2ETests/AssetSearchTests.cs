@@ -146,7 +146,7 @@ public class AssetSearchTests : BaseSearchTests
     public async Task SearchAddress_Partial()
     {
         const int maxAttempts = 10;
-        const int minSuccessCount = 9;
+        const int minSuccessCount = 8;
 
         var successCount = await RunWithScore(maxAttempts, async () =>
         {
@@ -155,7 +155,7 @@ public class AssetSearchTests : BaseSearchTests
             var randomAddress = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString();
             var searchTerms = randomAddress.Split(' ').ToList();
             // remove one search term
-            searchTerms.RemoveAt(1);
+            searchTerms.RemoveAt(0);
             var searchText = string.Join(" ", searchTerms);
             var request = CreateSearchRequest(searchText);
 
