@@ -35,7 +35,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             var persons = CreatePersonData();
             ElasticSearchClient.IndexMany(persons, INDEX);
             ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
-            
+
         }
 
         private List<QueryablePerson> CreatePersonData()
