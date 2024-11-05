@@ -124,9 +124,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             listOfPersons.Add(specificPerson4);
 
             ElasticSearchClient.IndexMany(listOfPersons, INDEX);
-            do
-                Thread.Sleep(100);
-            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         public void GivenDifferentTypesOfTenureTypes(string firstName, string lastName, List<string> list)
@@ -150,9 +148,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             }
 
             ElasticSearchClient.IndexMany(listOfPersons, INDEX);
-            do
-                Thread.Sleep(100);
-            while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         public void GivenThereExistPersonsWithDifferentPersonTypes(string firstName, string lastName, List<PersonType> personTypes)
@@ -170,10 +166,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             }
 
             ElasticSearchClient.IndexMany(listOfPersons, INDEX);
-            do
-            {
-                Thread.Sleep(100);
-            } while (!ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX)).IsValid);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
     }
 }
