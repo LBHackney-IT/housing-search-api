@@ -10,12 +10,12 @@ static class SearchOperations
 {
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
         Nested(string path, Func<QueryContainerDescriptor<object>, QueryContainer> func)
-        {
-            return should => should.Nested(n => n
-                .Path(path)
-                .Query(func)
-            );
-        }
+    {
+        return should => should.Nested(n => n
+            .Path(path)
+            .Query(func)
+        );
+    }
 
     // Score for matching a single (best) field
     public static Func<QueryContainerDescriptor<object>, QueryContainer>

@@ -199,7 +199,7 @@ public class AssetSearchTests : BaseSearchTests
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("assets")[0];
             firstResult.GetProperty("id").GetString().Should().Be(randomAsset.GetProperty("id").GetString());
-            
+
         });
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }

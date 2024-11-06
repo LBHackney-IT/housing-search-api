@@ -26,7 +26,7 @@ public class SearchGateway : ISearchGateway
         if (indexName == "assets")
         {
             Fields keywordFields = new[] {
-                "id", "assetAddress.uprn", "propertyReference", 
+                "id", "assetAddress.uprn", "propertyReference",
                 "tenure.id", "tenure.paymentReference"
             };
             Fields addressFieldNames = new[] { "assetAddress.addressLine1", "assetAddress.addressLine2", "assetAddress.postCode" };
