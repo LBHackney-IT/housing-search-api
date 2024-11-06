@@ -139,4 +139,39 @@ static class SearchOperations
         );
     }
 
+
+    public static Func<QueryContainerDescriptor<object>, QueryContainer> QueryStringQuery(string searchText,
+            List<string> fields, double? boost = null)
+    {
+        List<string> ProcessWildcards(string phrase)
+        {
+            if (string.IsNullOrEmpty(phrase))
+                return new List<string>();
+            return phrase.Split(' ').Select(word => $"*{word}*").ToList();
+        }
+
+        var listOfWildCardedWords = ProcessWildcards(searchText);
+        var queryString = $"({string.Join(" AND ", listOfWildCardedWords)}) " +
+                          string.Join(' ', listOfWildCardedWords);
+
+        Func<QueryContainerDescriptor<object>, QueryContainer> query =
+            should => should.QueryString(q =>
+            {
+                var queryDescriptor = q.Query(queryString)
+                    .Fields(f =>
+                    {
+                        foreach (var field in fields)
+                        {
+                            f = f.Field(field, boost);
+                        }
+
+                        return f;
+                    });
+
+                return queryDescriptor;
+            });
+
+        return query;
+    }
+
 }
