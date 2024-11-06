@@ -35,7 +35,8 @@ public class SearchGateway : ISearchGateway
             {
                 SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: 15),
                 SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: addressFieldNames, boost: 8),
-                SearchOperations.MatchField(searchParams.SearchText, field: keyAddressField, boost: 8),
+                SearchOperations.MatchField(searchParams.SearchText, field: keyAddressField, boost: 10),
+                SearchOperations.MatchPhrasePrefix(searchParams.SearchText, field: keyAddressField, boost: 8),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fields: new[] {keyAddressField}, boost: 15),
             });
         }
@@ -54,6 +55,7 @@ public class SearchGateway : ISearchGateway
                 SearchOperations.WildcardMatch(searchParams.SearchText, fields: new [] {nameField}, boost: 10),
                 SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: 12),
                 SearchOperations.MatchField(searchParams.SearchText, field: addressField, boost: 8),
+                SearchOperations.MatchPhrasePrefix(searchParams.SearchText, field: addressField, boost: 8),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fields: new[] {addressField}, boost: 10),
             });
         }
@@ -73,6 +75,10 @@ public class SearchGateway : ISearchGateway
             {
                 SearchOperations.MatchFields(searchParams.SearchText, fields: nameFields, boost: 12),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fields: nameFields, boost: 8),
+                SearchOperations.Nested(
+                    path: "tenures",
+                    func: SearchOperations.MatchPhrasePrefix(searchParams.SearchText, field: tenureAddressField, boost: 12)
+                ),
                 SearchOperations.Nested(
                     path: "tenures",
                     func: SearchOperations.MatchField(searchParams.SearchText, field: tenureAddressField, boost: 10)
@@ -110,4 +116,18 @@ public class SearchGateway : ISearchGateway
             Total = searchResponse.HitsMetadata.Total.Value,
         };
     }
+
+
+    // private static Func<QueryContainerDescriptor<object>, QueryContainer>
+    //     MatchAddressField(string searchText, Field field, int boost) =>
+    //     should => should
+    //         .Bool(b => b
+    //             .Should(
+    //                 SearchOperations.MatchField(searchText, field, boost),
+    //                 SearchOperations.MatchPhrasePrefix(searchText, field, boost),
+    //                 SearchOperations.WildcardMatch(searchText, field, boost)
+    //             )
+    //         );
+
+
 }
