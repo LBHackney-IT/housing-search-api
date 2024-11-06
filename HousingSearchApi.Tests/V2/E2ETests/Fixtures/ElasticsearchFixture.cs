@@ -31,8 +31,8 @@ public class ElasticsearchFixture : IAsyncLifetime
         var response = Client.LowLevel.Indices.Create<StringResponse>(indexName, indexDefinition);
 
         if (!response.Success)
-            throw new Exception("Failed to create index: " + response.DebugInformation);
-        Console.WriteLine("Index created successfully.");
+            throw new Exception($"Failed to create index {indexName}: " + response.DebugInformation);
+        Console.WriteLine($"Index {indexName} created successfully.");
     }
 
     public void LoadData(string filename, string indexName)
@@ -57,7 +57,6 @@ public class ElasticsearchFixture : IAsyncLifetime
     public Task InitializeAsync()
     {
         var indexSettingsFiles = new string[] { "assetIndex.json", "tenureIndex.json", "personIndex.json" };
-
         foreach (string filename in indexSettingsFiles)
         {
             var indexName = filename.Replace("Index.json", "") + "s";

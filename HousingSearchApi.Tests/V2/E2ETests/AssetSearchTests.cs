@@ -175,6 +175,35 @@ public class AssetSearchTests : BaseSearchTests
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
 
+    [Fact]
+    public async Task SearchAddress_Typo()
+    {
+        const int maxAttempts = 10;
+        const int minSuccessCount = 8;
+
+        var successCount = await RunWithScore(maxAttempts, async () =>
+        {
+            // Arrange
+            var randomAsset = RandomItem();
+            var randomAddress = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString();
+
+            var searchText = CreateTypo(randomAddress);
+            var request = CreateSearchRequest(searchText);
+
+            // Act
+            var response = await HttpClient.SendAsync(request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var root = GetResponseRootElement(response);
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResult = root.GetProperty("results").GetProperty("assets")[0];
+            firstResult.GetProperty("id").GetString().Should().Be(randomAsset.GetProperty("id").GetString());
+
+        });
+        successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
+    }
+
     #endregion
 
     #region Tenure
@@ -208,7 +237,7 @@ public class AssetSearchTests : BaseSearchTests
         // Arrange
         var asset = RandomItem();
         var expectedReturnedId = asset.GetProperty("id").GetString();
-        var searchText = asset.GetProperty("assetId").GetString();
+        var searchText = expectedReturnedId;
         var request = CreateSearchRequest(searchText);
 
         // Act

@@ -20,43 +20,47 @@ public class SearchGateway : ISearchGateway
     {
         var shouldOperations = new List<Func<QueryContainerDescriptor<object>, QueryContainer>>() {
             SearchOperations.MultiMatchBestFields(searchParams.SearchText, boost: 6),
-         };
+        };
 
         // Extend search operations depending on the index
         if (indexName == "assets")
         {
-            Fields keywordFields = new[] { "id", "assetAddress.uprn", "propertyReference" };
+            Fields keywordFields = new[] {
+                "id", "assetAddress.uprn", "propertyReference",
+                "tenure.id", "tenure.paymentReference"
+            };
             Fields addressFieldNames = new[] { "assetAddress.addressLine1", "assetAddress.addressLine2", "assetAddress.postCode" };
-            Fields tenureFields = new[] { "tenure.id", "tenure.paymentReference" };
             shouldOperations.AddRange(new[]
             {
-                SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: 10),
-                SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: addressFieldNames, boost: 10),
-                SearchOperations.WildcardMatch(searchParams.SearchText, fieldNames: new[] {"assetAddress.addressLine1"}, boost: 10),
-                SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: tenureFields, boost: 10),
+                SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: 15),
+                SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: addressFieldNames, boost: 8),
+                SearchOperations.MatchField(searchParams.SearchText, field: "assetAddress.addressLine1", boost: 12),
+                SearchOperations.WildcardMatch(searchParams.SearchText, fields: new[] {"assetAddress.addressLine1"}, boost: 6),
             });
         }
         else if (indexName == "tenures")
         {
-            Fields nameFields = new[] { "householdMembers.fullName" };
-            Fields keywordFields = new[] { "id", "paymentReference", "tenuredAsset.id", "tenuredAsset.uprn" };
-            Fields addressFieldNames = new[] {
-                "tenuredAsset.fullAddress"
+            Field nameField = "householdMembers.fullName";
+            Fields keywordFields = new[] {
+                "id", "paymentReference",
+                "tenuredAsset.id", "tenuredAsset.uprn"
             };
+            Field addressField = "tenuredAsset.fullAddress";
+
             shouldOperations.AddRange(new[]
             {
-                SearchOperations.WildcardMatch(searchParams.SearchText, fieldNames: nameFields, boost: 10),
-                SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: 10),
-                SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: addressFieldNames, boost: 10),
+                SearchOperations.MatchField(searchParams.SearchText, field: nameField, boost: 12),
+                SearchOperations.WildcardMatch(searchParams.SearchText, fields: new [] {nameField}, boost: 10),
+                SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: 12),
+                SearchOperations.WildcardMatch(searchParams.SearchText, fields: new[] {addressField}, boost: 10),
             });
         }
         else if (indexName == "persons")
         {
             Fields nameFields = new[] { "title", "firstname", "surname" };
-            Fields addressFields = new[] {
+            Field tenureAddressField = "tenures.assetFullAddress";
+            Fields tenureKeyFields = new[] {
                 "tenures.id",
-                "tenures.assetFullAddress",
-                "tenures.type",
                 "tenures.uprn",
                 "tenures.propertyReference",
                 "tenures.assetId",
@@ -65,18 +69,23 @@ public class SearchGateway : ISearchGateway
 
             shouldOperations.AddRange(new[]
             {
-                SearchOperations.MultiMatchMostFields(searchParams.SearchText, boost: 10, fields: nameFields),
-                SearchOperations.NestedMultiMatch(searchParams.SearchText, "tenures", addressFields, boost: 10),
+                SearchOperations.MatchFields(searchParams.SearchText, fields: nameFields, boost: 12),
+                SearchOperations.WildcardMatch(searchParams.SearchText, fields: nameFields, boost: 8),
+                SearchOperations.Nested(
+                    path: "tenures",
+                    func: SearchOperations.MatchField(searchParams.SearchText, field: tenureAddressField, boost: 10)
+                ),
+                SearchOperations.Nested(
+                    path: "tenures",
+                    func: SearchOperations.WildcardMatch(searchParams.SearchText, fields: new[] { tenureAddressField }, boost: 8)
+                ),
+                SearchOperations.Nested(
+                    path: "tenures",
+                    func: SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: tenureKeyFields, boost: 12)
+                ),
             });
         }
-        else
-        {
-            shouldOperations.AddRange(
-                new[] {
-                    SearchOperations.MultiMatchBestFields(searchParams.SearchText, boost: 6)
-                }
-            );
-        }
+
         var searchResponse = await _elasticClient.SearchAsync<object>(s => s
             .Index(indexName)
             .Query(q => q
