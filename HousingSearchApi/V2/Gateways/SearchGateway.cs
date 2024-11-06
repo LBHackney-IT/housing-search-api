@@ -29,13 +29,14 @@ public class SearchGateway : ISearchGateway
                 "id", "assetAddress.uprn", "propertyReference",
                 "tenure.id", "tenure.paymentReference"
             };
+            Field keyAddressField = "assetAddress.addressLine1";
             Fields addressFieldNames = new[] { "assetAddress.addressLine1", "assetAddress.addressLine2", "assetAddress.postCode" };
             shouldOperations.AddRange(new[]
             {
                 SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: 15),
                 SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: addressFieldNames, boost: 8),
-                SearchOperations.MatchField(searchParams.SearchText, field: "assetAddress.addressLine1", boost: 12),
-                SearchOperations.WildcardMatch(searchParams.SearchText, fields: new[] {"assetAddress.addressLine1"}, boost: 6),
+                SearchOperations.MatchField(searchParams.SearchText, field: keyAddressField, boost: 8),
+                SearchOperations.WildcardMatch(searchParams.SearchText, fields: new[] {keyAddressField}, boost: 15),
             });
         }
         else if (indexName == "tenures")
@@ -52,6 +53,7 @@ public class SearchGateway : ISearchGateway
                 SearchOperations.MatchField(searchParams.SearchText, field: nameField, boost: 12),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fields: new [] {nameField}, boost: 10),
                 SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: 12),
+                SearchOperations.MatchField(searchParams.SearchText, field: addressField, boost: 8),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fields: new[] {addressField}, boost: 10),
             });
         }
