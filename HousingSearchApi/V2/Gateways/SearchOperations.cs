@@ -126,16 +126,17 @@ static class SearchOperations
                 .Boost(boost)
                 .Slop(1)
             );
-    
+
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
-        MatchPhrasePrefixFields(string searchText, Fields fields, int boost) {
-            return should => should.Bool(b => b
-                .Should(
-                    fields.Select(fieldName =>
-                        MatchPhrasePrefix(searchText, fieldName, boost)
-                    ).ToArray()
-                )
-            );
-        }
-        
+        MatchPhrasePrefixFields(string searchText, Fields fields, int boost)
+    {
+        return should => should.Bool(b => b
+            .Should(
+                fields.Select(fieldName =>
+                    MatchPhrasePrefix(searchText, fieldName, boost)
+                ).ToArray()
+            )
+        );
+    }
+
 }
