@@ -116,4 +116,39 @@ static class SearchOperations
             )
         );
     }
+
+    public static Func<QueryContainerDescriptor<object>, QueryContainer>
+        MatchPhrasePrefix(string searchText, Field field, int boost) =>
+        should => should
+            .MatchPhrasePrefix(mp => mp
+                .Field(field)
+                .Query(searchText)
+                .Boost(boost)
+                .Slop(1)
+            );
+
+    public static Func<QueryContainerDescriptor<object>, QueryContainer>
+        MatchPhrasePrefixFields(string searchText, Fields fields, int boost)
+    {
+        return should => should.Bool(b => b
+            .Should(
+                fields.Select(fieldName =>
+                    MatchPhrasePrefix(searchText, fieldName, boost)
+                ).ToArray()
+            )
+        );
+    }
+
+
+    public static Func<QueryContainerDescriptor<object>, QueryContainer> WildcardQueryStringQuery(string searchText,
+            Fields fields, double? boost = null)
+    {
+        var queryString = string.Join(" AND ", searchText.Split(' ').Select(word => $"*{word}*"));
+        return should => should.QueryString(q => q
+            .Query(queryString)
+            .Fields(fields)
+            .Boost(boost)
+        );
+    }
+
 }
