@@ -117,7 +117,7 @@ public class SearchGateway : ISearchGateway
                 .Should(
                     SearchOperations.MatchPhrasePrefix(searchText, field, boost: HighBoost),
                     SearchOperations.MatchField(searchText, field, boost: MediumBoost),
-                    SearchOperations.WildcardQueryStringQuery(searchText, new[] {field}, boost: HighBoost)
+                    SearchOperations.WildcardQueryStringQuery(searchText, new[] { field }, boost: HighBoost)
                 )
             );
 
