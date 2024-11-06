@@ -26,26 +26,31 @@ public class SearchGateway : ISearchGateway
         if (indexName == "assets")
         {
             Fields keywordFields = new[] {
-                "id", "assetAddress.uprn", "propertyReference", // Asset fields
-                "tenure.id", "tenure.paymentReference" // Tenure fields
+                "id", "assetAddress.uprn", "propertyReference", 
+                "tenure.id", "tenure.paymentReference"
             };
             Fields addressFieldNames = new[] { "assetAddress.addressLine1", "assetAddress.addressLine2", "assetAddress.postCode" };
             shouldOperations.AddRange(new[]
             {
                 SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: 15),
                 SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: addressFieldNames, boost: 8),
+                SearchOperations.MatchField(searchParams.SearchText, field: "assetAddress.addressLine1", boost: 12),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fields: new[] {"assetAddress.addressLine1"}, boost: 6),
             });
         }
         else if (indexName == "tenures")
         {
             Field nameField = "householdMembers.fullName";
-            Fields keywordFields = new[] { "id", "paymentReference", "tenuredAsset.id", "tenuredAsset.uprn" };
+            Fields keywordFields = new[] {
+                "id", "paymentReference",
+                "tenuredAsset.id", "tenuredAsset.uprn"
+            };
             Field addressField = "tenuredAsset.fullAddress";
 
             shouldOperations.AddRange(new[]
             {
-                SearchOperations.WildcardMatch(searchParams.SearchText, fields: new [] {nameField}, boost: 15),
+                SearchOperations.MatchField(searchParams.SearchText, field: nameField, boost: 12),
+                SearchOperations.WildcardMatch(searchParams.SearchText, fields: new [] {nameField}, boost: 10),
                 SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: 12),
                 SearchOperations.WildcardMatch(searchParams.SearchText, fields: new[] {addressField}, boost: 10),
             });

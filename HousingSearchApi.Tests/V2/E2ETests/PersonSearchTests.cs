@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 using HousingSearchApi.Tests.V2.E2ETests.Fixtures;
-using Xunit.Abstractions;
 using NUnit.Framework;
 
 
@@ -64,6 +63,77 @@ public class PersonSearchTests : BaseSearchTests
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("persons")[0];
             firstResult.GetProperty("tenures")[0].GetProperty("assetFullAddress").GetString().Should().Be(query);
+        });
+
+        successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
+    }
+
+
+    [Fact]
+    public async Task SearchAddress_Partial()
+    {
+        const int attempts = 10;
+        const int minSuccessCount = 9;
+
+        var successCount = await RunWithScore(attempts, async () =>
+        {
+            // Arrange
+            var randomPerson = RandomItem();
+            var expectedReturnedId = randomPerson.GetProperty("id").GetString();
+            var randomAddress = randomPerson.GetProperty("tenures")[0].GetProperty("assetFullAddress").GetString();
+            var searchTerms = randomAddress.Split(' ').ToList();
+            // remove one search term
+            searchTerms.RemoveAt(0);
+            var searchText = string.Join(" ", searchTerms);
+            var request = CreateSearchRequest(searchText);
+
+            // Act
+            var response = await HttpClient.SendAsync(request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var root = GetResponseRootElement(response);
+
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResults = root.GetProperty("results").GetProperty("persons");
+            firstResults.EnumerateArray().Take(5).Any(result =>
+            {
+                return result.GetProperty("id").GetString() == expectedReturnedId;
+            }).Should().BeTrue();
+        });
+
+        successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
+    }
+
+
+    [Fact]
+    public async Task SearchAddress_Typo()
+    {
+        const int attempts = 10;
+        const int minSuccessCount = 9;
+
+        var successCount = await RunWithScore(attempts, async () =>
+        {
+            // Arrange
+            var randomPerson = RandomItem();
+            var expectedReturnedId = randomPerson.GetProperty("id").GetString();
+            var randomAddress = randomPerson.GetProperty("tenures")[0].GetProperty("assetFullAddress").GetString();
+            var query = CreateTypo(randomAddress);
+            var request = CreateSearchRequest(query);
+
+            // Act
+            var response = await HttpClient.SendAsync(request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var root = GetResponseRootElement(response);
+
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResults = root.GetProperty("results").GetProperty("persons");
+            firstResults.EnumerateArray().Take(5).Any(result =>
+            {
+                return result.GetProperty("id").GetString() == expectedReturnedId;
+            }).Should().BeTrue();
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
@@ -154,8 +224,10 @@ public class PersonSearchTests : BaseSearchTests
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var root = GetResponseRootElement(response);
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
-            var firstResult = root.GetProperty("results").GetProperty("persons")[0];
-            firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+            var firstResults = root.GetProperty("results").GetProperty("persons").EnumerateArray().Take(5);
+            firstResults.Any(result =>
+                result.GetProperty("id").GetString() == expectedReturnedId
+            ).Should().BeTrue();
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);

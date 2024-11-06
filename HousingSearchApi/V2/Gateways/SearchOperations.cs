@@ -26,7 +26,6 @@ static class SearchOperations
                 .Query(searchText)
                 .Type(TextQueryType.BestFields)
                 .Operator(Operator.And)
-                .Fuzziness(Fuzziness.Auto)
                 .Boost(boost)
             );
 
