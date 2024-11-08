@@ -26,7 +26,8 @@ namespace HousingSearchApi.V1.Infrastructure.Extensions
                 .DisableDirectStreaming();
 
             // see corresponding launch profile in launchSettings.json
-            if (configuration.GetValue<string>("USING_REMOTE_DB") == "true") {
+            if (configuration.GetValue<string>("USING_REMOTE_DB") == "true")
+            {
                 if (url != "https://localhost:9200")
                     throw new Exception("Remote DB flag is true but the URL is not set to localhost with https - probable misconfiguration");
 
