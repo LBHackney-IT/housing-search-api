@@ -21,7 +21,8 @@
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "LocalDevelopment",
-        "ELASTICSEARCH_DOMAIN_URL": "https://localhost:9200"
+        "ELASTICSEARCH_DOMAIN_URL": "https://localhost:9200",
+        "USING_REMOTE_DB": "true"
       },
       "applicationUrl": "http://localhost:3000"
     }
