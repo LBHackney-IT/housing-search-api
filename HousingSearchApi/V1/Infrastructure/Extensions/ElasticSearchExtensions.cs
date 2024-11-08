@@ -24,17 +24,17 @@ namespace HousingSearchApi.V1.Infrastructure.Extensions
                 .PrettyJson()
                 .ThrowExceptions()
                 .DisableDirectStreaming();
-
-            // see corresponding launch profile in launchSettings.json
-            if (configuration.GetValue<string>("USING_REMOTE_DB") == "true")
+            
+            // See dev_database launch profile in launchSettings.json
+            if (configuration.GetValue("USING_REMOTE_DB", "false") == "true")
             {
-                if (url != "https://localhost:9200")
-                    throw new Exception("Remote DB flag is true but the URL is not set to localhost with https - probable misconfiguration");
-
+                // Helps to prevent accidental connections to remote DBs
+                if (!url.StartsWith("https"))
+                    throw new ArgumentException("Remote DB connection must use HTTPS");
                 connectionSettings = connectionSettings
-                    .ServerCertificateValidationCallback(
-                        (sender, certificate, chain, sslPolicyErrors) => true);
+                    .ServerCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) => true);
             }
+
             var esClient = new ElasticClient(connectionSettings);
 
             services.TryAddSingleton<IElasticClient>(esClient);
