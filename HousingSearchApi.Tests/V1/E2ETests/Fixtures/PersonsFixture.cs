@@ -25,24 +25,17 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public void GivenAPersonIndexExists()
         {
+            // clear index
             ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
+            var personSettingsDoc = File.ReadAllText("./data/elasticsearch/tenureIndex.json");
+            ElasticSearchClient.LowLevel.Indices.Create<BytesResponse>(INDEX, personSettingsDoc);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
 
-            if (!ElasticSearchClient.Indices.Exists(Indices.Index(INDEX)).Exists)
-            {
-                var personSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/personIndex.json").Result;
-                ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(INDEX, personSettingsDoc)
-                    .ConfigureAwait(true);
+            // load data
+            var persons = CreatePersonData();
+            ElasticSearchClient.IndexMany(persons, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
 
-                var persons = CreatePersonData();
-                var awaitable = ElasticSearchClient.IndexManyAsync(persons, INDEX).ConfigureAwait(true);
-
-                while (!awaitable.GetAwaiter().IsCompleted)
-                {
-
-                }
-
-                Thread.Sleep(5000);
-            }
         }
 
         private List<QueryablePerson> CreatePersonData()
@@ -126,11 +119,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             specificPerson3.Surname = lastName + lastName;
             listOfPersons.Add(specificPerson4);
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfPersons, INDEX).ConfigureAwait(true);
-
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(5000);
+            ElasticSearchClient.IndexMany(listOfPersons, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         public void GivenDifferentTypesOfTenureTypes(string firstName, string lastName, List<string> list)
@@ -153,11 +143,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 });
             }
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfPersons, INDEX).ConfigureAwait(true);
-
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(5000);
+            ElasticSearchClient.IndexMany(listOfPersons, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         public void GivenThereExistPersonsWithDifferentPersonTypes(string firstName, string lastName, List<PersonType> personTypes)
@@ -174,11 +161,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 });
             }
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfPersons, INDEX).ConfigureAwait(true);
-
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(5000);
+            ElasticSearchClient.IndexMany(listOfPersons, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
     }
 }

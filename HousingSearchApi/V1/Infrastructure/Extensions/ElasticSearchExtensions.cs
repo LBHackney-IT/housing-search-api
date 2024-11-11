@@ -20,12 +20,21 @@ namespace HousingSearchApi.V1.Infrastructure.Extensions
 
             var pool = new SingleNodeConnectionPool(new Uri(url));
 
-            var connectionSettings =
-                new ConnectionSettings(pool)
-                    // .ServerCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) => url == "https://localhost:9200") // For local connection to dev
-                    .PrettyJson()
-                    .ThrowExceptions()
-                    .DisableDirectStreaming();
+            var connectionSettings = new ConnectionSettings(pool)
+                .PrettyJson()
+                .ThrowExceptions()
+                .DisableDirectStreaming();
+
+            // See dev_database launch profile in launchSettings.json
+            if (configuration.GetValue("USING_REMOTE_DB", "false") == "true")
+            {
+                // Helps to prevent accidental connections to remote DBs
+                if (!url.StartsWith("https"))
+                    throw new ArgumentException("Remote DB connection must use HTTPS");
+                connectionSettings = connectionSettings
+                    .ServerCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) => true);
+            }
+
             var esClient = new ElasticClient(connectionSettings);
 
             services.TryAddSingleton<IElasticClient>(esClient);

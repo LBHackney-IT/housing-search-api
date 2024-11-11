@@ -10,9 +10,9 @@ namespace HousingSearchApi.Tests.V2.E2ETests.Fixtures;
 public class ElasticsearchFixture : IAsyncLifetime
 {
     public IElasticClient Client { get; private set; }
-    public string FixtureFilesPath = "V2/E2ETests/Fixtures/Files";
 
-    private string _indexFilesPath => "data/elasticsearch";
+    public string FixtureFilesPath = "V2/E2ETests/Fixtures/Files";
+    private string _indexFilesPath = "data/elasticsearch";
 
     public ElasticsearchFixture()
     {
@@ -21,49 +21,60 @@ public class ElasticsearchFixture : IAsyncLifetime
         Client = new ElasticClient(settings);
     }
 
-    public async Task CreateIndexAsync(string filename, string indexName)
+    public void CreateIndex(string filename, string indexName)
     {
-        var indexDefinition = await File.ReadAllTextAsync(Path.Combine(_indexFilesPath, filename));
-        var client = new ElasticClient();
+        var existsResponse = Client.Indices.Exists(indexName);
+        if (existsResponse.Exists)
+            Client.Indices.Delete(indexName);
 
-        var response = await client.LowLevel.Indices.CreateAsync<StringResponse>(indexName, indexDefinition);
+        var indexDefinition = File.ReadAllText(Path.Combine(_indexFilesPath, filename));
+        var response = Client.LowLevel.Indices.Create<StringResponse>(indexName, indexDefinition);
 
         if (!response.Success)
-            Console.WriteLine($"Failed to create index: {response.DebugInformation}");
-        else
-            Console.WriteLine("Index created successfully.");
+            throw new Exception($"Failed to create index {indexName}: " + response.DebugInformation);
+        Console.WriteLine($"Index {indexName} created successfully.");
     }
 
-    public async Task LoadDataAsync(string filename)
+    public void LoadData(string filename, string indexName)
     {
+        Console.WriteLine($"Loading data from {filename} into index {indexName}");
         string jsonFilePath = Path.Combine(FixtureFilesPath, filename);
         if (!File.Exists(jsonFilePath))
             throw new FileNotFoundException($"The file {jsonFilePath} could not be found in directory {Directory.GetCurrentDirectory()}");
 
+        string jsonContent = File.ReadAllText(jsonFilePath);
 
-        string jsonContent = await File.ReadAllTextAsync(jsonFilePath);
-
-        var bulkResponse = await Client.LowLevel.BulkAsync<StringResponse>(PostData.String(jsonContent));
+        // Perform the bulk insert with immediate refresh
+        var bulkResponse = Client.LowLevel.Bulk<StringResponse>(
+            PostData.String(jsonContent),
+            new BulkRequestParameters { Refresh = Refresh.WaitFor }
+        );
 
         if (!bulkResponse.Success)
             throw new Exception("Bulk insert failed: " + bulkResponse.DebugInformation);
-
     }
 
-    public async Task InitializeAsync()
+    public Task InitializeAsync()
     {
         var indexSettingsFiles = new string[] { "assetIndex.json", "tenureIndex.json", "personIndex.json" };
         foreach (string filename in indexSettingsFiles)
-            await CreateIndexAsync(filename, indexName: filename.Replace("Index.json", ""));
+        {
+            var indexName = filename.Replace("Index.json", "") + "s";
+            CreateIndex(filename, indexName);
+        }
 
         var filenames = new string[] { "assets.json", "tenures.json", "persons.json" };
         foreach (string filename in filenames)
-            await LoadDataAsync(filename);
+        {
+            var indexName = filename.Replace(".json", "");
+            LoadData(filename, indexName);
+        }
+
+        return Task.CompletedTask;
     }
 
     public Task DisposeAsync()
     {
-        // Clean up if necessary, e.g., deleting the index
         return Task.CompletedTask;
     }
 }

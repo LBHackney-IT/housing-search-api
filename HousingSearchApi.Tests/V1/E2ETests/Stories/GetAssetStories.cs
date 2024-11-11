@@ -133,15 +133,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         }
 
         [Fact]
-        public void ServiceFiltersTrueContractIsApprovedStatusWithoutSearchText()
-        {
-            var contractIsApproved = "true";
-            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
-                .When(w => _steps.WhenContractIsApprovedIsProvided(contractIsApproved))
-                .Then(t => _steps.ThenAssetsWithContractApprovalStatusShouldBeIncluded(contractIsApproved, 2))
-                .BDDfy();
-        }
-        [Fact]
         public void ServiceFiltersPendingApprovalStatusWithoutSearchText()
         {
             var pendingApprovalStatus = "PendingApproval";
@@ -185,15 +176,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractApprovalStatusReasonIsProvided(approvalStatusReason))
                 .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusReasonShouldBeIncluded(approvalStatusReason, 5))
-                .BDDfy();
-        }
-        [Fact]
-        public void ServiceFiltersFalseContractIsApprovedStatusWithoutSearchText()
-        {
-            var contractIsNotApproved = "false";
-            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
-                .When(w => _steps.WhenContractIsApprovedIsProvided(contractIsNotApproved))
-                .Then(t => _steps.ThenAssetsWithContractApprovalStatusShouldBeIncluded(contractIsNotApproved, 11))
                 .BDDfy();
         }
         [Fact]

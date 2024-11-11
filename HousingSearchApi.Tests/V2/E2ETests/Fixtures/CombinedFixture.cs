@@ -1,3 +1,4 @@
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -8,10 +9,13 @@ public class CombinedFixture : IAsyncLifetime
     public MockWebApplicationFactory<Startup> Factory { get; private set; }
     public ElasticsearchFixture Elasticsearch { get; private set; }
 
+    public readonly HttpClient HttpClient;
+
     public CombinedFixture()
     {
         Factory = new MockWebApplicationFactory<Startup>();
         Elasticsearch = new ElasticsearchFixture();
+        HttpClient = Factory.CreateClient();
     }
 
     public async Task InitializeAsync()

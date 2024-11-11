@@ -54,24 +54,16 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 
         public void GivenAnAssetIndexExists()
         {
-            ElasticSearchClient.Indices.Delete(INDEX);
+            // clear index
+            ElasticSearchClient.Indices.Delete(Indices.Index(INDEX));
+            var assetSettingsDoc = File.ReadAllText("./data/elasticsearch/assetIndex.json");
+            ElasticSearchClient.LowLevel.Indices.Create<BytesResponse>(INDEX, assetSettingsDoc);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
 
-            if (!ElasticSearchClient.Indices.Exists(Indices.Index(INDEX)).Exists)
-            {
-                var assetSettingsDoc = File.ReadAllTextAsync("./data/elasticsearch/assetIndex.json").Result;
-                ElasticSearchClient.LowLevel.Indices.CreateAsync<BytesResponse>(INDEX, assetSettingsDoc)
-                    .ConfigureAwait(true);
-
-                var assets = CreateAssetData();
-                var awaitable = ElasticSearchClient.IndexManyAsync(assets, INDEX).ConfigureAwait(true);
-
-                while (!awaitable.GetAwaiter().IsCompleted)
-                {
-
-                }
-
-                Thread.Sleep(5000);
-            }
+            // load data
+            var assets = CreateAssetData();
+            ElasticSearchClient.IndexMany(assets, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
 
         private List<QueryableAsset> CreateAssetData()
@@ -98,7 +90,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 asset.AssetCharacteristics.HasPrivateKitchen = value.PrivateKitchen;
                 asset.AssetCharacteristics.IsStepFree = value.StepFree;
                 asset.ParentAssetIds = value.ParentAssetIds;
-                asset.AssetContract.IsApproved = value.ContractIsApproved;
                 asset.AssetContract.EndReason = value.ContractEndReason;
                 asset.AssetContract.ApprovalStatus = parsedApprovalStatus;
                 asset.AssetContract.ApprovalStatusReason = value.ContractApprovalStatusReason;

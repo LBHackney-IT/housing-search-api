@@ -1,258 +1,74 @@
 {
-  "aliases": {
-
-  },
   "mappings": {
     "properties": {
-      "totalBalance": {
-        "type": "double"
+      "id": {
+        "type": "keyword"
       },
-      "dateOfBirth": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+      "title": {
+        "type": "text"
       },
-      "ethinicity": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+      "preferredTitle": {
+        "type": "text"
+      },
+      "preferredFirstname": {
+        "type": "text"
+      },
+      "preferredMiddleName": {
+        "type": "text"
+      },
+      "preferredSurname": {
+        "type": "text"
       },
       "firstname": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "type": "text"
       },
-      "gender": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+      "middleName": {
+        "type": "text"
       },
-      "id": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+      "surname": {
+        "type": "text"
       },
-      "identification": {
+      "dateOfBirth": {
+        "type": "text"
+      },
+      "tenures": {
+        "type": "nested",
         "properties": {
-          "identificationType": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+          "id": {
+            "type": "keyword"
           },
-          "linkToDocument": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+          "paymentReference": {
+            "type": "keyword"
           },
-          "originalDocumentSeen": {
-            "type": "boolean"
+          "type": {
+            "type": "keyword"
           },
-          "value": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          }
-        }
-      },
-      "isPersonCautionaryAlert": {
-        "type": "boolean"
-      },
-      "isTenureCautionaryAlert": {
-        "type": "boolean"
-      },
-      "middlename": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
-      "nationality": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+          "startDate": {
+            "type": "text"
+          },
+          "endDate": {
+            "type": "text"
+          },
+          "assetFullAddress": {
+            "type": "text"
+          },
+          "uprn": {
+            "type": "keyword"
+          },
+          "propertyReference": {
+            "type": "keyword"
+          },
+          "assetId": {
+            "type": "keyword"
           }
         }
       },
       "personTypes": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
-      "placeOfBirth": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
-      "preferredFirstname": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
-      "preferredSurname": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
-      "surname": {
-        "type": "keyword",
-        "normalizer": "my_normalizer",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
-      "tenures": {
-        "properties": {
-          "assetFullAddress": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "endDate": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "id": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "startDate": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "type": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "totalBalance": {
-            "type": "double"
-          },
-          "postCode": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "paymentReference": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          }
-        }
-      },
-      "title": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "type": "keyword"
       }
     }
   },
   "settings": {
-    "analysis": {
-      "normalizer": {
-        "my_normalizer": {
-          "type": "custom",
-          "char_filter": [
-
-          ],
-          "filter": [
-            "lowercase",
-            "asciifolding"
-          ]
-        }
-      }
-    },
     "index": {
       "number_of_shards": "1",
       "number_of_replicas": "1"

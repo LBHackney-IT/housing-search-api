@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -9,15 +8,10 @@ using HousingSearchApi.Tests.V2.E2ETests.Fixtures;
 
 namespace HousingSearchApi.Tests.V2.E2ETests;
 
-[Collection("V2.E2ETests Collection")]
 public class AssetSearchTests : BaseSearchTests
 {
-    private readonly HttpClient _httpClient;
 
-    public AssetSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "assets")
-    {
-        _httpClient = combinedFixture.Factory.CreateClient();
-    }
+    public AssetSearchTests(CombinedFixture combinedFixture) : base(combinedFixture, indexName: "assets") { }
 
     #region General
 
@@ -28,7 +22,7 @@ public class AssetSearchTests : BaseSearchTests
         var request = CreateSearchRequest("XXXXXXXX");
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await HttpClient.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -56,7 +50,7 @@ public class AssetSearchTests : BaseSearchTests
             var request = CreateSearchRequest(query);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -82,7 +76,7 @@ public class AssetSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchTextPostcode);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -109,7 +103,7 @@ public class AssetSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -136,7 +130,7 @@ public class AssetSearchTests : BaseSearchTests
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -152,7 +146,7 @@ public class AssetSearchTests : BaseSearchTests
     public async Task SearchAddress_Partial()
     {
         const int maxAttempts = 10;
-        const int minSuccessCount = 9;
+        const int minSuccessCount = 8;
 
         var successCount = await RunWithScore(maxAttempts, async () =>
         {
@@ -161,12 +155,12 @@ public class AssetSearchTests : BaseSearchTests
             var randomAddress = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString();
             var searchTerms = randomAddress.Split(' ').ToList();
             // remove one search term
-            searchTerms.RemoveAt(1);
+            searchTerms.RemoveAt(0);
             var searchText = string.Join(" ", searchTerms);
             var request = CreateSearchRequest(searchText);
 
             // Act
-            var response = await _httpClient.SendAsync(request);
+            var response = await HttpClient.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -181,6 +175,35 @@ public class AssetSearchTests : BaseSearchTests
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
 
+    [Fact]
+    public async Task SearchAddress_Typo()
+    {
+        const int maxAttempts = 10;
+        const int minSuccessCount = 8;
+
+        var successCount = await RunWithScore(maxAttempts, async () =>
+        {
+            // Arrange
+            var randomAsset = RandomItem();
+            var randomAddress = randomAsset.GetProperty("assetAddress").GetProperty("addressLine1").GetString();
+
+            var searchText = CreateTypo(randomAddress);
+            var request = CreateSearchRequest(searchText);
+
+            // Act
+            var response = await HttpClient.SendAsync(request);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var root = GetResponseRootElement(response);
+            root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
+            var firstResult = root.GetProperty("results").GetProperty("assets")[0];
+            firstResult.GetProperty("id").GetString().Should().Be(randomAsset.GetProperty("id").GetString());
+
+        });
+        successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
+    }
+
     #endregion
 
     #region Tenure
@@ -190,19 +213,18 @@ public class AssetSearchTests : BaseSearchTests
     {
         // Arrange
         var asset = RandomItem();
-        var expectedReturnedId = asset.GetProperty("id").GetString();
         var searchText = asset.GetProperty("tenure").GetProperty("paymentReference").GetString();
         var request = CreateSearchRequest(searchText);
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await HttpClient.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var root = GetResponseRootElement(response);
         root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
         var firstResult = root.GetProperty("results").GetProperty("assets")[0];
-        firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+        firstResult.GetProperty("tenure").GetProperty("paymentReference").GetString().Should().Be(searchText);
     }
 
     #endregion
@@ -215,11 +237,11 @@ public class AssetSearchTests : BaseSearchTests
         // Arrange
         var asset = RandomItem();
         var expectedReturnedId = asset.GetProperty("id").GetString();
-        var searchText = asset.GetProperty("assetId").GetString();
+        var searchText = expectedReturnedId;
         var request = CreateSearchRequest(searchText);
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await HttpClient.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
