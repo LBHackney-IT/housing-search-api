@@ -24,7 +24,7 @@ namespace HousingSearchApi.V1.Infrastructure.Extensions
                 .PrettyJson()
                 .ThrowExceptions()
                 .DisableDirectStreaming();
-            
+
             // See dev_database launch profile in launchSettings.json
             if (configuration.GetValue("USING_REMOTE_DB", "false") == "true")
             {
