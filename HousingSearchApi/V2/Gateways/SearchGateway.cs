@@ -5,10 +5,8 @@ using HousingSearchApi.V2.Domain.DTOs;
 using HousingSearchApi.V2.Gateways.Interfaces;
 using Nest;
 using Ops = HousingSearchApi.V2.Gateways.SearchOperations;
-using Ops = HousingSearchApi.V2.Gateways.SearchOperations;
 
 namespace HousingSearchApi.V2.Gateways;
-
 
 
 public class SearchGateway : ISearchGateway
@@ -22,12 +20,6 @@ public class SearchGateway : ISearchGateway
         public const int Low = 1;
     }
 
-    private static class BoostLevel
-    {
-        public const int High = 3;
-        public const int Medium = 2;
-        public const int Low = 1;
-    }
 
     public SearchGateway(IElasticClient elasticClient)
     {
@@ -36,11 +28,6 @@ public class SearchGateway : ISearchGateway
 
     public async Task<SearchResponseDto> Search(string indexName, SearchParametersDto searchParams)
     {
-
-        var shouldOperations = new List<Func<QueryContainerDescriptor<object>, QueryContainer>>() {
-            Ops.MultiMatchBestFields(searchParams.SearchText, boost: BoostLevel.High),
-        };
-
         var shouldOperations = new List<Func<QueryContainerDescriptor<object>, QueryContainer>>() {
             Ops.MultiMatchBestFields(searchParams.SearchText, boost: BoostLevel.High),
         };
@@ -160,31 +147,4 @@ public class SearchGateway : ISearchGateway
                     Ops.WildcardQueryStringQuery(searchText, new[] { field }, boost: BoostLevel.High)
                 )
             );
-
-
-
-
-    static Func<QueryContainerDescriptor<object>, QueryContainer>
-        MatchNameFields(string searchText, Fields fields) =>
-        should => should
-            .Bool(b => b
-                .Should(
-                    Ops.MatchFields(searchText, fields, boost: BoostLevel.High),
-                    Ops.WildcardMatch(searchText, fields, boost: BoostLevel.Low)
-                )
-            );
-
-
-    static Func<QueryContainerDescriptor<object>, QueryContainer>
-        MatchAddressField(string searchText, Field field) =>
-        should => should
-            .Bool(b => b
-                .Should(
-                    Ops.MatchPhrasePrefix(searchText, field, boost: BoostLevel.High),
-                    Ops.MatchField(searchText, field, boost: BoostLevel.Medium),
-                    Ops.WildcardQueryStringQuery(searchText, new[] { field }, boost: BoostLevel.High)
-                )
-            );
-
-
 }
