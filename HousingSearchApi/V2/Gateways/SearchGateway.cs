@@ -33,7 +33,7 @@ public class SearchGateway : ISearchGateway
         };
 
         // Extend search operations depending on the index
-        if (indexName == "assets")
+        if (indexName.Contains("assets"))
         {
             Fields keywordFields = new[] {
                 "id", "assetAddress.uprn", "propertyReference",
@@ -48,7 +48,7 @@ public class SearchGateway : ISearchGateway
                 MatchAddressField(searchParams.SearchText, keyAddressField),
             });
         }
-        else if (indexName == "tenures")
+        else if (indexName.Contains("tenures"))
         {
             Field nameField = "householdMembers.fullName";
             Fields keywordFields = new[] {
@@ -64,7 +64,7 @@ public class SearchGateway : ISearchGateway
                 MatchAddressField(searchParams.SearchText, addressField),
             });
         }
-        else if (indexName == "persons")
+        else if (indexName.Contains("persons"))
         {
             Fields nameFields = new[] { "title", "firstname", "surname" };
             Field tenureAddressField = "tenures.assetFullAddress";
