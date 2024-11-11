@@ -310,12 +310,7 @@
             }
           },
           "id": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword"
-              }
-            }
+            "type": "keyword"
           },
           "isActive": {
             "type": "boolean"
@@ -580,6 +575,27 @@
       },
       "assetContract": {
         "properties": {
+          "approvalDate": {
+            "type": "date"
+          },
+          "approvalStatus": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "approvalStatusReason": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
           "charges": {
             "properties": {
               "amount": {
@@ -601,6 +617,15 @@
                   }
                 }
               },
+              "subType": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
               "type": {
                 "type": "text",
                 "fields": {
@@ -616,6 +641,73 @@
             "fields": {
               "keyword": {
                 "type": "keyword"
+              }
+            }
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "isApproved": {
+            "type": "boolean"
+          },
+          "relatedPeople": {
+            "properties": {
+              "id": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "name": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "subType": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "type": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              }
+            }
+          },
+          "startDate": {
+            "type": "date"
+          },
+          "targetId": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "targetType": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
               }
             }
           }

@@ -179,11 +179,8 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 });
             }
 
-            var awaitable = ElasticSearchClient.IndexManyAsync(listOfPersons, INDEX).ConfigureAwait(true);
-
-            while (!awaitable.GetAwaiter().IsCompleted) { }
-
-            Thread.Sleep(5000);
+            ElasticSearchClient.IndexMany(listOfPersons, INDEX);
+            ElasticSearchClient.Indices.Refresh(Indices.Index(INDEX));
         }
     }
 }
