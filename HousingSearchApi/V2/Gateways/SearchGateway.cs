@@ -29,7 +29,7 @@ public class SearchGateway : ISearchGateway
     {
 
         var shouldOperations = new List<Func<QueryContainerDescriptor<object>, QueryContainer>>() {
-            Ops.MultiMatchBestFields(searchParams.SearchText, boost: 6),
+            Ops.MultiMatchBestFields(searchParams.SearchText, boost: BoostLevel.High),
         };
 
         // Extend search operations depending on the index
