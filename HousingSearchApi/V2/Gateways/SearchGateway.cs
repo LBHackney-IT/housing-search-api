@@ -62,9 +62,6 @@ public class SearchGateway : ISearchGateway
                 MatchNameFields(searchParams.SearchText, new[] {nameField}),
                 Ops.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: BoostLevel.Medium),
                 MatchAddressField(searchParams.SearchText, addressField),
-                MatchNameFields(searchParams.SearchText, new[] {nameField}),
-                Ops.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: BoostLevel.Medium),
-                MatchAddressField(searchParams.SearchText, addressField),
             });
         }
         else if (indexName.Contains("persons"))
@@ -81,15 +78,6 @@ public class SearchGateway : ISearchGateway
 
             shouldOperations.AddRange(new[]
             {
-                MatchNameFields(searchParams.SearchText, nameFields),
-                Ops.Nested(
-                    path: "tenures",
-                    func: Ops.MultiMatchBestFields(searchParams.SearchText, fields: tenureKeyFields, boost: BoostLevel.High)
-                ),
-                Ops.Nested(
-                    path: "tenures",
-                    func: MatchAddressField(searchParams.SearchText, tenureAddressField)
-                ),
                 MatchNameFields(searchParams.SearchText, nameFields),
                 Ops.Nested(
                     path: "tenures",
