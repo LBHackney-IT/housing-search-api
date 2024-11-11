@@ -4,16 +4,21 @@ using System.Threading.Tasks;
 using HousingSearchApi.V2.Domain.DTOs;
 using HousingSearchApi.V2.Gateways.Interfaces;
 using Nest;
+using Ops = HousingSearchApi.V2.Gateways.SearchOperations;
 
 namespace HousingSearchApi.V2.Gateways;
+
 
 public class SearchGateway : ISearchGateway
 {
     private readonly IElasticClient _elasticClient;
 
-    const int HighBoost = 3;
-    const int MediumBoost = 2;
-    const int LowBoost = 1;
+    private static class BoostLevel
+    {
+        public const int High = 3;
+        public const int Medium = 2;
+        public const int Low = 1;
+    }
 
     public SearchGateway(IElasticClient elasticClient)
     {
@@ -24,7 +29,7 @@ public class SearchGateway : ISearchGateway
     {
 
         var shouldOperations = new List<Func<QueryContainerDescriptor<object>, QueryContainer>>() {
-            SearchOperations.MultiMatchBestFields(searchParams.SearchText, boost: 6),
+            Ops.MultiMatchBestFields(searchParams.SearchText, boost: 6),
         };
 
         // Extend search operations depending on the index
@@ -38,8 +43,8 @@ public class SearchGateway : ISearchGateway
             Fields addressFieldNames = new[] { "assetAddress.addressLine1", "assetAddress.addressLine2", "assetAddress.postCode" };
             shouldOperations.AddRange(new[]
             {
-                SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: HighBoost),
-                SearchOperations.MultiMatchCrossFields(searchParams.SearchText, fields: addressFieldNames, boost: LowBoost),
+                Ops.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: BoostLevel.High),
+                Ops.MultiMatchCrossFields(searchParams.SearchText, fields: addressFieldNames, boost: BoostLevel.Low),
                 MatchAddressField(searchParams.SearchText, keyAddressField),
             });
         }
@@ -54,9 +59,8 @@ public class SearchGateway : ISearchGateway
 
             shouldOperations.AddRange(new[]
             {
-                SearchOperations.MatchField(searchParams.SearchText, field: nameField, boost: MediumBoost),
-                SearchOperations.WildcardMatch(searchParams.SearchText, fields: new [] {nameField}, boost: LowBoost),
-                SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: MediumBoost),
+                MatchNameFields(searchParams.SearchText, new[] {nameField}),
+                Ops.MultiMatchBestFields(searchParams.SearchText, fields: keywordFields, boost: BoostLevel.Medium),
                 MatchAddressField(searchParams.SearchText, addressField),
             });
         }
@@ -74,13 +78,12 @@ public class SearchGateway : ISearchGateway
 
             shouldOperations.AddRange(new[]
             {
-                SearchOperations.MatchFields(searchParams.SearchText, fields: nameFields, boost: HighBoost),
-                SearchOperations.WildcardMatch(searchParams.SearchText, fields: nameFields, boost: LowBoost),
-                SearchOperations.Nested(
+                MatchNameFields(searchParams.SearchText, nameFields),
+                Ops.Nested(
                     path: "tenures",
-                    func: SearchOperations.MultiMatchBestFields(searchParams.SearchText, fields: tenureKeyFields, boost: HighBoost)
+                    func: Ops.MultiMatchBestFields(searchParams.SearchText, fields: tenureKeyFields, boost: BoostLevel.High)
                 ),
-                SearchOperations.Nested(
+                Ops.Nested(
                     path: "tenures",
                     func: MatchAddressField(searchParams.SearchText, tenureAddressField)
                 ),
@@ -94,7 +97,7 @@ public class SearchGateway : ISearchGateway
                     .Should(shouldOperations)
                 )
             )
-            .MinScore(0)
+            .MinScore(5)
             .Size(searchParams.PageSize)
             .From((searchParams.Page - 1) * searchParams.PageSize)
             .TrackTotalHits()
@@ -110,14 +113,26 @@ public class SearchGateway : ISearchGateway
         };
     }
 
-    private Func<QueryContainerDescriptor<object>, QueryContainer>
+
+    static Func<QueryContainerDescriptor<object>, QueryContainer>
+        MatchNameFields(string searchText, Fields fields) =>
+        should => should
+            .Bool(b => b
+                .Should(
+                    Ops.MatchFields(searchText, fields, boost: BoostLevel.High),
+                    Ops.WildcardMatch(searchText, fields, boost: BoostLevel.Low)
+                )
+            );
+
+
+    static Func<QueryContainerDescriptor<object>, QueryContainer>
         MatchAddressField(string searchText, Field field) =>
         should => should
             .Bool(b => b
                 .Should(
-                    SearchOperations.MatchPhrasePrefix(searchText, field, boost: HighBoost),
-                    SearchOperations.MatchField(searchText, field, boost: MediumBoost),
-                    SearchOperations.WildcardQueryStringQuery(searchText, new[] { field }, boost: HighBoost)
+                    Ops.MatchPhrasePrefix(searchText, field, boost: BoostLevel.High),
+                    Ops.MatchField(searchText, field, boost: BoostLevel.Medium),
+                    Ops.WildcardQueryStringQuery(searchText, new[] { field }, boost: BoostLevel.High)
                 )
             );
 

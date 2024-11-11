@@ -29,6 +29,8 @@ namespace HousingSearchApi.Tests.V1.Infrastructure
             section.Setup(x => x.Value).Returns(url);
             mockConfig.Setup(x => x.GetSection(ConfigKey))
                               .Returns(section.Object);
+            mockConfig.Setup(x => x.GetSection("USING_REMOTE_DB"))
+                              .Returns(new Mock<IConfigurationSection>().Object);
         }
 
         [Fact]
