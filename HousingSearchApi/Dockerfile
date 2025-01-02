@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0
+FROM mcr.microsoft.com//sdk:8.0
 
 ARG LBHPACKAGESTOKEN
 ENV LBHPACKAGESTOKEN=$LBHPACKAGESTOKEN
@@ -10,7 +10,7 @@ COPY ./HousingSearchApi.sln ./
 COPY ./HousingSearchApi/HousingSearchApi.csproj ./HousingSearchApi/
 COPY /NuGet.Config /root/.nuget/NuGet/NuGet.Config
 
-RUN dotnet restore ./HousingSearchApi/HousingSearchApi.csproj --configfile /root/.nuget/NuGet/NuGet.Config
+RUN  restore ./HousingSearchApi/HousingSearchApi.csproj --configfile /root/.nuget/NuGet/NuGet.Config
 # Copy everything else and build
 COPY . ./
 
