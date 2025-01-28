@@ -164,6 +164,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
+
+        public async Task WhenTemporaryAccommodationParentAssetIdIsPassed(string taParentAssetId)
+        {
+            var route = new Uri($"api/v1/search/assets/all?temporaryAccommodationParentAssetId={taParentAssetId}&page={1}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+
         public async Task ThenOnlyTemporaryAccomodationResultsShouldBeIncluded()
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -312,6 +321,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
+        }
+
+        public async Task ThenAllResultsWithPassedTemporaryAccommodationParentAssetIdShouldBeReturned(int expectedNumberOfAssets, Guid parentAssetId)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+            result.Results.Assets.Count.Should().Be(expectedNumberOfAssets);
+            result.Results.Assets.All(x => x.AssetManagement.TemporaryAccommodationParentAssetId == parentAssetId);
+
         }
     }
 }
