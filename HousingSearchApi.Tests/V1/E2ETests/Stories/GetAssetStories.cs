@@ -1,5 +1,6 @@
 using HousingSearchApi.Tests.V1.E2ETests.Fixtures;
 using HousingSearchApi.Tests.V1.E2ETests.Steps;
+using System;
 using TestStack.BDDfy;
 using Xunit;
 
@@ -202,7 +203,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var contractIsNotActive = "false";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractIsActiveIsProvided(contractIsNotActive))
-                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsNotActive, 2))
+                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsNotActive, 5))
                 .BDDfy();
         }
         [Fact]
@@ -245,6 +246,17 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenIsTemporaryAccomodationIsTrueAndSearchText("19 buckland"))
                 .Then(t => _steps.ThenThatTemporaryAccomodationAddressShouldBeTheFirstResult("19 Buckland Court St Johns Estate"))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ServiceFiltersTemporaryAccommodationParentAssetIdWithoutSearchText()
+        {
+            var temporaryAccommodationParentAssetId = "CB1876BB-14EE-4688-9EC3-21869FF176C5";
+
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenTemporaryAccommodationParentAssetIdIsPassed(temporaryAccommodationParentAssetId))
+                .Then(t => _steps.ThenAllResultsWithPassedTemporaryAccommodationParentAssetIdShouldBeReturned(3, new Guid(temporaryAccommodationParentAssetId)))
                 .BDDfy();
         }
     }

@@ -1,14 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
 using AutoFixture;
 using Elasticsearch.Net;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using Hackney.Shared.HousingSearch.Gateways.Models.Contract;
 using Hackney.Shared.HousingSearch.Gateways.Models.Persons;
 using Nest;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
 
 namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
 {
@@ -16,6 +16,9 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
     {
         public List<QueryablePerson> Persons { get; private set; }
         private const string INDEX = "assets";
+
+        private static readonly Guid _temporaryAccommodationParentAssetId = new("CB1876BB-14EE-4688-9EC3-21869FF176C5");
+
         public static AddressStub[] Addresses =
         {
             new AddressStub{ FirstLine = "59 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234650",
@@ -38,7 +41,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             new AddressStub{ FirstLine = "5 Buckland Court St Johns Estate", AssetType = "FirstAsset", PostCode = "N1 6TY", UPRN = "10008235183", ContractIsActive = true,  ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "ContractExtended"},
             new AddressStub{ FirstLine = "Gge 15 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650", ContractIsApproved = true, ContractIsActive = true,  ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "ContractExtended"},
             new AddressStub{ FirstLine = "Gge 53 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650", ParentAssetIds = GetGuids(), ContractIsActive = true,   ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "ContractExtended"},
-            new AddressStub{ FirstLine = "Gge 25 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650", ContractIsApproved = true, ContractIsActive = true,   ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "ContractExtended"}
+            new AddressStub{ FirstLine = "Gge 25 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650", ContractIsApproved = true, ContractIsActive = true,   ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "ContractExtended"},
+
+            new AddressStub{ FirstLine = "TA child address one", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10001234567", TemporaryAccommodationParentAssetId = _temporaryAccommodationParentAssetId},
+            new AddressStub{ FirstLine = "TA child address two", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10002234567", TemporaryAccommodationParentAssetId = _temporaryAccommodationParentAssetId},
+            new AddressStub{ FirstLine = "TA child address three", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10003234567", TemporaryAccommodationParentAssetId = _temporaryAccommodationParentAssetId},
         };
 
         private static string GetGuids()
@@ -100,6 +107,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 asset.AssetContracts[0].IsActive = value.ContractIsActive;
                 asset.AssetContracts[0].Charges = asset.AssetContracts[0].Charges.Append(chargeWithSetSubtype);
                 asset.AssetManagement.IsTemporaryAccomodation = value.TemporaryAccommodation;
+                asset.AssetManagement.TemporaryAccommodationParentAssetId = value.TemporaryAccommodationParentAssetId;
                 listOfAssets.Add(asset);
             }
 
@@ -128,6 +136,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public string ContractEndReason { get; set; }
         public string ChargesSubType { get; set; }
         public bool TemporaryAccommodation { get; set; }
-
+        public Guid TemporaryAccommodationParentAssetId { get; set; }
     }
 }
