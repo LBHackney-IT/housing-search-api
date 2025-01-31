@@ -28,9 +28,6 @@ namespace HousingSearchApi.V1.Boundary.Requests
         [FromQuery(Name = "stepFree")]
         public string StepFree { get; set; }
 
-        [FromQuery(Name = "contractIsApproved")]
-        public string ContractIsApproved { get; set; }
-
         [FromQuery(Name = "contractApprovalStatus")]
         public string ContractApprovalStatus { get; set; }
 
@@ -53,5 +50,8 @@ namespace HousingSearchApi.V1.Boundary.Requests
 
         [FromQuery(Name = "tenureType")]
         public string TenureType { get; set; }
+
+        [FromQuery(Name = "temporaryAccommodationParentAssetId")]
+        public string TemporaryAccommodationParentAssetId { get; set; }
     }
 }

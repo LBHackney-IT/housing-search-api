@@ -164,6 +164,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
+
+        public async Task WhenTemporaryAccommodationParentAssetIdIsPassed(string taParentAssetId)
+        {
+            var route = new Uri($"api/v1/search/assets/all?temporaryAccommodationParentAssetId={taParentAssetId}&page={1}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+
         public async Task ThenOnlyTemporaryAccomodationResultsShouldBeIncluded()
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -272,7 +281,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
-            result.Results.Assets.All(x => x.AssetContract.ApprovalStatus.ToString() == contractApprovalStatus);
+            result.Results.Assets.All(x => x.AssetContracts.ElementAt(0).ApprovalStatus.ToString() == contractApprovalStatus);
         }
         public async Task ThenAssetsWithProvidedContractApprovalStatusReasonShouldBeIncluded(string contractApprovalStatusReason, int expectedNumberOfAssets)
         {
@@ -280,7 +289,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
-            result.Results.Assets.All(x => x.AssetContract.ApprovalStatusReason == contractApprovalStatusReason);
+            result.Results.Assets.All(x => x.AssetContracts.ElementAt(0).ApprovalStatusReason == contractApprovalStatusReason);
         }
         public async Task ThenAssetsWithProvidedContractStatusShouldBeIncluded(string contractStatus, int expectedNumberOfAssets)
         {
@@ -288,7 +297,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
-            result.Results.Assets.All(x => x.AssetContract.IsActive == bool.Parse(contractStatus));
+            result.Results.Assets.All(x => x.AssetContracts.ElementAt(0).IsActive == bool.Parse(contractStatus));
         }
         public async Task ThenAssetsWithProvidedEndReasonShouldBeIncluded(string contractEndReason, int expectedNumberOfAssets)
         {
@@ -296,7 +305,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
-            result.Results.Assets.All(x => x.AssetContract.EndReason == contractEndReason);
+            result.Results.Assets.All(x => x.AssetContracts.ElementAt(0).EndReason == contractEndReason);
         }
         public async Task ThenAssetsWhoseContractHasProvidedChargesSubytpeAreReturned(string chargesSubtype, int expectedNumberOfAssets)
         {
@@ -304,7 +313,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
-            result.Results.Assets.All(x => x.AssetContract.Charges.Any(c => c.SubType == "rate"));
+            result.Results.Assets.All(x => x.AssetContracts.ElementAt(0).Charges.Any(c => c.SubType == "rate"));
 
         }
         public async Task ThenAllAssetsAreReturned(int expectedNumberOfAssets)
@@ -312,6 +321,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
+        }
+
+        public async Task ThenAllResultsWithPassedTemporaryAccommodationParentAssetIdShouldBeReturned(int expectedNumberOfAssets, Guid parentAssetId)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+            result.Results.Assets.Count.Should().Be(expectedNumberOfAssets);
+            result.Results.Assets.All(x => x.AssetManagement.TemporaryAccommodationParentAssetId == parentAssetId);
+
         }
     }
 }

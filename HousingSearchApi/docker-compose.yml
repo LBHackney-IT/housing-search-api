@@ -1,0 +1,82 @@
+services:
+  housing-search-api:
+    image: housing-search-api
+    build:
+      context: .
+      dockerfile: HousingSearchApi/Dockerfile
+      args:
+      - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
+    environment:
+      SERVERHOST: http://localhost
+      ELASTICSEARCH_DOMAIN_URL: http://test-elasticsearch:9200
+
+    ports:
+      - 3000:3000
+    networks:
+      - elastic
+    depends_on:
+      - kibana
+      - test-elasticsearch
+
+  housing-search-api-test:
+    image: housing-search-api-test
+    build:
+      context: .
+      dockerfile: HousingSearchApi.Tests/Dockerfile
+      args:
+      - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
+      - SONAR_TOKEN=${SONAR_TOKEN}
+    environment:
+      - ELASTICSEARCH_DOMAIN_URL=http://test-elasticsearch:9200
+    depends_on:
+      test-elasticsearch:
+        condition: service_healthy
+
+  test-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
+    container_name: test-elasticsearch
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -fs http://localhost:9200/_cluster/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - 9200:9200
+      - 9300:9300
+
+  data-loader:
+    image: alpine:3.20
+    container_name: data-loader
+    environment:
+      - ELASTICSEARCH_DOMAIN_URL=test-elasticsearch:9200
+    depends_on:
+      test-elasticsearch:
+        condition: service_healthy
+    volumes:
+      - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/assets.json:/usr/share/elasticsearch/data/assets.json
+      - ./HousingSearchApi.Tests/V2/E2ETests/Fixtures/init.sh:/usr/share/elasticsearch/init.sh
+    entrypoint: sh -c "sh /usr/share/elasticsearch/init.sh"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.9.3
+    container_name: kibana
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+    depends_on:
+      test-elasticsearch:
+        condition: service_healthy
+    environment:
+      ELASTICSEARCH_HOSTS: http://test-elasticsearch:9200
+      SERVER_HOST: 0.0.0.0
+
+
+networks:
+  elastic:
+    driver: bridge

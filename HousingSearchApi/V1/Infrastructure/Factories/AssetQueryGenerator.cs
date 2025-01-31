@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
 using Hackney.Core.ElasticSearch.Interfaces;
-using HousingSearchApi.V1.Interfaces;
 using Hackney.Shared.HousingSearch.Gateways.Models.Assets;
 using HousingSearchApi.V1.Boundary.Requests;
+using HousingSearchApi.V1.Interfaces;
 using HousingSearchApi.V1.Interfaces.Factories;
 using Nest;
+using System;
+using System.Collections.Generic;
 
 namespace HousingSearchApi.V1.Infrastructure.Factories
 {
@@ -112,11 +112,11 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "assetManagement.isTemporaryAccomodation" })
                         .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
                         .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
-                        .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatus, new List<string> { "assetContract.approvalStatus" })
-                        .WithMultipleFilterQuery(assetListAllRequest.ContractIsActive, new List<string> { "assetContract.isActive" })
-                        .WithMultipleFilterQuery(assetListAllRequest.ContractEndReason, new List<string> { "assetContract.endReason" })
-                        .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatusReason, new List<string> { "assetContract.approvalStatusReason" })
-                        .WithMultipleFilterQuery(assetListAllRequest.ChargesSubType, new List<string> { "assetContract.charges.subType" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatus, new List<string> { "assetContracts.approvalStatus" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ContractIsActive, new List<string> { "assetContracts.isActive" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ContractEndReason, new List<string> { "assetContracts.endReason" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatusReason, new List<string> { "assetContracts.approvalStatusReason" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ChargesSubType, new List<string> { "assetContracts.charges.subType" })
                         .WithWildstarQuery(assetListAllRequest.SearchText,
                             new List<string> { "assetAddress.addressLine1", "assetAddress.postCode", "assetAddress.uprn" })
                         .WithExactQuery(assetListAllRequest.SearchText,
@@ -148,14 +148,15 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "assetManagement.isTemporaryAccomodation" })
                         .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
                         .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
-                        .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatus, new List<string> { "assetContract.approvalStatus" })
-                        .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatusReason, new List<string> { "assetContract.approvalStatusReason" })
-                        .WithMultipleFilterQuery(assetListAllRequest.ContractIsActive, new List<string> { "assetContract.isActive" })
-                        .WithMultipleFilterQuery(assetListAllRequest.ContractEndReason, new List<string> { "assetContract.endReason" })
-                        .WithMultipleFilterQuery(assetListAllRequest.ChargesSubType, new List<string> { "assetContract.charges.subType" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatus, new List<string> { "assetContracts.approvalStatus" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatusReason, new List<string> { "assetContracts.approvalStatusReason" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ContractIsActive, new List<string> { "assetContracts.isActive" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ContractEndReason, new List<string> { "assetContracts.endReason" })
+                        .WithMultipleFilterQuery(assetListAllRequest.ChargesSubType, new List<string> { "assetContracts.charges.subType" })
                         .WithFilterQuery(assetListAllRequest.AssetTypes, new List<string> { "assetType" })
                         .WithFilterQuery(assetListAllRequest.AssetStatus, new List<string> { "assetManagement.propertyOccupiedStatus" })
                         .WithFilterQuery(assetListAllRequest.TenureType, new List<string> { "tenure.type.keyword" })
+                        .WithFilterQuery(assetListAllRequest.TemporaryAccommodationParentAssetId, new List<string> { "assetManagement.temporaryAccommodationParentAssetId" })
                         .Build(q);
                 }
             }
