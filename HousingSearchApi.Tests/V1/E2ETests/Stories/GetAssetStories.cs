@@ -203,7 +203,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var contractIsNotActive = "false";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractIsActiveIsProvided(contractIsNotActive))
-                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsNotActive, 5))
+                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsNotActive, 8))
                 .BDDfy();
         }
         [Fact]
@@ -257,6 +257,27 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenTemporaryAccommodationParentAssetIdIsPassed(temporaryAccommodationParentAssetId))
                 .Then(t => _steps.ThenAllResultsWithPassedTemporaryAccommodationParentAssetIdShouldBeReturned(3, new Guid(temporaryAccommodationParentAssetId)))
+                .BDDfy();
+        }
+
+        [Theory]
+        //Line1
+        [InlineData("282", 3)]
+        [InlineData("282 high", 2)]
+        [InlineData("282 high street", 1)]
+        [InlineData("28 hig treet", 1)]
+        //postcode
+        [InlineData("A1", 3)]
+        [InlineData("A1 2B", 2)]
+        [InlineData("A1 2BC", 1)]
+        //UPRN
+        [InlineData("10008234651", 1)]
+
+        public void ServiceReturnsMatchingTemporaryAccommodationResultsWhenAddressOrPostcodeOrUPRNIsUsed(string searchText, int expectedResults)
+        {
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenLineOneOrPostcodeOrUPRNisUsedInSearchText(searchText))
+                .Then(t => _steps.ThenAllAssetsWithTheGivenLineOneOrPostcodeOrUPRNSearchTextShouldBeReturned(expectedResults))
                 .BDDfy();
         }
     }

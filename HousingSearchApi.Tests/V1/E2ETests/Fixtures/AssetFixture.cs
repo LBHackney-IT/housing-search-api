@@ -42,10 +42,12 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             new AddressStub{ FirstLine = "Gge 15 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650", ContractIsApproved = true, ContractIsActive = true,  ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "ContractExtended"},
             new AddressStub{ FirstLine = "Gge 53 Buckland Court St Johns Estate", AssetType = "ThirdAsset", PostCode = "N1 5EP", UPRN = "10008234650", ParentAssetIds = GetGuids(), ContractIsActive = true,   ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "ContractExtended"},
             new AddressStub{ FirstLine = "Gge 25 Buckland Court St Johns Estate", AssetType = "SecondAsset", PostCode = "N1 5EP", UPRN = "10008234650", ContractIsApproved = true, ContractIsActive = true,   ContractApprovalStatus = "PendingReapproval", ContractApprovalStatusReason = "ContractExtended"},
-
             new AddressStub{ FirstLine = "TA child address one", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10001234567", TemporaryAccommodationParentAssetId = _temporaryAccommodationParentAssetId},
             new AddressStub{ FirstLine = "TA child address two", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10002234567", TemporaryAccommodationParentAssetId = _temporaryAccommodationParentAssetId},
             new AddressStub{ FirstLine = "TA child address three", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10003234567", TemporaryAccommodationParentAssetId = _temporaryAccommodationParentAssetId},
+            new AddressStub{ FirstLine = "282", PostCode = "A1", UPRN = "10008234651", TemporaryAccommodation = true},
+            new AddressStub{ FirstLine = "282 high", PostCode = "A1 2B", TemporaryAccommodation = true},
+            new AddressStub{ FirstLine = "282 high street", PostCode = "A1 2BC", TemporaryAccommodation = true},
         };
 
         private static string GetGuids()
