@@ -31,7 +31,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
         public async Task WhenAPageSizeIsProvided(int pageSize)
         {
-            var route = new Uri($"api/v1/search/assets?searchText={AssetFixture.Addresses.Last().FirstLine}&pageSize={pageSize}",
+            var route = new Uri($"api/v1/search/assets?searchText=59 Buckland Court St Johns Estate&pageSize={pageSize}",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -168,6 +168,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
         public async Task WhenTemporaryAccommodationParentAssetIdIsPassed(string taParentAssetId)
         {
             var route = new Uri($"api/v1/search/assets/all?temporaryAccommodationParentAssetId={taParentAssetId}&page={1}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
+        public async Task WhenLineOneOrPostcodeOrUPRNisUsedInSearchText(string searchText)
+        {
+            var route = new Uri($"api/v1/search/assets/all?isDesc=false&isFilteredQuery=true&isTemporaryAccomodation=true&page=1&pageSize=7&searchText={searchText}&sortBy=id",
                 UriKind.Relative);
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
@@ -330,6 +337,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             result.Results.Assets.Count.Should().Be(expectedNumberOfAssets);
             result.Results.Assets.All(x => x.AssetManagement.TemporaryAccommodationParentAssetId == parentAssetId);
 
+        }
+
+        public async Task ThenAllAssetsWithTheGivenLineOneOrPostcodeOrUPRNSearchTextShouldBeReturned(int expectedNumberOfResults)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Assets.Count.Should().Be(expectedNumberOfResults);
         }
     }
 }
