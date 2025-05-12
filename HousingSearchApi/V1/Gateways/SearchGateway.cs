@@ -26,7 +26,6 @@ namespace HousingSearchApi.V1.Gateways
     {
         private readonly IElasticSearchWrapper _elasticSearchWrapper;
         private readonly ICustomAddressSorter _customAddressSorter;
-
         public SearchGateway(IElasticSearchWrapper elasticSearchWrapper, ICustomAddressSorter customAddressSorter)
         {
             _elasticSearchWrapper = elasticSearchWrapper;
@@ -107,10 +106,16 @@ namespace HousingSearchApi.V1.Gateways
 
             var searchResponse = await _elasticSearchWrapper.SearchSets<QueryableAsset, GetAllAssetListRequest>(query).ConfigureAwait(false);
             var assetListResponse = new GetAllAssetListResponse();
-
             if (searchResponse == null) return assetListResponse;
             assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
-                queryableAsset.CreateAll())
+            {
+                var filteredQueryableAsset = queryableAsset.CreateAll();
+                // filtering contracts to only include those with specified status
+                filteredQueryableAsset.AssetContracts = filteredQueryableAsset.AssetContracts
+                    .Where(c => c.ApprovalStatus == query.ContractApprovalStatus)
+                    .ToList();
+                return filteredQueryableAsset;
+            })
             );
 
             if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText) && query.IsTemporaryAccomodation != "true")
