@@ -110,10 +110,13 @@ namespace HousingSearchApi.V1.Gateways
             assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
             {
                 var filteredQueryableAsset = queryableAsset.CreateAll();
-                // filtering contracts to only include those with specified status
-                filteredQueryableAsset.AssetContracts = filteredQueryableAsset.AssetContracts
-                    .Where(c => c.ApprovalStatus == query.ContractApprovalStatus)
-                    .ToList();
+                if (query.ContractApprovalStatus != null)
+                {
+                    // filtering contracts to only include those with specified status
+                    filteredQueryableAsset.AssetContracts = filteredQueryableAsset.AssetContracts
+                        .Where(c => c.ApprovalStatus == query.ContractApprovalStatus)
+                        .ToList();
+                }
                 return filteredQueryableAsset;
             })
             );
