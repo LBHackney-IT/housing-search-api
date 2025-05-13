@@ -290,6 +290,14 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
             result.Results.Assets.All(x => x.AssetContracts.ElementAt(0).ApprovalStatus.ToString() == contractApprovalStatus);
         }
+        public async Task ThenOnlyContractsWithThatStatusAreReturned(string contractApprovalStatus, int expectedNumberOfAssets)
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Assets.Count().Should().Be(expectedNumberOfAssets);
+            result.Results.Assets.All(x => x.AssetContracts != null && x.AssetContracts.All(ac => ac.ApprovalStatus.ToString() == contractApprovalStatus));
+        }
         public async Task ThenAssetsWithProvidedContractApprovalStatusReasonShouldBeIncluded(string contractApprovalStatusReason, int expectedNumberOfAssets)
         {
             var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);

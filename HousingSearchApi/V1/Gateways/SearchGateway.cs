@@ -113,7 +113,8 @@ namespace HousingSearchApi.V1.Gateways
                 if (query.ContractApprovalStatus != null)
                 {
                     // splitting potential multiple statuses passed by the API
-                    var statuses = query.ContractApprovalStatus.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    string space = "%20";
+                    var statuses = query.ContractApprovalStatus.Split(space, StringSplitOptions.RemoveEmptyEntries);
                     // filtering contracts to only include those with specified status/es
                     for (int i = 0; i < statuses.Length; i++)
                     {

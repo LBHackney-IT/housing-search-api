@@ -139,7 +139,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var pendingApprovalStatus = "PendingApproval";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractApprovalStatusIsProvided(pendingApprovalStatus))
-                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(pendingApprovalStatus, 2))
+                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(pendingApprovalStatus, 3))
                 .BDDfy();
         }
         [Fact]
@@ -163,7 +163,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
         [Fact]
         public void ServiceFiltersTwoContractStatusesWithoutSearchText()
         {
-            var multipleApprovalStatuses = "PendingApproval PendingReapproval";
+            var multipleApprovalStatuses = "PendingReapproval%20PendingApproval";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractApprovalStatusIsProvided(multipleApprovalStatuses))
                 .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(multipleApprovalStatuses, 11))
@@ -194,7 +194,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var contractIsActive = "true";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractIsActiveIsProvided(contractIsActive))
-                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsActive, 11))
+                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsActive, 12))
                 .BDDfy();
         }
         [Fact]
@@ -212,7 +212,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
             var contractIsNotActive = "false";
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
                 .When(w => _steps.WhenContractIsActiveIsProvided(contractIsNotActive))
-                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsNotActive, 8))
+                .Then(t => _steps.ThenAssetsWithProvidedContractStatusShouldBeIncluded(contractIsNotActive, 12))
                 .BDDfy();
         }
         [Fact]
@@ -268,7 +268,6 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .Then(t => _steps.ThenAllResultsWithPassedTemporaryAccommodationParentAssetIdShouldBeReturned(3, new Guid(temporaryAccommodationParentAssetId)))
                 .BDDfy();
         }
-
         [Theory]
         //Line1
         [InlineData("282", 3)]

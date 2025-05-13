@@ -22,7 +22,11 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public static AddressStub[] Addresses =
         {
             new AddressStub{ FirstLine = "59 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234650",
-                AssetStatus = "Reserved", NoOfBedSpaces = 2, NoOfCots = 1, HasStairs = true, PrivateBathroom = true, PrivateKitchen = true, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = false, ContractApprovalStatus = "PendingReapproval", ContractEndReason="ContractHasEnded", ChargesSubType="rate"},
+                AssetStatus = "Reserved", NoOfBedSpaces = 2, NoOfCots = 1, HasStairs = true, PrivateBathroom = true, PrivateKitchen = true, StepFree = true, ParentAssetIds = GetGuids(), ContractIsActive = false, ContractApprovalStatus = "PendingReapproval", SecondContractApprovalStatus = "PendingApproval",
+                        ThirdContractApprovalStatus = "Approved",
+                        FourthContractApprovalStatus = "PendingReapproval",
+                        FifthContractApprovalStatus = "PendingApproval",
+                        ContractEndReason="ContractHasEnded", ChargesSubType="rate"},
             new AddressStub{ FirstLine = "19 Buckland Court St Johns Estate", AssetType = "Dwelling", PostCode = "N1 5EP", UPRN = "10008234699",
                 AssetStatus = "Reserved", NoOfBedSpaces = 1, NoOfCots = 1, HasStairs = true, PrivateBathroom = false, PrivateKitchen = true, StepFree = false, TemporaryAccommodation = true, ParentAssetIds = GetGuids(), ContractIsActive = true, ContractApprovalStatus = "PendingApproval", ContractIsApproved = false },
             new AddressStub{ FirstLine = "38 Buckland Court St Johns Estate", AssetType = "Block", PostCode = "N1 5EP", UPRN = "10008234611",
@@ -84,12 +88,16 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
             {
 
                 var assetContracts = fixture.Build<QueryableAssetContract>()
-                                    .CreateMany(1).ToList();
+                                    .CreateMany(4).ToList();
                 var asset = fixture.Build<QueryableAsset>()
                             .With(f => f.AssetContracts, assetContracts)
                             .Create();
                 var chargeWithSetSubtype = fixture.Create<QueryableCharges>();
                 var parsedApprovalStatus = value.ContractApprovalStatus;
+                var parsedSecondApprovalStatus = value.SecondContractApprovalStatus;
+                var parsedThirdApprovalStatus = value.ThirdContractApprovalStatus;
+                var parsedFourthApprovalStatus = value.FourthContractApprovalStatus;
+                var parsedFifthApprovalStatus = value.FifthContractApprovalStatus;
                 chargeWithSetSubtype.SubType = value.ChargesSubType;
                 asset.AssetAddress.AddressLine1 = value.FirstLine;
                 asset.AssetType = value.AssetType;
@@ -105,6 +113,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 asset.ParentAssetIds = value.ParentAssetIds;
                 asset.AssetContracts[0].EndReason = value.ContractEndReason;
                 asset.AssetContracts[0].ApprovalStatus = parsedApprovalStatus;
+                asset.AssetContracts[1].ApprovalStatus = parsedSecondApprovalStatus;
                 asset.AssetContracts[0].ApprovalStatusReason = value.ContractApprovalStatusReason;
                 asset.AssetContracts[0].IsActive = value.ContractIsActive;
                 asset.AssetContracts[0].Charges = asset.AssetContracts[0].Charges.Append(chargeWithSetSubtype);
@@ -133,6 +142,10 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public string ParentAssetIds { get; set; }
         public bool ContractIsApproved { get; set; }
         public string ContractApprovalStatus { get; set; }
+        public string SecondContractApprovalStatus { get; set; }
+        public string ThirdContractApprovalStatus { get; set; }
+        public string FourthContractApprovalStatus { get; set; }
+        public string FifthContractApprovalStatus { get; set; }
         public string ContractApprovalStatusReason { get; set; }
         public bool ContractIsActive { get; set; }
         public string ContractEndReason { get; set; }
