@@ -161,6 +161,15 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .BDDfy();
         }
         [Fact]
+        public void ServiceFiltersTwoContractStatusesWithoutSearchText()
+        {
+            var multipleApprovalStatuses = "PendingApproval PendingReapproval";
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenContractApprovalStatusIsProvided(multipleApprovalStatuses))
+                .Then(t => _steps.ThenAssetsWithProvidedContractApprovalStatusShouldBeIncluded(multipleApprovalStatuses, 11))
+                .BDDfy();
+        }
+        [Fact]
         public void ServiceFiltersSuspensionLiftedReapprovalStatusWithoutSearchText()
         {
             var approvalStatusReason = "SuspensionLifted";

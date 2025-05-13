@@ -112,10 +112,16 @@ namespace HousingSearchApi.V1.Gateways
                 var filteredQueryableAsset = queryableAsset.CreateAll();
                 if (query.ContractApprovalStatus != null)
                 {
-                    // filtering contracts to only include those with specified status
-                    filteredQueryableAsset.AssetContracts = filteredQueryableAsset.AssetContracts
-                        .Where(c => c.ApprovalStatus == query.ContractApprovalStatus)
-                        .ToList();
+                    // splitting potential multiple statuses passed by the API
+                    var statuses = query.ContractApprovalStatus.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    // filtering contracts to only include those with specified status/es
+                    for (int i = 0; i < statuses.Length; i++)
+                    {
+                        var contractWithCurrentStatus = filteredQueryableAsset.AssetContracts
+                            .Where(c => c.ApprovalStatus == statuses[i])
+                            .ToList();
+                        filteredQueryableAsset.AssetContracts.Concat(contractWithCurrentStatus);
+                    }
                 }
                 return filteredQueryableAsset;
             })
