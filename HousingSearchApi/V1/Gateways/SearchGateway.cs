@@ -26,7 +26,6 @@ namespace HousingSearchApi.V1.Gateways
     {
         private readonly IElasticSearchWrapper _elasticSearchWrapper;
         private readonly ICustomAddressSorter _customAddressSorter;
-
         public SearchGateway(IElasticSearchWrapper elasticSearchWrapper, ICustomAddressSorter customAddressSorter)
         {
             _elasticSearchWrapper = elasticSearchWrapper;
@@ -107,10 +106,26 @@ namespace HousingSearchApi.V1.Gateways
 
             var searchResponse = await _elasticSearchWrapper.SearchSets<QueryableAsset, GetAllAssetListRequest>(query).ConfigureAwait(false);
             var assetListResponse = new GetAllAssetListResponse();
-
             if (searchResponse == null) return assetListResponse;
             assetListResponse.Assets.AddRange(searchResponse.Documents.Select(queryableAsset =>
-                queryableAsset.CreateAll())
+            {
+                var filteredQueryableAsset = queryableAsset.CreateAll();
+                if (query.ContractApprovalStatus != null)
+                {
+                    // splitting potential multiple statuses passed by the API
+                    string space = "%20";
+                    var statuses = query.ContractApprovalStatus.Split(space, StringSplitOptions.RemoveEmptyEntries);
+                    // filtering contracts to only include those with specified status/es
+                    for (int i = 0; i < statuses.Length; i++)
+                    {
+                        var contractWithCurrentStatus = filteredQueryableAsset.AssetContracts
+                            .Where(c => c.ApprovalStatus == statuses[i])
+                            .ToList();
+                        filteredQueryableAsset.AssetContracts.Concat(contractWithCurrentStatus);
+                    }
+                }
+                return filteredQueryableAsset;
+            })
             );
 
             if (query.IsFilteredQuery && !string.IsNullOrEmpty(query.SearchText) && query.IsTemporaryAccomodation != "true")
