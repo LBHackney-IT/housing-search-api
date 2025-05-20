@@ -443,7 +443,7 @@ workflows:
   #           branches:
   #             only: release
 
-deploy-terraform-pre-production:
+  deploy-terraform-pre-production:
     jobs:
       - permit-pre-production-terraform-workflow:
           type: approval
@@ -483,7 +483,7 @@ deploy-terraform-pre-production:
             branches:
               only: ts-2045-add-pre-production-workflows
 
-deploy-code-pre-production:
+  deploy-code-pre-production:
     jobs:
       - permit-pre-production-code-workflow:
           type: approval
