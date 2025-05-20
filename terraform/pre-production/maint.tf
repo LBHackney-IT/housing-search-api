@@ -69,9 +69,3 @@ module "elasticsearch_db_pre_production" {
   region           = data.aws_region.current.name
   account_id       = data.aws_caller_identity.current.account_id
 }
-
-resource "aws_ssm_parameter" "search_elasticsearch_domain" {
-  name  = "/housing-search-api/pre-production/elasticsearch-domain"
-  type  = "String"
-  value = "https://${module.elasticsearch_db_pre_production.es_endpoint_url}"
-}

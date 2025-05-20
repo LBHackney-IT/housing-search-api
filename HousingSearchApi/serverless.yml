@@ -128,6 +128,10 @@ custom:
         - subnet-06a697d86a9b6ed01
         - subnet-0beb266003a56ca82
     pre-production:
+      securityGroupIds:
+        - sg-0c6335cf631b61e07
       subnetIds:
         - subnet-08aa35159a8706faa
         - subnet-0b848c5b14f841dfb
+
+
