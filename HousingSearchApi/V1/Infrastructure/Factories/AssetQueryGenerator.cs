@@ -78,6 +78,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "assetCharacteristics.hasPrivateKitchen" })
                         .WithMultipleFilterQuery(assetListAllRequest.StepFree, new List<string> { "assetCharacteristics.isStepFree" })
                         .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "assetManagement.isTemporaryAccomodation" })
+                        .WithMultipleFilterQuery(assetListAllRequest.isPartOfTemporaryAccommodationBlock, new List<string> { "assetManagement.isPartOfTemporaryAccommodationBlock" })
                         .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
                         .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
                         .WithWildstarBoolQuery(assetListAllRequest.SearchText,
@@ -103,6 +104,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "assetCharacteristics.hasPrivateKitchen" })
                         .WithMultipleFilterQuery(assetListAllRequest.StepFree, new List<string> { "assetCharacteristics.isStepFree" })
                         .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "assetManagement.isTemporaryAccomodation" })
+                        .WithMultipleFilterQuery(assetListAllRequest.isPartOfTemporaryAccommodationBlock, new List<string> { "assetManagement.isPartOfTemporaryAccommodationBlock" })
                         .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
                         .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatus, new List<string> { "assetContracts.approvalStatus" })
@@ -139,6 +141,7 @@ namespace HousingSearchApi.V1.Infrastructure.Factories
                         .WithMultipleFilterQuery(assetListAllRequest.PrivateKitchen, new List<string> { "assetCharacteristics.hasPrivateKitchen" })
                         .WithMultipleFilterQuery(assetListAllRequest.StepFree, new List<string> { "assetCharacteristics.isStepFree" })
                         .WithMultipleFilterQuery(assetListAllRequest.IsTemporaryAccomodation, new List<string> { "assetManagement.isTemporaryAccomodation" })
+                        .WithMultipleFilterQuery(assetListAllRequest.isPartOfTemporaryAccommodationBlock, new List<string> { "assetManagement.isPartOfTemporaryAccommodationBlock" })
                         .WithMultipleFilterQuery(assetListAllRequest.ParentAssetId, new List<string> { "rootAsset" })
                         .WithMultipleFilterQuery(assetListAllRequest.IsActive, new List<string> { "isActive" })
                         .WithMultipleFilterQuery(assetListAllRequest.ContractApprovalStatus, new List<string> { "assetContracts.approvalStatus" })
