@@ -42,6 +42,7 @@ namespace HousingSearchApi.V1.Boundary.Requests
 
         [FromQuery(Name = "chargesSubType")]
         public string ChargesSubType { get; set; }
+
         [FromQuery(Name = "isTemporaryAccomodation")]
         public string IsTemporaryAccomodation { get; set; }
 
@@ -53,5 +54,8 @@ namespace HousingSearchApi.V1.Boundary.Requests
 
         [FromQuery(Name = "temporaryAccommodationParentAssetId")]
         public string TemporaryAccommodationParentAssetId { get; set; }
+
+        [FromQuery(Name = "isPartOfTemporaryAccommodationBlock")]
+        public string isPartOfTemporaryAccommodationBlock { get; set; }
     }
 }

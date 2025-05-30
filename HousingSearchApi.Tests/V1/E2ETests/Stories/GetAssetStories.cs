@@ -241,6 +241,22 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Stories
                 .BDDfy();
         }
         [Fact]
+        public void ServiceFiltersBlockChildrenWhenisPartOfTemporaryAccommodationBlockFalse()
+        {
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenIsPartOfTemporaryAccommodationBlock("false"))
+                .Then(t => _steps.ThenOnlyBlockAndStandaloneResultsShouldBeIncluded())
+                .BDDfy();
+        }
+        [Fact]
+        public void ServiceFiltersStandaloneAssetsWhenisPartOfTemporaryAccommodationBlockTrue()
+        {
+            this.Given(g => _assetsFixture.GivenAnAssetIndexExists())
+                .When(w => _steps.WhenIsPartOfTemporaryAccommodationBlock("true"))
+                .Then(t => _steps.ThenOnlyBlockChildrenShouldBeIncluded())
+                .BDDfy();
+        }
+        [Fact]
         public void ServiceReturnsTemporaryAccomodationResultsWhenisTemporaryAccommodationNotPassed()
         {
             this.Given(g => _assetsFixture.GivenAnAssetIndexExists())

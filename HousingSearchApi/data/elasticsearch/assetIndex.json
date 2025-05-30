@@ -194,6 +194,9 @@
           "isTemporaryAccomodation": {
             "type": "boolean"
           },
+          "isPartOfTemporaryAccommodationBlock": {
+            "type": "boolean"
+          },
           "managingOrganisation": {
             "type": "text",
             "fields": {

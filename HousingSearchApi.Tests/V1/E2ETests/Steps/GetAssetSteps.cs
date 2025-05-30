@@ -150,6 +150,13 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
 
             _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
         }
+        public async Task WhenIsPartOfTemporaryAccommodationBlock(string isPartOfTemporaryAccommodationBlock)
+        {
+            var route = new Uri($"api/v1/search/assets/all?IsPartOfTemporaryAccommodationBlock={isPartOfTemporaryAccommodationBlock}&page={1}",
+                UriKind.Relative);
+
+            _lastResponse = await _httpClient.GetAsync(route).ConfigureAwait(false);
+        }
         public async Task WhenUPRNIsPassedButIsTemporaryAccomodationIsNotPassed(string uprn)
         {
             var route = new Uri($"api/v1/search/assets/all?&searchText={uprn}&page={1}",
@@ -187,6 +194,22 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Steps
             var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
 
             result.Results.Assets.All(x => x.AssetManagement.IsTemporaryAccomodation == true);
+        }
+        public async Task ThenOnlyBlockAndStandaloneResultsShouldBeIncluded()
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Assets.All(x => x.AssetManagement.IsPartOfTemporaryAccommodationBlock == false);
+        }
+        public async Task ThenOnlyBlockChildrenShouldBeIncluded()
+        {
+            var resultBody = await _lastResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            var result = JsonSerializer.Deserialize<APIAllResponse<GetAllAssetListResponse>>(resultBody, _jsonOptions);
+
+            result.Results.Assets.All(x => x.AssetManagement.IsPartOfTemporaryAccommodationBlock == true);
         }
         public async Task ThenAllResultsWithPassedUPRNShouldBeIncluded()
         {

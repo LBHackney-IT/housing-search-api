@@ -118,6 +118,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
                 asset.AssetContracts[0].IsActive = value.ContractIsActive;
                 asset.AssetContracts[0].Charges = asset.AssetContracts[0].Charges.Append(chargeWithSetSubtype);
                 asset.AssetManagement.IsTemporaryAccomodation = value.TemporaryAccommodation;
+                asset.AssetManagement.IsPartOfTemporaryAccommodationBlock = value.IsPartOfTemporaryAccommodationBlock;
                 asset.AssetManagement.TemporaryAccommodationParentAssetId = value.TemporaryAccommodationParentAssetId;
                 listOfAssets.Add(asset);
             }
@@ -151,6 +152,7 @@ namespace HousingSearchApi.Tests.V1.E2ETests.Fixtures
         public string ContractEndReason { get; set; }
         public string ChargesSubType { get; set; }
         public bool TemporaryAccommodation { get; set; }
+        public bool IsPartOfTemporaryAccommodationBlock { get; set; }
         public Guid TemporaryAccommodationParentAssetId { get; set; }
     }
 }
