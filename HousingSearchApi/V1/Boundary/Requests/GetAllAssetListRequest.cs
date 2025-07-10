@@ -56,6 +56,9 @@ namespace HousingSearchApi.V1.Boundary.Requests
         public string TemporaryAccommodationParentAssetId { get; set; }
 
         [FromQuery(Name = "isPartOfTemporaryAccommodationBlock")]
-        public string isPartOfTemporaryAccommodationBlock { get; set; }
+        public string IsPartOfTemporaryAccommodationBlock { get; set; }
+
+        [FromQuery(Name = "IsTAWithoutUPRN")]
+        public string IsTAWithoutUPRN { get; set; }
     }
 }
