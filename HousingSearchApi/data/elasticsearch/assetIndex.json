@@ -197,6 +197,9 @@
           "isPartOfTemporaryAccommodationBlock": {
             "type": "boolean"
           },
+          "isTAWithoutUPRN": {
+            "type": "boolean"
+          },          
           "managingOrganisation": {
             "type": "text",
             "fields": {
