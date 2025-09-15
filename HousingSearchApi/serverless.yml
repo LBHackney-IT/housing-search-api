@@ -123,10 +123,10 @@ custom:
         - subnet-0ea0020a44b98a2ca
     production:
       securityGroupIds:
-        - sg-0ea24080e44e64fde
+        - sg-08b1acb08bf85654b
       subnetIds:
-        - subnet-06a697d86a9b6ed01
-        - subnet-0beb266003a56ca82
+        - subnet-0e6bc9b4ac24493cc
+        - subnet-05e595c59b7d6c8df
     pre-production:
       securityGroupIds:
         - sg-0c6335cf631b61e07
