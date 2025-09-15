@@ -54,9 +54,10 @@ module "elasticsearch_db_production" {
 }
 
 resource "aws_ssm_parameter" "search_elasticsearch_domain" {
-  name  = "/housing-search-api/production/elasticsearch-domain"
-  type  = "String"
-  value = "https://${module.elasticsearch_db_production.es_endpoint_url}"
+  name      = "/housing-search-api/production/elasticsearch-domain"
+  type      = "String"
+  value     = "https://${module.elasticsearch_db_production.es_endpoint_url}"
+  overwrite = true
 }
 
 module "housing_search_api_cloudwatch_dashboard" {
