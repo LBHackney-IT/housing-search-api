@@ -10,90 +10,90 @@ provider:
   stage: ${opt:stage}
   region: eu-west-2
 
-plugins:
-  - serverless-associate-waf
-  - '@serverless/safeguards-plugin'
+# plugins:
+#   - serverless-associate-waf
+#   - '@serverless/safeguards-plugin'
 
-package:
-  artifact: ./bin/release/net8.0/housing-search-api.zip
+# package:
+#   artifact: ./bin/release/net8.0/housing-search-api.zip
 
-functions:
-  HousingSearchApi:
-    name: ${self:service}-${self:provider.stage}
-    handler: HousingSearchApi::HousingSearchApi.LambdaEntryPoint::FunctionHandlerAsync
-    role: lambdaExecutionRole
-    environment:
-# TODO: Create ssm variables for this API's postgres mirror then rename housing-search-api below to match api name
-      ELASTICSEARCH_DOMAIN_URL: ${ssm:/housing-search-api/${self:provider.stage}/elasticsearch-domain}
-      ASPNETCORE_ENVIRONMENT:  ${ssm:/housing-tl/${self:provider.stage}/aspnetcore-environment}
-    events:
-      - http:
-          path: /{proxy+}
-          method: ANY
-          authorizer:
-            arn: ${self:custom.authorizerArns.${opt:stage}}
-            type: request
-            resultTtlInSeconds: 0
-            identitySource: method.request.header.Authorization
-            managedExternally: true
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-              - x-correlation-id
-            allowCredentials: false
-      - http:
-          path: /swagger/{proxy+}
-          method: GET
-          private: false
-resources:
-  Resources:
-    lambdaExecutionRole:
-      Type: AWS::IAM::Role
-      Properties:
-        Path: /${self:service}/${self:provider.stage}/
-        RoleName: ${self:service}-lambdaExecutionRole
-        AssumeRolePolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Principal:
-                Service:
-                  - lambda.amazonaws.com
-              Action: sts:AssumeRole
-        ManagedPolicyArns:
-          - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
-          - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
-        Policies:
-          - PolicyName: manageLogs
-            PolicyDocument:
-              Version: '2012-10-17'
-              Statement:
-                - Effect: Allow
-                  Action:
-                    - logs:CreateLogGroup
-                    - logs:CreateLogStream
-                    - logs:PutLogEvents
-                  Resource:
-                    - 'Fn::Join':
-                        - ':'
-                        - - 'arn:aws:logs'
-                          - Ref: 'AWS::Region'
-                          - Ref: 'AWS::AccountId'
-                          - 'log-group:/aws/lambda/*:*:*'
-          - PolicyName: lambdaInvocation
-            PolicyDocument:
-              Version: '2012-10-17'
-              Statement:
-                - Effect: Allow
-                  Action:
-                    - "lambda:InvokeFunction"
-                  Resource: "*"
+# functions:
+#   HousingSearchApi:
+#     name: ${self:service}-${self:provider.stage}
+#     handler: HousingSearchApi::HousingSearchApi.LambdaEntryPoint::FunctionHandlerAsync
+#     role: lambdaExecutionRole
+#     environment:
+# # TODO: Create ssm variables for this API's postgres mirror then rename housing-search-api below to match api name
+#       ELASTICSEARCH_DOMAIN_URL: ${ssm:/housing-search-api/${self:provider.stage}/elasticsearch-domain}
+#       ASPNETCORE_ENVIRONMENT:  ${ssm:/housing-tl/${self:provider.stage}/aspnetcore-environment}
+#     events:
+#       - http:
+#           path: /{proxy+}
+#           method: ANY
+#           authorizer:
+#             arn: ${self:custom.authorizerArns.${opt:stage}}
+#             type: request
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Authorization
+#             managedExternally: true
+#           cors:
+#             origin: '*'
+#             headers:
+#               - Content-Type
+#               - X-Amz-Date
+#               - Authorization
+#               - X-Api-Key
+#               - X-Amz-Security-Token
+#               - X-Amz-User-Agent
+#               - x-correlation-id
+#             allowCredentials: false
+#       - http:
+#           path: /swagger/{proxy+}
+#           method: GET
+#           private: false
+# resources:
+#   Resources:
+#     lambdaExecutionRole:
+#       Type: AWS::IAM::Role
+#       Properties:
+#         Path: /${self:service}/${self:provider.stage}/
+#         RoleName: ${self:service}-lambdaExecutionRole
+#         AssumeRolePolicyDocument:
+#           Version: '2012-10-17'
+#           Statement:
+#             - Effect: Allow
+#               Principal:
+#                 Service:
+#                   - lambda.amazonaws.com
+#               Action: sts:AssumeRole
+#         ManagedPolicyArns:
+#           - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+#           - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
+#         Policies:
+#           - PolicyName: manageLogs
+#             PolicyDocument:
+#               Version: '2012-10-17'
+#               Statement:
+#                 - Effect: Allow
+#                   Action:
+#                     - logs:CreateLogGroup
+#                     - logs:CreateLogStream
+#                     - logs:PutLogEvents
+#                   Resource:
+#                     - 'Fn::Join':
+#                         - ':'
+#                         - - 'arn:aws:logs'
+#                           - Ref: 'AWS::Region'
+#                           - Ref: 'AWS::AccountId'
+#                           - 'log-group:/aws/lambda/*:*:*'
+#           - PolicyName: lambdaInvocation
+#             PolicyDocument:
+#               Version: '2012-10-17'
+#               Statement:
+#                 - Effect: Allow
+#                   Action:
+#                     - "lambda:InvokeFunction"
+#                   Resource: "*"
 custom:
   authorizerArns:
     development: arn:aws:lambda:eu-west-2:859159924354:function:api-auth-verify-token-new-development-apiauthverifytokennew
