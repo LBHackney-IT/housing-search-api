@@ -108,14 +108,15 @@ public class SearchGateway : ISearchGateway
         if (!searchResponse.IsValid)
             throw new Exception($"Elasticsearch search failed: {searchResponse.DebugInformation}");
 
-        var documents = searchResponse.Hits.Select(h => {
+        var documents = searchResponse.Hits.Select(h =>
+        {
             var doc = JsonSerializer.SerializeToElement(h.Source);
             var dict = JsonSerializer.Deserialize<Dictionary<string, object>>(doc.GetRawText());
-            
+
             // Using the clearer name here
-            dict["confidenceScore"] = h.Score ?? 0.0; 
-            
-            return (object)dict;
+            dict["confidenceScore"] = h.Score ?? 0.0;
+
+            return (object) dict;
         }).ToList();
 
         return new SearchResponseDto
