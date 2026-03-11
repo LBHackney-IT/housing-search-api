@@ -113,7 +113,6 @@ public class SearchGateway : ISearchGateway
             var doc = JsonSerializer.SerializeToElement(h.Source);
             var dict = JsonSerializer.Deserialize<Dictionary<string, object>>(doc.GetRawText());
 
-            // Using the clearer name here
             dict["confidenceScore"] = h.Score ?? 0.0;
 
             return (object) dict;
