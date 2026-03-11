@@ -62,7 +62,7 @@ public class TenureSearchTests : BaseSearchTests
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("tenures")[0];
             firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
-            firstResult.GetProperty("score").GetDouble().Should().BeGreaterThan(0);
+            firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
@@ -96,7 +96,7 @@ public class TenureSearchTests : BaseSearchTests
             var firstResult = root.GetProperty("results").GetProperty("tenures")[0];
             var firstResultAddress = firstResult.GetProperty("tenuredAsset").GetProperty("fullAddress").GetString();
             firstResultAddress.Should().Contain(searchText);
-            firstResult.GetProperty("score").GetDouble().Should().BeGreaterThan(0);
+            firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
@@ -131,7 +131,7 @@ public class TenureSearchTests : BaseSearchTests
             var firstResultAddress = firstResult.GetProperty("tenuredAsset").GetProperty("fullAddress").GetString();
             // should contain each search term
             searchTerms.ForEach(term => firstResultAddress.Should().Contain(term));
-            firstResult.GetProperty("score").GetDouble().Should().BeGreaterThan(0);
+            firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
@@ -159,7 +159,7 @@ public class TenureSearchTests : BaseSearchTests
         root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
         var firstResult = root.GetProperty("results").GetProperty("tenures")[0];
         firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
-        firstResult.GetProperty("score").GetDouble().Should().BeGreaterThan(0);
+        firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
     }
 
     [Fact]
@@ -180,7 +180,7 @@ public class TenureSearchTests : BaseSearchTests
         root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
         var firstResult = root.GetProperty("results").GetProperty("tenures")[0];
         firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
-        firstResult.GetProperty("score").GetDouble().Should().BeGreaterThan(0);
+        firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
     }
 
     # endregion
@@ -212,7 +212,7 @@ public class TenureSearchTests : BaseSearchTests
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("tenures")[0];
             firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
-            firstResult.GetProperty("score").GetDouble().Should().BeGreaterThan(0);
+            firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
@@ -247,7 +247,7 @@ public class TenureSearchTests : BaseSearchTests
             var results = root.GetProperty("results").GetProperty("tenures");
             var resultIds = results.EnumerateArray().Select(r => r.GetProperty("id").GetString()).ToList();
             resultIds.Should().Contain(expectedReturnedId);
-            results[0].GetProperty("score").GetDouble().Should().BeGreaterThan(0);
+            results[0].GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
@@ -283,7 +283,7 @@ public class TenureSearchTests : BaseSearchTests
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("tenures")[0];
             firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
-            firstResult.GetProperty("score").GetDouble().Should().BeGreaterThan(0);
+            firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
