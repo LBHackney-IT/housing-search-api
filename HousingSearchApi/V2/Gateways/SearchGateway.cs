@@ -6,7 +6,6 @@ using HousingSearchApi.V2.Domain.DTOs;
 using HousingSearchApi.V2.Gateways.Interfaces;
 using Nest;
 using Ops = HousingSearchApi.V2.Gateways.SearchOperations;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace HousingSearchApi.V2.Gateways;
