@@ -6,7 +6,8 @@ using HousingSearchApi.V2.Domain.DTOs;
 using HousingSearchApi.V2.Gateways.Interfaces;
 using Nest;
 using Ops = HousingSearchApi.V2.Gateways.SearchOperations;
-using System.Text.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace HousingSearchApi.V2.Gateways;
 
@@ -110,12 +111,9 @@ public class SearchGateway : ISearchGateway
 
         var documents = searchResponse.Hits.Select(h =>
         {
-            var doc = JsonSerializer.SerializeToElement(h.Source);
-            var dict = JsonSerializer.Deserialize<Dictionary<string, object>>(doc.GetRawText());
-
-            dict["confidenceScore"] = h.Score ?? 0.0;
-
-            return (object) dict;
+            var jObject = JObject.FromObject(h.Source);
+            jObject["confidenceScore"] = h.Score ?? 0.0;
+            return (object) jObject;
         }).ToList();
 
         return new SearchResponseDto
