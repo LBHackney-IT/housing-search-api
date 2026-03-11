@@ -63,6 +63,7 @@ public class PersonSearchTests : BaseSearchTests
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("persons")[0];
             firstResult.GetProperty("tenures")[0].GetProperty("assetFullAddress").GetString().Should().Be(query);
+            firstResult.GetProperty("score").GetDouble().Should().BeGreaterThan(0);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
@@ -100,6 +101,7 @@ public class PersonSearchTests : BaseSearchTests
             {
                 return result.GetProperty("id").GetString() == expectedReturnedId;
             }).Should().BeTrue();
+            firstResults[0].GetProperty("score").GetDouble().Should().BeGreaterThan(0);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
@@ -134,6 +136,7 @@ public class PersonSearchTests : BaseSearchTests
             {
                 return result.GetProperty("id").GetString() == expectedReturnedId;
             }).Should().BeTrue();
+            firstResults[0].GetProperty("score").GetDouble().Should().BeGreaterThan(0);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
@@ -162,6 +165,7 @@ public class PersonSearchTests : BaseSearchTests
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("persons")[0];
             firstResult.GetProperty("tenures")[0].GetProperty("paymentReference").GetString().Trim().Should().Be(searchText.Trim());
+            firstResult.GetProperty("score").GetDouble().Should().BeGreaterThan(0);
         }
         catch (AssertionException e)
         {
@@ -197,6 +201,7 @@ public class PersonSearchTests : BaseSearchTests
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("persons")[0];
             firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+            firstResult.GetProperty("score").GetDouble().Should().BeGreaterThan(0);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
@@ -228,6 +233,7 @@ public class PersonSearchTests : BaseSearchTests
             firstResults.Any(result =>
                 result.GetProperty("id").GetString() == expectedReturnedId
             ).Should().BeTrue();
+            root.GetProperty("results").GetProperty("persons")[0].GetProperty("score").GetDouble().Should().BeGreaterThan(0);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
@@ -266,6 +272,7 @@ public class PersonSearchTests : BaseSearchTests
                 {
                     return nameParts.All(part => result.GetProperty("firstname").GetString().Contains(part) || result.GetProperty("surname").GetString().Contains(part));
                 }).Should().BeTrue();
+            results[0].GetProperty("score").GetDouble().Should().BeGreaterThan(0);
         });
 
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
