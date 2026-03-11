@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HousingSearchApi.V2.Domain.DTOs;
 using HousingSearchApi.V2.Gateways.Interfaces;
 using Nest;
 using Ops = HousingSearchApi.V2.Gateways.SearchOperations;
+using Newtonsoft.Json.Linq;
 
 namespace HousingSearchApi.V2.Gateways;
 
@@ -106,9 +108,16 @@ public class SearchGateway : ISearchGateway
         if (!searchResponse.IsValid)
             throw new Exception($"Elasticsearch search failed: {searchResponse.DebugInformation}");
 
+        var documents = searchResponse.Hits.Select(h =>
+        {
+            var jObject = JObject.FromObject(h.Source);
+            jObject["confidenceScore"] = h.Score ?? 0.0;
+            return (object) jObject;
+        }).ToList();
+
         return new SearchResponseDto
         {
-            Documents = searchResponse.Documents,
+            Documents = documents,
             Total = searchResponse.HitsMetadata.Total.Value,
         };
     }
