@@ -58,6 +58,7 @@ public class AssetSearchTests : BaseSearchTests
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("assets")[0];
             firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+            firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
         });
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
@@ -84,6 +85,7 @@ public class AssetSearchTests : BaseSearchTests
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("assets")[0];
             firstResult.GetProperty("assetAddress").GetProperty("postCode").GetString().Should().Be(searchTextPostcode);
+            firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
         });
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
@@ -111,6 +113,7 @@ public class AssetSearchTests : BaseSearchTests
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("assets")[0];
             firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+            firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
         });
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
@@ -138,6 +141,7 @@ public class AssetSearchTests : BaseSearchTests
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("assets")[0];
             firstResult.GetProperty("assetAddress").GetProperty("addressLine1").GetString().Should().Contain(searchText);
+            firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
         });
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
@@ -171,6 +175,7 @@ public class AssetSearchTests : BaseSearchTests
             searchTerms.ForEach(term =>
                 firstResultAddress.Should().Contain(term)
             );
+            firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
         });
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
     }
@@ -199,6 +204,7 @@ public class AssetSearchTests : BaseSearchTests
             root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
             var firstResult = root.GetProperty("results").GetProperty("assets")[0];
             firstResult.GetProperty("id").GetString().Should().Be(randomAsset.GetProperty("id").GetString());
+            firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
 
         });
         successCount.Should().BeGreaterThanOrEqualTo(minSuccessCount);
@@ -225,6 +231,7 @@ public class AssetSearchTests : BaseSearchTests
         root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
         var firstResult = root.GetProperty("results").GetProperty("assets")[0];
         firstResult.GetProperty("tenure").GetProperty("paymentReference").GetString().Should().Be(searchText);
+        firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
     }
 
     #endregion
@@ -249,6 +256,7 @@ public class AssetSearchTests : BaseSearchTests
         root.GetProperty("total").GetInt32().Should().BeGreaterThan(0);
         var firstResult = root.GetProperty("results").GetProperty("assets")[0];
         firstResult.GetProperty("id").GetString().Should().Be(expectedReturnedId);
+        firstResult.GetProperty("confidenceScore").GetDouble().Should().BeGreaterThan(0);
     }
 
     #endregion
