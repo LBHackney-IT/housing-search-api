@@ -260,5 +260,22 @@ public class AssetSearchTests : BaseSearchTests
     }
 
     #endregion
-}
 
+    #region Special Characters
+
+    [Fact]
+    public async Task SearchAddress_WithSpecialCharacters_ReturnsOk()
+    {
+        // Arrange
+        var query = "12/A (Flat)";
+        var request = CreateSearchRequest(query);
+
+        // Act
+        var response = await HttpClient.SendAsync(request);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    #endregion
+}
