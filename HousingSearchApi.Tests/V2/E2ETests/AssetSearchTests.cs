@@ -260,5 +260,41 @@ public class AssetSearchTests : BaseSearchTests
     }
 
     #endregion
+
+    #region Special Characters
+
+    [Theory]
+    [InlineData("12/A", "*12\\/A*")]
+    [InlineData("Flat (A)", "*Flat* AND *\\(A\\)*")]
+    [InlineData("double  space", "*double* AND *space*")]
+    public void WildcardQueryStringQuery_EscapesAndSplitsCorrectly(string input, string expectedQuery)
+    {
+        // Arrange
+        Nest.Fields fields = new[] { "field1" };
+
+        // Act
+        var queryFunc = HousingSearchApi.V2.Gateways.SearchOperations.WildcardQueryStringQuery(input, fields);
+        var container = queryFunc(new Nest.QueryContainerDescriptor<object>());
+        var queryStringQuery = ((Nest.IQueryContainer) container).QueryString;
+
+        // Assert
+        queryStringQuery.Query.Should().Be(expectedQuery);
+    }
+
+    [Fact]
+    public async Task SearchAddress_WithSpecialCharacters_ReturnsOk()
+    {
+        // Arrange
+        var query = "12/A (Flat)";
+        var request = CreateSearchRequest(query);
+
+        // Act
+        var response = await HttpClient.SendAsync(request);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    #endregion
 }
 
