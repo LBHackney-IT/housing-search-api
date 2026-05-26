@@ -2,12 +2,21 @@ using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 
 namespace HousingSearchApi.V2.Gateways;
 
 static class SearchOperations
 {
+    private static readonly Regex _esReservedChars = new Regex(@"([\\+\-\=\&\|!\(\)\{\}\[\]\^\""\~\*\?\:\/])");
+
+    private static string Escape(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return text;
+        return _esReservedChars.Replace(text, @"\$1");
+    }
+
     public static Func<QueryContainerDescriptor<object>, QueryContainer>
         Nested(string path, Func<QueryContainerDescriptor<object>, QueryContainer> func)
     {
@@ -63,7 +72,7 @@ static class SearchOperations
         {
             if (string.IsNullOrEmpty(phrase))
                 return new List<string>();
-            return phrase.Split(' ').Select(word => $"*{word}*").ToList();
+            return phrase.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(word => $"*{word}*").ToList();
         }
 
         var listOfWildcardedWords = ProcessWildcards(searchText);
@@ -143,7 +152,8 @@ static class SearchOperations
     public static Func<QueryContainerDescriptor<object>, QueryContainer> WildcardQueryStringQuery(string searchText,
             Fields fields, double? boost = null)
     {
-        var queryString = string.Join(" AND ", searchText.Split(' ').Select(word => $"*{word}*"));
+        var escapedSearchText = Escape(searchText);
+        var queryString = string.Join(" AND ", escapedSearchText.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(word => $"*{word}*"));
         return should => should.QueryString(q => q
             .Query(queryString)
             .Fields(fields)
