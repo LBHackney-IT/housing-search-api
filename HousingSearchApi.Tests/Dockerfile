@@ -14,8 +14,8 @@ ENV SONAR_TOKEN=$SONAR_TOKEN
 
 WORKDIR /app
 
+# Install and run sonar cloud scanner
 RUN if [ -n "$SONAR_TOKEN" ]; then \
-    apt-get update && apt-get install -y openjdk-17-jdk; \
     dotnet tool install --global dotnet-sonarscanner; \
     export PATH="$PATH:/root/.dotnet/tools"; \
     dotnet sonarscanner begin /k:"LBHackney-IT_housing-search-api" /o:"lbhackney-it" /d:sonar.host.url=https://sonarcloud.io /d:sonar.login="${SONAR_TOKEN}"; \
