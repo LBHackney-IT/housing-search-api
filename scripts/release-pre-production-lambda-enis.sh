@@ -1,20 +1,33 @@
 #!/bin/sh
 # Release Lambda Hyperplane ENIs before Terraform deletes their security group.
-# The AWS provider otherwise waits at least 45 minutes, and Lambda cannot delete
-# the ENI after Serverless removal has deleted the function execution role.
+# Lambda keeps these ENIs in use until it deletes them, and it can do that only
+# after a function using the same security group is deleted while its execution
+# role still exists. Recreating the role alone does not restart that cleanup.
 set -eu
 
-timeout_seconds="${ENI_RELEASE_TIMEOUT_SECONDS:-300}"
+timeout_seconds="${ENI_RELEASE_TIMEOUT_SECONDS:-1200}"
 role_name="housing-search-api-lambdaExecutionRole"
 role_path="/housing-search-api/pre-production/"
 policy_arn="arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 trust_policy='{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"lambda.amazonaws.com"},"Action":"sts:AssumeRole"}]}'
+cleanup_function="housing-search-api-eni-cleanup"
+cleanup_function_created=false
+rearmed=false
+zip_path=""
 
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-eu-west-2}"
 export AWS_PAGER=""
 
 log() {
   printf '%s\n' "$*"
+}
+
+remove_cleanup_function() {
+  if [ "$cleanup_function_created" != true ]; then
+    return 0
+  fi
+  aws lambda delete-function --function-name "$cleanup_function" >/dev/null 2>&1 || true
+  cleanup_function_created=false
 }
 
 state=$(terraform state pull)
@@ -36,7 +49,7 @@ restore_role() {
   if aws iam get-role --role-name "$role_name" >/dev/null 2>&1; then
     log "Lambda execution role ${role_name} is present."
   else
-    log "Recreating ${role_name} so Lambda can release its network interface."
+    log "Recreating ${role_name} so Lambda can release its network interfaces."
     aws iam create-role \
       --role-name "$role_name" \
       --path "$role_path" \
@@ -75,9 +88,36 @@ list_lambda_enis() {
     --output json)
   printf '%s\n' "$page" | jq -r --arg sg "$sg" '
     .NetworkInterfaces[]?
-    | [$sg, .NetworkInterfaceId, .Status, (.Attachment.AttachmentId // "")]
+    | [
+        $sg,
+        .NetworkInterfaceId,
+        .Status,
+        (.Attachment.AttachmentId // ""),
+        (.SubnetId // ""),
+        (.Description // "")
+      ]
     | @tsv
   '
+}
+
+list_functions_using_sg() {
+  sg="$1"
+  marker=""
+  while true; do
+    if [ -n "$marker" ]; then
+      page=$(aws lambda list-functions --marker "$marker" --output json)
+    else
+      page=$(aws lambda list-functions --output json)
+    fi
+    printf '%s\n' "$page" | jq -r --arg sg "$sg" --arg cleanup "$cleanup_function" '
+      .Functions[]?
+      | select(.FunctionName != $cleanup)
+      | select(any(.VpcConfig.SecurityGroupIds[]?; . == $sg))
+      | .FunctionName
+    '
+    marker=$(printf '%s\n' "$page" | jq -r '.NextMarker // empty')
+    [ -n "$marker" ] || break
+  done
 }
 
 eni_is_gone() {
@@ -106,8 +146,78 @@ release_eni() {
   return 1
 }
 
+rearm_lambda_cleanup() {
+  restore_role
+  role_json=$(aws iam get-role --role-name "$role_name" --output json)
+  role_arn=$(printf '%s\n' "$role_json" | jq -r '.Role.Arn')
+  subnets=$(cut -f5 "$eni_file" | sed '/^$/d' | sort -u | tr '\n' ',' | sed 's/,$//')
+  groups=$(cut -f1 "$eni_file" | sed '/^$/d' | sort -u | tr '\n' ',' | sed 's/,$//')
+
+  if [ -z "$subnets" ] || [ -z "$groups" ]; then
+    log "Could not determine the subnets or security groups for the blocking ENIs."
+    exit 1
+  fi
+
+  log "Creating temporary Lambda ${cleanup_function} on subnets ${subnets} so Lambda releases these ENIs."
+  aws lambda delete-function --function-name "$cleanup_function" >/dev/null 2>&1 || true
+
+  zip_path=$(mktemp)
+  python3 - "$zip_path" << 'PY'
+import sys, zipfile
+with zipfile.ZipFile(sys.argv[1], "w") as archive:
+    archive.writestr("index.py", "def handler(event, context):\n    return 'ok'\n")
+PY
+
+  attempts=0
+  while [ "$attempts" -lt 12 ]; do
+    if aws lambda create-function \
+      --function-name "$cleanup_function" \
+      --runtime python3.12 \
+      --role "$role_arn" \
+      --handler index.handler \
+      --zip-file "fileb://${zip_path}" \
+      --timeout 3 \
+      --memory-size 128 \
+      --vpc-config "SubnetIds=${subnets},SecurityGroupIds=${groups}" \
+      >/dev/null; then
+      cleanup_function_created=true
+      break
+    fi
+    attempts=$((attempts + 1))
+    if [ "$attempts" -eq 12 ]; then
+      log "Could not create temporary Lambda ${cleanup_function}."
+      exit 1
+    fi
+    sleep 5
+  done
+
+  state_deadline=$(( $(date +%s) + 180 ))
+  while true; do
+    config=$(aws lambda get-function-configuration --function-name "$cleanup_function" --output json)
+    function_state=$(printf '%s\n' "$config" | jq -r '.State')
+    state_reason=$(printf '%s\n' "$config" | jq -r '.StateReason // empty')
+    log "Temporary Lambda ${cleanup_function} is ${function_state}."
+    if [ "$function_state" = "Active" ]; then
+      break
+    fi
+    if [ "$function_state" = "Failed" ]; then
+      log "Temporary Lambda failed: ${state_reason}"
+      exit 1
+    fi
+    if [ "$(date +%s)" -ge "$state_deadline" ]; then
+      log "Temporary Lambda did not become active."
+      exit 1
+    fi
+    sleep 5
+  done
+
+  aws lambda delete-function --function-name "$cleanup_function"
+  cleanup_function_created=false
+  log "Deleted temporary Lambda ${cleanup_function}. Waiting up to ${timeout_seconds}s for the ENIs to be released."
+}
+
 eni_file=$(mktemp)
-trap 'rm -f "$eni_file"' EXIT
+trap 'rm -f "$eni_file"; if [ -n "$zip_path" ]; then rm -f "$zip_path"; fi; remove_cleanup_function' EXIT
 deadline=$(( $(date +%s) + timeout_seconds ))
 cleanup_started=false
 
@@ -126,19 +236,34 @@ while true; do
   fi
 
   cleanup_started=true
+  if [ "$rearmed" = false ]; then
+    other_functions=""
+    for sg in $security_group_ids; do
+      other_functions="${other_functions}$(list_functions_using_sg "$sg")
+"
+    done
+    other_functions=$(printf '%s\n' "$other_functions" | sed '/^$/d' | sort -u)
+    if [ -n "$other_functions" ]; then
+      log "These Lambda functions still use the security group, so its ENIs remain in use:"
+      printf '%s\n' "$other_functions"
+      exit 1
+    fi
+    rearm_lambda_cleanup
+    rearmed=true
+    deadline=$(( $(date +%s) + timeout_seconds ))
+    continue
+  fi
+
   remaining=0
-  while IFS=$(printf '\t') read -r sg eni status attachment; do
+  while IFS=$(printf '\t') read -r sg eni status attachment subnet description; do
     [ -n "$eni" ] || continue
     if [ "$status" = "in-use" ]; then
-      if [ "$role_restored" = false ]; then
-        restore_role
-      fi
-      log "Security group ${sg} is blocked by Lambda ENI ${eni} (status: in-use)."
+      log "Security group ${sg} is blocked by Lambda ENI ${eni} on ${subnet} (status: in-use)."
       remaining=$((remaining + 1))
       continue
     fi
     if ! release_eni "$eni" "$attachment"; then
-      log "Security group ${sg} is blocked by Lambda ENI ${eni} (status: ${status})."
+      log "Security group ${sg} is blocked by Lambda ENI ${eni} on ${subnet} (status: ${status})."
       remaining=$((remaining + 1))
     fi
   done <"$eni_file"
@@ -151,13 +276,13 @@ while true; do
   now=$(date +%s)
   if [ "$now" -ge "$deadline" ]; then
     log "Lambda ENI cleanup timed out after ${timeout_seconds}s."
-    log "The security group is still blocked. Terraform would otherwise wait at least 45 minutes on this ENI."
-    while IFS=$(printf '\t') read -r sg eni status attachment; do
+    log "Lambda did not release these ENIs after the temporary function was deleted."
+    while IFS=$(printf '\t') read -r sg eni status attachment subnet description; do
       [ -n "$eni" ] || continue
-      log "Blocking ENI ${eni} on ${sg}: status ${status}."
+      log "Blocking ENI ${eni} on ${sg} subnet ${subnet}: status ${status} (${description})."
     done <"$eni_file"
     if [ "$role_restored" = true ]; then
-      log "Left ${role_name} in place so Lambda can release the ENI. Rerun the destroy job to check again."
+      log "Left ${role_name} in place so Lambda can finish releasing the ENIs."
     fi
     exit 1
   fi

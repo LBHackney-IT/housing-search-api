@@ -143,6 +143,7 @@ commands:
       - checkout
       - run:
           name: Destroy Terraform resources
+          no_output_timeout: 30m
           command: |
             if [ "<<parameters.environment>>" = "pre-production" ]; then
               if ! apk add --no-cache aws-cli jq python3; then
@@ -155,7 +156,7 @@ commands:
             terraform init
             if [ "<<parameters.environment>>" = "pre-production" ]; then
               sh ../../scripts/release-stale-terraform-lock.sh
-              ENI_RELEASE_TIMEOUT_SECONDS=300 sh ../../scripts/release-pre-production-lambda-enis.sh
+              ENI_RELEASE_TIMEOUT_SECONDS=1200 sh ../../scripts/release-pre-production-lambda-enis.sh
             fi
             terraform apply -auto-approve ~/destroy-plan/destroy.plan
   deploy-lambda:
