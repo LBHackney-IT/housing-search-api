@@ -314,15 +314,15 @@ jobs:
       - run:
           name: Install Serverless Framework v4 and plugins
           command: |
-            npm install --global serverless@4
             cd ./HousingSearchApi/
-            npm install --no-save serverless-associate-waf @serverless/safeguards-plugin
+            npm init --yes
+            npm install --no-save --no-package-lock serverless@4 serverless-associate-waf @serverless/safeguards-plugin
       - run:
           name: Remove Serverless stack
           no_output_timeout: 45m
           command: |
             cd ./HousingSearchApi/
-            sls remove --stage pre-production
+            npx --no-install serverless remove --stage pre-production
   terraform-destroy-plan-pre-production:
     executor: docker-terraform
     steps:
