@@ -322,7 +322,9 @@ jobs:
           no_output_timeout: 45m
           command: |
             cd ./HousingSearchApi/
-            npx --no-install serverless remove --stage pre-production
+            trap 'rm -f teardown-serverless.yml' EXIT
+            sed 's|ELASTICSEARCH_DOMAIN_URL: ${ssm:/housing-search-api/${self:provider.stage}/elasticsearch-domain}|ELASTICSEARCH_DOMAIN_URL: teardown|' serverless.yml > teardown-serverless.yml
+            npx --no-install serverless remove --config teardown-serverless.yml --stage pre-production
   terraform-destroy-plan-pre-production:
     executor: docker-terraform
     steps:
