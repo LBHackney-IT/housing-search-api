@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com//sdk:8.0
+FROM mcr.microsoft.com//sdk:10.0
 
 ARG LBHPACKAGESTOKEN
 ENV LBHPACKAGESTOKEN=$LBHPACKAGESTOKEN

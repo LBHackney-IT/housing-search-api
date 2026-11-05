@@ -71,3 +71,6 @@ testresults/
 /nuget
 
 venv/
+
+# Local environment file (contains secrets - use .env.sample as the template)
+.env
