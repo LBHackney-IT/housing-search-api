@@ -35,6 +35,45 @@ public class PersonSearchTests : BaseSearchTests
         root.GetProperty("results").GetProperty("persons").GetArrayLength().Should().Be(0);
     }
 
+    [Fact]
+    public async Task Search_FilterFields()
+    {
+        string[] testTitles = ["Dr", "Mrs"];
+        string[] expectedPersonIds =
+        [
+            "b69e6519-3712-4509-a30e-0b5af596915b",
+            "ad75b5d2-9d2d-44d6-a739-37cdd5d358e7",
+        ];
+        string[] requestedPersonIds =
+        [
+            .. expectedPersonIds,
+            "a79b15c8-289e-4410-9397-720414ab6db9",
+        ];
+        var request = CreateSearchRequest(
+            "Turnbull Neck",
+            ("title", "dr"),
+            ("title", "mrs"),
+            ("id", requestedPersonIds[0]),
+            ("id", requestedPersonIds[1]),
+            ("id", requestedPersonIds[2])
+        );
+
+        var response = await HttpClient.SendAsync(request);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var root = GetResponseRootElement(response);
+        var results = root.GetProperty("results").GetProperty("persons").EnumerateArray().ToList();
+        results.Should().NotBeEmpty();
+        results.Should().OnlyContain(person =>
+            testTitles.Contains(person.GetProperty("title").GetString())
+            && expectedPersonIds.Contains(person.GetProperty("id").GetString())
+        );
+        results.Select(person => person.GetProperty("title").GetString())
+            .Should().Contain(testTitles);
+        results.Select(person => person.GetProperty("id").GetString())
+            .Should().Contain(expectedPersonIds);
+    }
+
     # endregion
 
     # region Address

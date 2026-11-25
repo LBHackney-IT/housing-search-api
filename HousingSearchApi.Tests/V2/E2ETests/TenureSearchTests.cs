@@ -34,6 +34,35 @@ public class TenureSearchTests : BaseSearchTests
         root.GetProperty("results").GetProperty("tenures").GetArrayLength().Should().Be(0);
     }
 
+    [Fact]
+    public async Task Search_FilterFields()
+    {
+        string[] testAssetTypes = ["Block", "Dwelling"];
+        string[] testTenureCodes = ["LEA", "INT"];
+        var request = CreateSearchRequest(
+            "Turnbull Neck",
+            ("tenuredAsset.type", "Block"),
+            ("tenuredAsset.type", "Dwelling"),
+            ("tenureType.code", "LEA"),
+            ("tenureType.code", "INT")
+        );
+
+        var response = await HttpClient.SendAsync(request);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var root = GetResponseRootElement(response);
+        var results = root.GetProperty("results").GetProperty("tenures").EnumerateArray().ToList();
+        results.Should().NotBeEmpty();
+        results.Should().OnlyContain(tenure =>
+            testAssetTypes.Contains(tenure.GetProperty("tenuredAsset").GetProperty("type").GetString())
+            && testTenureCodes.Contains(tenure.GetProperty("tenureType").GetProperty("code").GetString())
+        );
+        results.Select(tenure => tenure.GetProperty("tenuredAsset").GetProperty("type").GetString())
+            .Should().Contain(testAssetTypes);
+        results.Select(tenure => tenure.GetProperty("tenureType").GetProperty("code").GetString())
+            .Should().Contain(testTenureCodes);
+    }
+
     # endregion
 
     # region Address

@@ -92,11 +92,22 @@ public class SearchGateway : ISearchGateway
             });
         }
 
+        var filterOperations = searchParams.Filters.Select(filter =>
+            (Func<QueryContainerDescriptor<object>, QueryContainer>)(query => query
+                .Terms(terms => terms
+                    .Field(filter.Key)
+                    .Terms(filter.Value)
+                )
+            )
+        ).ToList();
+
         var searchResponse = await _elasticClient.SearchAsync<object>(s => s
             .Index(indexName)
             .Query(q => q
                 .Bool(b => b
                     .Should(shouldOperations)
+                    .Filter(filterOperations)
+                    .MinimumShouldMatch(1)
                 )
             )
             .MinScore(5)

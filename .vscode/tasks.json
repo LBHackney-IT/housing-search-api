@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-housing-search-api",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/HousingSearchApi/HousingSearchApi.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}
