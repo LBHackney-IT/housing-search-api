@@ -37,7 +37,8 @@ namespace HousingSearchApi.V1.Boundary.Requests.Validation
                         if (!lastHitIdGuid)
                         {
                             context.AddFailure("LastHitId is not in a valid Guid format");
-                        };
+                        }
+                        ;
 
                     })
              );

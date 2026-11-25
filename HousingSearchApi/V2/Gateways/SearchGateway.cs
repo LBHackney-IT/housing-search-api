@@ -93,7 +93,7 @@ public class SearchGateway : ISearchGateway
         }
 
         var filterOperations = searchParams.Filters.Select(filter =>
-            (Func<QueryContainerDescriptor<object>, QueryContainer>)(query => query
+            (Func<QueryContainerDescriptor<object>, QueryContainer>) (query => query
                 .Terms(terms => terms
                     .Field(filter.Key)
                     .Terms(filter.Value)
