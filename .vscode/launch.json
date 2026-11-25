@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Housing Search API (housing_search_api)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-housing-search-api",
+      "program": "${workspaceFolder}/HousingSearchApi/bin/Debug/net10.0/HousingSearchApi.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/HousingSearchApi",
+      "launchSettingsFilePath": "${workspaceFolder}/HousingSearchApi/Properties/launchSettings.json",
+      "launchSettingsProfile": "housing_search_api"
+    },
+    {
+      "name": "Housing Search API (dev_database)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-housing-search-api",
+      "program": "${workspaceFolder}/HousingSearchApi/bin/Debug/net10.0/HousingSearchApi.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/HousingSearchApi",
+      "launchSettingsFilePath": "${workspaceFolder}/HousingSearchApi/Properties/launchSettings.json",
+      "launchSettingsProfile": "dev_database"
+    }
+  ]
+}
