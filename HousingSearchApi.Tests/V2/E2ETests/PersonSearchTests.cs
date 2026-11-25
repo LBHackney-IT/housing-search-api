@@ -46,7 +46,7 @@ public class PersonSearchTests : BaseSearchTests
         ];
         string[] requestedPersonIds =
         [
-            .. expectedPersonIds,
+            ..expectedPersonIds,
             "a79b15c8-289e-4410-9397-720414ab6db9",
         ];
         var request = CreateSearchRequest(
