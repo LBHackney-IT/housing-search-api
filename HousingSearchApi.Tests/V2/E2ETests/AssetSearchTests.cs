@@ -31,6 +31,31 @@ public class AssetSearchTests : BaseSearchTests
         root.GetProperty("results").GetProperty("assets").GetArrayLength().Should().Be(0);
     }
 
+    [Fact]
+    public async Task Search_FilterFields()
+    {
+        string[] testAssetTypes = ["Block", "Dwelling"];
+        var request = CreateSearchRequest(
+            "Turnbull Neck",
+            ("assetType.keyword", "Block"),
+            ("assetType.keyword", "Dwelling"),
+            ("assetCharacteristics.numberOfBedrooms", "2")
+        );
+
+        var response = await HttpClient.SendAsync(request);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var root = GetResponseRootElement(response);
+        var results = root.GetProperty("results").GetProperty("assets").EnumerateArray().ToList();
+        results.Should().NotBeEmpty();
+        results.Should().OnlyContain(asset =>
+            asset.GetProperty("assetCharacteristics").GetProperty("numberOfBedrooms").GetInt32() == 2
+            && testAssetTypes.Contains(asset.GetProperty("assetType").GetString())
+        );
+        results.Select(asset => asset.GetProperty("assetType").GetString())
+            .Should().Contain(testAssetTypes);
+    }
+
     #endregion
 
     # region Address

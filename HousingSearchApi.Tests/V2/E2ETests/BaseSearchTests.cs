@@ -37,11 +37,21 @@ public class BaseSearchTests
         HttpClient = combinedFixture.HttpClient;
     }
 
-    protected HttpRequestMessage CreateSearchRequest(string searchText) =>
-        new(
+    protected HttpRequestMessage CreateSearchRequest(
+        string searchText,
+        params (string Key, string Value)[] additionalQueryParams)
+    {
+        var queryParameters = new List<(string Key, string Value)> { ("searchText", searchText) };
+        queryParameters.AddRange(additionalQueryParams);
+        var queryString = string.Join("&", queryParameters.Select(parameter =>
+            $"{Uri.EscapeDataString(parameter.Key)}={Uri.EscapeDataString(parameter.Value)}"
+        ));
+
+        return new HttpRequestMessage(
             HttpMethod.Get,
-            $"http://localhost:3000/api/v2/search/{_indexName}/?searchText={searchText}"
+            $"http://localhost:3000/api/v2/search/{_indexName}/?{queryString}"
         );
+    }
 
     protected JsonElement GetResponseRootElement(HttpResponseMessage response)
     {

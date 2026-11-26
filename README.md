@@ -39,7 +39,7 @@ The V1 request models all derive from a common query base (`HousingSearchRequest
 | GET | `/api/v1/search/assetrelationships` | `GetAssetRelationshipsRequest` (`searchText` is required) | `200 OK` → `GetAssetRelationshipsResponse` — `childAssets[]` (not wrapped) | Returns the child assets related to the search text; a blank `searchText` returns `400 "Request searchtext cannot be blank"`. |
 | GET | `/api/v1/search/processes` | `GetProcessListRequest` (+ `targetType`, `targetId`, `isOpen`, `processNames`) | `200 OK` → `APIResponse<GetProcessListResponse>` — `results.processes[]`, `total` | Searches the `processes` index for process records, optionally filtered by target and open/closed state. |
 | GET | `/api/v1/search/transactions` | `GetTransactionListRequest` (+ `startDate`, `endDate`) | `200 OK` → `APIResponse<GetTransactionListResponse>` — `results.transactions[]`, `results.total` | Searches the `transactions` index within the supplied date range. |
-| GET | `/api/v2/search/{indexName}` | `SearchParametersDto` — `searchText` (default `""`), `pageSize` (default 120), `page` (default 1) | `200 OK` → `{ "results": { "<indexName>": [ ... ] }, "total": n }`; each document is a raw JSON object with an injected `confidenceScore` | Generic, untyped search: takes the index name from the URL and returns raw Elasticsearch documents rather than typed DTOs. |
+| GET | `/api/v2/search/{indexName}` | `searchText` (default `""`), `pageSize` (default 120), `page` (default 1), plus arbitrary Elasticsearch field filters | `200 OK` → `{ "results": { "<indexName>": [ ... ] }, "total": n }`; each document is a raw JSON object with an injected `confidenceScore` | Generic, untyped search: takes the index name from the URL and returns raw Elasticsearch documents rather than typed DTOs. |
 | GET | `/api/v1/healthcheck/ping` | — | `200 OK` → health report written by `HealthCheckResponseWriter` | Unversioned liveness/readiness probe (mapped outside MVC). |
 | GET | `/swagger` | — | OpenAPI document / Swagger UI | Interactive API documentation with one document per API version. |
 
@@ -48,7 +48,10 @@ Important characteristics:
 - **V1** is the typed search API — one controller per search type under `V1/Controllers/`, each going through a
   use case to the search gateway and NEST. V1 is what `make test` covers.
 - **V2** is a single generic `SearchController` (`V2/Controllers/SearchController.cs`) that takes the index
-  name from the URL. V2 is covered by `make test-v2`.
+  name from the URL. Any query parameter other than `searchText`, `page`, and `pageSize` is passed as an
+  Elasticsearch field filter. Repeated values for one field match any value (OR); filters on different fields
+  must all match (AND). Use Elasticsearch field names, including `.keyword` subfields where exact matching
+  is needed (for example, `assetType.keyword=Block&assetType.keyword=Dwelling`). V2 is covered by `make test-v2`.
 - All endpoints are read-only and sit behind the API Gateway request authorizer and API key.
 
 ## Related repositories
